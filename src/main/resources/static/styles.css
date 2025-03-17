@@ -1,0 +1,101 @@
+/* General styling */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+    margin: 20px;
+    padding: 0;
+    text-align: center;
+}
+
+/* Container */
+h2 {
+    color: #222;
+    margin-bottom: 10px;
+}
+
+form {
+    margin-bottom: 20px;
+    background: #fff;
+    padding: 15px;
+    display: inline-block;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"] {
+    padding: 8px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+button {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-left: 5px;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Table styling */
+table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #007bff;
+    color: white;
+}
+
+td {
+    text-align: center;
+}
+
+td input {
+    width: 90%;
+}
+
+/* Buttons inside table */
+td button {
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+/* Delete button */
+button:nth-child(2) {
+    background-color: #dc3545;
+}
+
+button:nth-child(2):hover {
+    background-color: #a71d2a;
+}
+
+/* Confirm and Cancel buttons */
+button:nth-child(1) {
+    background-color: #28a745;
+}
+
+button:nth-child(1):hover {
+    background-color: #1e7e34;
+}

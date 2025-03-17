@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Book Management</title>
+    <script>
+        async function fetchBooks() {
+            const response = await fetch('/api/books');
+            const books = await response.json();
+            let tableContent = books.map(book => 
+                `<tr id="row-${book.id}">
+                    <td>${book.id}</td>
+                    <td id="title-cell-${book.id}">${book.title}</td>
+                    <td id="author-cell-${book.id}">${book.author}</td>
+                    <td id="actions-${book.id}">
+                        <button onclick="enableEdit(${book.id}, '${book.title}', '${book.author}')">Update</button>
+                        <button onclick="deleteBook(${book.id})">Delete</button>
+                    </td>
+                </tr>`
+            ).join('');
+            document.getElementById('bookTable').innerHTML = tableContent;
+        }
+
+        async function addBook() {
+            const title = document.getElementById('title').value;
+            const author = document.getElementById('author').value;
+
+            await fetch('/api/books', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, author })
+            });
+
+            document.getElementById('title').value = "";
+            document.getElementById('author').value = "";
+            fetchBooks();
+        }
+
+        function enableEdit(id, title, author) {
+            document.getElementById(`row-${id}`).innerHTML = `
+                <td>${id}</td>
+                <td><input type="text" id="edit-title-${id}" value="${title}"></td>
+                <td><input type="text" id="edit-author-${id}" value="${author}"></td>
+                <td>
+                    <button onclick="confirmUpdate(${id})">Confirm</button>
+                    <button onclick="fetchBooks()">Cancel</button>
+                </td>
+            `;
+        }
+
+        async function confirmUpdate(id) {
+            const title = document.getElementById(`edit-title-${id}`).value;
+            const author = document.getElementById(`edit-author-${id}`).value;
+
+            await fetch(`/api/books/${id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title, author })
+            });
+
+            fetchBooks();
+        }
+
+        async function deleteBook(id) {
+            await fetch(`/api/books/${id}`, {
+                method: 'DELETE'
+            });
+
+            fetchBooks();
+        }
+
+        window.onload = fetchBooks;
+    </script>
+</head>
+<body>
+    <h2>Book Management</h2>
+
+    <form onsubmit="event.preventDefault(); addBook();">
+        <input type="text" id="title" placeholder="Title" required>
+        <input type="text" id="author" placeholder="Author" required>
+        <button type="submit">Add Book</button>
+    </form>
+
+    <h3>Book List</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="bookTable"></tbody>
+    </table>
+</body>
+</html>
