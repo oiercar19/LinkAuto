@@ -31,4 +31,10 @@ public class LinkAutoController {
         Optional<Post> post = linkAutoService.getPostById(id);
         return post.isPresent() ? ResponseEntity.ok(post.get()) : ResponseEntity.notFound().build();
     }
+
+    @PostMapping("/posts")
+    public ResponseEntity<Post> createPost(@RequestBody PostDTO postDTO) {
+        Post createdPost = linkAutoService.createPost(postDTO);
+        return ResponseEntity.ok(createdPost);
+    }
 }
