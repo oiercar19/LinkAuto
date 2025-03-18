@@ -22,6 +22,15 @@ public class LinkAutoService {
         return postRepository.findById(id);
     }
 
+    public Post createPost(PostDTO postDTO) {
+        Post post = new Post();
+        post.setUser(postDTO.getUser());
+        post.setMessage(postDTO.getMessage());
+        post.setUser(user); //Actual logged user
+        post.setImages(postDTO.getImages());
+        return postRepository.save(post);
+    }
+
     public boolean deletePost(Long id) {
         if (postRepository.existsById(id)) {
             postRepository.deleteById(id);
