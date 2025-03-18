@@ -37,4 +37,10 @@ public class LinkAutoController {
         Post createdPost = linkAutoService.createPost(postDTO);
         return ResponseEntity.ok(createdPost);
     }
+
+    @DeleteMapping("/posts/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+        boolean isDeleted = linkAutoService.deletePost(id);
+        return isDeleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+    }
 }
