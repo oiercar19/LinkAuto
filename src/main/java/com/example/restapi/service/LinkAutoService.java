@@ -24,7 +24,6 @@ public class LinkAutoService {
 
     public Post createPost(PostDTO postDTO) {
         Post post = new Post();
-        post.setUser(postDTO.getUser());
         post.setMessage(postDTO.getMessage());
         post.setUser(user); //Actual logged user
         post.setImages(postDTO.getImages());
