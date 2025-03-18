@@ -22,4 +22,11 @@ public class LinkAutoService {
         return postRepository.findById(id);
     }
 
+    public boolean deletePost(Long id) {
+        if (postRepository.existsById(id)) {
+            postRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
 }
