@@ -13,12 +13,12 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/books")
-@Tag(name = "Book Controller", description = "API for managing books")
-public class BookController {
+@RequestMapping("/api")
+@Tag(name = "LinkAuto Controller", description = "API for managing social media")
+public class LinkAutoController {
 
     @Autowired
-    private BookService bookService;
+    private LinkAutoService linkAutoService;
 
     @GetMapping
     public List<Book> getAllBooks() {
