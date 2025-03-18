@@ -18,4 +18,8 @@ public class LinkAutoService {
         return postRepository.findAll();
     }
 
+    public Optional<Post> getPostById(Long id) {
+        return postRepository.findById(id);
+    }
+
 }
