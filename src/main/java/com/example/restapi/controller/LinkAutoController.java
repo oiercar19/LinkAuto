@@ -25,4 +25,10 @@ public class LinkAutoController {
         List<Post> posts = linkAutoService.getAllPosts();
         return ResponseEntity.ok(posts);
     }
+
+    @GetMapping("/posts/{id}")
+    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+        Optional<Post> post = linkAutoService.getPostById(id);
+        return post.isPresent() ? ResponseEntity.ok(post.get()) : ResponseEntity.notFound().build();
+    }
 }
