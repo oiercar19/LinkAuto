@@ -22,7 +22,7 @@ public class AuthService {
         userRepository.save(user);
         return true;
     }
-    
+
     public boolean login(String username, String password) {
         User user = userRepository.findById(username).orElse(null);
         if (user == null || !user.getPassword().equals(password)) {
@@ -32,4 +32,14 @@ public class AuthService {
         tokenStore.put(token, user);
         return true;
     }
+
+    public boolean logout(String token) {
+        if (tokenStore.containsKey(token)) {
+            tokenStore.remove(token);
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }
