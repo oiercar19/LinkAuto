@@ -42,4 +42,7 @@ public class AuthService {
         }
     }
     
+    private static synchronized String generateToken() {
+        return Long.toHexString(System.currentTimeMillis());
+    }
 }
