@@ -31,8 +31,17 @@ public class AuthController {
             if (!resultado) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            return new ResponseEntity<>(HttpStatus.CREATED);
-            
-	}
+            return new ResponseEntity<>(HttpStatus.CREATED);   
+	    }
+        
+        @PostMapping("/login")
+        public ResponseEntity<Void> login(@RequestBody User user) {
+            boolean resultado = authService.login(user);
+            if (!resultado) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        
 }
 
