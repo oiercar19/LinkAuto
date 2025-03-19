@@ -35,8 +35,17 @@ public class AuthController {
 	    }
         
         @PostMapping("/login")
-        public ResponseEntity<Void> login(@RequestBody User user) {
-            boolean resultado = authService.login(user);
+        public ResponseEntity<Void> login(@RequestBody Credenciales credendiales) {
+            boolean resultado = authService.login(credenciales.getUsername(), credenciales.getPassword());
+            if (!resultado) {
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            }
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+
+        @PostMapping("/logout")
+        public ResponseEntity<Void> logout(@RequestBody String token) {
+            boolean resultado = authService.logout(token);
             if (!resultado) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
