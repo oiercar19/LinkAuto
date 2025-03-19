@@ -22,5 +22,14 @@ public class AuthService {
         userRepository.save(user);
         return true;
     }
-
+    
+    public boolean login(String username, String password) {
+        User user = userRepository.findById(username).orElse(null);
+        if (user == null || !user.getPassword().equals(password)) {
+            return false;
+        }
+        String token = generateToken();
+        tokenStore.put(token, user);
+        return true;
+    }
 }
