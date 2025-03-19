@@ -15,4 +15,12 @@ public class AuthService {
 
     private static Map<String, User> tokenStore = new HashMap<>();
 
+    public boolean register(User user) {
+        if (userRepository.existsByUsername(user.getUsername())) {
+            return false;
+        }
+        userRepository.save(user);
+        return true;
+    }
+
 }
