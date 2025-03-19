@@ -1,7 +1,9 @@
 package com.example.restapi.controller;
 
 import com.example.restapi.model.Book;
+import com.example.restapi.model.User;
 import com.example.restapi.service.BookService;
+import com.example.restapi.service.LinkAutoService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 
@@ -60,6 +62,22 @@ public class LinkAutoController {
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        Optional<User> user = userService.getUserByUsername(username);
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @PutMapping("/{username}")
+    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User userDetails) {
+        try {
+            User updatedUser = userService.updateUser(username, userDetails);
+            return ResponseEntity.ok(updatedUser);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }
