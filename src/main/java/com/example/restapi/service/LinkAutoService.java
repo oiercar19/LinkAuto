@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import com.example.restapi.model.Post;
-import com.example.restapi.model.Usuario;
+import com.example.restapi.model.User;
 import com.example.restapi.dto.PostDTO;
 import com.example.restapi.repository.PostRepository;
 
@@ -23,11 +23,13 @@ public class LinkAutoService {
         return postRepository.findById(id);
     }
 
-    public Post createPost(PostDTO postDTO, Usuario user) {
+    public Post createPost(PostDTO postDTO, User user) {
         Post post = new Post();
-        post.setMessage(postDTO.getMessage());
-        post.setUser(user); //Actual logged user
-        post.setImages(postDTO.getImages());
+        post.setMensaje(postDTO.getMessage());
+        post.setUsuario(user); //Actual logged user
+        for (String imagen : postDTO.getImages()) {
+            post.addImagen(imagen);
+        }
         return postRepository.save(post);
     }
 
