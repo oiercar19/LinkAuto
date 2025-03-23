@@ -5,15 +5,18 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 import com.example.restapi.model.Post;
 import com.example.restapi.model.User;
 import com.example.restapi.dto.PostDTO;
 import com.example.restapi.repository.PostRepository;
+import com.example.restapi.repository.UserRepository;
 
 @Service
 public class LinkAutoService {
     @Autowired
     private PostRepository postRepository;
+    private UserRepository userRepository;
 
     public List<Post> getAllPosts() {
         return postRepository.findAll();
@@ -30,7 +33,8 @@ public class LinkAutoService {
         for (String imagen : postDTO.getImages()) {
             post.addImagen(imagen);
         }
-        return postRepository.save(post);
+        postRepository.save(post);
+        return post;
     }
 
     public boolean deletePost(Long id) {
@@ -39,5 +43,9 @@ public class LinkAutoService {
             return true;
         }
         return false;
+    }
+
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

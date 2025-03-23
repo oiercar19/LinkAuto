@@ -1,13 +1,15 @@
 package com.example.restapi.controller;
 
-import com.example.restapi.model.Book;
+import com.example.restapi.dto.PostDTO;
+import com.example.restapi.model.Post;
 import com.example.restapi.model.User;
-import com.example.restapi.service.BookService;
 import com.example.restapi.service.LinkAutoService;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,20 +37,42 @@ public class LinkAutoController {
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<Post> createPost(@RequestBody PostDTO postDTO) {
-        Post createdPost = linkAutoService.createPost(postDTO);
+    public ResponseEntity<Post> createPost(
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken,
+        @Parameter(name = "postDTO", description = "Post data", required = true)
+        @RequestBody PostDTO postDTO
+        ) {
+
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        Post createdPost = linkAutoService.createPost(postDTO, user);
         return ResponseEntity.ok(createdPost);
     }
 
     @DeleteMapping("/posts/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable Long id) {
+    public ResponseEntity<Void> deletePost(
+        @Parameter(name = "id", description = "Post ID", required = true, example = "1")
+        @PathVariable Long id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+        ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        if (!user.equals(linkAutoService.getPostById(id).get().getUsuario())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         boolean isDeleted = linkAutoService.deletePost(id);
-        return isDeleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/{username}")
     public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        Optional<User> user = userService.getUserByUsername(username);
+        Optional<User> user = linkAutoService.getUserByUsername(username);
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
