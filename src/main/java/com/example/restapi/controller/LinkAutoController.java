@@ -3,6 +3,7 @@ package com.example.restapi.controller;
 import com.example.restapi.dto.PostDTO;
 import com.example.restapi.model.Post;
 import com.example.restapi.model.User;
+import com.example.restapi.service.AuthService;
 import com.example.restapi.service.LinkAutoService;
 
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,6 +24,7 @@ public class LinkAutoController {
 
     @Autowired
     private LinkAutoService linkAutoService;
+    private AuthService authService;
 
     @GetMapping("/posts")
     public ResponseEntity<List<Post>> getAllPosts() {
