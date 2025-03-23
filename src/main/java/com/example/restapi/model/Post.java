@@ -19,19 +19,17 @@ public class Post {
         this.usuario = usuario;
         this.mensaje = mensaje;
         this.fechaCreacion = fechaCreacion;
-        // Se utiliza la lista proporcionada o se inicializa una nueva si es nula
-        this.imagenes = (imagenes != null) ? imagenes : new ArrayList<>();
+        this.imagenes = new ArrayList<String>();
+        for (String imagen : imagenes) {
+        	this.imagenes.add(imagen);
+		}
     }
 
 
     public Long getId() {
         return id;
     }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
+    
     public String getUsuario() {
         return usuario;
     }
@@ -60,8 +58,8 @@ public class Post {
         return imagenes;
     }
 
-    public void setImagenes(List<String> imagenes) {
-        this.imagenes = imagenes;
+    public void addImagen(String imagen) {
+        this.imagenes.add(imagen);
     }
 
     @Override
