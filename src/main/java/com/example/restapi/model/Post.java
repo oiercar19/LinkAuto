@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Post {
     private Long id;             
-    private String usuario;      
+    private User usuario;      
     private String mensaje;      
     private long fechaCreacion;  
     private List<String> imagenes; 
@@ -14,12 +14,12 @@ public class Post {
         this.imagenes = new ArrayList<>();
     }
 
-    public Post(Long id, String usuario, String mensaje, long fechaCreacion, List<String> imagenes) {
+    public Post(Long id, User usuario, String mensaje, long fechaCreacion, List<String> imagenes) {
         this.id = id;
         this.usuario = usuario;
         this.mensaje = mensaje;
         this.fechaCreacion = fechaCreacion;
-        this.imagenes = new ArrayList<String>();
+        this.imagenes = new ArrayList<>();
         for (String imagen : imagenes) {
         	this.imagenes.add(imagen);
 		}
@@ -30,11 +30,11 @@ public class Post {
         return id;
     }
     
-    public String getUsuario() {
+    public User getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(String usuario) {
+    public void setUsuario(User usuario) {
         this.usuario = usuario;
     }
 
