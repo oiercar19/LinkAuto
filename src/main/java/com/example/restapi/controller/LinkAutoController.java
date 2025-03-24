@@ -1,5 +1,6 @@
 package com.example.restapi.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.restapi.dto.PostDTO;
+import com.example.restapi.dto.PostReturnerDTO;
 import com.example.restapi.model.Post;
 import com.example.restapi.model.User;
 import com.example.restapi.service.AuthService;
@@ -39,9 +41,10 @@ public class LinkAutoController {
     }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> getAllPosts() {
+    public ResponseEntity<List<PostReturnerDTO>> getAllPosts() {
         List<Post> posts = linkAutoService.getAllPosts();
-        return ResponseEntity.ok(posts);
+        List<PostReturnerDTO> postReturnerDTOs = parsePostToPostReturnerDTO(posts);
+        return ResponseEntity.ok(postReturnerDTOs);
     }
 
     @GetMapping("/posts/{id}")
@@ -77,10 +80,7 @@ public class LinkAutoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         User user = authService.getUserByToken(userToken);
-        if (!user.equals(linkAutoService.getPostById(id).get().getUsuario())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        boolean isDeleted = linkAutoService.deletePost(id);
+        boolean isDeleted = linkAutoService.deletePost(id, user);
         return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
@@ -99,4 +99,13 @@ public class LinkAutoController {
             return ResponseEntity.badRequest().build();
         }
     }*/
+
+    private List<PostReturnerDTO> parsePostToPostReturnerDTO(List<Post> posts) {
+        List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
+        for (Post post : posts) {
+            PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes());
+            postReturnerDTOs.add(postReturnerDTO);
+        }
+        return postReturnerDTOs;
+    }
 }

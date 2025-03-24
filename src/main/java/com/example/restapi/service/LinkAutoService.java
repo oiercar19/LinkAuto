@@ -38,16 +38,20 @@ public class LinkAutoService {
         for (String imagen : postDTO.getImages()) {
             post.addImagen(imagen); //image url
         }
+        post.setFechaCreacion(System.currentTimeMillis());
         postRepository.save(post);
         return post;
     }
 
-    public boolean deletePost(Long id) {
-        if (postRepository.existsById(id)) {
-            postRepository.deleteById(id);
-            return true;
+    public boolean deletePost(Long id, User user) {
+        if (!postRepository.existsById(id)) {
+            return false;
         }
-        return false;
+        if (!postRepository.findById(id).get().getUsuario().getUsername().equals(user.getUsername())) {
+            return false;
+        }
+        postRepository.deleteById(id);
+        return true;
     }
 
     public Optional<User> getUserByUsername(String username) {
