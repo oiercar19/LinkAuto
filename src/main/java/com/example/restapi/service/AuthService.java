@@ -23,14 +23,14 @@ public class AuthService {
         return true;
     }
 
-    public boolean login(String username, String password) {
+    public String login(String username, String password) {
         User user = userRepository.findById(username).orElse(null);
         if (user == null || !user.getPassword().equals(password)) {
-            return false;
+            return null;
         }
         String token = generateToken();
         tokenStore.put(token, user);
-        return true;
+        return token;
     }
 
     public boolean logout(String token) {
