@@ -23,6 +23,8 @@ public interface ILinkAutoServiceProxy {
     
     // Post methods
     void createPost(String username, Post post);
+   // void deletePost(String username, Post post);
+   // Post getPost(String username, int postId);
     List<Post> getFeed(String username);
     List<Post> getUserPosts(String username, int userId);
     
