@@ -39,6 +39,7 @@ public class ClientController {
         String currentUrl = ServletUriComponentsBuilder.fromRequestUri(request).toUriString();
         model.addAttribute("currentUrl", currentUrl); // Makes current URL available in all templates
         model.addAttribute("token", token); // Makes token available in all templates
+        model.addAttribute("userId", userId); // Makes userId available in all templates
     }
 
     @GetMapping("/")
@@ -83,6 +84,7 @@ public class ClientController {
     public String performLogin(@RequestParam("username") String username, @RequestParam("password") String password,
             @RequestParam(value = "redirectUrl", required = false) String redirectUrl, 
             Model model, HttpSession session) {
+        // Crear objeto de credenciales con los nombres correctos esperados por el backend
         CredencialesDTO credentials = new CredencialesDTO(username, password);
 
         try {
@@ -91,10 +93,20 @@ public class ClientController {
             
             // Store user information in session
             token = "user-token-" + user.getUsername(); // In a real app, this would be from the service
-            username = user.getUsername();
+            
+            // Guardar el userId - asumiendo que el username se puede convertir a entero 
+            // o idealmente usar un campo ID del objeto User si estuviera disponible
+            try {
+                userId = Integer.parseInt(user.getUsername());
+            } catch (NumberFormatException e) {
+                // Si el username no es un número, asignar un valor temporal
+                // En una aplicación real, el objeto User debería tener un ID numérico separado
+                userId = user.getUsername().hashCode();
+            }
             
             session.setAttribute("user", user);
             session.setAttribute("token", token);
+            session.setAttribute("userId", userId);
 
             // Redirect to the original page or root if redirectUrl is null
             return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/");
@@ -116,6 +128,7 @@ public class ClientController {
             
             // Clear session
             token = null;
+            userId = 0;
             session.invalidate();
             
             model.addAttribute("successMessage", "Logout successful.");
@@ -230,7 +243,106 @@ public class ClientController {
         }
     }
     
+    // Nuevos endpoints para interacciones sociales
+    
+    @PostMapping("/follow/{followeeId}")
+    public String followUser(@PathVariable int followeeId, RedirectAttributes redirectAttributes) {
+        if (!isLogged()) {
+            return "redirect:/inicioSesion?redirectUrl=/profile/" + followeeId;
+        }
+        
+        try {
+            linkAutoServiceProxy.followUser(token, userId, followeeId);
+            redirectAttributes.addFlashAttribute("message", "User followed successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to follow user: " + e.getMessage());
+        }
+        
+        return "redirect:/profile/" + followeeId;
+    }
+    
+    @PostMapping("/unfollow/{followeeId}")
+    public String unfollowUser(@PathVariable int followeeId, RedirectAttributes redirectAttributes) {
+        if (!isLogged()) {
+            return "redirect:/inicioSesion?redirectUrl=/profile/" + followeeId;
+        }
+        
+        try {
+            linkAutoServiceProxy.unfollowUser(token, userId, followeeId);
+            redirectAttributes.addFlashAttribute("message", "User unfollowed successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to unfollow user: " + e.getMessage());
+        }
+        
+        return "redirect:/profile/" + followeeId;
+    }
+    
+    @PostMapping("/like/{postId}")
+    public String likePost(@PathVariable int postId, 
+            @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
+            RedirectAttributes redirectAttributes) {
+        if (!isLogged()) {
+            return "redirect:/inicioSesion";
+        }
+        
+        try {
+            linkAutoServiceProxy.likePost(token, userId, postId);
+            redirectAttributes.addFlashAttribute("message", "Post liked successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to like post: " + e.getMessage());
+        }
+        
+        // Redireccionar a la URL de origen o al feed por defecto
+        return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
+    }
+    
+    @PostMapping("/comment/{postId}")
+    public String commentPost(@PathVariable int postId, 
+            @RequestParam("comment") String comment,
+            @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
+            RedirectAttributes redirectAttributes) {
+        if (!isLogged()) {
+            return "redirect:/inicioSesion";
+        }
+        
+        try {
+            linkAutoServiceProxy.commentOnPost(token, userId, postId, comment);
+            redirectAttributes.addFlashAttribute("message", "Comment added successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add comment: " + e.getMessage());
+        }
+        
+        // Redireccionar a la URL de origen o al feed por defecto
+        return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
+    }
+    
+    @GetMapping("/search")
+    public String search(@RequestParam("query") String query, Model model) {
+        if (!isLogged()) {
+            return "redirect:/inicioSesion?redirectUrl=/search?query=" + query;
+        }
+        
+        try {
+            List<User> users = linkAutoServiceProxy.searchUsers(token, query);
+            List<Post> posts = linkAutoServiceProxy.searchPosts(token, query);
+            
+            model.addAttribute("searchQuery", query);
+            model.addAttribute("users", users);
+            model.addAttribute("posts", posts);
+            
+            return "searchResults";
+        } catch (Exception e) {
+            e.printStackTrace();
+            model.addAttribute("errorMessage", "Search failed: " + e.getMessage());
+            return "searchResults";
+        }
+    }
+    
     private boolean isLogged() {
-        return token != null;
+        return token != null && userId != 0;
     }
 }
