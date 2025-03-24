@@ -27,7 +27,10 @@
             </div>
             <div class="form-group">
                 <label for="cars">Cars</label>
-                <input type="text" class="form-control" id="cars" name="cars">
+                <div id="cars-container">
+                    <input type="text" class="form-control mb-2" name="cars[]">
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="addCarField()">Add another car</button>
             </div>
             <div class="form-group">
                 <label for="birthDate">Birth Date</label>
@@ -38,6 +41,7 @@
                 <select class="form-control" id="gender" name="gender" required>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
+                    <option value="other">Other</option>
                 </select>
             </div>
             <div class="form-group">
@@ -49,6 +53,10 @@
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
             <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+            </div>
+            <div class="form-group">
                 <label for="description">Description</label>
                 <textarea class="form-control" id="description" name="description" rows="3"></textarea>
             </div>
@@ -58,5 +66,15 @@
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function addCarField() {
+            var container = document.getElementById('cars-container');
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'cars[]';
+            input.className = 'form-control mb-2';
+            container.appendChild(input);
+        }
+    </script>
 </body>
 </html>
