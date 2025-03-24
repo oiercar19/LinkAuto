@@ -53,7 +53,8 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
         String url = apiBaseUrl + "/auth/login";
             
         try {
-            return restTemplate.postForObject(url, credentials, User.class);
+            User user = restTemplate.postForObject(url, credentials, User.class);
+            return user;
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
                 case 401 -> throw new RuntimeException("Login failed: Invalid credentials");
@@ -63,28 +64,32 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void logout(String token) {
-        String url = String.format("%s/auth/logout?token=%s", apiBaseUrl, token);
+    public void logout(String username) {
+        String url = String.format("%s/auth/logout", apiBaseUrl);
         
         try {
-            restTemplate.postForObject(url, null, Void.class);
+            HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", "application/json");
+            
+            String logoutUrl = url + "?username=" + username;
+            restTemplate.postForObject(logoutUrl, null, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Logout failed: Invalid token");
+                case 401 -> throw new RuntimeException("Logout failed: Invalid username");
                 default -> throw new RuntimeException("Logout failed: " + e.getStatusText());
             }
         }
     }
 
     @Override
-    public User getUserProfile(String token, int userId) {
-        String url = String.format("%s/users/%d?token=%s", apiBaseUrl, userId, token);
+    public User getUserProfile(String username, int userId) {
+        String url = String.format("%s/api/users/%d?username=%s", apiBaseUrl, userId, username);
         
         try {
             return restTemplate.getForObject(url, User.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 case 404 -> throw new RuntimeException("User not found");
                 default -> throw new RuntimeException("Failed to get user profile: " + e.getStatusText());
             }
@@ -92,8 +97,8 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void updateProfile(String token, int userId, User user) {
-        String url = String.format("%s/users/%d?token=%s", apiBaseUrl, userId, token);
+    public void updateProfile(String username, User user) {
+        String url = String.format("%s/api/users/%s?username=%s", apiBaseUrl, user.getUsername(), username);
         
         try {
             HttpHeaders headers = new HttpHeaders();
@@ -103,7 +108,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             restTemplate.exchange(url, HttpMethod.PUT, entity, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 case 404 -> throw new RuntimeException("User not found");
                 default -> throw new RuntimeException("Failed to update profile: " + e.getStatusText());
             }
@@ -111,26 +116,26 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void createPost(String token, int userId, Post post) {
-        String url = String.format("%s/users/%d/posts?token=%s", apiBaseUrl, userId, token);
+    public void createPost(String username, Post post) {
+        String url = String.format("%s/api/posts?username=%s", apiBaseUrl, username);
         
         try {
             HttpHeaders headers = new HttpHeaders();
             headers.set("Content-Type", "application/json");
             HttpEntity<Post> entity = new HttpEntity<>(post, headers);
             
-            restTemplate.exchange(url, HttpMethod.POST, entity, Void.class);
+            restTemplate.exchange(url, HttpMethod.POST, entity, Post.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 default -> throw new RuntimeException("Failed to create post: " + e.getStatusText());
             }
         }
     }
 
     @Override
-    public List<Post> getFeed(String token, int userId) {
-        String url = String.format("%s/users/%d/feed?token=%s", apiBaseUrl, userId, token);
+    public List<Post> getFeed(String username) {
+        String url = String.format("%s/api/posts?username=%s", apiBaseUrl, username);
         
         try {
             ResponseEntity<List<Post>> response = restTemplate.exchange(
@@ -142,15 +147,15 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             return response.getBody();
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 default -> throw new RuntimeException("Failed to get feed: " + e.getStatusText());
             }
         }
     }
 
     @Override
-    public List<Post> getUserPosts(String token, int userId) {
-        String url = String.format("%s/users/%d/posts?token=%s", apiBaseUrl, userId, token);
+    public List<Post> getUserPosts(String username, int userId) {
+        String url = String.format("%s/api/users/%d/posts?username=%s", apiBaseUrl, userId, username);
         
         try {
             ResponseEntity<List<Post>> response = restTemplate.exchange(
@@ -162,7 +167,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             return response.getBody();
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 case 404 -> throw new RuntimeException("User not found");
                 default -> throw new RuntimeException("Failed to get user posts: " + e.getStatusText());
             }
@@ -170,14 +175,15 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void followUser(String token, int followerId, int followeeId) {
-        String url = String.format("%s/users/%d/follow/%d?token=%s", apiBaseUrl, followerId, followeeId, token);
+    public void followUser(String username, String followerId, int followeeId) {
+        String url = String.format("%s/api/users/%d/follow?username=%s", 
+                apiBaseUrl, followeeId, username);
         
         try {
             restTemplate.postForObject(url, null, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 case 404 -> throw new RuntimeException("User not found");
                 default -> throw new RuntimeException("Failed to follow user: " + e.getStatusText());
             }
@@ -185,14 +191,15 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void unfollowUser(String token, int followerId, int followeeId) {
-        String url = String.format("%s/users/%d/unfollow/%d?token=%s", apiBaseUrl, followerId, followeeId, token);
+    public void unfollowUser(String username, String followerId, int followeeId) {
+        String url = String.format("%s/api/users/%d/unfollow?username=%s", 
+                apiBaseUrl, followeeId, username);
         
         try {
             restTemplate.postForObject(url, null, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 case 404 -> throw new RuntimeException("User not found");
                 default -> throw new RuntimeException("Failed to unfollow user: " + e.getStatusText());
             }
@@ -200,14 +207,15 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void likePost(String token, int userId, int postId) {
-        String url = String.format("%s/posts/%d/like?token=%s&userId=%d", apiBaseUrl, postId, token, userId);
+    public void likePost(String username, String followerId, int postId) {
+        String url = String.format("%s/api/posts/%d/like?username=%s", 
+                apiBaseUrl, postId, username);
         
         try {
             restTemplate.postForObject(url, null, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 case 404 -> throw new RuntimeException("Post not found");
                 default -> throw new RuntimeException("Failed to like post: " + e.getStatusText());
             }
@@ -215,14 +223,15 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void commentOnPost(String token, int userId, int postId, String comment) {
-        String url = String.format("%s/posts/%d/comment?token=%s&userId=%d", apiBaseUrl, postId, token, userId);
+    public void commentOnPost(String username, String followerId, int postId, String comment) {
+        String url = String.format("%s/api/posts/%d/comment?username=%s", 
+                apiBaseUrl, postId, username);
         
         try {
             restTemplate.postForObject(url, comment, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 case 404 -> throw new RuntimeException("Post not found");
                 default -> throw new RuntimeException("Failed to comment on post: " + e.getStatusText());
             }
@@ -230,8 +239,9 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public List<User> searchUsers(String token, String query) {
-        String url = String.format("%s/search/users?token=%s&query=%s", apiBaseUrl, token, query);
+    public List<User> searchUsers(String username, String query) {
+        String url = String.format("%s/api/search/users?username=%s&query=%s", 
+                apiBaseUrl, username, query);
         
         try {
             ResponseEntity<List<User>> response = restTemplate.exchange(
@@ -243,15 +253,16 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             return response.getBody();
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 default -> throw new RuntimeException("Failed to search users: " + e.getStatusText());
             }
         }
     }
 
     @Override
-    public List<Post> searchPosts(String token, String query) {
-        String url = String.format("%s/search/posts?token=%s&query=%s", apiBaseUrl, token, query);
+    public List<Post> searchPosts(String username, String query) {
+        String url = String.format("%s/api/search/posts?username=%s&query=%s", 
+                apiBaseUrl, username, query);
         
         try {
             ResponseEntity<List<Post>> response = restTemplate.exchange(
@@ -263,7 +274,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             return response.getBody();
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 default -> throw new RuntimeException("Failed to search posts: " + e.getStatusText());
             }
         }

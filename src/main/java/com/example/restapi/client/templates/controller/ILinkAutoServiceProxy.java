@@ -15,24 +15,24 @@ public interface ILinkAutoServiceProxy {
     // Authentication methods
     void register(User user);
     User login(CredencialesDTO credentials);
-    void logout(String token);
+    void logout(String username);
     
     // User profile methods
-    User getUserProfile(String token, int userId);
-    void updateProfile(String token, int userId, User user);
+    User getUserProfile(String username, int userId);
+    void updateProfile(String username, User user);
     
     // Post methods
-    void createPost(String token, int userId, Post post);
-    List<Post> getFeed(String token, int userId);
-    List<Post> getUserPosts(String token, int userId);
+    void createPost(String username, Post post);
+    List<Post> getFeed(String username);
+    List<Post> getUserPosts(String username, int userId);
     
     // Social interactions
-    void followUser(String token, int followerId, int followeeId);
-    void unfollowUser(String token, int followerId, int followeeId);
-    void likePost(String token, int userId, int postId);
-    void commentOnPost(String token, int userId, int postId, String comment);
+    void followUser(String username, String followerId, int followeeId);
+    void unfollowUser(String username, String followerId, int followeeId);
+    void likePost(String username, String followerId, int postId);
+    void commentOnPost(String username, String followerId, int postId, String comment);
     
     // Search functionality
-    List<User> searchUsers(String token, String query);
-    List<Post> searchPosts(String token, String query);
+    List<User> searchUsers(String username, String query);
+    List<Post> searchPosts(String username, String query);
 }

@@ -1,7 +1,3 @@
-/**
- * Controller for the LinkAuto social network web application.
- * This controller handles web requests and coordinates with services.
- */
 package com.example.restapi.client.templates.controller;
 
 import java.util.List;
@@ -30,16 +26,20 @@ public class ClientController {
     @Autowired
     private ClientServiceProxy linkAutoServiceProxy;
 
-    private String token; // Stores the session token
-    private int userId;
-
-    // Add current URL and token to all views
+    // Add current URL and username to all views
     @ModelAttribute
-    public void addAttributes(Model model, HttpServletRequest request) {
+    public void addAttributes(Model model, HttpServletRequest request, HttpSession session) {
         String currentUrl = ServletUriComponentsBuilder.fromRequestUri(request).toUriString();
         model.addAttribute("currentUrl", currentUrl); // Makes current URL available in all templates
-        model.addAttribute("token", token); // Makes token available in all templates
-        model.addAttribute("userId", userId); // Makes userId available in all templates
+        
+        // Get user data from session if available
+        User user = (User) session.getAttribute("user");
+        if (user != null) {
+            model.addAttribute("username", user.getUsername()); // Makes username available in all templates
+            model.addAttribute("isLoggedIn", true); // Flag for templates to know if user is logged in
+        } else {
+            model.addAttribute("isLoggedIn", false);
+        }
     }
 
     @GetMapping("/")
@@ -66,7 +66,7 @@ public class ClientController {
 
         } catch (Exception e) {
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("errorMessage", "There was an error during registration");
+            redirectAttributes.addFlashAttribute("errorMessage", "There was an error during registration: " + e.getMessage());
             return "redirect:/registroUsuario"; 
         }
     }
@@ -92,22 +92,8 @@ public class ClientController {
             User user = linkAutoServiceProxy.login(credentials);
             
             // Store user information in session
-            token = "user-token-" + user.getUsername(); // In a real app, this would be from the service
-            
-            // Guardar el userId - asumiendo que el username se puede convertir a entero 
-            // o idealmente usar un campo ID del objeto User si estuviera disponible
-            try {
-                userId = Integer.parseInt(user.getUsername());
-            } catch (NumberFormatException e) {
-                // Si el username no es un número, asignar un valor temporal
-                // En una aplicación real, el objeto User debería tener un ID numérico separado
-                userId = user.getUsername().hashCode();
-            }
-            
             session.setAttribute("user", user);
-            session.setAttribute("token", token);
-            session.setAttribute("userId", userId);
-
+            
             // Redirect to the original page or root if redirectUrl is null
             return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/");
         } catch (RuntimeException e) {
@@ -121,14 +107,13 @@ public class ClientController {
             @RequestParam(value = "redirectUrl", defaultValue = "/") String redirectUrl,
             Model model) {
         try {
-            // Call service to logout
-            if (token != null) {
-                linkAutoServiceProxy.logout(token);
+            // Call service to logout if user exists in session
+            User user = (User) session.getAttribute("user");
+            if (user != null && user.getUsername() != null) {
+                linkAutoServiceProxy.logout(user.getUsername());
             }
             
             // Clear session
-            token = null;
-            userId = 0;
             session.invalidate();
             
             model.addAttribute("successMessage", "Logout successful.");
@@ -142,27 +127,32 @@ public class ClientController {
     
     @GetMapping("/editarPerfil")
     public String showEditProfile(Model model, HttpSession session) {
-        if (!isLogged()) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
             return "redirect:/inicioSesion?redirectUrl=/editarPerfil";
         }
         
-        User user = (User) session.getAttribute("user");
         model.addAttribute("user", user);
         
         return "editarPerfil";
     }
     
     @PostMapping("/editProfile")
-    public String updateProfile(User user, RedirectAttributes redirectAttributes, HttpSession session) {
-        if (!isLogged()) {
+    public String updateProfile(User updatedUser, RedirectAttributes redirectAttributes, HttpSession session) {
+        User sessionUser = (User) session.getAttribute("user");
+        if (sessionUser == null || sessionUser.getUsername() == null) {
             return "redirect:/inicioSesion?redirectUrl=/editarPerfil";
         }
         
         try {
-            linkAutoServiceProxy.updateProfile(token, userId, user);
+            // Preserve the username and ID from the session user
+            updatedUser.setUsername(sessionUser.getUsername());
+            
+            // Update user profile
+            linkAutoServiceProxy.updateProfile(sessionUser.getUsername(), updatedUser);
             
             // Update session with new user data
-            session.setAttribute("user", user);
+            session.setAttribute("user", updatedUser);
             
             redirectAttributes.addFlashAttribute("message", "Profile updated successfully");
             return "redirect:/editarPerfil";
@@ -175,8 +165,9 @@ public class ClientController {
     }
     
     @GetMapping("/subirPosts")
-    public String showCreatePost(Model model) {
-        if (!isLogged()) {
+    public String showCreatePost(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
             return "redirect:/inicioSesion?redirectUrl=/subirPosts";
         }
         
@@ -184,13 +175,16 @@ public class ClientController {
     }
     
     @PostMapping("/uploadPost")
-    public String uploadPost(Post post, RedirectAttributes redirectAttributes) {
-        if (!isLogged()) {
+    public String uploadPost(Post post, RedirectAttributes redirectAttributes, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
             return "redirect:/inicioSesion";
         }
         
         try {
-            linkAutoServiceProxy.createPost(token, userId, post);
+            post.setUsuario(user);
+            post.setFechaCreacion(System.currentTimeMillis());
+            linkAutoServiceProxy.createPost(user.getUsername(), post);
             
             redirectAttributes.addFlashAttribute("message", "Post created successfully");
             return "redirect:/feed";
@@ -203,13 +197,14 @@ public class ClientController {
     }
     
     @GetMapping("/feed")
-    public String showFeed(Model model) {
-        if (!isLogged()) {
+    public String showFeed(Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
             return "redirect:/inicioSesion?redirectUrl=/feed";
         }
         
         try {
-            List<Post> posts = linkAutoServiceProxy.getFeed(token, userId);
+            List<Post> posts = linkAutoServiceProxy.getFeed(user.getUsername());
             model.addAttribute("posts", posts);
             
             return "feed";
@@ -222,16 +217,17 @@ public class ClientController {
     }
     
     @GetMapping("/profile/{userId}")
-    public String viewProfile(@PathVariable int userId, Model model) {
-        if (!isLogged()) {
+    public String viewProfile(@PathVariable int userId, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
             return "redirect:/inicioSesion?redirectUrl=/profile/" + userId;
         }
         
         try {
-            User user = linkAutoServiceProxy.getUserProfile(token, userId);
-            List<Post> userPosts = linkAutoServiceProxy.getUserPosts(token, userId);
+            User profileUser = linkAutoServiceProxy.getUserProfile(user.getUsername(), userId);
+            List<Post> userPosts = linkAutoServiceProxy.getUserPosts(user.getUsername(), userId);
             
-            model.addAttribute("profileUser", user);
+            model.addAttribute("profileUser", profileUser);
             model.addAttribute("userPosts", userPosts);
             
             return "userProfile";
@@ -243,16 +239,15 @@ public class ClientController {
         }
     }
     
-    // Nuevos endpoints para interacciones sociales
-    
     @PostMapping("/follow/{followeeId}")
-    public String followUser(@PathVariable int followeeId, RedirectAttributes redirectAttributes) {
-        if (!isLogged()) {
+    public String followUser(@PathVariable int followeeId, RedirectAttributes redirectAttributes, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
             return "redirect:/inicioSesion?redirectUrl=/profile/" + followeeId;
         }
         
         try {
-            linkAutoServiceProxy.followUser(token, userId, followeeId);
+            linkAutoServiceProxy.followUser(user.getUsername(), user.getUsername(), followeeId);
             redirectAttributes.addFlashAttribute("message", "User followed successfully");
         } catch (Exception e) {
             e.printStackTrace();
@@ -263,13 +258,14 @@ public class ClientController {
     }
     
     @PostMapping("/unfollow/{followeeId}")
-    public String unfollowUser(@PathVariable int followeeId, RedirectAttributes redirectAttributes) {
-        if (!isLogged()) {
+    public String unfollowUser(@PathVariable int followeeId, RedirectAttributes redirectAttributes, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
             return "redirect:/inicioSesion?redirectUrl=/profile/" + followeeId;
         }
         
         try {
-            linkAutoServiceProxy.unfollowUser(token, userId, followeeId);
+            linkAutoServiceProxy.unfollowUser(user.getUsername(), user.getUsername(), followeeId);
             redirectAttributes.addFlashAttribute("message", "User unfollowed successfully");
         } catch (Exception e) {
             e.printStackTrace();
@@ -282,13 +278,15 @@ public class ClientController {
     @PostMapping("/like/{postId}")
     public String likePost(@PathVariable int postId, 
             @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-            RedirectAttributes redirectAttributes) {
-        if (!isLogged()) {
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
             return "redirect:/inicioSesion";
         }
         
         try {
-            linkAutoServiceProxy.likePost(token, userId, postId);
+            linkAutoServiceProxy.likePost(user.getUsername(), user.getUsername(), postId);
             redirectAttributes.addFlashAttribute("message", "Post liked successfully");
         } catch (Exception e) {
             e.printStackTrace();
@@ -303,13 +301,15 @@ public class ClientController {
     public String commentPost(@PathVariable int postId, 
             @RequestParam("comment") String comment,
             @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-            RedirectAttributes redirectAttributes) {
-        if (!isLogged()) {
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
             return "redirect:/inicioSesion";
         }
         
         try {
-            linkAutoServiceProxy.commentOnPost(token, userId, postId, comment);
+            linkAutoServiceProxy.commentOnPost(user.getUsername(), user.getUsername(), postId, comment);
             redirectAttributes.addFlashAttribute("message", "Comment added successfully");
         } catch (Exception e) {
             e.printStackTrace();
@@ -321,14 +321,15 @@ public class ClientController {
     }
     
     @GetMapping("/search")
-    public String search(@RequestParam("query") String query, Model model) {
-        if (!isLogged()) {
+    public String search(@RequestParam("query") String query, Model model, HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
             return "redirect:/inicioSesion?redirectUrl=/search?query=" + query;
         }
         
         try {
-            List<User> users = linkAutoServiceProxy.searchUsers(token, query);
-            List<Post> posts = linkAutoServiceProxy.searchPosts(token, query);
+            List<User> users = linkAutoServiceProxy.searchUsers(user.getUsername(), query);
+            List<Post> posts = linkAutoServiceProxy.searchPosts(user.getUsername(), query);
             
             model.addAttribute("searchQuery", query);
             model.addAttribute("users", users);
@@ -340,9 +341,5 @@ public class ClientController {
             model.addAttribute("errorMessage", "Search failed: " + e.getMessage());
             return "searchResults";
         }
-    }
-    
-    private boolean isLogged() {
-        return token != null && userId != 0;
     }
 }
