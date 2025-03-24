@@ -1,8 +1,5 @@
 package com.example.restapi.controller;
 
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +9,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.restapi.model.CredencialesDTO;
+import com.example.restapi.dto.CredencialesDTO;
 import com.example.restapi.model.User;
 import com.example.restapi.service.AuthService;
+
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/auth")
@@ -22,7 +22,7 @@ import com.example.restapi.service.AuthService;
 public class AuthController {
     
         @Autowired
-        private AuthService authService;
+        private final AuthService authService;
 
         public AuthController(AuthService authService) {
             this.authService = authService;  

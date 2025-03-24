@@ -30,8 +30,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class LinkAutoController {
 
     @Autowired
-    private LinkAutoService linkAutoService;
-    private AuthService authService;
+    private final LinkAutoService linkAutoService;
+    private final AuthService authService;
 
     public LinkAutoController(LinkAutoService linkAutoService, AuthService authService) {
         this.linkAutoService = linkAutoService;
