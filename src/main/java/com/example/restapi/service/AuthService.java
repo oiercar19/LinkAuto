@@ -3,9 +3,12 @@ package com.example.restapi.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.example.restapi.model.User;
 import com.example.restapi.repository.UserRepository;
 
+@Service
 public class AuthService {
     private final UserRepository userRepository;
 

@@ -1,5 +1,6 @@
 package com.example.restapi.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.restapi.model.CredencialesDTO;
@@ -45,8 +47,10 @@ public class AuthController {
         }
 
         @PostMapping("/logout")
-        public ResponseEntity<Void> logout(@RequestBody String token) {
-            boolean resultado = authService.logout(token);
+        public ResponseEntity<Void> logout(        
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken) {
+            boolean resultado = authService.logout(userToken);
             if (!resultado) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
