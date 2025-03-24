@@ -41,6 +41,14 @@ public class AuthService {
             return false;
         }
     }
+
+    public boolean isTokenValid(String token) {
+        return tokenStore.containsKey(token);
+    }
+
+    public User getUserByToken(String token) {
+        return tokenStore.get(token);
+    }
     
     private static synchronized String generateToken() {
         return Long.toHexString(System.currentTimeMillis());
