@@ -15,8 +15,13 @@ import com.example.restapi.repository.UserRepository;
 @Service
 public class LinkAutoService {
     @Autowired
-    private PostRepository postRepository;
-    private UserRepository userRepository;
+    private final PostRepository postRepository;
+    private final UserRepository userRepository;
+
+    public LinkAutoService(PostRepository postRepository, UserRepository userRepository) {
+        this.postRepository = postRepository;
+        this.userRepository = userRepository;
+    }
 
     public List<Post> getAllPosts() {
         return postRepository.findAll();

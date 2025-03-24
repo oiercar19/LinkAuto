@@ -16,7 +16,7 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    private static Map<String, User> tokenStore = new HashMap<>();
+    private final static Map<String, User> tokenStore = new HashMap<>();
 
     public boolean register(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {
