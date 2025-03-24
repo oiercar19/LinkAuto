@@ -1,5 +1,6 @@
 package com.example.restapi.controller;
 
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,8 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.restapi.model.CredencialesDTO;
 import com.example.restapi.model.User;
 import com.example.restapi.service.AuthService;
 
@@ -35,17 +38,19 @@ public class AuthController {
 	    }
         
         @PostMapping("/login")
-        public ResponseEntity<Void> login(@RequestBody Credenciales credendiales) {
-            boolean resultado = authService.login(credenciales.getUsername(), credenciales.getPassword());
-            if (!resultado) {
+        public ResponseEntity<String> login(@RequestBody CredencialesDTO credenciales) {
+            String token = authService.login(credenciales.getUsuario(), credenciales.getContrasena());
+            if (token == null) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(token, HttpStatus.OK);
         }
 
         @PostMapping("/logout")
-        public ResponseEntity<Void> logout(@RequestBody String token) {
-            boolean resultado = authService.logout(token);
+        public ResponseEntity<Void> logout(        
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken) {
+            boolean resultado = authService.logout(userToken);
             if (!resultado) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }

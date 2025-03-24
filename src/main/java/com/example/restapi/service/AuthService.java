@@ -3,9 +3,12 @@ package com.example.restapi.service;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.example.restapi.model.User;
 import com.example.restapi.repository.UserRepository;
 
+@Service
 public class AuthService {
     private final UserRepository userRepository;
 
@@ -23,14 +26,14 @@ public class AuthService {
         return true;
     }
 
-    public boolean login(String username, String password) {
+    public String login(String username, String password) {
         User user = userRepository.findById(username).orElse(null);
         if (user == null || !user.getPassword().equals(password)) {
-            return false;
+            return null;
         }
         String token = generateToken();
         tokenStore.put(token, user);
-        return true;
+        return token;
     }
 
     public boolean logout(String token) {
@@ -40,6 +43,14 @@ public class AuthService {
         } else {
             return false;
         }
+    }
+
+    public boolean isTokenValid(String token) {
+        return tokenStore.containsKey(token);
+    }
+
+    public User getUserByToken(String token) {
+        return tokenStore.get(token);
     }
     
     private static synchronized String generateToken() {
