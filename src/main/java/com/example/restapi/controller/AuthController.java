@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.restapi.model.CredencialesDTO;
 import com.example.restapi.model.User;
 import com.example.restapi.service.AuthService;
 
@@ -35,12 +36,12 @@ public class AuthController {
 	    }
         
         @PostMapping("/login")
-        public ResponseEntity<Void> login(@RequestBody Credenciales credendiales) {
-            boolean resultado = authService.login(credenciales.getUsername(), credenciales.getPassword());
-            if (!resultado) {
+        public ResponseEntity<String> login(@RequestBody CredencialesDTO credenciales) {
+            String token = authService.login(credenciales.getUsuario(), credenciales.getContrasena());
+            if (token == null) {
                 return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(token, HttpStatus.OK);
         }
 
         @PostMapping("/logout")
