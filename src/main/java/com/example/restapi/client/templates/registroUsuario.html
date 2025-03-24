@@ -6,6 +6,16 @@
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">LinkAuto</span>
+            <div class="d-flex justify-content-start">
+                <a class="btn btn-light" href="index.html">Home</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container mt-5">
         <h2>User Registration</h2>
         <form th:action="@{/register}" method="post" enctype="multipart/form-data">
