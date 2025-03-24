@@ -78,7 +78,7 @@ public class LinkAutoController {
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{username}")
+    /*@PutMapping("/{username}")
     public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User userDetails) {
         try {
             User updatedUser = linkAutoService.updateUser(username, userDetails);
@@ -86,5 +86,5 @@ public class LinkAutoController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-    }
+    }*/
 }
