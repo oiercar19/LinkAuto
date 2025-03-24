@@ -20,7 +20,7 @@
         <h2>User Registration</h2>
         <form th:action="@{/register}" method="post" enctype="multipart/form-data">
             <div class="form-group">
-                <label for="user">Username</label>
+                <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>
             </div>
             <div class="form-group">
@@ -28,8 +28,8 @@
                 <input type="text" class="form-control" id="name" name="name" required>
             </div>
             <div class="form-group">
-                <label for="profilePicture">Profile Picture</label>
-                <input type="file" class="form-control-file" id="profilePicture" name="profilePicture">
+                <label for="profilePictureUrl">Profile Picture URL</label>
+                <input type="url" class="form-control" id="profilePictureUrl" name="profilePictureUrl" placeholder="Enter image URL" required>
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
