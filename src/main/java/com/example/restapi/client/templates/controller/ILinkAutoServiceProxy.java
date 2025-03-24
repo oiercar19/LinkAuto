@@ -23,8 +23,7 @@ public interface ILinkAutoServiceProxy {
     
     // Post methods
     void createPost(String username, Post post);
-   // void deletePost(String username, Post post);
-   // Post getPost(String username, int postId);
+    void deletePost(String username, int postId);
     List<Post> getFeed(String username);
     List<Post> getUserPosts(String username, int userId);
     
@@ -32,8 +31,10 @@ public interface ILinkAutoServiceProxy {
     void followUser(String username, String followerId, int followeeId);
     void unfollowUser(String username, String followerId, int followeeId);
     void likePost(String username, String followerId, int postId);
+    void unlikePost(String username, int postId);
     void commentOnPost(String username, String followerId, int postId, String comment);
-    
+    void deleteComment(String username, int postId, int commentId);
+
     // Search functionality
     List<User> searchUsers(String username, String query);
     List<Post> searchPosts(String username, String query);

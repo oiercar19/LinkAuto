@@ -195,6 +195,27 @@ public class ClientController {
             return "redirect:/subirPosts";
         }
     }
+
+    @PostMapping("/deletePost/{postId}")
+    public String deletePost(@PathVariable int postId, 
+            @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
+            return "redirect:/inicioSesion";
+        }
+        
+        try {
+            linkAutoServiceProxy.deletePost(user.getUsername(), postId);
+            redirectAttributes.addFlashAttribute("message", "Post deleted successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete post: " + e.getMessage());
+        }
+        
+        return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
+    }
     
     @GetMapping("/feed")
     public String showFeed(Model model, HttpSession session) {
@@ -296,6 +317,27 @@ public class ClientController {
         // Redireccionar a la URL de origen o al feed por defecto
         return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
     }
+
+    @PostMapping("/unlike/{postId}")
+    public String unlikePost(@PathVariable int postId, 
+            @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
+            return "redirect:/inicioSesion";
+        }
+        
+        try {
+            linkAutoServiceProxy.unlikePost(user.getUsername(), postId);
+            redirectAttributes.addFlashAttribute("message", "Post unliked successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to unlike post: " + e.getMessage());
+        }
+        
+        return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
+    }
     
     @PostMapping("/comment/{postId}")
     public String commentPost(@PathVariable int postId, 
@@ -317,6 +359,28 @@ public class ClientController {
         }
         
         // Redireccionar a la URL de origen o al feed por defecto
+        return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
+    }
+
+    @PostMapping("/deleteComment/{postId}/{commentId}")
+    public String deleteComment(@PathVariable int postId, 
+            @PathVariable int commentId,
+            @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
+            RedirectAttributes redirectAttributes,
+            HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null || user.getUsername() == null) {
+            return "redirect:/inicioSesion";
+        }
+        
+        try {
+            linkAutoServiceProxy.deleteComment(user.getUsername(), postId, commentId);
+            redirectAttributes.addFlashAttribute("message", "Comment deleted successfully");
+        } catch (Exception e) {
+            e.printStackTrace();
+            redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete comment: " + e.getMessage());
+        }
+        
         return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
     }
     
@@ -341,5 +405,6 @@ public class ClientController {
             model.addAttribute("errorMessage", "Search failed: " + e.getMessage());
             return "searchResults";
         }
-    }
+    }  
+
 }

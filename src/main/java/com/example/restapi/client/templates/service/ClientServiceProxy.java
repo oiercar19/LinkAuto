@@ -134,6 +134,23 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
+    public void deletePost(String username, int postId) {
+        String url = String.format("%s/api/posts/%d?username=%s", 
+                apiBaseUrl, postId, username);
+        
+        try {
+            restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
+                case 403 -> throw new RuntimeException("Forbidden: You can only delete your own posts");
+                case 404 -> throw new RuntimeException("Post not found");
+                default -> throw new RuntimeException("Failed to delete post: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
     public List<Post> getFeed(String username) {
         String url = String.format("%s/api/posts?username=%s", apiBaseUrl, username);
         
@@ -223,6 +240,22 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
+    public void unlikePost(String username, int postId) {
+        String url = String.format("%s/api/posts/%d/unlike?username=%s", 
+                apiBaseUrl, postId, username);
+        
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
+                case 404 -> throw new RuntimeException("Post not found");
+                default -> throw new RuntimeException("Failed to unlike post: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
     public void commentOnPost(String username, String followerId, int postId, String comment) {
         String url = String.format("%s/api/posts/%d/comment?username=%s", 
                 apiBaseUrl, postId, username);
@@ -234,6 +267,23 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
                 case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
                 case 404 -> throw new RuntimeException("Post not found");
                 default -> throw new RuntimeException("Failed to comment on post: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void deleteComment(String username, int postId, int commentId) {
+        String url = String.format("%s/api/posts/%d/comments/%d?username=%s", 
+                apiBaseUrl, postId, commentId, username);
+        
+        try {
+            restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
+                case 403 -> throw new RuntimeException("Forbidden: You can only delete your own comments");
+                case 404 -> throw new RuntimeException("Comment not found");
+                default -> throw new RuntimeException("Failed to delete comment: " + e.getStatusText());
             }
         }
     }
@@ -279,4 +329,5 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
 }
