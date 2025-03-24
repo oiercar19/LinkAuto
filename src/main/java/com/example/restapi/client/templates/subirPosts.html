@@ -21,11 +21,11 @@
         <form th:action="@{/uploadPost}" method="post">
             <div class="form-group">
                 <label for="title">Title</label>
-                <input type="text" class="form-control" id="title" name="title" required>
+                <input type="text" class="form-control" id="title" name="title" minlength="1" maxlength="100" required>
             </div>
             <div class="form-group">
                 <label for="content">Content</label>
-                <textarea class="form-control" id="content" name="content" rows="5" required></textarea>
+                <textarea class="form-control" id="content" name="content" rows="5" minlength="1" maxlength="500" required></textarea>
             </div>
             <div class="form-group">
                 <label for="imageUrls">Image URLs</label>
