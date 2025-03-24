@@ -1,52 +1,51 @@
 package com.example.restapi.service;
 
-import com.example.restapi.model.Book;
-import com.example.restapi.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
+import com.example.restapi.model.Post;
+import com.example.restapi.model.User;
+import com.example.restapi.dto.PostDTO;
+import com.example.restapi.repository.PostRepository;
+import com.example.restapi.repository.UserRepository;
+
 @Service
 public class LinkAutoService {
-
-    private final BookRepository bookRepository;
-
     @Autowired
-    public BookService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    private PostRepository postRepository;
+    private UserRepository userRepository;
+
+    public List<Post> getAllPosts() {
+        return postRepository.findAll();
     }
 
-    public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+    public Optional<Post> getPostById(Long id) {
+        return postRepository.findById(id);
     }
 
-    public Optional<Book> getBookById(Long id) {
-        return bookRepository.findById(id);
-    }
-
-    public Book createBook(Book book) {
-        return bookRepository.save(book);
-    }
-
-    public Book updateBook(Long id, Book bookDetails) {
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        if (optionalBook.isPresent()) {
-            Book book = optionalBook.get();
-            book.setTitle(bookDetails.getTitle());
-            book.setAuthor(bookDetails.getAuthor());
-            return bookRepository.save(book);
-        } else {
-            throw new RuntimeException("Book not found");
+    public Post createPost(PostDTO postDTO, User user) {
+        Post post = new Post();
+        post.setMensaje(postDTO.getMessage());
+        post.setUsuario(user); //Actual logged user
+        for (String imagen : postDTO.getImages()) {
+            post.addImagen(imagen);
         }
+        postRepository.save(post);
+        return post;
     }
 
-    public void deleteBook(Long id) {
-        if (bookRepository.existsById(id)) {
-            bookRepository.deleteById(id);
-        } else {
-            throw new RuntimeException("Book not found with id: " + id);
+    public boolean deletePost(Long id) {
+        if (postRepository.existsById(id)) {
+            postRepository.deleteById(id);
+            return true;
         }
+        return false;
+    }
+
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
     }
 }

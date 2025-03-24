@@ -1,8 +1,10 @@
 package com.example.restapi.repository;
-import com.example.restapi.model.Book;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import com.example.restapi.model.Post;
+
 @Repository
-    public interface BookRepository extends JpaRepository<Book, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> { 
 }
