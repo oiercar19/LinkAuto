@@ -18,7 +18,13 @@
 
     <div class="container mt-5">
         <h2>User Registration</h2>
-        <form th:action="@{/register}" method="post" enctype="multipart/form-data">
+        <form th:action="@{/register}" method="post" onsubmit="return validateForm()">
+            <div th:if="${successMessage}" class="alert alert-success" role="alert">
+                <span th:text="${successMessage}"></span>
+            </div>
+            <div th:if="${errorMessage}" class="alert alert-danger" role="alert">
+                <span th:text="${errorMessage}"></span>
+            </div>
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" class="form-control" id="username" name="username" required>
@@ -29,11 +35,11 @@
             </div>
             <div class="form-group">
                 <label for="profilePictureUrl">Profile Picture URL</label>
-                <input type="url" class="form-control" id="profilePictureUrl" name="profilePictureUrl" placeholder="Enter image URL" required>
+                <input type="url" class="form-control" id="profilePictureUrl" name="profilePictureUrl" placeholder="Enter image URL">
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" class="form-control" id="email" name="email" required>
+                <input type="email" class="form-control" id="email" name="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
             </div>
             <div class="form-group">
                 <label for="cars">Cars</label>
@@ -68,7 +74,7 @@
             </div>
             <div class="form-group">
                 <label for="description">Description</label>
-                <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                <textarea class="form-control" id="description" name="description" rows="3" maxlength="300"></textarea>
             </div>
             <button type="submit" class="btn btn-primary">Register</button>
         </form>
@@ -84,6 +90,21 @@
             input.name = 'cars[]';
             input.className = 'form-control mb-2';
             container.appendChild(input);
+        }
+
+        function validateForm() {
+            var birthDate = new Date(document.getElementById('birthDate').value);
+            var today = new Date();
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var monthDifference = today.getMonth() - birthDate.getMonth();
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            if (age < 18) {
+                alert('You must be at least 18 years old to register.');
+                return false;
+            }
+            return true;
         }
     </script>
 </body>
