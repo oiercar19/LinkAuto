@@ -26,4 +26,12 @@ public class PostDTO {
     public List<String> getImages() {
         return images;
     }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
 }

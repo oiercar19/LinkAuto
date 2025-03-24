@@ -1,14 +1,14 @@
 package com.example.restapi.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.restapi.dto.PostDTO;
 import com.example.restapi.model.Post;
 import com.example.restapi.model.User;
-import com.example.restapi.dto.PostDTO;
 import com.example.restapi.repository.PostRepository;
 import com.example.restapi.repository.UserRepository;
 
@@ -31,7 +31,7 @@ public class LinkAutoService {
         post.setMensaje(postDTO.getMessage());
         post.setUsuario(user); //Actual logged user
         for (String imagen : postDTO.getImages()) {
-            post.addImagen(imagen);
+            post.addImagen(imagen); //image url
         }
         postRepository.save(post);
         return post;
