@@ -12,7 +12,7 @@ import jakarta.persistence.Table;
 @Table(name = "user")
 public class User {
     
-    enum Gender {
+    public enum Gender {
         MALE,
         FEMALE
       }
