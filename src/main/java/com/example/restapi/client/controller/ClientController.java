@@ -96,7 +96,7 @@ public class ClientController {
             session.setAttribute("user", user);
             
             // Redirect to the original page or root if redirectUrl is null
-            return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/");
+            return "redirect:/index" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/");
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", "Login failed: " + e.getMessage());
             return "inicioSesion"; // Return to login page with error message
