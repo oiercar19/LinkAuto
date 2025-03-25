@@ -1,4 +1,4 @@
-package com.example.restapi.client.templates.controller;
+package com.example.restapi.client.controller;
 
 import java.util.List;
 
@@ -15,8 +15,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.restapi.model.Post;
 import com.example.restapi.model.User;
+import com.example.restapi.client.service.ClientServiceProxy;
 import com.example.restapi.model.CredencialesDTO;
-import com.example.restapi.client.templates.service.ClientServiceProxy;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
@@ -132,7 +133,9 @@ public class ClientController {
             return "redirect:/inicioSesion?redirectUrl=/editarPerfil";
         }
         
-        model.addAttribute("user", user);
+        // Get the full user profile in case additional details are needed
+        User fullProfile = linkAutoServiceProxy.getUserProfile(user.getUsername());
+        model.addAttribute("user", fullProfile);
         
         return "editarPerfil";
     }
@@ -145,7 +148,7 @@ public class ClientController {
         }
         
         try {
-            // Preserve the username and ID from the session user
+            // Preserve the username from the session user
             updatedUser.setUsername(sessionUser.getUsername());
             
             // Update user profile
@@ -225,7 +228,7 @@ public class ClientController {
         }
         
         try {
-            List<Post> posts = linkAutoServiceProxy.getFeed(user.getUsername());
+            List<Post> posts = linkAutoServiceProxy.getFeed();
             model.addAttribute("posts", posts);
             
             return "feed";
@@ -236,175 +239,4 @@ public class ClientController {
             return "feed";
         }
     }
-    
-    @GetMapping("/profile/{userId}")
-    public String viewProfile(@PathVariable int userId, Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
-            return "redirect:/inicioSesion?redirectUrl=/profile/" + userId;
-        }
-        
-        try {
-            User profileUser = linkAutoServiceProxy.getUserProfile(user.getUsername(), userId);
-            List<Post> userPosts = linkAutoServiceProxy.getUserPosts(user.getUsername(), userId);
-            
-            model.addAttribute("profileUser", profileUser);
-            model.addAttribute("userPosts", userPosts);
-            
-            return "userProfile";
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("errorMessage", "Failed to load profile: " + e.getMessage());
-            return "redirect:/feed";
-        }
-    }
-    
-    @PostMapping("/follow/{followeeId}")
-    public String followUser(@PathVariable int followeeId, RedirectAttributes redirectAttributes, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
-            return "redirect:/inicioSesion?redirectUrl=/profile/" + followeeId;
-        }
-        
-        try {
-            linkAutoServiceProxy.followUser(user.getUsername(), user.getUsername(), followeeId);
-            redirectAttributes.addFlashAttribute("message", "User followed successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to follow user: " + e.getMessage());
-        }
-        
-        return "redirect:/profile/" + followeeId;
-    }
-    
-    @PostMapping("/unfollow/{followeeId}")
-    public String unfollowUser(@PathVariable int followeeId, RedirectAttributes redirectAttributes, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
-            return "redirect:/inicioSesion?redirectUrl=/profile/" + followeeId;
-        }
-        
-        try {
-            linkAutoServiceProxy.unfollowUser(user.getUsername(), user.getUsername(), followeeId);
-            redirectAttributes.addFlashAttribute("message", "User unfollowed successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to unfollow user: " + e.getMessage());
-        }
-        
-        return "redirect:/profile/" + followeeId;
-    }
-    
-    @PostMapping("/like/{postId}")
-    public String likePost(@PathVariable int postId, 
-            @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-            RedirectAttributes redirectAttributes,
-            HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
-            return "redirect:/inicioSesion";
-        }
-        
-        try {
-            linkAutoServiceProxy.likePost(user.getUsername(), user.getUsername(), postId);
-            redirectAttributes.addFlashAttribute("message", "Post liked successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to like post: " + e.getMessage());
-        }
-        
-        // Redireccionar a la URL de origen o al feed por defecto
-        return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
-    }
-
-    @PostMapping("/unlike/{postId}")
-    public String unlikePost(@PathVariable int postId, 
-            @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-            RedirectAttributes redirectAttributes,
-            HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
-            return "redirect:/inicioSesion";
-        }
-        
-        try {
-            linkAutoServiceProxy.unlikePost(user.getUsername(), postId);
-            redirectAttributes.addFlashAttribute("message", "Post unliked successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to unlike post: " + e.getMessage());
-        }
-        
-        return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
-    }
-    
-    @PostMapping("/comment/{postId}")
-    public String commentPost(@PathVariable int postId, 
-            @RequestParam("comment") String comment,
-            @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-            RedirectAttributes redirectAttributes,
-            HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
-            return "redirect:/inicioSesion";
-        }
-        
-        try {
-            linkAutoServiceProxy.commentOnPost(user.getUsername(), user.getUsername(), postId, comment);
-            redirectAttributes.addFlashAttribute("message", "Comment added successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to add comment: " + e.getMessage());
-        }
-        
-        // Redireccionar a la URL de origen o al feed por defecto
-        return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
-    }
-
-    @PostMapping("/deleteComment/{postId}/{commentId}")
-    public String deleteComment(@PathVariable int postId, 
-            @PathVariable int commentId,
-            @RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-            RedirectAttributes redirectAttributes,
-            HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
-            return "redirect:/inicioSesion";
-        }
-        
-        try {
-            linkAutoServiceProxy.deleteComment(user.getUsername(), postId, commentId);
-            redirectAttributes.addFlashAttribute("message", "Comment deleted successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            redirectAttributes.addFlashAttribute("errorMessage", "Failed to delete comment: " + e.getMessage());
-        }
-        
-        return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/feed");
-    }
-    
-    @GetMapping("/search")
-    public String search(@RequestParam("query") String query, Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
-            return "redirect:/inicioSesion?redirectUrl=/search?query=" + query;
-        }
-        
-        try {
-            List<User> users = linkAutoServiceProxy.searchUsers(user.getUsername(), query);
-            List<Post> posts = linkAutoServiceProxy.searchPosts(user.getUsername(), query);
-            
-            model.addAttribute("searchQuery", query);
-            model.addAttribute("users", users);
-            model.addAttribute("posts", posts);
-            
-            return "searchResults";
-        } catch (Exception e) {
-            e.printStackTrace();
-            model.addAttribute("errorMessage", "Search failed: " + e.getMessage());
-            return "searchResults";
-        }
-    }  
-
 }
