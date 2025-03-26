@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +21,7 @@ import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.service.AuthService;
 import com.linkauto.restapi.service.LinkAutoService;
 
@@ -84,21 +86,26 @@ public class LinkAutoController {
         return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        Optional<User> user = linkAutoService.getUserByUsername(username);
-        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @GetMapping("/user")
+    public ResponseEntity<User> getUserDetails(
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken) {
+        User user = authService.getUserByToken(userToken);
+        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
     }
 
-    /*@PutMapping("/{username}")
-    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User userDetails) {
-        try {
-            User updatedUser = linkAutoService.updateUser(username, userDetails);
-            return ResponseEntity.ok(updatedUser);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
-        }
-    }*/
+    @PutMapping("/user")
+    public ResponseEntity<User> updateUser(
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken, 
+        @RequestBody UserDTO userDetails) {
+            if (!authService.isTokenValid(userToken)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            User oldUser = authService.getUserByToken(userToken);
+            User updatedUser = parseUserDTOToUser(userDetails, oldUser);
+            return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
+    }
 
     private List<PostReturnerDTO> parsePostToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
@@ -107,5 +114,9 @@ public class LinkAutoController {
             postReturnerDTOs.add(postReturnerDTO);
         }
         return postReturnerDTOs;
+    }
+
+    private User parseUserDTOToUser(UserDTO userDTO, User oldUser) {
+        return new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts());
     }
 }

@@ -17,10 +17,12 @@ public class LinkAutoService {
     @Autowired
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final AuthService authService;
 
-    public LinkAutoService(PostRepository postRepository, UserRepository userRepository) {
+    public LinkAutoService(PostRepository postRepository, UserRepository userRepository, AuthService authService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.authService = authService;
     }
 
     public List<Post> getAllPosts() {
@@ -54,7 +56,12 @@ public class LinkAutoService {
         return true;
     }
 
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 }
+
