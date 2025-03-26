@@ -48,7 +48,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.linkauto.restapi.RestApiApplication</mainClass>
+                    <mainClass>com.linkauto.client.WebClientApplication</mainClass>
                     <skip>true</skip>
                 </configuration>
             </plugin>

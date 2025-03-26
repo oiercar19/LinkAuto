@@ -2,7 +2,7 @@
  * Interface for the LinkAuto service proxy.
  * Defines the contract for communication with the backend service.
  */
-package com.linkauto.client.controller;
+package com.linkauto.client.service;
 
 import java.util.List;
 
