@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.linkauto.restapi.model.Post;
-import com.linkauto.restapi.model.User;
-import com.linkauto.restapi.client.service.ClientServiceProxy;
-import com.linkauto.restapi.model.CredencialesDTO;
+import com.linkauto.client.data.Post;
+import com.linkauto.client.data.User;
+import com.linkauto.client.service.ClientServiceProxy;
+import com.linkauto.client.data.CredencialesDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -36,7 +36,7 @@ public class ClientController {
         // Get user data from session if available
         User user = (User) session.getAttribute("user");
         if (user != null) {
-            model.addAttribute("username", user.getUsername()); // Makes username available in all templates
+            model.addAttribute("username", user.username()); // Using record method
             model.addAttribute("isLoggedIn", true); // Flag for templates to know if user is logged in
         } else {
             model.addAttribute("isLoggedIn", false);
@@ -56,12 +56,37 @@ public class ClientController {
     }
     
     @PostMapping("/register")
-    public String performRegister(User user, RedirectAttributes redirectAttributes) {
+    public String performRegister(
+            @RequestParam("username") String username,
+            @RequestParam("name") String name,
+            @RequestParam("email") String email,
+            @RequestParam("password") String password,
+            @RequestParam(value = "profilePicture", required = false) String profilePicture,
+            @RequestParam(value = "birthDate", required = false) Long birthDate,
+            @RequestParam(value = "gender", required = false) String gender,
+            @RequestParam(value = "location", required = false) String location,
+            @RequestParam(value = "description", required = false) String description,
+            RedirectAttributes redirectAttributes) {
         try {
+            // Create a new User record with the provided parameters
+            User user = new User(
+                username, 
+                name, 
+                profilePicture, 
+                email, 
+                null, // cars list 
+                birthDate != null ? birthDate : 0, 
+                gender, 
+                location, 
+                password, 
+                description, 
+                null // posts list
+            );
+
             // Call service to register the user
             linkAutoServiceProxy.register(user);
 
-            // If successful, redirect to a success page or to the user's profile
+            // If successful, redirect to login page
             redirectAttributes.addFlashAttribute("message", "User registered successfully");
             return "redirect:/inicioSesion"; 
 
@@ -85,7 +110,7 @@ public class ClientController {
     public String performLogin(@RequestParam("username") String username, @RequestParam("password") String password,
             @RequestParam(value = "redirectUrl", required = false) String redirectUrl, 
             Model model, HttpSession session) {
-        // Crear objeto de credenciales con los nombres correctos esperados por el backend
+        // Create CredencialesDTO record with the correct parameter names
         CredencialesDTO credentials = new CredencialesDTO(username, password);
 
         try {
@@ -110,8 +135,8 @@ public class ClientController {
         try {
             // Call service to logout if user exists in session
             User user = (User) session.getAttribute("user");
-            if (user != null && user.getUsername() != null) {
-                linkAutoServiceProxy.logout(user.getUsername());
+            if (user != null && user.username() != null) {
+                linkAutoServiceProxy.logout(user.username());
             }
             
             // Clear session
@@ -129,30 +154,51 @@ public class ClientController {
     @GetMapping("/editarPerfil")
     public String showEditProfile(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
+        if (user == null || user.username() == null) {
             return "redirect:/inicioSesion?redirectUrl=/editarPerfil";
         }
         
         // Get the full user profile in case additional details are needed
-        User fullProfile = linkAutoServiceProxy.getUserProfile(user.getUsername());
+        User fullProfile = linkAutoServiceProxy.getUserProfile(user.username());
         model.addAttribute("user", fullProfile);
         
         return "editarPerfil";
     }
     
     @PostMapping("/editProfile")
-    public String updateProfile(User updatedUser, RedirectAttributes redirectAttributes, HttpSession session) {
+    public String updateProfile(
+            @RequestParam("name") String name,
+            @RequestParam(value = "profilePicture", required = false) String profilePicture,
+            @RequestParam("email") String email,
+            @RequestParam(value = "birthDate", required = false) Long birthDate,
+            @RequestParam(value = "gender", required = false) String gender,
+            @RequestParam(value = "location", required = false) String location,
+            @RequestParam(value = "description", required = false) String description,
+            RedirectAttributes redirectAttributes, 
+            HttpSession session) {
         User sessionUser = (User) session.getAttribute("user");
-        if (sessionUser == null || sessionUser.getUsername() == null) {
+        if (sessionUser == null || sessionUser.username() == null) {
             return "redirect:/inicioSesion?redirectUrl=/editarPerfil";
         }
         
         try {
-            // Preserve the username from the session user
-            updatedUser.setUsername(sessionUser.getUsername());
+            // Create an updated user record 
+            User updatedUser = new User(
+                sessionUser.username(), 
+                name, 
+                profilePicture, 
+                email, 
+                sessionUser.cars(), // preserve existing cars list
+                birthDate != null ? birthDate : sessionUser.birthDate(), 
+                gender, 
+                location, 
+                sessionUser.password(), // preserve existing password 
+                description, 
+                sessionUser.posts() // preserve existing posts list
+            );
             
             // Update user profile
-            linkAutoServiceProxy.updateProfile(sessionUser.getUsername(), updatedUser);
+            linkAutoServiceProxy.updateProfile(sessionUser.username(), updatedUser);
             
             // Update session with new user data
             session.setAttribute("user", updatedUser);
@@ -170,7 +216,7 @@ public class ClientController {
     @GetMapping("/subirPosts")
     public String showCreatePost(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
+        if (user == null || user.username() == null) {
             return "redirect:/inicioSesion?redirectUrl=/subirPosts";
         }
         
@@ -178,16 +224,27 @@ public class ClientController {
     }
     
     @PostMapping("/uploadPost")
-    public String uploadPost(Post post, RedirectAttributes redirectAttributes, HttpSession session) {
+    public String uploadPost(
+            @RequestParam("mensaje") String mensaje,
+            @RequestParam(value = "imagenes", required = false) List<String> imagenes,
+            RedirectAttributes redirectAttributes, 
+            HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
+        if (user == null || user.username() == null) {
             return "redirect:/inicioSesion";
         }
         
         try {
-            post.setUsuario(user);
-            post.setFechaCreacion(System.currentTimeMillis());
-            linkAutoServiceProxy.createPost(user.getUsername(), post);
+            // Create a new Post record
+            Post post = new Post(
+                0, // id will be assigned by the backend
+                user, 
+                mensaje, 
+                System.currentTimeMillis(), 
+                imagenes
+            );
+            
+            linkAutoServiceProxy.createPost(user.username(), post);
             
             redirectAttributes.addFlashAttribute("message", "Post created successfully");
             return "redirect:/feed";
@@ -205,12 +262,12 @@ public class ClientController {
             RedirectAttributes redirectAttributes,
             HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
+        if (user == null || user.username() == null) {
             return "redirect:/inicioSesion";
         }
         
         try {
-            linkAutoServiceProxy.deletePost(user.getUsername(), postId);
+            linkAutoServiceProxy.deletePost(user.username(), postId);
             redirectAttributes.addFlashAttribute("message", "Post deleted successfully");
         } catch (Exception e) {
             e.printStackTrace();
@@ -223,7 +280,7 @@ public class ClientController {
     @GetMapping("/feed")
     public String showFeed(Model model, HttpSession session) {
         User user = (User) session.getAttribute("user");
-        if (user == null || user.getUsername() == null) {
+        if (user == null || user.username() == null) {
             return "redirect:/inicioSesion?redirectUrl=/feed";
         }
         

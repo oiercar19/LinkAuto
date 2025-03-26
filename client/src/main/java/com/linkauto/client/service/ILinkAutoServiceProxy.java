@@ -6,9 +6,9 @@ package com.linkauto.client.service;
 
 import java.util.List;
 
-import com.linkauto.restapi.model.User;
-import com.linkauto.restapi.model.CredencialesDTO;
-import com.linkauto.restapi.model.Post;
+import com.linkauto.client.data.Post;
+import com.linkauto.client.data.User;
+import com.linkauto.client.data.CredencialesDTO;
 
 public interface ILinkAutoServiceProxy {
     
