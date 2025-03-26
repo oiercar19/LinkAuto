@@ -13,11 +13,11 @@
         <div class="container">
             <span class="navbar-brand mb-0 h1">LinkAuto</span>
             <div class="d-flex justify-content-start">
-                <a class="btn btn-light" href="index.html">Home</a>
-                <a th:if="${!isLoggedIn}" class="btn btn-light ml-2" href="inicioSesion.html">Login</a>
-                <a th:if="${!isLoggedIn}" class="btn btn-light ml-2" href="registroUsuario.html">User Registration</a>
-                <a th:if="${isLoggedIn}" class="btn btn-light ml-2" href="subirPosts.html">Upload Post</a>
-                <a th:if="${isLoggedIn}" class="btn btn-light ml-2" href="editarPerfil.html">Edit Profile</a>
+                <a class="btn btn-light" href="/">Home</a>
+                <a th:if="${!isLoggedIn}" class="btn btn-light ml-2" href="inicioSesion">Login</a>
+                <a th:if="${!isLoggedIn}" class="btn btn-light ml-2" href="registroUsuario">User Registration</a>
+                <a th:if="${isLoggedIn}" class="btn btn-light ml-2" href="subirPosts">Upload Post</a>
+                <a th:if="${isLoggedIn}" class="btn btn-light ml-2" href="editarPerfil">Edit Profile</a>
                 <a th:if="${isLoggedIn}" class="btn btn-light ml-2" href="/logout">Logout</a>
             </div>
         </div>

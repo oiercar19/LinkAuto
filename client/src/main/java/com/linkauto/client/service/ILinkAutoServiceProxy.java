@@ -6,10 +6,13 @@ package com.linkauto.client.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.User;
 import com.linkauto.client.data.CredencialesDTO;
 
+@Service
 public interface ILinkAutoServiceProxy {
     
     // Authentication methods
