@@ -1,4 +1,4 @@
-package com.example.restapi.client.service;
+package com.linkauto.restapi.client.service;
 
 import java.util.List;
 
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
-import com.example.restapi.model.Post;
-import com.example.restapi.model.User;
-import com.example.restapi.client.controller.ILinkAutoServiceProxy;
-import com.example.restapi.model.CredencialesDTO;
+import com.linkauto.restapi.model.Post;
+import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.client.controller.ILinkAutoServiceProxy;
+import com.linkauto.restapi.model.CredencialesDTO;
 
 @Service
 public class ClientServiceProxy implements ILinkAutoServiceProxy {

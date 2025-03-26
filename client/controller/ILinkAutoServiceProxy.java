@@ -2,13 +2,13 @@
  * Interface for the LinkAuto service proxy.
  * Defines the contract for communication with the backend service.
  */
-package com.example.restapi.client.controller;
+package com.linkauto.restapi.client.controller;
 
 import java.util.List;
 
-import com.example.restapi.model.User;
-import com.example.restapi.model.CredencialesDTO;
-import com.example.restapi.model.Post;
+import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.model.CredencialesDTO;
+import com.linkauto.restapi.model.Post;
 
 public interface ILinkAutoServiceProxy {
     

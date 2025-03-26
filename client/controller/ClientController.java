@@ -1,4 +1,4 @@
-package com.example.restapi.client.controller;
+package com.linkauto.restapi.client.controller;
 
 import java.util.List;
 
@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.example.restapi.model.Post;
-import com.example.restapi.model.User;
-import com.example.restapi.client.service.ClientServiceProxy;
-import com.example.restapi.model.CredencialesDTO;
+import com.linkauto.restapi.model.Post;
+import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.client.service.ClientServiceProxy;
+import com.linkauto.restapi.model.CredencialesDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
