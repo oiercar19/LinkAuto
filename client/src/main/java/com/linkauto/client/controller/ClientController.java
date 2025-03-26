@@ -1,4 +1,4 @@
-package com.linkauto.restapi.client.controller;
+package com.linkauto.client.controller;
 
 import java.util.List;
 
