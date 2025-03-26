@@ -17,10 +17,12 @@ public class LinkAutoService {
     @Autowired
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final AuthService authService;
 
-    public LinkAutoService(PostRepository postRepository, UserRepository userRepository) {
+    public LinkAutoService(PostRepository postRepository, UserRepository userRepository, AuthService authService) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.authService = authService;
     }
 
     public List<Post> getAllPosts() {
@@ -58,35 +60,8 @@ public class LinkAutoService {
         return userRepository.findAll();
     }
 
-    public User createUser(User user) {
-        return userRepository.save(user);
-    }
-
-    public User updateUser(String username, User userDetails) {
-        Optional<User> optionalUser = userRepository.findById(username);
-        if (optionalUser.isPresent()) {
-            User user = optionalUser.get();
-            user.setName(userDetails.getName());
-            user.setProfilePicture(userDetails.getProfilePicture());
-            user.setEmail(userDetails.getEmail());
-            user.setCars(userDetails.getCars());
-            user.setBirthDate(userDetails.getBirthDate());
-            user.setGender(userDetails.getGender());
-            user.setLocation(userDetails.getLocation());
-            user.setPassword(userDetails.getPassword());
-            user.setDescription(userDetails.getDescription());
-            return userRepository.save(user);
-        } else {
-            throw new RuntimeException("User not found");
-        }
-    }
-
-    public void deleteUser(String username) {
-        if (userRepository.existsById(username)) {
-            userRepository.deleteById(username);
-        } else {
-            throw new RuntimeException("User not found with username: " + username);
-        }
+    public User updateUser(User userDetails) {
+        return userRepository.save(userDetails);
     }
 
     public Optional<User> getUserByUsername(String username) {

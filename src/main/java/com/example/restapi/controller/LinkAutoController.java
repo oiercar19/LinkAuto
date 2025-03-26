@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -90,15 +91,20 @@ public class LinkAutoController {
         return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    /*@PutMapping("/{username}")
-    public ResponseEntity<User> updateUser(@PathVariable String username, @RequestBody User userDetails) {
+    @PutMapping("/{username}")
+    public ResponseEntity<User> updateUser(@PathVariable String userToken, @RequestBody UserDTO userDetails) {
         try {
-            User updatedUser = linkAutoService.updateUser(username, userDetails);
+            if (!authService.isTokenValid(userToken)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            }
+            User userActual = authService.getUserByToken(userToken);
+            User updatedUser = new User(userActual.getUsername(), userDetails.getName(), userDetails.getProfilePicture(), userToken!, null, 0, null, userToken, userToken, userToken)
+            linkAutoService.updateUser(userToken, updatedUser);
             return ResponseEntity.ok(updatedUser);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
-    }*/
+    }
 
     private List<PostReturnerDTO> parsePostToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
