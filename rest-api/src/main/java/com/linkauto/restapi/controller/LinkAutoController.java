@@ -1,21 +1,30 @@
-package com.example.restapi.controller;
+package com.linkauto.restapi.controller;
 
-import com.example.restapi.dto.PostDTO;
-import com.example.restapi.model.Post;
-import com.example.restapi.model.User;
-import com.example.restapi.service.AuthService;
-import com.example.restapi.service.LinkAutoService;
-
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Optional;
+import com.linkauto.restapi.dto.PostDTO;
+import com.linkauto.restapi.dto.PostReturnerDTO;
+import com.linkauto.restapi.model.Post;
+import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.service.AuthService;
+import com.linkauto.restapi.service.LinkAutoService;
+
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/api")
@@ -23,13 +32,19 @@ import java.util.Optional;
 public class LinkAutoController {
 
     @Autowired
-    private LinkAutoService linkAutoService;
-    private AuthService authService;
+    private final LinkAutoService linkAutoService;
+    private final AuthService authService;
+
+    public LinkAutoController(LinkAutoService linkAutoService, AuthService authService) {
+        this.linkAutoService = linkAutoService;
+        this.authService = authService;
+    }
 
     @GetMapping("/posts")
-    public ResponseEntity<List<Post>> getAllPosts() {
+    public ResponseEntity<List<PostReturnerDTO>> getAllPosts() {
         List<Post> posts = linkAutoService.getAllPosts();
-        return ResponseEntity.ok(posts);
+        List<PostReturnerDTO> postReturnerDTOs = parsePostToPostReturnerDTO(posts);
+        return ResponseEntity.ok(postReturnerDTOs);
     }
 
     @GetMapping("/posts/{id}")
@@ -65,10 +80,7 @@ public class LinkAutoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         User user = authService.getUserByToken(userToken);
-        if (!user.equals(linkAutoService.getPostById(id).get().getUsuario())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-        boolean isDeleted = linkAutoService.deletePost(id);
+        boolean isDeleted = linkAutoService.deletePost(id, user);
         return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
@@ -87,4 +99,13 @@ public class LinkAutoController {
             return ResponseEntity.badRequest().build();
         }
     }*/
+
+    private List<PostReturnerDTO> parsePostToPostReturnerDTO(List<Post> posts) {
+        List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
+        for (Post post : posts) {
+            PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes());
+            postReturnerDTOs.add(postReturnerDTO);
+        }
+        return postReturnerDTOs;
+    }
 }

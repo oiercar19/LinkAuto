@@ -1,12 +1,12 @@
-package com.example.restapi.service;
+package com.linkauto.restapi.service;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
-import com.example.restapi.model.User;
-import com.example.restapi.repository.UserRepository;
+import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.repository.UserRepository;
 
 @Service
 public class AuthService {
@@ -16,7 +16,7 @@ public class AuthService {
         this.userRepository = userRepository;
     }
 
-    private static Map<String, User> tokenStore = new HashMap<>();
+    private final static Map<String, User> tokenStore = new HashMap<>();
 
     public boolean register(User user) {
         if (userRepository.existsByUsername(user.getUsername())) {

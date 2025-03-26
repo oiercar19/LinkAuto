@@ -1,4 +1,4 @@
-package com.example.restapi.model;
+package com.linkauto.restapi.model;
 
 import java.util.List;
 

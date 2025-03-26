@@ -3,7 +3,7 @@
  * @author AdriianFdz
  */
 
-package com.example.restapi.dto;
+package com.linkauto.restapi.dto;
 
 import java.util.List;
 
@@ -25,5 +25,13 @@ public class PostDTO {
 
     public List<String> getImages() {
         return images;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
     }
 }
