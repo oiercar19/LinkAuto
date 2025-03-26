@@ -2,14 +2,14 @@ package com.example.restapi.model;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 public class User {
     
     enum Gender {
@@ -18,9 +18,7 @@ public class User {
       }
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String username;
-
     private String name;
     private String profilePicture;
     private String email;
@@ -30,6 +28,8 @@ public class User {
     private String location;
     private String password;
     private String description;
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Post> posts;
 
     // No-argument constructor
     public User() {
