@@ -7,12 +7,16 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import  java.util.ArrayList;
+import  java.util.List;
+import jakarta.persistence.FetchType;
+
 
 @Entity
 @Table(name = "user")
 public class User {
     
-    enum Gender {
+    public enum Gender {
         MALE,
         FEMALE
       }
@@ -28,7 +32,7 @@ public class User {
     private String location;
     private String password;
     private String description;
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts;
 
     // No-argument constructor
@@ -36,7 +40,11 @@ public class User {
     }
 
     //Constructor with arguments
-    public User(String username, String name, String profilePicture, String email, List<String> cars, long birthDate, Gender gender, String location, String password, String description) {
+    public User(String username, String name, 
+    String profilePicture, String email, 
+    List<String> cars, long birthDate, 
+    Gender gender, String location, 
+    String password, String description, List<Post> posts) {
         this.username = username;
         this.name = name;
         this.profilePicture = profilePicture;
@@ -47,6 +55,10 @@ public class User {
         this.location = location;
         this.password = password;
         this.description = description;
+        this.posts = new ArrayList<>();
+        for (Post post : posts) {
+            this.posts.add(post);
+        }
     }
 
     public String getUsername() {
@@ -127,5 +139,13 @@ public class User {
     
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void addPost(Post post) {
+        this.posts.add(post);
     }
 }

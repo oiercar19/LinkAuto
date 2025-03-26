@@ -56,4 +56,10 @@ public class AuthService {
     private static synchronized String generateToken() {
         return Long.toHexString(System.currentTimeMillis());
     }
+
+    public boolean updateUser(User user, String token) {
+        tokenStore.put(token, user);
+        userRepository.save(user);
+        return true;
+    }
 }

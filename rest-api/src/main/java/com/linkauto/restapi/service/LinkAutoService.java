@@ -60,10 +60,6 @@ public class LinkAutoService {
         return userRepository.findAll();
     }
 
-    public User updateUser(User userDetails) {
-        return userRepository.save(userDetails);
-    }
-
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }

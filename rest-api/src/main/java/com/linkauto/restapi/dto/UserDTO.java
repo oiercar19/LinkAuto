@@ -10,10 +10,11 @@ public class UserDTO {
     private long birthDate;
     private String gender;
     private String location;
+    private String password;
     private String description;
 
     // Constructor
-    public UserDTO(String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String description) {
+    public UserDTO(String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description) {
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
@@ -21,6 +22,7 @@ public class UserDTO {
         this.birthDate = birthDate;
         this.gender = gender;
         this.location = location;
+        this.password = password;
         this.description = description;
     }
 
@@ -88,5 +90,13 @@ public class UserDTO {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
