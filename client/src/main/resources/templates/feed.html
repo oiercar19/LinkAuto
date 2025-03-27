@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Feed - LinkAuto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f4f4;
+        }
+        .post-container {
+            max-width: 600px;
+            margin: 20px auto;
+        }
+        .post-card {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">LinkAuto</a>
+                <div class="navbar-nav ms-auto">
+                    <span class="navbar-text me-3" th:text="${username}">Usuario</span>
+                    <a th:href="@{/logout}" class="btn btn-outline-danger">Cerrar Sesión</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="post-container">
+            <div class="card post-card">
+                <div class="card-body">
+                    <h5 class="card-title">Crear Publicación</h5>
+                    <form>
+                        <div class="mb-3">
+                            <textarea class="form-control" rows="3" placeholder="Comparte algo sobre coches..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Publicar</button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Iteración sobre los posts -->
+            <div th:each="post : ${posts}" class="card post-card">
+                <div class="card-header">
+                    <strong th:text="${post.username}">Nombre de Usuario</strong>
+                </div>
+                <div class="card-body">
+                    <p class="card-text" th:text="${post.content}">Contenido de la publicación</p>
+                    <img th:if="${post.imageUrl}" th:src="${post.imageUrl}" class="img-fluid" alt="Imagen de publicación">
+                </div>
+                <div class="card-footer text-muted">
+                    <small th:text="${#temporals.format(post.timestamp, 'hace HH:mm')}">Tiempo transcurrido</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
