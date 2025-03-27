@@ -63,5 +63,9 @@ public class LinkAutoService {
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    public List<Post> getPostsByUsername(String username) {
+        return postRepository.findByUsuario_Username(username);
+    }
 }
 

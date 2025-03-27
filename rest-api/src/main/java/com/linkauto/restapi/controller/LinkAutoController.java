@@ -19,9 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
+import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
-import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.service.AuthService;
 import com.linkauto.restapi.service.LinkAutoService;
 
@@ -105,6 +105,16 @@ public class LinkAutoController {
             User oldUser = authService.getUserByToken(userToken);
             User updatedUser = parseUserDTOToUser(userDetails, oldUser);
             return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/user/{username}/posts")
+    public ResponseEntity<List<PostReturnerDTO>> getUserPosts(
+        @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
+        @PathVariable String username
+    ) {
+        List<Post> posts = linkAutoService.getPostsByUsername(username);
+        List<PostReturnerDTO> postReturnerDTOs = parsePostToPostReturnerDTO(posts);
+        return ResponseEntity.ok(postReturnerDTOs);
     }
 
     private List<PostReturnerDTO> parsePostToPostReturnerDTO(List<Post> posts) {
