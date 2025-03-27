@@ -25,11 +25,14 @@
 
     <main class="container mt-5">
         <section class="text-center">
-            <h1>Welcome to LinkAuto</h1>
-            <p class="lead">The social network for car enthusiasts.</p>
-            
+            <div th:if="${token == null}">
+                <h1>Welcome to LinkAuto</h1>
+                <p class="lead">The social network for car enthusiasts.</p>
+            </div>
+
             <div th:if="${token != null}">
-                <h2 class="mt-4">Welcome, <span th:text="${username}"></span>!</h2>
+                <h1 class="mt-4">Welcome again, <span th:text="${username}"></span>!</h2>
+                <p class="lead">Here is your feed</p>    
             </div>
             
             <!-- Feed Section -->

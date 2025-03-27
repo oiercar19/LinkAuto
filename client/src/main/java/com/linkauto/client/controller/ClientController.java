@@ -29,6 +29,7 @@ public class ClientController {
 
     private String token;
     private User loggedUser;
+    private String userName;
 
     // Add current URL and username to all views
     @ModelAttribute
@@ -40,7 +41,8 @@ public class ClientController {
     }
 
     @GetMapping("/")
-    public String home() {
+    public String home(Model model) {
+        model.addAttribute("username", userName);
         return "index";
     }
 
@@ -114,10 +116,9 @@ public class ClientController {
             token = linkAutoServiceProxy.login(credentials);
             loggedUser = linkAutoServiceProxy.getUserProfile(token);
             System.out.println("Logged in as: " + username);
-            model.addAttribute(username, loggedUser.username());
-            
+            userName = credentials.usuario();
             // Redirect to the original page or root if redirectUrl is null
-
+            
 			return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/");
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", "Login failed: " + e.getMessage());
