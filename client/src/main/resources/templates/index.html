@@ -18,7 +18,7 @@
                 <a th:if="${token == null}" class="btn btn-light ml-2" href="registroUsuario">User Registration</a>
                 <a th:if="${token != null}" class="btn btn-light ml-2" href="subirPosts">Upload Post</a>
                 <a th:if="${token != null}" class="btn btn-light ml-2" href="editarPerfil">Edit Profile</a>
-                <a th:if="${token != null}" class="btn btn-light ml-2" href="/logout">Logout</a>
+                <a th:if="${token != null}" class="btn btn-light ml-2" th:href="@{/logout(redirectUrl=${currentUrl})}">Logout</a>
             </div>
         </div>
     </nav>

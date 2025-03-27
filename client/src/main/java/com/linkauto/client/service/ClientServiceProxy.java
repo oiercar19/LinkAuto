@@ -59,12 +59,11 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void logout(String username) {
-        String url = String.format("%s/auth/logout", apiBaseUrl);
+    public void logout(String userToken) {
+        String url = String.format("%s/auth/logout?userToken=%s", apiBaseUrl, userToken);
         
         try {            
-            String logoutUrl = url + "?username=" + username;
-            restTemplate.postForObject(logoutUrl, null, Void.class);
+            restTemplate.postForObject(url, userToken, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
                 case 401 -> throw new RuntimeException("Logout failed: Invalid username");

@@ -64,6 +64,7 @@ public class ClientController {
             @RequestParam(value = "description", required = false) String description,
             RedirectAttributes redirectAttributes) {
         try {
+            System.out.println("Registering user: " + username);
             // Create a new User record with the provided parameters
             User user = new User(
                 username, 
@@ -129,13 +130,10 @@ public class ClientController {
             @RequestParam(value = "redirectUrl", defaultValue = "/") String redirectUrl,
             Model model) {
         try {
-            // Call service to logout if user exists in session
-            User user = (User) session.getAttribute("user");
-            if (user != null && user.username() != null) {
-                linkAutoServiceProxy.logout(user.username());
-            }
-            
+            linkAutoServiceProxy.logout(token);
+            token = null;
             // Clear session
+            System.out.println("Logged out");
             session.invalidate();
             
             model.addAttribute("successMessage", "Logout successful.");
