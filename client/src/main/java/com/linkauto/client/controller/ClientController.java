@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -16,7 +17,6 @@ import com.linkauto.client.data.Post;
 import com.linkauto.client.data.User;
 import com.linkauto.client.service.ClientServiceProxy;
 
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.servlet.http.HttpServletRequest;
 
 
@@ -78,15 +78,16 @@ public class ClientController {
     }
 
     @GetMapping("/register")
-    public String showRegister() {
+    public String showRegister(@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
+    Model model) {
+        model.addAttribute("redirectUrl", redirectUrl);
         return "register"; // Vista de registro
     }
 
     @PostMapping("/register")
-    public String performRegister(@RequestBody User user, RedirectAttributes redirectAttributes) {
+    public String performRegister(@RequestBody User u, RedirectAttributes redirectAttributes) {
         try {
-            System.out.println(user.birthDate());
-            linkAutoServiceProxy.register(user);
+            linkAutoServiceProxy.register(u);
             redirectAttributes.addFlashAttribute("success", "Usuario registrado con éxito");
             return "redirect:/"; // Redirigir a la página de inicio después del registro exitoso
         } catch (Exception e) {

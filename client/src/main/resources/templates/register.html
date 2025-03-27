@@ -28,7 +28,7 @@
                         <div id="errorMessages" class="alert alert-danger" style="display:none;"></div>
                         <div id="successMessage" class="alert alert-success" style="display:none;"></div>
 
-                        <form id="registroForm" th:action="@{'/register'}">
+                        <form id="registroForm" th:action="@{'/register'}", method="post">
                             <div class="form-group mb-3">
                                 <label>Nombre de Usuario</label>
                                 <input type="text" class="form-control" id="username" required>
@@ -95,6 +95,7 @@
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script th:inline="javascript">
     // Gestión dinámica de coches
     const carsContainer = document.getElementById('carsContainer');
@@ -142,7 +143,7 @@
             .filter(car => car !== '');
 
         // Obtener valores del formulario
-        const formData = {
+        var formData = {
             username: document.getElementById('username').value,
             name: document.getElementById('name').value,
             profilePicture: document.getElementById('profilePicture').value || null,
@@ -156,7 +157,6 @@
         };
 
         var url = this.action;
-        console.log('Datos enviados:', JSON.stringify(formData));
 
         // Enviar datos al servidor
         fetch(url, {
@@ -170,7 +170,7 @@
             console.log('Response status:', response.status);
             
             // Manejar diferentes códigos de estado
-            if (response.created) {
+            if (response.found) {
                 alert('Registro exitoso');
                 window.location.href = '/'; // Redirigir a página de inicio
                 return;
