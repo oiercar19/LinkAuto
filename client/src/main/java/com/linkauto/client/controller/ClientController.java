@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.linkauto.client.data.Credenciales;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.User;
 import com.linkauto.client.service.ClientServiceProxy;
-import com.linkauto.client.data.CredencialesDTO;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -27,20 +27,16 @@ public class ClientController {
     @Autowired
     private ClientServiceProxy linkAutoServiceProxy;
 
+    private String token;
+    private User loggedUser;
+
     // Add current URL and username to all views
     @ModelAttribute
-    public void addAttributes(Model model, HttpServletRequest request, HttpSession session) {
+    public void addAttributes(Model model, HttpServletRequest request) {
         String currentUrl = ServletUriComponentsBuilder.fromRequestUri(request).toUriString();
         model.addAttribute("currentUrl", currentUrl); // Makes current URL available in all templates
-        
-        // Get user data from session if available
-        User user = (User) session.getAttribute("user");
-        if (user != null) {
-            model.addAttribute("username", user.username()); // Using record method
-            model.addAttribute("isLoggedIn", true); // Flag for templates to know if user is logged in
-        } else {
-            model.addAttribute("isLoggedIn", false);
-        }
+        model.addAttribute("token", token); // Makes token available in all templates
+        model.addAttribute("loggedUser", loggedUser); // Makes logged user available in all templates
     }
 
     @GetMapping("/")
@@ -109,19 +105,19 @@ public class ClientController {
     @PostMapping("/login")
     public String performLogin(@RequestParam("username") String username, @RequestParam("password") String password,
             @RequestParam(value = "redirectUrl", required = false) String redirectUrl, 
-            Model model, HttpSession session) {
-        // Create CredencialesDTO record with the correct parameter names
-        CredencialesDTO credentials = new CredencialesDTO(username, password);
-
+            Model model) {
+        // Create Credenciales record with the correct parameter names
+        Credenciales credentials = new Credenciales(username, password);
         try {
             // Call service to authenticate user
-            User user = linkAutoServiceProxy.login(credentials);
-            
-            // Store user information in session
-            session.setAttribute("user", user);
+            token = linkAutoServiceProxy.login(credentials);
+            loggedUser = linkAutoServiceProxy.getUserProfile(token);
+            System.out.println("Logged in as: " + username);
+            model.addAttribute(username, loggedUser.username());
             
             // Redirect to the original page or root if redirectUrl is null
-            return "redirect:/index" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/");
+
+			return "redirect:" + (redirectUrl != null && !redirectUrl.isEmpty() ? redirectUrl : "/");
         } catch (RuntimeException e) {
             model.addAttribute("errorMessage", "Login failed: " + e.getMessage());
             return "inicioSesion"; // Return to login page with error message

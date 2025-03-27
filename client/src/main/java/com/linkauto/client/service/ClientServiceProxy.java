@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.User;
-import com.linkauto.client.data.CredencialesDTO;
+import com.linkauto.client.data.Credenciales;
 
 @Service
 public class ClientServiceProxy implements ILinkAutoServiceProxy {
@@ -44,12 +44,12 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public User login(CredencialesDTO credentials) {
+    public String login(Credenciales credentials) {
         String url = apiBaseUrl + "/auth/login";
             
         try {
-            User user = restTemplate.postForObject(url, credentials, User.class);
-            return user;
+            String token = restTemplate.postForObject(url, credentials, String.class);
+            return token;
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
                 case 401 -> throw new RuntimeException("Login failed: Invalid credentials");
@@ -62,10 +62,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     public void logout(String username) {
         String url = String.format("%s/auth/logout", apiBaseUrl);
         
-        try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", "application/json");
-            
+        try {            
             String logoutUrl = url + "?username=" + username;
             restTemplate.postForObject(logoutUrl, null, Void.class);
         } catch (HttpStatusCodeException e) {
@@ -77,8 +74,8 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public User getUserProfile(String username) {
-        String url = String.format("%s/api/users/%s", apiBaseUrl, username);
+    public User getUserProfile(String token) {
+        String url = String.format("%s/api/user?userToken=%s", apiBaseUrl, token);
         
         try {
             return restTemplate.getForObject(url, User.class);

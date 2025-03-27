@@ -10,14 +10,14 @@ import org.springframework.stereotype.Service;
 
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.User;
-import com.linkauto.client.data.CredencialesDTO;
+import com.linkauto.client.data.Credenciales;
 
 @Service
 public interface ILinkAutoServiceProxy {
     
     // Authentication methods
     void register(User user);
-    User login(CredencialesDTO credentials);
+    String login(Credenciales credentials);
     void logout(String username);
     
     // User profile methods
