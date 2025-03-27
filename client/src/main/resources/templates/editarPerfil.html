@@ -28,8 +28,8 @@
                 <input type="text" class="form-control" id="name" name="name" th:value="${user.name}" required>
             </div>
             <div class="form-group">
-                <label for="profilePictureUrl">Profile Picture URL</label>
-                <input type="url" class="form-control" id="profilePictureUrl" name="profilePictureUrl" th:value="${user.profilePictureUrl}" placeholder="Enter image URL">
+                <label for="profilePicture">Profile Picture URL</label>
+                <input type="url" class="form-control" id="profilePicture" name="profilePicture" th:value="${user.profilePicture}" placeholder="Enter image URL">
             </div>
             <div class="form-group">
                 <label for="email">Email</label>
@@ -49,7 +49,7 @@
             </div>
             <div class="form-group">
                 <label for="birthDate">Birth Date</label>
-                <input type="date" class="form-control" id="birthDate" name="birthDate" th:value="${user.birthDate}" required>
+                <input type="date" class="form-control" id="birthDate" name="birthDate" th:value="${#dates.format(user.birthDate, 'yyyy-MM-dd')}" required>
             </div>
             <div class="form-group">
                 <label for="gender">Gender</label>

@@ -147,13 +147,11 @@ public class ClientController {
     
     @GetMapping("/editarPerfil")
     public String showEditProfile(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null || user.username() == null) {
+        if (token == null) {
             return "redirect:/inicioSesion?redirectUrl=/editarPerfil";
         }
-        
         // Get the full user profile in case additional details are needed
-        User fullProfile = linkAutoServiceProxy.getUserProfile(user.username());
+        User fullProfile = linkAutoServiceProxy.getUserProfile(token);
         model.addAttribute("user", fullProfile);
         
         return "editarPerfil";
@@ -209,11 +207,9 @@ public class ClientController {
     
     @GetMapping("/subirPosts")
     public String showCreatePost(Model model, HttpSession session) {
-        User user = (User) session.getAttribute("user");
-        if (user == null || user.username() == null) {
+        if (token == null) {
             return "redirect:/inicioSesion?redirectUrl=/subirPosts";
         }
-        
         return "subirPosts";
     }
     
