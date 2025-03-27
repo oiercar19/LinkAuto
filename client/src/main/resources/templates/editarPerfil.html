@@ -42,7 +42,7 @@
                         <input type="text" class="form-control mb-2" name="cars[]" th:value="${car}">
                     </div>
                     <div th:if="${user.cars == null or user.cars.isEmpty()}">
-                        <input type="text" class="form-control mb-2" name="cars[]" placeholder="Enter a car">
+                        <input type="text" class="form-control mb-2" name="cars" placeholder="Enter a car">
                     </div>
                 </div>
                 <button type="button" class="btn btn-secondary" onclick="addCarField()">Add another car</button>
@@ -86,7 +86,7 @@
             var container = document.getElementById('cars-container');
             var input = document.createElement('input');
             input.type = 'text';
-            input.name = 'cars[]';
+            input.name = 'cars';
             input.className = 'form-control mb-2';
             container.appendChild(input);
         }

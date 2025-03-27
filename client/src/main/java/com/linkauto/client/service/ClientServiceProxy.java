@@ -88,15 +88,11 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void updateProfile(String username, User user) {
-        String url = String.format("%s/api/users/%s", apiBaseUrl, username);
+    public void updateProfile(String token, User user) {
+        String url = String.format("%s/api/user?userToken=%s", apiBaseUrl, token);
         
         try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", "application/json");
-            HttpEntity<User> entity = new HttpEntity<>(user, headers);
-            
-            restTemplate.exchange(url, HttpMethod.PUT, entity, Void.class);
+            restTemplate.put(url, user, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
                 case 401 -> throw new RuntimeException("Unauthorized: Invalid username");

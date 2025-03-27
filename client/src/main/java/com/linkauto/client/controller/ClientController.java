@@ -179,44 +179,54 @@ public class ClientController {
     
     @PostMapping("/editProfile")
     public String updateProfile(
+            @RequestParam("username") String username,
             @RequestParam("name") String name,
-            @RequestParam(value = "profilePicture", required = false) String profilePicture,
             @RequestParam("email") String email,
-            @RequestParam(value = "birthDate", required = false) Long birthDate,
+            @RequestParam("password") String password,
+            @RequestParam(value = "profilePicture", required = false) String profilePicture,
+            @RequestParam(value = "birthDate", required = false) String birthDate,
             @RequestParam(value = "gender", required = false) String gender,
             @RequestParam(value = "location", required = false) String location,
             @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "cars", required = false) List<String> cars,
             RedirectAttributes redirectAttributes, 
             HttpSession session) {
-        User sessionUser = (User) session.getAttribute("user");
-        if (sessionUser == null || sessionUser.username() == null) {
-            return "redirect:/inicioSesion?redirectUrl=/editarPerfil";
-        }
-        
-        try {
-            // Create an updated user record 
-            User updatedUser = new User(
-                sessionUser.username(), 
-                name, 
-                profilePicture, 
-                email, 
-                sessionUser.cars(), // preserve existing cars list
-                birthDate != null ? birthDate : sessionUser.birthDate(), 
-                gender, 
-                location, 
-                sessionUser.password(), // preserve existing password 
-                description, 
-                sessionUser.posts() // preserve existing posts list
-            );
+            try {
+                // Create a new User record with the provided parameters
+                Long birthDateTimestamp = null;
+                if (birthDate != null && !birthDate.isEmpty()) {
+                    try {
+                        LocalDate birthDateParsed = LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE);
+                        birthDateTimestamp = birthDateParsed.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                    } catch (DateTimeParseException e) {
+                        redirectAttributes.addFlashAttribute("errorMessage", "Invalid birth date format. Use yyyy-MM-dd.");
+                        return "redirect:/registroUsuario";
+                    }
+                }
+    
+                String genderFormatted = (gender != null) ? gender.toUpperCase() : null;
+    
+                User user = new User(
+                    username, 
+                    name, 
+                    profilePicture, 
+                    email, 
+                    cars, // cars list 
+                    birthDateTimestamp, 
+                    genderFormatted, 
+                    location, 
+                    password, 
+                    description, 
+                    null // posts list
+                );
             
             // Update user profile
-            linkAutoServiceProxy.updateProfile(sessionUser.username(), updatedUser);
+            linkAutoServiceProxy.updateProfile(token, user);
             
             // Update session with new user data
-            session.setAttribute("user", updatedUser);
             
             redirectAttributes.addFlashAttribute("message", "Profile updated successfully");
-            return "redirect:/editarPerfil";
+            return "redirect:/";
             
         } catch (Exception e) {
             e.printStackTrace();
