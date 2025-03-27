@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.User;
-import com.linkauto.client.data.Credenciales;
+import com.linkauto.client.data.Credentials;
 
 @Service
 public class ClientServiceProxy implements ILinkAutoServiceProxy {
@@ -44,7 +44,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public String login(Credenciales credentials) {
+    public String login(Credentials credentials) {
         String url = apiBaseUrl + "/auth/login";
             
         try {
@@ -61,12 +61,11 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     @Override
     public void logout(String userToken) {
         String url = String.format("%s/auth/logout?userToken=%s", apiBaseUrl, userToken);
-        
         try {            
             restTemplate.postForObject(url, userToken, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Logout failed: Invalid username");
+                case 401 -> throw new RuntimeException("Logout failed: Invalid token");
                 default -> throw new RuntimeException("Logout failed: " + e.getStatusText());
             }
         }

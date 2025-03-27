@@ -12,8 +12,7 @@ public record User(
     String gender,
     String location,
     String password,
-    String description,
-    List<Post> posts
+    String description
 ) {}
 
 
