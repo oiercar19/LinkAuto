@@ -1,5 +1,9 @@
 package com.linkauto.client.controller;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,22 +64,36 @@ public class ClientController {
             @RequestParam("email") String email,
             @RequestParam("password") String password,
             @RequestParam(value = "profilePicture", required = false) String profilePicture,
-            @RequestParam(value = "birthDate", required = false) Long birthDate,
+            @RequestParam(value = "birthDate", required = false) String birthDate,
             @RequestParam(value = "gender", required = false) String gender,
             @RequestParam(value = "location", required = false) String location,
             @RequestParam(value = "description", required = false) String description,
             RedirectAttributes redirectAttributes) {
-        try {
             System.out.println("Registering user: " + username);
+        try {
             // Create a new User record with the provided parameters
+
+            Long birthDateTimestamp = null;
+            if (birthDate != null && !birthDate.isEmpty()) {
+                try {
+                    LocalDate birthDateParsed = LocalDate.parse(birthDate, DateTimeFormatter.ISO_DATE);
+                    birthDateTimestamp = birthDateParsed.atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli();
+                } catch (DateTimeParseException e) {
+                    redirectAttributes.addFlashAttribute("errorMessage", "Invalid birth date format. Use yyyy-MM-dd.");
+                    return "redirect:/registroUsuario";
+                }
+            }
+
+            String genderFormatted = (gender != null) ? gender.toUpperCase() : null;
+
             User user = new User(
                 username, 
                 name, 
                 profilePicture, 
                 email, 
                 null, // cars list 
-                birthDate != null ? birthDate : 0, 
-                gender, 
+                birthDateTimestamp, 
+                genderFormatted, 
                 location, 
                 password, 
                 description, 
