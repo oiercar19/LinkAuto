@@ -38,7 +38,7 @@
             <div class="form-group">
                 <label for="cars">Cars</label>
                 <div id="cars-container">
-                    <input type="text" class="form-control mb-2" name="cars[]">
+                    <input type="text" class="form-control mb-2" name="cars">
                 </div>
                 <button type="button" class="btn btn-secondary" onclick="addCarField()">Add another car</button>
             </div>
@@ -81,7 +81,7 @@
             var container = document.getElementById('cars-container');
             var input = document.createElement('input');
             input.type = 'text';
-            input.name = 'cars[]';
+            input.name = 'cars';
             input.className = 'form-control mb-2';
             container.appendChild(input);
         }

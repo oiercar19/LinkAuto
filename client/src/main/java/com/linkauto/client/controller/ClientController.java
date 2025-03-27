@@ -63,11 +63,12 @@ public class ClientController {
             @RequestParam("name") String name,
             @RequestParam("email") String email,
             @RequestParam("password") String password,
-            @RequestParam(value = "profilePicture", required = false) String profilePicture,
+            @RequestParam(value = "profilePictureUrl", required = false) String profilePicture,
             @RequestParam(value = "birthDate", required = false) String birthDate,
             @RequestParam(value = "gender", required = false) String gender,
             @RequestParam(value = "location", required = false) String location,
             @RequestParam(value = "description", required = false) String description,
+            @RequestParam(value = "cars", required = false) List<String> cars,
             RedirectAttributes redirectAttributes) {
             System.out.println("Registering user: " + username);
         try {
@@ -91,7 +92,7 @@ public class ClientController {
                 name, 
                 profilePicture, 
                 email, 
-                null, // cars list 
+                cars, // cars list 
                 birthDateTimestamp, 
                 genderFormatted, 
                 location, 
