@@ -1,6 +1,6 @@
 package com.linkauto.client.data;
 
-public record Credenciales(
+public record Credentials(
     String usuario,
     String contrasena
 ) {}
