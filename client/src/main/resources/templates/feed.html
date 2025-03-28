@@ -48,13 +48,19 @@
                     <strong th:text="${post.username}">Nombre de Usuario</strong>
                 </div>
                 <div class="card-body">
-                    <p class="card-text" th:text="${post.content}">Contenido de la publicación</p>
-                    <img th:if="${post.imageUrl}" th:src="${post.imageUrl}" class="img-fluid" alt="Imagen de publicación">
+                    <p class="card-text" th:text="${post.message}">Contenido de la publicación</p>
+                    <div th:if="${not #lists.isEmpty(post.images)}">
+                        <div class="row">
+                            <div th:each="image : ${post.images}" class="col-md-4 mb-3">
+                                <img th:src="@{${image}}" class="img-fluid" alt="Imagen de publicación">
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                
                 <div class="card-footer text-muted">
-                    <small th:text="${#temporals.format(post.timestamp, 'hace HH:mm')}">Tiempo transcurrido</small>
+                    <small th:text="${#temporals.format(T(java.time.Instant).ofEpochMilli(post.creationDate), 'yyyy-MM-dd'' ''HH:mm')}">Tiempo transcurrido</small>
                 </div>
-            </div>
         </div>
     </div>
 
