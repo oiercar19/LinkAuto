@@ -42,7 +42,7 @@
                         <div id="imageUrlsContainer">
                             <div class="image-url-container">
                                 <input type="url" class="form-control image-url" placeholder="URL de imagen (opcional)">
-                                <button type="button" class="btn btn-success add-image-url ms-2">+</button>
+                                <button type="button" class="btn btn-success add-image-url ms-2 mt-2">+</button>
                             </div>
                         </div>
                         
@@ -91,7 +91,7 @@
                 
                 const removeButton = document.createElement('button');
                 removeButton.type = 'button';
-                removeButton.classList.add('btn', 'btn-danger', 'remove-image-url', 'ms-2');
+                removeButton.classList.add('btn', 'btn-danger', 'remove-image-url', 'ms-2', 'mt-2');
                 removeButton.textContent = '×';
                 removeButton.addEventListener('click', () => {
                     container.remove();
@@ -138,39 +138,37 @@
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(postData)
-            })
-            .then(response => {
-                console.log('HTTP status:', response.status);
-            
-                // Si es un 302 Found, no lanzar error
-                if (response.status === 302) {
-                    console.warn('Redirección detectada, asumiendo éxito.');
-                    return { message: "Publicación creada con éxito (redirección detectada)" };
-                }
-            
-                if (!response.ok) {
-                    return response.text().then(text => { throw new Error(text || 'Error desconocido'); });
-                }
-                return response.json();
+                body: JSON.stringify(postData),
+                redirect: 'manual' // Importante: manejar manualmente los redirects
             })
             .then(response => {
                 console.log('Response status:', response.status);
-                
-                // Manejar diferentes códigos de estado
-                if (response.ok) { // Verificar si la respuesta es exitosa (código 2xx)
-                    alert('Post creado con éxito');
-                    window.location.href = '/feed'; // Redirigir a página de inicio
-                } else {
-                    // Si la respuesta no es exitosa, intentar obtener detalles del error
-                    return response.text().then(errorText => {
-                        console.error('Error response:', errorText);
-                        throw new Error(errorText || 'Error al crear el post');
+        
+                // Manejar redirect manualmente
+                if (response.type === 'opaqueredirect' || response.status === 302) {
+                    // Si es un redirect, considerar como éxito
+                    window.location.href = '/feed';
+                    return;
+                }
+        
+                // Manejar otras respuestas
+                if (!response.ok) {
+                    return response.text().then(text => { 
+                        throw new Error(text || 'Error desconocido'); 
                     });
+                }
+        
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    // Manejar respuesta JSON si existe
+                    alert('Post creado con éxito');
+                    window.location.href = '/feed';
                 }
             })
             .catch(error => {
-                console.error('Error completo:', error);
+                console.error('Error:', error);
                 alert('Hubo un error al procesar la creación del post: ' + error.message);
             });
         });
