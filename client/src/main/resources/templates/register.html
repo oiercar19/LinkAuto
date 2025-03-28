@@ -28,7 +28,7 @@
                         <div id="errorMessages" class="alert alert-danger" style="display:none;"></div>
                         <div id="successMessage" class="alert alert-success" style="display:none;"></div>
 
-                        <form id="registroForm" th:action="@{'/register'}", method="post">
+                        <form id="registroForm" th:action="@{'/register'}", method="post" onsubmit="return validateForm()">
                             <div class="form-group mb-3">
                                 <label>Nombre de Usuario</label>
                                 <input type="text" class="form-control" id="username" required>
@@ -46,7 +46,7 @@
 
                             <div class="form-group mb-3">
                                 <label>Correo Electrónico</label>
-                                <input type="email" class="form-control" id="email" required>
+                                <input type="email" class="form-control" id="email" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
                             </div>
 
                             <div class="form-group mb-3">
@@ -66,7 +66,7 @@
 
                             <div class="form-group mb-3">
                                 <label>Género</label>
-                                <select class="form-control" id="gender">
+                                <select class="form-control" id="gender" required>
                                     <option value="MALE">Masculino</option>
                                     <option value="FEMALE">Femenino</option>
                                     <option value="OTHER">Otro</option>
@@ -75,7 +75,7 @@
 
                             <div class="form-group mb-3">
                                 <label>Ubicación</label>
-                                <input type="text" class="form-control" id="location">
+                                <input type="text" class="form-control" id="location" required>
                             </div>
 
                             <div class="form-group mb-3">
@@ -84,8 +84,13 @@
                             </div>
 
                             <div class="form-group mb-3">
+                                <label>Confirmar Contraseña</label>
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                            </div>
+
+                            <div class="form-group mb-3">
                                 <label>Descripción</label>
-                                <textarea class="form-control" id="description"></textarea>
+                                <textarea class="form-control" id="description" minlength="1" maxlength="500" required></textarea>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100">Registrarse</button>
@@ -96,6 +101,9 @@
         </div>
     </div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     <script th:inline="javascript">
     // Gestión dinámica de coches
@@ -123,15 +131,38 @@
     }
 
     // Evento para añadir coche
-    addCarButton.addEventListener('click', addCar);
-
-    // Añadir primer campo de coche al cargar
-    function addCar() {
-        addCarInput();
-    }
-
+    addCarButton.addEventListener('click', addCarInput);
+    
     // Añadir primer coche al cargar la página
     addCarInput();
+
+    // Validación del formulario
+    function validateForm() {
+        const birthDate = new Date(document.getElementById('birthDate').value);
+        const today = new Date();
+        const age = today.getFullYear() - birthDate.getFullYear();
+        const monthDifference = today.getMonth() - birthDate.getMonth();
+
+        if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+            age--;
+        }
+
+        if (age < 18) {
+            alert('Debes tener al menos 18 años para registrarte.');
+            return false;
+        }
+        // Validación de contraseñas
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password !== confirmPassword) {
+            alert('Las contraseñas no coinciden. Por favor, verifica e inténtalo de nuevo.');
+            return false;
+        }
+        return true;
+    }
+
+    
 
     // Envío del formulario
     document.getElementById('registroForm').addEventListener('submit', function(e) {
@@ -187,6 +218,7 @@
             alert('Hubo un error al procesar el registro: ' + error.message);
         });
     });
+    
     </script>
 </body>
 </html>

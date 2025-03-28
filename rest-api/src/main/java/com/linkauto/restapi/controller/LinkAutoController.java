@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.dto.UserDTO;
-import com.linkauto.restapi.dto.UserRegisterDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
@@ -47,7 +46,7 @@ public class LinkAutoController {
     @GetMapping("/posts")
     public ResponseEntity<List<PostReturnerDTO>> getAllPosts() {
         List<Post> posts = linkAutoService.getAllPosts();
-        List<PostReturnerDTO> postReturnerDTOs = parsePostToPostReturnerDTO(posts);
+        List<PostReturnerDTO> postReturnerDTOs = parsePostsToPostReturnerDTO(posts);
         return ResponseEntity.ok(postReturnerDTOs);
     }
 
@@ -58,7 +57,7 @@ public class LinkAutoController {
     }
 
     @PostMapping("/posts")
-    public ResponseEntity<Post> createPost(
+    public ResponseEntity<PostReturnerDTO> createPost(
         @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken,
         @Parameter(name = "postDTO", description = "Post data", required = true)
@@ -70,7 +69,8 @@ public class LinkAutoController {
         }
         User user = authService.getUserByToken(userToken);
         Post createdPost = linkAutoService.createPost(postDTO, user);
-        return ResponseEntity.ok(createdPost);
+        PostReturnerDTO postReturnerDTO = parsePostToPostReturnerDTO(createdPost);
+        return ResponseEntity.ok(postReturnerDTO);
     }
 
     @DeleteMapping("/posts/{id}")
@@ -116,11 +116,11 @@ public class LinkAutoController {
         @PathVariable String username
     ) {
         List<Post> posts = linkAutoService.getPostsByUsername(username);
-        List<PostReturnerDTO> postReturnerDTOs = parsePostToPostReturnerDTO(posts);
+        List<PostReturnerDTO> postReturnerDTOs = parsePostsToPostReturnerDTO(posts);
         return ResponseEntity.ok(postReturnerDTOs);
     }
 
-    private List<PostReturnerDTO> parsePostToPostReturnerDTO(List<Post> posts) {
+    private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
             PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes());
@@ -129,12 +129,17 @@ public class LinkAutoController {
         return postReturnerDTOs;
     }
 
+    private PostReturnerDTO parsePostToPostReturnerDTO(Post post) {
+        PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes());
+        return postReturnerDTO;
+    }
+
     private User parseUserDTOToUser(UserDTO userDTO, User oldUser) {
         return new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts());
     }
 
     private UserReturnerDTO parseUserToUserReturnerDTO(User u){
-        List<PostReturnerDTO> postReturner = parsePostToPostReturnerDTO(u.getPosts());
+        List<PostReturnerDTO> postReturner = parsePostsToPostReturnerDTO(u.getPosts());
         return new UserReturnerDTO(u.getUsername(), u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
     }
 }

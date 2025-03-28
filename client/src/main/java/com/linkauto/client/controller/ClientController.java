@@ -1,5 +1,6 @@
 package com.linkauto.client.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,7 @@ public class ClientController {
     public String feed(Model model) {
         // Verificar si el token proporcionado es válido
         if (token != null) {
-            List<Post> posts = linkAutoServiceProxy.getFeed();
+            List<Post> posts = new ArrayList<>(linkAutoServiceProxy.getFeed());
             model.addAttribute("posts", posts); // Agregar publicaciones al modelo
             model.addAttribute("username", username); // Agregar nombre de usuario al modelo
             return "feed"; // Vista para usuarios autenticados
