@@ -18,7 +18,8 @@ public class User {
     
     public enum Gender {
         MALE,
-        FEMALE
+        FEMALE,
+        OTHER
       }
 
     @Id
