@@ -102,7 +102,7 @@ public class ClientController {
         if (token != null) {
             User u = linkAutoServiceProxy.getUserProfile(token);
             model.addAttribute("user", u);
-            return "updateProfile"; 
+            return "editProfile"; 
         } else {
             return "redirect:/";
         }

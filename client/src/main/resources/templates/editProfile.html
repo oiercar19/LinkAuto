@@ -22,7 +22,7 @@
             <div class="col-md-6">
                 <div class="card">
                     <div class="card-header bg-primary text-white">
-                        <h2 class="text-center">Registro en LinkAuto</h2>
+                        <h2 class="text-center">Editar perfil</h2>
                     </div>
                     <div class="card-body">
                         <div id="errorMessages" class="alert alert-danger" style="display:none;"></div>
@@ -31,28 +31,33 @@
                         <form id="registroForm" th:action="@{'/updateProfile'}", method="post">
                             <div class="form-group mb-3">
                                 <label>Nombre de Usuario</label>
-                                <input type="text" class="form-control" id="username" required readonly>
+                                <input type="text" class="form-control" id="username" th:value="${user.username}" required readonly>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label>Nombre Completo</label>
-                                <input type="text" class="form-control" id="name" required>
+                                <input type="text" class="form-control" id="name" th:value="${user.name}" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label>Foto de Perfil (URL)</label>
-                                <input type="text" class="form-control" id="profilePicture">
+                                <input type="text" class="form-control" id="profilePicture" th:value="${user.profilePicture}">
                             </div>
 
                             <div class="form-group mb-3">
                                 <label>Correo Electrónico</label>
-                                <input type="email" class="form-control" id="email" required>
+                                <input type="email" class="form-control" id="email" th:value="${user.email}" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label>Coches</label>
                                 <div id="carsContainer">
-                                    <!-- Los coches se añadirán dinámicamente aquí -->
+                                    <div th:each="car, stat : ${user.cars}">
+                                        <input type="text" class="form-control mb-2" name="cars[]" th:value="${car}">
+                                    </div>
+                                    <div th:if="${user.cars == null or user.cars.isEmpty()}">
+                                        <input type="text" class="form-control mb-2" name="cars" placeholder="Enter a car">
+                                    </div>
                                 </div>
                                 <button type="button" id="addCarButton" class="btn btn-secondary mt-2">
                                     Añadir Coche
@@ -61,34 +66,34 @@
 
                             <div class="form-group mb-3">
                                 <label>Fecha de Nacimiento</label>
-                                <input type="date" class="form-control" id="birthDate" required>
+                                <input type="date" class="form-control" id="birthDate" th:value="${#dates.format(user.birthDate, 'yyyy-MM-dd')}" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label>Género</label>
                                 <select class="form-control" id="gender">
-                                    <option value="MALE">Masculino</option>
-                                    <option value="FEMALE">Femenino</option>
-                                    <option value="OTHER">Otro</option>
+                                    <option value="MALE" th:selected="${user.gender == 'MALE'}">Masculino</option>
+                                    <option value="FEMALE" th:selected="${user.gender == 'FEMALE'}">Femenino</option>
+                                    <option value="OTHER" th:selected="${user.gender == 'OTHER'}">Otro</option>
                                 </select>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label>Ubicación</label>
-                                <input type="text" class="form-control" id="location">
+                                <input type="text" class="form-control" id="location" th:value="${user.location}">
                             </div>
 
                             <div class="form-group mb-3">
                                 <label>Contraseña</label>
-                                <input type="password" class="form-control" id="password" required>
+                                <input type="password" class="form-control" id="password" th:value="${user.password}" required>
                             </div>
 
                             <div class="form-group mb-3">
                                 <label>Descripción</label>
-                                <textarea class="form-control" id="description"></textarea>
+                                <textarea class="form-control" id="description" th:value="${user.description}"></textarea>
                             </div>
 
-                            <button type="submit" class="btn btn-primary w-100">Registrarse</button>
+                            <button type="submit" class="btn btn-primary w-100">Guardar cambios</button>
                         </form>
                     </div>
                 </div>
@@ -172,8 +177,8 @@
             
             // Manejar diferentes códigos de estado
             if (response.ok) {
-                alert('Registro exitoso');
-                window.location.href = '/'; // Redirigir a página de inicio
+                alert('Perfil actualizado correctamente');
+                window.location.href = '/feed'; // Redirigir a página de inicio
                 return;
             }
 
