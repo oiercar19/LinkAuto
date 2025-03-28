@@ -90,7 +90,7 @@
 
                             <div class="form-group mb-3">
                                 <label>Descripción</label>
-                                <textarea class="form-control" id="description" th:value="${user.description}"></textarea>
+                                <textarea class="form-control" id="description" th:text="${user.description}"></textarea>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100">Guardar cambios</button>
