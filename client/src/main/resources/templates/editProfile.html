@@ -28,10 +28,10 @@
                         <div id="errorMessages" class="alert alert-danger" style="display:none;"></div>
                         <div id="successMessage" class="alert alert-success" style="display:none;"></div>
 
-                        <form id="registroForm" th:action="@{'/register'}", method="post">
+                        <form id="registroForm" th:action="@{'/updateProfile'}", method="post">
                             <div class="form-group mb-3">
                                 <label>Nombre de Usuario</label>
-                                <input type="text" class="form-control" id="username" required>
+                                <input type="text" class="form-control" id="username" required readonly>
                             </div>
 
                             <div class="form-group mb-3">
@@ -171,16 +171,17 @@
             console.log('Response status:', response.status);
             
             // Manejar diferentes códigos de estado
-            if (response.ok) { // Verificar si la respuesta es exitosa (código 2xx)
+            if (response.ok) {
                 alert('Registro exitoso');
                 window.location.href = '/'; // Redirigir a página de inicio
-            } else {
-                // Si la respuesta no es exitosa, intentar obtener detalles del error
-                return response.text().then(errorText => {
-                    console.error('Error response:', errorText);
-                    throw new Error(errorText || 'Error al registrar el usuario');
-                });
+                return;
             }
+
+            // Intentar obtener detalles del error
+            return response.text().then(errorText => {
+                console.error('Error response:', errorText);
+                throw new Error(errorText || 'Error al registrar el usuario');
+            });
         })
         .catch(error => {
             console.error('Error completo:', error);
