@@ -96,5 +96,28 @@ public class ClientController {
             return "redirect:/register"; // Redirigir a la página de registro en caso de error
         }
     }
+
+    @GetMapping("/updateProfile")
+    public String showUpdateProfile(Model model) {
+        if (token != null) {
+            User u = linkAutoServiceProxy.getUserProfile(token);
+            model.addAttribute("user", u);
+            return "editProfile"; 
+        } else {
+            return "redirect:/";
+        }
+    }
+
+    @PostMapping("/updateProfile")
+    public String updateProfile(@RequestBody User u, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.updateProfile(token, u);
+            redirectAttributes.addFlashAttribute("success", "Perfil actualizado con éxito");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de actualizar el perfil
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al actualizar el perfil: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
     
 }

@@ -24,6 +24,7 @@
                 <a class="navbar-brand" href="#">LinkAuto</a>
                 <div class="navbar-nav ms-auto">
                     <span class="navbar-text me-3" th:text="${username}">Usuario</span>
+                    <a th:href="@{/updateProfile}" class="btn btn-outline">Modificar perfil</a>
                     <a th:href="@{/logout}" class="btn btn-outline-danger">Cerrar Sesión</a>
                 </div>
             </div>
