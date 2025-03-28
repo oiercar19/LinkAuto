@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.dto.UserDTO;
+import com.linkauto.restapi.dto.UserRegisterDTO;
+import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
@@ -87,11 +89,12 @@ public class LinkAutoController {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<User> getUserDetails(
+    public ResponseEntity<UserReturnerDTO> getUserDetails(
         @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken) {
         User user = authService.getUserByToken(userToken);
-        return user != null ? ResponseEntity.ok(user) : ResponseEntity.notFound().build();
+        UserReturnerDTO userResult = parseUserToUserReturnerDTO(user);
+        return userResult != null ? ResponseEntity.ok(userResult) : ResponseEntity.notFound().build();
     }
 
     @PutMapping("/user")
@@ -128,5 +131,10 @@ public class LinkAutoController {
 
     private User parseUserDTOToUser(UserDTO userDTO, User oldUser) {
         return new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts());
+    }
+
+    private UserReturnerDTO parseUserToUserReturnerDTO(User u){
+        List<PostReturnerDTO> postReturner = parsePostToPostReturnerDTO(u.getPosts());
+        return new UserReturnerDTO(u.getUsername(), u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
     }
 }
