@@ -52,6 +52,9 @@ public class LinkAutoService {
         if (!postRepository.findById(id).get().getUsuario().getUsername().equals(user.getUsername())) {
             return false;
         }
+        System.out.println("Post encontrado: " + id);
+        System.out.println("Usuario del post: " + user.getUsername());
+        
         postRepository.deleteById(id);
         return true;
     }
