@@ -34,11 +34,19 @@
             <div class="card post-card">
                 <div class="card-body">
                     <h5 class="card-title">Crear Publicación</h5>
-                    <form>
+                    <form id="postForm" th:action="@{'/post'}" method="post">
                         <div class="mb-3">
-                            <textarea class="form-control" rows="3" placeholder="Comparte algo sobre coches..."></textarea>
+                            <textarea class="form-control" id="postContent" rows="3" placeholder="Comparte algo sobre coches..."></textarea>
                         </div>
-                        <button type="submit" class="btn btn-primary">Publicar</button>
+                        
+                        <div id="imageUrlsContainer">
+                            <div class="image-url-container">
+                                <input type="url" class="form-control image-url" placeholder="URL de imagen (opcional)">
+                                <button type="button" class="btn btn-success add-image-url ms-2 mt-2">+</button>
+                            </div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-primary mt-3">Publicar</button>
                     </form>
                 </div>
             </div>
@@ -66,5 +74,104 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageUrlsContainer = document.getElementById('imageUrlsContainer');
+
+            // Function to add a new image URL input
+            function addImageUrlInput() {
+                const container = document.createElement('div');
+                container.classList.add('image-url-container');
+                
+                const input = document.createElement('input');
+                input.type = 'url';
+                input.classList.add('form-control', 'image-url');
+                input.placeholder = 'URL de imagen (opcional)';
+                
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.classList.add('btn', 'btn-danger', 'remove-image-url', 'ms-2', 'mt-2');
+                removeButton.textContent = '×';
+                removeButton.addEventListener('click', () => {
+                    container.remove();
+                });
+                
+                container.appendChild(input);
+                container.appendChild(removeButton);
+                
+                imageUrlsContainer.appendChild(container);
+            }
+
+            // Event listener for adding image URL inputs
+            imageUrlsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('add-image-url')) {
+                    addImageUrlInput();
+                }
+            });
+        });
+        // Form submission handler
+        document.getElementById('postForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const postContent = document.getElementById('postContent').value.trim();
+            const imageUrls = Array.from(document.querySelectorAll('.image-url'))
+                .map(input => input.value.trim())
+                .filter(url => url !== '');
+
+            if (postContent === '' && imageUrls.length === 0) {
+                alert('Por favor, añade un texto o al menos una imagen.');
+                return;
+            }
+
+            const postData = {
+                message: postContent,
+                images: imageUrls
+            };
+
+            var url = e.target.action;
+
+            // Enviar datos al servidor
+            // Send data to server
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(postData),
+                redirect: 'manual' // Importante: manejar manualmente los redirects
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+        
+                // Manejar redirect manualmente
+                if (response.type === 'opaqueredirect' || response.status === 302) {
+                    // Si es un redirect, considerar como éxito
+                    window.location.href = '/feed';
+                    return;
+                }
+        
+                // Manejar otras respuestas
+                if (!response.ok) {
+                    return response.text().then(text => { 
+                        throw new Error(text || 'Error desconocido'); 
+                    });
+                }
+        
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    // Manejar respuesta JSON si existe
+                    alert('Post creado con éxito');
+                    window.location.href = '/feed';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Hubo un error al procesar la creación del post: ' + error.message);
+            });
+        });
+    </script>
 </body>
 </html>

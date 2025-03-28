@@ -3,7 +3,11 @@ package com.linkauto.restapi.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -17,12 +21,15 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "username", nullable = false)        
     private User usuario;      
     private String mensaje;      
-    private long fechaCreacion;  
-    private List<String> imagenes; 
+    private long fechaCreacion; 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "post_images", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "image_url")
+    private final List<String> imagenes; 
 
     public Post() {
         this.imagenes = new ArrayList<>();
