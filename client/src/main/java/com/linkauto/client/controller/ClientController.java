@@ -15,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
+import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
 import com.linkauto.client.service.ClientServiceProxy;
 
@@ -119,5 +120,18 @@ public class ClientController {
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
         }
     }
+
+    @PostMapping("/post")
+    public String createPost(@RequestBody PostCreator post, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.createPost(token, post);
+            redirectAttributes.addFlashAttribute("success", "Publicación creada con éxito");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de crear la publicación
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al crear la publicación: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+    
     
 }

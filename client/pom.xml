@@ -36,6 +36,7 @@
             <scope>test</scope>
         </dependency>
 
+
         <!-- OpenAPI for documentation -->
         <dependency>
             <groupId>org.springdoc</groupId>

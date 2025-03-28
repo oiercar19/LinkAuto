@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
+import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
 
 @Service
@@ -26,7 +27,7 @@ public interface ILinkAutoServiceProxy {
     void updateProfile(String username, User user);
     
     // Post methods
-    void createPost(String username, Post post);
+    void createPost(String token, PostCreator post);
     void deletePost(String username, int postId);
     List<Post> getFeed(); //DEVUELVE TODOS LOS POSTS. CAMBIARLO
    

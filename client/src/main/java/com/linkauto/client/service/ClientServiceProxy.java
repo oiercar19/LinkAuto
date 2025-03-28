@@ -13,6 +13,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 import org.springframework.web.client.RestTemplate;
 
 import com.linkauto.client.data.Post;
+import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
 import com.linkauto.client.data.Credentials;
 
@@ -102,21 +103,19 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void createPost(String username, Post post) {
-        String url = String.format("%s/api/posts?username=%s", apiBaseUrl, username);
+    public void createPost(String token, PostCreator post) {
+        String url = String.format("%s/api/posts?userToken=%s", apiBaseUrl, token);
         
         try {
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Content-Type", "application/json");
-            HttpEntity<Post> entity = new HttpEntity<>(post, headers);
-            
-            restTemplate.exchange(url, HttpMethod.POST, entity, Post.class);
+            restTemplate.postForObject(url, post, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
-                default -> throw new RuntimeException("Failed to create post: " + e.getStatusText());
+                case 401 -> throw new RuntimeException("Logout failed: Invalid token");
+                default -> throw new RuntimeException("Logout failed: " + e.getStatusText());
             }
         }
+        
+        
     }
 
     @Override
