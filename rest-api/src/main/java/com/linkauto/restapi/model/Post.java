@@ -29,7 +29,7 @@ public class Post {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "post_images", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "image_url")
-    private List<String> imagenes; 
+    private final List<String> imagenes; 
 
     public Post() {
         this.imagenes = new ArrayList<>();

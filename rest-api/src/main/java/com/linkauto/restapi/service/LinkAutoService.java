@@ -18,12 +18,10 @@ public class LinkAutoService {
     @Autowired
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final AuthService authService;
 
-    public LinkAutoService(PostRepository postRepository, UserRepository userRepository, AuthService authService) {
+    public LinkAutoService(PostRepository postRepository, UserRepository userRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
-        this.authService = authService;
     }
 
     public List<Post> getAllPosts() {
@@ -80,7 +78,6 @@ public class LinkAutoService {
         } catch (Exception e) {
             // Loguear el error
             System.err.println("Error al eliminar post: " + e.getMessage());
-            e.printStackTrace();
             return false;
         }
     }
