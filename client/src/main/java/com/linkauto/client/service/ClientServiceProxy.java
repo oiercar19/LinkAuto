@@ -117,23 +117,6 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void deletePost(String username, int postId) {
-        String url = String.format("%s/api/posts/%d?username=%s", 
-                apiBaseUrl, postId, username);
-        
-        try {
-            restTemplate.exchange(url, HttpMethod.DELETE, null, Void.class);
-        } catch (HttpStatusCodeException e) {
-            switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid username");
-                case 403 -> throw new RuntimeException("Forbidden: You can only delete your own posts");
-                case 404 -> throw new RuntimeException("Post not found");
-                default -> throw new RuntimeException("Failed to delete post: " + e.getStatusText());
-            }
-        }
-    }
-
-    @Override
     public List<Post> getFeed() {
         String url = String.format("%s/api/posts", apiBaseUrl);
         
@@ -160,6 +143,21 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             switch (e.getStatusCode().value()) {
                 case 404 -> throw new RuntimeException("Post not found");
                 default -> throw new RuntimeException("Failed to get post: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void deletePost(String token, Long postId) {
+        String url = String.format("%s/api/posts/%d?userToken=%s", apiBaseUrl, postId, token);
+        
+        try {
+            restTemplate.delete(url);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("Post not found");
+                default -> throw new RuntimeException("Failed to delete post: " + e.getStatusText());
             }
         }
     }
