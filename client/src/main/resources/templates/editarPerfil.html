@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Profile</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <span class="navbar-brand mb-0 h1">LinkAuto</span>
+            <div class="d-flex justify-content-start">
+                <a class="btn btn-light" href="/">Home</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <h2>Edit Profile</h2>
+        <form th:action="@{/editProfile}" method="post" onsubmit="return validateForm()">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" class="form-control" id="username" name="username" th:value="${user.username}" required readonly>
+            </div>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" class="form-control" id="name" name="name" th:value="${user.name}" required>
+            </div>
+            <div class="form-group">
+                <label for="profilePicture">Profile Picture URL</label>
+                <input type="url" class="form-control" id="profilePicture" name="profilePicture" th:value="${user.profilePicture}" placeholder="Enter image URL">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" class="form-control" id="email" name="email" th:value="${user.email}" required pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+            </div>
+            <div class="form-group">
+                <label for="cars">Cars</label>
+                <div id="cars-container">
+                    <div th:each="car, stat : ${user.cars}">
+                        <input type="text" class="form-control mb-2" name="cars[]" th:value="${car}">
+                    </div>
+                    <div th:if="${user.cars == null or user.cars.isEmpty()}">
+                        <input type="text" class="form-control mb-2" name="cars" placeholder="Enter a car">
+                    </div>
+                </div>
+                <button type="button" class="btn btn-secondary" onclick="addCarField()">Add another car</button>
+            </div>
+            <div class="form-group">
+                <label for="birthDate">Birth Date</label>
+                <input type="date" class="form-control" id="birthDate" name="birthDate" th:value="${#dates.format(user.birthDate, 'yyyy-MM-dd')}" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Gender</label>
+                <select class="form-control" id="gender" name="gender" required>
+                    <option value="male" th:selected="${user.gender == 'male'}">Male</option>
+                    <option value="female" th:selected="${user.gender == 'female'}">Female</option>
+                    <option value="other" th:selected="${user.gender == 'other'}">Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="location">Location</label>
+                <input type="text" class="form-control" id="location" name="location" th:value="${user.location}" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+            </div>
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea class="form-control" id="description" name="description" rows="3" maxlength="300" th:text="${user.description}"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Changes</button>
+        </form>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function addCarField() {
+            var container = document.getElementById('cars-container');
+            var input = document.createElement('input');
+            input.type = 'text';
+            input.name = 'cars';
+            input.className = 'form-control mb-2';
+            container.appendChild(input);
+        }
+
+        function validateForm() {
+            var birthDate = new Date(document.getElementById('birthDate').value);
+            var today = new Date();
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var monthDifference = today.getMonth() - birthDate.getMonth();
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            if (age < 18) {
+                alert('You must be at least 18 years old to edit your profile.');
+                return false;
+            }
+            return true;
+        }
+    </script>
+</body>
+</html>

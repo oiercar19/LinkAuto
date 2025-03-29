@@ -12,19 +12,14 @@
     </parent>
 
     <groupId>com.linkauto</groupId>
-    <artifactId>rest-api</artifactId>
+    <artifactId>client</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
-    <name>LinkAuto REST API</name>
-    <description>REST API module for LinkAuto</description>
+    <name>LinkAuto CLIENT</name>
+    <description>CLIENT module for LinkAuto</description>
 
   <dependencies>
         <!-- No need to specify version since it is managed by the parent POM -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -35,27 +30,25 @@
             <artifactId>spring-context</artifactId>
         </dependency>
 
-        <!-- MySQL Driver -->
-        <dependency>
-            <groupId>com.mysql</groupId>
-            <artifactId>mysql-connector-j</artifactId>
-        </dependency>
-
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-tx</artifactId>
-        </dependency>
 
         <!-- OpenAPI for documentation -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
         </dependency>
     </dependencies>
     <build>
@@ -64,7 +57,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>com.linkauto.restapi.RestApiApplication</mainClass>
+                    <mainClass>com.linkauto.client.WebClientApplication</mainClass>
                     <skip>false</skip>
                 </configuration>
             </plugin>
