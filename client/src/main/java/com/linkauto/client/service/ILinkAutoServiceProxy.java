@@ -28,7 +28,7 @@ public interface ILinkAutoServiceProxy {
     
     // Post methods
     void createPost(String token, PostCreator post);
-    void deletePost(String username, int postId);
+    void deletePost(String token, Long postId);
     List<Post> getFeed(); //DEVUELVE TODOS LOS POSTS. CAMBIARLO
    
     //Obtener datos de un post en concreto. FALTA DE AÑADIR
