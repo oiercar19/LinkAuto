@@ -132,6 +132,17 @@ public class ClientController {
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
         }
     }
-    
+
+    @PostMapping("/deletePost")
+    public String deletePost(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.deletePost(token, id);
+            redirectAttributes.addFlashAttribute("success", "Publicación eliminada con éxito");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de eliminar la publicación
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar la publicación: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
     
 }
