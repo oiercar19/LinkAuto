@@ -224,9 +224,12 @@
                             <strong th:text="${post.username}">Nombre de Usuario</strong>
                         </div>
                         <div class="ms-auto">
-                            <button th:if="${post.username == username}" type="button" class="btn btn-sm btn-outline-danger delete-post-btn" th:data-id="${post.id}">
-                                <i class="bi bi-trash"></i>
-                            </button>
+                            <form th:action="@{/deletePost}" method="post" style="display:inline;">
+                                <input type="hidden" name="id" th:value="${post.id}">
+                                <button th:if="${post.username == username}" type="submit" class="btn btn-sm btn-outline-danger delete-post-btn">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
