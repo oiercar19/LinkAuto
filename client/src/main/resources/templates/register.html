@@ -151,18 +151,23 @@
             alert('Debes tener al menos 18 años para registrarte.');
             return false;
         }
+
         // Validación de contraseñas
         const password = document.getElementById('password').value;
         const confirmPassword = document.getElementById('confirmPassword').value;
+
+        if (password.length < 7) {
+            alert('La contraseña debe tener al menos 7 caracteres.');
+            return false;
+        }
 
         if (password !== confirmPassword) {
             alert('Las contraseñas no coinciden. Por favor, verifica e inténtalo de nuevo.');
             return false;
         }
+
         return true;
     }
-
-    
 
     // Envío del formulario
     document.getElementById('registroForm').addEventListener('submit', function(e) {
