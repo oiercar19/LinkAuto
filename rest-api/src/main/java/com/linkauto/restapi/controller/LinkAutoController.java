@@ -120,6 +120,18 @@ public class LinkAutoController {
         return ResponseEntity.ok(postReturnerDTOs);
     }
 
+    @GetMapping("/user/{username}")
+    public UserReturnerDTO getUserByUsername(
+        @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
+        @PathVariable String username
+    ) {
+        User user = linkAutoService.getUserByUsername(username).get();
+        if (user != null) {
+            return parseUserToUserReturnerDTO(user);
+        }
+        return null;
+    }
+
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
@@ -128,6 +140,7 @@ public class LinkAutoController {
         }
         return postReturnerDTOs;
     }
+
 
     private PostReturnerDTO parsePostToPostReturnerDTO(Post post) {
         PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes());

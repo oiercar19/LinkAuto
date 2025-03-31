@@ -33,4 +33,6 @@ public interface ILinkAutoServiceProxy {
    
     //Obtener datos de un post en concreto. FALTA DE AÑADIR
     Post getPostById(int postId);
+
+    public User getUserByUsername(String username);
 }

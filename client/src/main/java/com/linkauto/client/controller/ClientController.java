@@ -1,7 +1,9 @@
 package com.linkauto.client.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -70,8 +72,18 @@ public class ClientController {
         // Verificar si el token proporcionado es válido
         if (token != null) {
             List<Post> posts = new ArrayList<>(linkAutoServiceProxy.getFeed());
+            Map<String, String> profilePictureByUsername = new HashMap<>();
+            for (Post post : posts) {
+                String profilePicture = linkAutoServiceProxy.getUserByUsername(post.username()).profilePicture();
+                profilePictureByUsername.putIfAbsent(post.username(), profilePicture);
+            }
+            
+            model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
+            
             model.addAttribute("posts", posts); // Agregar publicaciones al modelo
             model.addAttribute("username", username); // Agregar nombre de usuario al modelo
+            String profilePicture = linkAutoServiceProxy.getUserProfile(token).profilePicture();
+            model.addAttribute("profilePicture", profilePicture); // Agregar foto de perfil al modelo
             return "feed"; // Vista para usuarios autenticados
         } else {
             // Token inválido o no proporcionado, redirigir al inicio de sesión

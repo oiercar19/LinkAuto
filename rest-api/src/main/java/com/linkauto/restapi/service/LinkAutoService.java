@@ -41,6 +41,8 @@ public class LinkAutoService {
         }
         post.setFechaCreacion(System.currentTimeMillis());
         postRepository.save(post);
+        user.addPost(post); // Add post to user
+        userRepository.save(user); // Save user with the new post
         return post;
     }
     
