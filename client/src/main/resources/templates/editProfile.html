@@ -143,9 +143,29 @@
             addCarField('');
         });
         
+        function validateForm() {
+            var birthDate = new Date(document.getElementById('birthDate').value);
+            var today = new Date();
+            var age = today.getFullYear() - birthDate.getFullYear();
+            var monthDifference = today.getMonth() - birthDate.getMonth();
+    
+            if (monthDifference < 0 || (monthDifference === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+    
+            if (age < 18) {
+                alert('Debes tener al menos 18 años para registrarte.');
+                return false;
+            }
+
+            return true;
+        }
+        
         // Envío del formulario
         document.getElementById('registroForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            if(!validateForm()) return;
             
             // Recoger todos los coches (existentes y nuevos)
             const carInputs = document.querySelectorAll('.car-input');
@@ -170,7 +190,7 @@
             console.log('Enviando datos:', formData);
             
             var url = this.action;
-            
+
             // Enviar datos al servidor
             fetch(url, {
                 method: 'POST',
