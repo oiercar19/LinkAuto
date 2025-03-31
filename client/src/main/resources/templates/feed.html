@@ -168,7 +168,10 @@
             <div class="ms-auto d-flex align-items-center">
                 <div class="user-profile me-3">
                     <div class="user-avatar">
-                        <i class="bi bi-person"></i>
+                        <img th:src="${profilePicture != null && (#strings.endsWith(profilePicture, '.png') || #strings.endsWith(profilePicture, '.jpg')) ? profilePicture : '/images/default-avatar.png'}" 
+                             alt="Profile Picture" 
+                             class="img-fluid rounded-circle" 
+                             style="width: 38px; height: 38px;">
                     </div>
                     <span class="d-none d-md-inline" th:text="${username}">Usuario</span>
                 </div>
@@ -218,7 +221,7 @@
                 <div class="card-header">
                     <div class="d-flex align-items-center">
                         <div class="user-avatar me-2">
-                            <i class="bi bi-person"></i>
+                            <img th:src="${profilePictureByUsername.get(post.username) != null && (#strings.endsWith(profilePictureByUsername.get(post.username), '.png') || #strings.endsWith(profilePictureByUsername.get(post.username), '.jpg')) ? profilePictureByUsername.get(post.username) : '/images/default-avatar.png'}" style="width: 38px; height: 38px;" class="img-fluid rounded-circle">
                         </div>
                         <div>
                             <strong th:text="${post.username}">Nombre de Usuario</strong>
