@@ -7,19 +7,21 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
-import  jakarta.persistence.OneToMany;
-import  jakarta.persistence.Table;
-
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "user")
 public class User {
-    
+
     public enum Gender {
         MALE,
         FEMALE,
         OTHER
-      }
+    }
 
     @Id
     private String username;
@@ -35,16 +37,23 @@ public class User {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "user_followers", joinColumns = @JoinColumn(name = "key_user_username"), inverseJoinColumns = @JoinColumn(name = "follower_username"))
+    private List<User> followers;
+
+    @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
+    private List<User> following;
+
     // No-argument constructor
     public User() {
     }
 
-    //Constructor with arguments
-    public User(String username, String name, 
-    String profilePicture, String email, 
-    List<String> cars, long birthDate, 
-    Gender gender, String location, 
-    String password, String description, List<Post> posts) {
+    // Constructor with arguments
+    public User(String username, String name,
+            String profilePicture, String email,
+            List<String> cars, long birthDate,
+            Gender gender, String location,
+            String password, String description, List<Post> posts, List<User> followers, List<User> following) {
         this.username = username;
         this.name = name;
         this.profilePicture = profilePicture;
@@ -59,84 +68,92 @@ public class User {
         for (Post post : posts) {
             this.posts.add(post);
         }
+        this.followers = new ArrayList<>();
+        for (User follower : followers) {
+            this.followers.add(follower);
+        }
+        this.following = new ArrayList<>();
+        for (User follow : following) {
+            this.following.add(follow);
+        }
     }
 
     public String getUsername() {
         return username;
     }
-    
+
     public void setUsername(String username) {
         this.username = username;
     }
-    
+
     public String getName() {
         return name;
     }
-    
+
     public void setName(String name) {
         this.name = name;
     }
-    
+
     public String getProfilePicture() {
         return profilePicture;
     }
-    
+
     public void setProfilePicture(String profilePicture) {
         this.profilePicture = profilePicture;
     }
-    
+
     public String getEmail() {
         return email;
     }
-    
+
     public void setEmail(String email) {
         this.email = email;
     }
-    
+
     public List<String> getCars() {
         return cars;
     }
-    
+
     public void setCars(List<String> cars) {
         this.cars = cars;
     }
-    
+
     public long getBirthDate() {
         return birthDate;
     }
-    
+
     public void setBirthDate(long birthDate) {
         this.birthDate = birthDate;
     }
-    
+
     public Gender getGender() {
         return gender;
     }
-    
+
     public void setGender(Gender gender) {
         this.gender = gender;
     }
-    
+
     public String getLocation() {
         return location;
     }
-    
+
     public void setLocation(String location) {
         this.location = location;
     }
-    
+
     public String getPassword() {
         return password;
     }
-    
+
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     public String getDescription() {
         return description;
     }
-    
+
     public void setDescription(String description) {
         this.description = description;
     }
@@ -147,5 +164,21 @@ public class User {
 
     public void addPost(Post post) {
         this.posts.add(post);
+    }
+
+    public List<User> getFollowers() {
+        return this.followers;
+    }
+
+    public void addFollower(User follower) {
+        this.followers.add(follower);
+    }
+
+    public List<User> getFollowing() {
+        return this.following;
+    }
+
+    public void addFollowing(User following) {
+        this.following.add(following);
     }
 }
