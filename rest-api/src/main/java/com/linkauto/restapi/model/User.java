@@ -174,6 +174,10 @@ public class User {
         this.followers.add(follower);
     }
 
+    public void removeFollower(User follower) {
+        this.followers.remove(follower);
+    }
+
     public List<User> getFollowing() {
         return this.following;
     }
@@ -181,4 +185,35 @@ public class User {
     public void addFollowing(User following) {
         this.following.add(following);
     }
+
+    public void removeFollowing(User following) {
+        this.following.remove(following);
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((username == null) ? 0 : username.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        User other = (User) obj;
+        if (username == null) {
+            if (other.username != null)
+                return false;
+        } else if (!username.equals(other.username))
+            return false;
+        return true;
+    }
+
+    
 }
