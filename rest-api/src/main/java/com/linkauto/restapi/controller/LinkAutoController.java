@@ -145,6 +145,19 @@ public class LinkAutoController {
         return ResponseEntity.ok(followersDTOs);
     }
 
+    @GetMapping("/user/{username}/following")
+    public ResponseEntity<List<UserReturnerDTO>> getUserFollowing(
+        @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
+        @PathVariable String username
+    ) {
+        List<User> following = linkAutoService.getFollowingByUsername(username);
+        List<UserReturnerDTO> followingDTOs = new ArrayList<>();
+        for (User follow : following) {
+            followingDTOs.add(parseUserToUserReturnerDTO(follow));
+        }
+        return ResponseEntity.ok(followingDTOs);
+    }
+
     @PostMapping("/user/{username}/follow")
     public ResponseEntity<Void> followUser(
         @Parameter(name = "username", description = "Username of the user to follow", required = true, example = "johndoe")

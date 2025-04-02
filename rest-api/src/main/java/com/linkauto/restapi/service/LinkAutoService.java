@@ -92,6 +92,14 @@ public class LinkAutoService {
         return user.getFollowers();
     }
 
+    public List<User> getFollowingByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        return user.getFollowing();
+    }
+
     public Boolean followUser(User user, String usernameToFollow) {
         User userToFollow = userRepository.findByUsername(usernameToFollow).orElse(null);
         if (userToFollow == null) {

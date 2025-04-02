@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -84,6 +85,13 @@ public class ClientController {
             model.addAttribute("username", username); // Agregar nombre de usuario al modelo
             String profilePicture = linkAutoServiceProxy.getUserProfile(token).profilePicture();
             model.addAttribute("profilePicture", profilePicture); // Agregar foto de perfil al modelo
+
+            List<User> followings = linkAutoServiceProxy.getUserFollowing(username);
+            List<String> followingUsernames = new ArrayList<>();
+            for (User following : followings) {
+                followingUsernames.add(following.username());
+            }
+            model.addAttribute("followings", followingUsernames); // Agregar seguidores al modelo
             return "feed"; // Vista para usuarios autenticados
         } else {
             // Token inválido o no proporcionado, redirigir al inicio de sesión
@@ -156,5 +164,30 @@ public class ClientController {
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
         }
     }
+
+    @PostMapping("/user/{username}/follow")
+    public String followUser(@PathVariable String username, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.followUser(token, username);
+            redirectAttributes.addFlashAttribute("success", "Siguiendo a " + username);
+            return "redirect:/feed"; // Redirigir a la página de inicio después de seguir al usuario    
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al seguir al usuario: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
+    @PostMapping("/user/{username}/unfollow")
+    public String unfollowUser(@PathVariable String username, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.unfollowUser(token, username);
+            redirectAttributes.addFlashAttribute("success", "Dejado de seguir a " + username);
+            return "redirect:/feed"; // Redirigir a la página de inicio después de dejar de seguir al usuario    
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al dejar de seguir al usuario: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+    
     
 }
