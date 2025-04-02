@@ -227,6 +227,13 @@
                             <strong th:text="${post.username}">Nombre de Usuario</strong>
                         </div>
                         <div class="ms-auto">
+                            <form th:if="${not #lists.contains(followings, post.username) && not #strings.equals(username, post.username)}" th:action="@{'/user/' + ${post.username} + '/follow'}" method="post">
+                                <button type="submit" class="btn btn-sm btn-outline-primary">Seguir</button>
+                            </form>
+                            <form th:if="${#lists.contains(followings, post.username) && not #strings.equals(username, post.username)}" th:action="@{'/user/' + ${post.username} + '/unfollow'}" method="post">
+                                <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
+                            </form>
+
                             <form th:action="@{/deletePost}" method="post" style="display:inline;">
                                 <input type="hidden" name="id" th:value="${post.id}">
                                 <button th:if="${post.username == username}" type="submit" class="btn btn-sm btn-outline-danger delete-post-btn">

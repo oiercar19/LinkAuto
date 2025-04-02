@@ -34,5 +34,10 @@ public interface ILinkAutoServiceProxy {
     //Obtener datos de un post en concreto. FALTA DE AÑADIR
     Post getPostById(int postId);
 
-    public User getUserByUsername(String username);
+    User getUserByUsername(String username);
+
+    List<User> getUserFollowers(String username);
+    List<User> getUserFollowing(String username);
+    void followUser(String token, String usernameToFollow);
+    void unfollowUser(String token, String usernameToUnfollow);
 }

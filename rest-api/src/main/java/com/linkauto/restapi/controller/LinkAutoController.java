@@ -132,6 +132,65 @@ public class LinkAutoController {
         return null;
     }
 
+    @GetMapping("/user/{username}/followers")
+    public ResponseEntity<List<UserReturnerDTO>> getUserFollowers(
+        @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
+        @PathVariable String username
+    ) {
+        List<User> followers = linkAutoService.getFollowersByUsername(username);
+        List<UserReturnerDTO> followersDTOs = new ArrayList<>();
+        for (User follower : followers) {
+            followersDTOs.add(parseUserToUserReturnerDTO(follower));
+        }
+        return ResponseEntity.ok(followersDTOs);
+    }
+
+    @GetMapping("/user/{username}/following")
+    public ResponseEntity<List<UserReturnerDTO>> getUserFollowing(
+        @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
+        @PathVariable String username
+    ) {
+        List<User> following = linkAutoService.getFollowingByUsername(username);
+        List<UserReturnerDTO> followingDTOs = new ArrayList<>();
+        for (User follow : following) {
+            followingDTOs.add(parseUserToUserReturnerDTO(follow));
+        }
+        return ResponseEntity.ok(followingDTOs);
+    }
+
+    @PostMapping("/user/{username}/follow")
+    public ResponseEntity<Void> followUser(
+        @Parameter(name = "username", description = "Username of the user to follow", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isFollowed = linkAutoService.followUser(user, username);
+        return isFollowed ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/user/{username}/unfollow")
+    public ResponseEntity<Void> unfollowUser(
+        @Parameter(name = "username", description = "Username of the user to unfollow", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isUnfollowed = linkAutoService.unfollowUser(user, username);
+        return isUnfollowed ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+        
+    }
+    
+
+
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
@@ -141,18 +200,19 @@ public class LinkAutoController {
         return postReturnerDTOs;
     }
 
-
     private PostReturnerDTO parsePostToPostReturnerDTO(Post post) {
         PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes());
         return postReturnerDTO;
     }
 
     private User parseUserDTOToUser(UserDTO userDTO, User oldUser) {
-        return new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts());
+        return new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing());
     }
 
     private UserReturnerDTO parseUserToUserReturnerDTO(User u){
         List<PostReturnerDTO> postReturner = parsePostsToPostReturnerDTO(u.getPosts());
         return new UserReturnerDTO(u.getUsername(), u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
     }
+
+    
 }

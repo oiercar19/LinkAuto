@@ -175,4 +175,74 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
+    @Override
+    public List<User> getUserFollowers(String username){
+        String url = String.format("%s/api/user/%s/followers", apiBaseUrl, username);
+        
+        try {
+            ResponseEntity<List<User>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<User>>() {}
+            );
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to get user followers: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public List<User> getUserFollowing(String username){
+        String url = String.format("%s/api/user/%s/following", apiBaseUrl, username);
+        
+        try {
+            ResponseEntity<List<User>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<User>>() {}
+            );
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to get user following: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void followUser(String token, String usernameToFollow) {
+        String url = String.format("%s/api/user/%s/follow?userToken=%s", apiBaseUrl, usernameToFollow, token);
+        
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to follow user: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void unfollowUser(String token, String usernameToUnfollow) {
+        String url = String.format("%s/api/user/%s/unfollow?userToken=%s", apiBaseUrl, usernameToUnfollow, token);
+        
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to unfollow user: " + e.getStatusText());
+            }
+        }
+    }
 }
