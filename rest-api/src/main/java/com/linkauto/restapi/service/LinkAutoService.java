@@ -84,6 +84,19 @@ public class LinkAutoService {
         }
     }
 
+    public Boolean followUser(User user, String usernameToFollow) {
+        User userToFollow = userRepository.findByUsername(usernameToFollow).orElse(null);
+        if (userToFollow == null) {
+            return false;
+        }
+        user.addFollowing(userToFollow);
+        userToFollow.addFollower(user);
+        userRepository.save(user);
+        userRepository.save(userToFollow);
+    
+        return true;
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
