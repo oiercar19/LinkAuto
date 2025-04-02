@@ -97,6 +97,23 @@ public class LinkAutoService {
         return true;
     }
 
+    public Boolean unfollowUser(User user, String usernameToUnfollow) {
+        User userToUnfollow = userRepository.findByUsername(usernameToUnfollow).orElse(null);
+        if (userToUnfollow == null) {
+            return false;
+        }
+        user.removeFollowing(userToUnfollow);
+        userToUnfollow.removeFollower(user);
+        userRepository.save(user);
+        userRepository.save(userToUnfollow);
+        userRepository.flush();
+
+        System.out.println(user.getFollowing());
+        System.out.println(userToUnfollow.getFollowers());
+    
+        return true;
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

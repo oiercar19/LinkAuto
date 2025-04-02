@@ -147,7 +147,22 @@ public class LinkAutoController {
         return isFollowed ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    @GetMapping()
+    @PostMapping("/user/{username}/unfollow")
+    public ResponseEntity<Void> unfollowUser(
+        @Parameter(name = "username", description = "Username of the user to unfollow", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isUnfollowed = linkAutoService.unfollowUser(user, username);
+        return isUnfollowed ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+        
+    }
+    
 
 
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
