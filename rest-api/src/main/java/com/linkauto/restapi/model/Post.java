@@ -3,6 +3,10 @@ package com.linkauto.restapi.model;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.Set;
+import java.util.Map;
+import java.util.HashSet;
+import java.util.HashMap;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -15,6 +19,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "post")
@@ -31,7 +38,16 @@ public class Post {
     @CollectionTable(name = "post_images", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "image_url")
     private final List<String> imagenes;
-    private Map<User, List<String>> comentarios; 
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "post_comments", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "comment")
+    private Map<User, List<String>> comentarios = new HashMap<>(); 
+    @ManyToMany
+    @JoinTable(
+    name = "post_likes",
+    joinColumns = @JoinColumn(name = "id"),
+    inverseJoinColumns = @JoinColumn(name = "username")
+    )
     private Set<User> likes; 
 
     public Post() {
