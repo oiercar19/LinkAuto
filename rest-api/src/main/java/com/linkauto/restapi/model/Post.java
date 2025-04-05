@@ -2,6 +2,7 @@ package com.linkauto.restapi.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
@@ -29,13 +30,15 @@ public class Post {
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "post_images", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "image_url")
-    private final List<String> imagenes; 
+    private final List<String> imagenes;
+    private Map<User, List<String>> comentarios; // Map of user and their comments
+    private Set<User> likes; // Set of users who liked the post
 
     public Post() {
         this.imagenes = new ArrayList<>();
     }
 
-    public Post(Long id, User usuario, String mensaje, long fechaCreacion, List<String> imagenes) {
+    public Post(Long id, User usuario, String mensaje, long fechaCreacion, List<String> imagenes, Map<User, List<String>> comentarios, Set<User> likes) {
         this.id = id;
         this.usuario = usuario;
         this.mensaje = mensaje;
@@ -44,6 +47,11 @@ public class Post {
         for (String imagen : imagenes) {
         	this.imagenes.add(imagen);
 		}
+        this.comentarios = new HashMap<>();
+        for (Map.Entry<User, List<String>> entry : comentarios.entrySet()) {
+            this.comentarios.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+        }
+        this.likes = new HashSet<>(likes);
     }
 
 
@@ -83,10 +91,26 @@ public class Post {
         this.imagenes.add(imagen);
     }
 
+    public Map<User, List<String>> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(Map<User, List<String>> comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    public void setLikes(Set<User> likes) {
+        this.likes = likes;
+    }
+
+    public Set<User> getLikes() {
+        return likes;
+    }
+    
     @Override
     public String toString() {
         return "Post [id=" + id + ", usuario=" + usuario + ", mensaje=" + mensaje 
-                + ", fechaCreacion=" + fechaCreacion + ", imagenes=" + imagenes + "]";
+                + ", fechaCreacion=" + fechaCreacion + ", imagenes=" + imagenes + ", comentarios=" + comentarios + "]";
     }
 }
 
