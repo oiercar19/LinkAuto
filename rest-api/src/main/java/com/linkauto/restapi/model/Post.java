@@ -45,10 +45,10 @@ public class Post {
     @ManyToMany
     @JoinTable(
     name = "post_likes",
-    joinColumns = @JoinColumn(name = "id"),
-    inverseJoinColumns = @JoinColumn(name = "username")
+    joinColumns = @JoinColumn(name = "post_id"),
+    inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private Set<User> likes; 
+    private Set<User> likes = new HashSet<>(); 
 
     public Post() {
         this.imagenes = new ArrayList<>();
