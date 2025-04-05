@@ -31,8 +31,8 @@ public class Post {
     @CollectionTable(name = "post_images", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "image_url")
     private final List<String> imagenes;
-    private Map<User, List<String>> comentarios; // Map of user and their comments
-    private Set<User> likes; // Set of users who liked the post
+    private Map<User, List<String>> comentarios; 
+    private Set<User> likes; 
 
     public Post() {
         this.imagenes = new ArrayList<>();
