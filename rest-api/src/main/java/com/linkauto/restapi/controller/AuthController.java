@@ -63,7 +63,7 @@ public class AuthController {
     }
         
     public User parseUserRegisterDTOToUser(UserRegisterDTO userRegisterDTO) {
-        User user = new User(userRegisterDTO.getUsername(), userRegisterDTO.getName(), userRegisterDTO.getProfilePicture(), userRegisterDTO.getEmail(), userRegisterDTO.getCars(), userRegisterDTO.getBirthDate(), Gender.valueOf(userRegisterDTO.getGender()), userRegisterDTO.getLocation(), userRegisterDTO.getPassword(), userRegisterDTO.getDescription(), new ArrayList<>());
+        User user = new User(userRegisterDTO.getUsername(), userRegisterDTO.getName(), userRegisterDTO.getProfilePicture(), userRegisterDTO.getEmail(), userRegisterDTO.getCars(), userRegisterDTO.getBirthDate(), Gender.valueOf(userRegisterDTO.getGender()), userRegisterDTO.getLocation(), userRegisterDTO.getPassword(), userRegisterDTO.getDescription(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         return user;   
     }
 }
