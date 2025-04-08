@@ -11,6 +11,7 @@ import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.repository.CommentRepository;
 import com.linkauto.restapi.repository.PostRepository;
 import com.linkauto.restapi.repository.UserRepository;
 
@@ -19,10 +20,12 @@ public class LinkAutoService {
     @Autowired
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
-    public LinkAutoService(PostRepository postRepository, UserRepository userRepository) {
+    public LinkAutoService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
     }
 
     public List<Post> getAllPosts() {
@@ -167,6 +170,10 @@ public class LinkAutoService {
         postRepository.save(post);
     
         return true;
+    }
+
+    public List<Comment> getAllComments() {
+        return commentRepository.findAll();
     }
 
     public List<User> getAllUsers() {

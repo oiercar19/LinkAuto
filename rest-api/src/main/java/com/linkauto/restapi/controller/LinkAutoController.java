@@ -21,6 +21,7 @@ import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
+import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
@@ -235,6 +236,15 @@ public class LinkAutoController {
         return isCommented ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/user/comments")
+    public ResponseEntity<List<Comment>> getAllComments() {
+        List<Comment> comments = linkAutoService.getAllComments();
+        if (comments.isEmpty()) {
+            System.err.println("No comments found.");
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(comments);
+    }
 
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
