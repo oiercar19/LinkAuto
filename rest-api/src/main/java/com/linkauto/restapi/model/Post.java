@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.HashSet;
 import java.util.HashMap;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -18,6 +19,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.JoinTable;
@@ -38,23 +40,18 @@ public class Post {
     @CollectionTable(name = "post_images", joinColumns = @JoinColumn(name = "post_id"))
     @Column(name = "image_url")
     private final List<String> imagenes;
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Comment> comentarios; 
     @ElementCollection(fetch = FetchType.EAGER)
-    @CollectionTable(name = "post_comments", joinColumns = @JoinColumn(name = "post_id"))
-    @Column(name = "comment")
-    private Map<User, List<String>> comentarios = new HashMap<>(); 
-    @ManyToMany
-    @JoinTable(
-    name = "post_likes",
-    joinColumns = @JoinColumn(name = "post_id"),
-    inverseJoinColumns = @JoinColumn(name = "user_id")
-    )
-    private Set<User> likes = new HashSet<>(); 
+    @CollectionTable(name = "post_likes", joinColumns = @JoinColumn(name = "post_id"))
+    @Column(name = "likes")
+    private Set<String> likes; 
 
     public Post() {
         this.imagenes = new ArrayList<>();
     }
 
-    public Post(Long id, User usuario, String mensaje, long fechaCreacion, List<String> imagenes, Map<User, List<String>> comentarios, Set<User> likes) {
+    public Post(Long id, User usuario, String mensaje, long fechaCreacion, List<String> imagenes, List<Comment> comentarios, Set<String> likes) {
         this.id = id;
         this.usuario = usuario;
         this.mensaje = mensaje;
@@ -63,9 +60,9 @@ public class Post {
         for (String imagen : imagenes) {
         	this.imagenes.add(imagen);
 		}
-        this.comentarios = new HashMap<>();
-        for (Map.Entry<User, List<String>> entry : comentarios.entrySet()) {
-            this.comentarios.put(entry.getKey(), new ArrayList<>(entry.getValue()));
+        this.comentarios = new ArrayList<>();
+        for (Comment comentario : comentarios) {
+        	this.comentarios.add(comentario);
         }
         this.likes = new HashSet<>(likes);
     }
@@ -107,19 +104,27 @@ public class Post {
         this.imagenes.add(imagen);
     }
 
-    public Map<User, List<String>> getComentarios() {
+    public List<Comment> getComentarios() {
         return comentarios;
     }
 
-    public void setComentarios(Map<User, List<String>> comentarios) {
+    public void setComentarios(List<Comment> comentarios) {
         this.comentarios = comentarios;
     }
 
-    public void setLikes(Set<User> likes) {
-        this.likes = likes;
+    public void addComentario(Comment comentario) {
+        this.comentarios.add(comentario);
     }
 
-    public Set<User> getLikes() {
+    public void setLikes(String u) {
+        this.likes.add(u);
+    }
+
+    public void removeLikes(String u) {
+        this.likes.remove(u);
+    }
+
+    public Set<String> getLikes() {
         return likes;
     }
     
