@@ -219,6 +219,22 @@ public class LinkAutoController {
         return isUnliked ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
+    @PostMapping("/user/{post_id}/comment")
+    public ResponseEntity<Void> commentPost(
+        @Parameter(name = "post_id", description = "ID of the post to comment", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken,
+        @RequestBody String comment
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isCommented = linkAutoService.commentPost(post_id, user, comment);
+        return isCommented ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
 
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();

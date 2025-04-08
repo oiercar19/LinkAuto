@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.linkauto.restapi.dto.PostDTO;
+import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.repository.PostRepository;
@@ -147,6 +148,22 @@ public class LinkAutoService {
             return false;
         }
         post.removeLikes(username);
+        postRepository.save(post);
+    
+        return true;
+    }
+
+    public Boolean commentPost (Long postId, User u, String text) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            return false;
+        }
+        Post p = postRepository.findById(postId).orElse(null);
+        Comment c = new Comment();
+        c.setUser(u);
+        c.setText(text);
+        c.setPost(p);
+        post.addComentario(c);
         postRepository.save(post);
     
         return true;
