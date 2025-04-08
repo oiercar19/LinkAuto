@@ -189,6 +189,35 @@ public class LinkAutoController {
         
     }
     
+    @PostMapping("/user/{post_id}/like")
+    public ResponseEntity<Void> likePost(
+        @Parameter(name = "post_id", description = "ID of the post to like", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isLiked = linkAutoService.likePost(post_id, user.getUsername());
+        return isLiked ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/user/{post_id}/unlike")
+    public ResponseEntity<Void> unlikePost(
+        @Parameter(name = "post_id", description = "ID of the post to unlike", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isUnliked = linkAutoService.unlikePost(post_id, user.getUsername());
+        return isUnliked ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
 
 
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {

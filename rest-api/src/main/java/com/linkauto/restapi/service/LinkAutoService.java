@@ -130,6 +130,28 @@ public class LinkAutoService {
         return true;
     }
 
+    public Boolean likePost (Long postId, String username) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            return false;
+        }
+        post.setLikes(username);
+        postRepository.save(post);
+    
+        return true;
+    }
+
+    public Boolean unlikePost (Long postId, String username) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            return false;
+        }
+        post.removeLikes(username);
+        postRepository.save(post);
+    
+        return true;
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
