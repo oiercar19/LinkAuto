@@ -8,8 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.linkauto.restapi.dto.PostDTO;
+import com.linkauto.restapi.model.Comment;
+import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.repository.CommentRepository;
 import com.linkauto.restapi.repository.PostRepository;
 import com.linkauto.restapi.repository.UserRepository;
 
@@ -18,10 +21,12 @@ public class LinkAutoService {
     @Autowired
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final CommentRepository commentRepository;
 
-    public LinkAutoService(PostRepository postRepository, UserRepository userRepository) {
+    public LinkAutoService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
+        this.commentRepository = commentRepository;
     }
 
     public List<Post> getAllPosts() {
@@ -128,6 +133,57 @@ public class LinkAutoService {
         System.out.println(userToUnfollow.getFollowers());
     
         return true;
+    }
+
+    public Boolean likePost (Long postId, String username) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            return false;
+        }
+        post.setLikes(username);
+        postRepository.save(post);
+    
+        return true;
+    }
+
+    public Boolean unlikePost (Long postId, String username) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            return false;
+        }
+        post.removeLikes(username);
+        postRepository.save(post);
+    
+        return true;
+    }
+
+    public Boolean commentPost (Long postId, User u, CommentDTO comment) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            return false;
+        }
+        Post p = postRepository.findById(postId).orElse(null);
+        Comment c = new Comment();
+        c.setUser(u);
+        c.setText(comment.getText());
+        c.setPost(p);
+        c.setCreationDate(comment.getCreationDate());
+        post.addComentario(c);
+        postRepository.save(post);
+    
+        return true;
+    }
+
+    public List<Comment> getAllComments() {
+        return commentRepository.findAll();
+    }
+
+    public List<Comment> getCommentsByPostId(Long postId) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            return null;
+        }
+        return post.getComentarios();
     }
 
     public List<User> getAllUsers() {

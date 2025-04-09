@@ -215,5 +215,22 @@ public class User {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", name='" + name + '\'' +
+                ", profilePicture='" + profilePicture + '\'' +
+                ", email='" + email + '\'' +
+                ", cars=" + cars +
+                ", birthDate=" + birthDate +
+                ", gender=" + gender +
+                ", location='" + location + '\'' +
+                ", description='" + description + '\'' +
+                ", posts=" + posts +
+                ", followers=" + followers +
+                ", following=" + following +
+                '}';
+    }
     
 }

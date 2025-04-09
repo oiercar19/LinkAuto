@@ -17,10 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.linkauto.restapi.dto.CommentReturnerDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
+import com.linkauto.restapi.model.Comment;
+import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
@@ -189,7 +192,76 @@ public class LinkAutoController {
         
     }
     
+    @PostMapping("/user/{post_id}/like")
+    public ResponseEntity<Void> likePost(
+        @Parameter(name = "post_id", description = "ID of the post to like", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isLiked = linkAutoService.likePost(post_id, user.getUsername());
+        return isLiked ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
 
+    @PostMapping("/user/{post_id}/unlike")
+    public ResponseEntity<Void> unlikePost(
+        @Parameter(name = "post_id", description = "ID of the post to unlike", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isUnliked = linkAutoService.unlikePost(post_id, user.getUsername());
+        return isUnliked ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @PostMapping("/user/{post_id}/comment")
+    public ResponseEntity<Void> commentPost(
+        @Parameter(name = "post_id", description = "ID of the post to comment", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken,
+        @RequestBody CommentDTO comment
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isCommented = linkAutoService.commentPost(post_id, user, comment);
+        return isCommented ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/comments")
+    public ResponseEntity<List<CommentReturnerDTO>> getAllComments() {
+        List<Comment> comments = linkAutoService.getAllComments();
+        List<CommentReturnerDTO> commentReturnerDTOs = new ArrayList<>();
+        for (Comment comment : comments) {
+            CommentReturnerDTO commentReturnerDTO = parseCommentToCommentReturnerDTO(comment);
+            commentReturnerDTOs.add(commentReturnerDTO);
+        }
+        return ResponseEntity.ok(commentReturnerDTOs);
+    }
+
+    @GetMapping("/post/{post_id}/comments")
+    public ResponseEntity<List<CommentReturnerDTO>> getCommentsByPostId(
+        @Parameter(name = "post_id", description = "ID of the post", required = true, example = "1")
+        @PathVariable Long post_id
+    ) {
+        List<Comment> comments = linkAutoService.getCommentsByPostId(post_id);
+        List<CommentReturnerDTO> commentReturnerDTOs = new ArrayList<>();
+        for (Comment comment : comments) {
+            CommentReturnerDTO commentReturnerDTO = parseCommentToCommentReturnerDTO(comment);
+            commentReturnerDTOs.add(commentReturnerDTO);
+        }
+        return ResponseEntity.ok(commentReturnerDTOs);
+    }
 
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
@@ -214,5 +286,8 @@ public class LinkAutoController {
         return new UserReturnerDTO(u.getUsername(), u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
     }
 
+    private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {
+        return new CommentReturnerDTO(comment.getId(), comment.getText(), comment.getUser().getUsername(), comment.getPost().getId(), comment.getCreationDate());
+    }
     
 }
