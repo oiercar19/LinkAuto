@@ -284,12 +284,16 @@
                             </div>
                             
                             <div th:if="${currentUser.username != user.username}" class="mt-3">
-                                <form th:if="${!isFollowing}" th:action="@{'/user/' + ${user.username} + '/follow'}" method="post">
+                                <form th:if="${not #lists.contains(followings, user.username)}"
+                                    th:action="@{'/user/' + ${user.username} + '/follow?redirectUrl=/user/' + ${user.username}}" 
+                                    method="post">
                                     <button type="submit" class="btn btn-custom-primary">
                                         <i class="bi bi-person-plus"></i> Seguir
                                     </button>
                                 </form>
-                                <form th:if="${isFollowing}" th:action="@{'/user/' + ${user.username} + '/unfollow'}" method="post">
+                                <form th:if="${#lists.contains(followings, user.username)}"
+                                    th:action="@{'/user/' + ${user.username} + '/unfollow?redirectUrl=/user/' + ${user.username}}" 
+                                    method="post">
                                     <button type="submit" class="btn btn-outline-danger">
                                         <i class="bi bi-person-dash"></i> Dejar de seguir
                                     </button>

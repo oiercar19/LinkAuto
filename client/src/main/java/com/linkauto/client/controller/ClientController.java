@@ -167,11 +167,11 @@ public class ClientController {
     }
 
     @PostMapping("/user/{username}/follow")
-    public String followUser(@PathVariable String username, RedirectAttributes redirectAttributes) {
+    public String followUser(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
         try {
             linkAutoServiceProxy.followUser(token, username);
             redirectAttributes.addFlashAttribute("success", "Siguiendo a " + username);
-            return "redirect:/feed"; // Redirigir a la página de inicio después de seguir al usuario    
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/"); // Redirigir a la página de inicio después de seguir al usuario    
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al seguir al usuario: " + e.getMessage());
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
@@ -179,11 +179,11 @@ public class ClientController {
     }
 
     @PostMapping("/user/{username}/unfollow")
-    public String unfollowUser(@PathVariable String username, RedirectAttributes redirectAttributes) {
+    public String unfollowUser(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
         try {
             linkAutoServiceProxy.unfollowUser(token, username);
             redirectAttributes.addFlashAttribute("success", "Dejado de seguir a " + username);
-            return "redirect:/feed"; // Redirigir a la página de inicio después de dejar de seguir al usuario    
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/"); // Redirigir a la página de inicio después de seguir al usuario    
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al dejar de seguir al usuario: " + e.getMessage());
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
@@ -217,6 +217,20 @@ public class ClientController {
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
             model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
             
+            List<User> followings = linkAutoServiceProxy.getUserFollowing(currentUser.username());
+            List<String> followingUsernames = new ArrayList<>();
+            for (User following : followings) {
+                followingUsernames.add(following.username());
+            }
+            model.addAttribute("followings", followingUsernames);
+
+            int followersCount = linkAutoServiceProxy.getUserFollowers(username).size();
+            model.addAttribute("followersCount", followersCount);
+
+            int followingCount = linkAutoServiceProxy.getUserFollowing(username).size();
+            model.addAttribute("followingCount", followingCount);
+
+
             return "userProfile"; // Vista del perfil de usuario
         } else {
             return "redirect:/";
