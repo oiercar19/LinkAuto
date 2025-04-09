@@ -1,3 +1,5 @@
+https://github.com/oiercar19/LinkAuto/actions/workflows/maven.yml/badge.svg
+
 # LinkAuto
 
 LinkAuto es una red social para entusiastas de automóviles que permite a los usuarios conectarse, compartir contenido relacionado con vehículos y construir una comunidad en torno a su pasión por los coches.
