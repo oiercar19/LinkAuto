@@ -176,6 +176,14 @@ public class LinkAutoService {
         return commentRepository.findAll();
     }
 
+    public List<Comment> getCommentsByPostId(Long postId) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            return null;
+        }
+        return post.getComentarios();
+    }
+
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }

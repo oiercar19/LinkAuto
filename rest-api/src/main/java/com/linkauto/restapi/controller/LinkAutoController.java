@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.linkauto.restapi.dto.CommentReturnerDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.dto.UserDTO;
@@ -236,14 +237,29 @@ public class LinkAutoController {
         return isCommented ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/user/comments")
-    public ResponseEntity<List<Comment>> getAllComments() {
+    @GetMapping("/comments")
+    public ResponseEntity<List<CommentReturnerDTO>> getAllComments() {
         List<Comment> comments = linkAutoService.getAllComments();
-        if (comments.isEmpty()) {
-            System.err.println("No comments found.");
-            return ResponseEntity.noContent().build();
+        List<CommentReturnerDTO> commentReturnerDTOs = new ArrayList<>();
+        for (Comment comment : comments) {
+            CommentReturnerDTO commentReturnerDTO = parseCommentToCommentReturnerDTO(comment);
+            commentReturnerDTOs.add(commentReturnerDTO);
         }
-        return ResponseEntity.ok(comments);
+        return ResponseEntity.ok(commentReturnerDTOs);
+    }
+
+    @GetMapping("/comments/{post_id}")
+    public ResponseEntity<List<CommentReturnerDTO>> getCommentsByPostId(
+        @Parameter(name = "post_id", description = "ID of the post", required = true, example = "1")
+        @PathVariable Long post_id
+    ) {
+        List<Comment> comments = linkAutoService.getCommentsByPostId(post_id);
+        List<CommentReturnerDTO> commentReturnerDTOs = new ArrayList<>();
+        for (Comment comment : comments) {
+            CommentReturnerDTO commentReturnerDTO = parseCommentToCommentReturnerDTO(comment);
+            commentReturnerDTOs.add(commentReturnerDTO);
+        }
+        return ResponseEntity.ok(commentReturnerDTOs);
     }
 
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
@@ -269,5 +285,8 @@ public class LinkAutoController {
         return new UserReturnerDTO(u.getUsername(), u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
     }
 
+    private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {
+        return new CommentReturnerDTO(comment.getId(), comment.getText(), comment.getUser().getUsername(), comment.getPost().getId());
+    }
     
 }
