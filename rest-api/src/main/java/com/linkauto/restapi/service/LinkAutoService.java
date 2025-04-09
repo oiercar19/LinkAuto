@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.model.Comment;
+import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.repository.CommentRepository;
@@ -156,7 +157,7 @@ public class LinkAutoService {
         return true;
     }
 
-    public Boolean commentPost (Long postId, User u, String text) {
+    public Boolean commentPost (Long postId, User u, CommentDTO comment) {
         Post post = postRepository.findById(postId).orElse(null);
         if (post == null) {
             return false;
@@ -164,8 +165,9 @@ public class LinkAutoService {
         Post p = postRepository.findById(postId).orElse(null);
         Comment c = new Comment();
         c.setUser(u);
-        c.setText(text);
+        c.setText(comment.getText());
         c.setPost(p);
+        c.setCreationDate(comment.getCreationDate());
         post.addComentario(c);
         postRepository.save(post);
     

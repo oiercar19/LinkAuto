@@ -23,6 +23,7 @@ import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Comment;
+import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
@@ -227,7 +228,7 @@ public class LinkAutoController {
         @PathVariable Long post_id,
         @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken,
-        @RequestBody String comment
+        @RequestBody CommentDTO comment
     ) {
         if (!authService.isTokenValid(userToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
@@ -248,7 +249,7 @@ public class LinkAutoController {
         return ResponseEntity.ok(commentReturnerDTOs);
     }
 
-    @GetMapping("/comments/{post_id}")
+    @GetMapping("/post/{post_id}/comments")
     public ResponseEntity<List<CommentReturnerDTO>> getCommentsByPostId(
         @Parameter(name = "post_id", description = "ID of the post", required = true, example = "1")
         @PathVariable Long post_id
@@ -286,7 +287,7 @@ public class LinkAutoController {
     }
 
     private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {
-        return new CommentReturnerDTO(comment.getId(), comment.getText(), comment.getUser().getUsername(), comment.getPost().getId());
+        return new CommentReturnerDTO(comment.getId(), comment.getText(), comment.getUser().getUsername(), comment.getPost().getId(), comment.getCreationDate());
     }
     
 }
