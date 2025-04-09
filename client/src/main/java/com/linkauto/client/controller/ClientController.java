@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.linkauto.client.data.Comment;
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
@@ -154,11 +155,11 @@ public class ClientController {
     }
 
     @PostMapping("/deletePost")
-    public String deletePost(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deletePost(@RequestParam("id") Long id, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
         try {
             linkAutoServiceProxy.deletePost(token, id);
             redirectAttributes.addFlashAttribute("success", "Publicación eliminada con éxito");
-            return "redirect:/feed"; // Redirigir a la página de inicio después de eliminar la publicación
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/"); // Redirigir a la página de inicio después de seguir al usuario    
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al eliminar la publicación: " + e.getMessage());
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
@@ -166,11 +167,11 @@ public class ClientController {
     }
 
     @PostMapping("/user/{username}/follow")
-    public String followUser(@PathVariable String username, RedirectAttributes redirectAttributes) {
+    public String followUser(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
         try {
             linkAutoServiceProxy.followUser(token, username);
             redirectAttributes.addFlashAttribute("success", "Siguiendo a " + username);
-            return "redirect:/feed"; // Redirigir a la página de inicio después de seguir al usuario    
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/"); // Redirigir a la página de inicio después de seguir al usuario    
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al seguir al usuario: " + e.getMessage());
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
@@ -178,14 +179,61 @@ public class ClientController {
     }
 
     @PostMapping("/user/{username}/unfollow")
-    public String unfollowUser(@PathVariable String username, RedirectAttributes redirectAttributes) {
+    public String unfollowUser(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
         try {
             linkAutoServiceProxy.unfollowUser(token, username);
             redirectAttributes.addFlashAttribute("success", "Dejado de seguir a " + username);
-            return "redirect:/feed"; // Redirigir a la página de inicio después de dejar de seguir al usuario    
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/"); // Redirigir a la página de inicio después de seguir al usuario    
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al dejar de seguir al usuario: " + e.getMessage());
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
+    @GetMapping("/user/{username}")
+    public String userProfile(@PathVariable String username, Model model) {
+        if (token != null) {
+            User user = linkAutoServiceProxy.getUserByUsername(username);
+            model.addAttribute("user", user); // Agregar usuario al modelo
+            
+            User currentUser = linkAutoServiceProxy.getUserProfile(token);
+            model.addAttribute("currentUser", currentUser); // Agregar usuario al modelo
+            
+            List<Post> userPosts = new ArrayList<>(linkAutoServiceProxy.getUserPosts(username));
+            model.addAttribute("userPosts", userPosts); // Agregar publicaciones al modelo
+
+            Map<String, String> profilePictureByUsername = new HashMap<>();
+            Map<Long, Comment> commentsByPostId = new HashMap<>();
+            for (Post post : userPosts) {
+                List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
+                
+                for (Comment comment : comments) {
+                    String profilePicture = linkAutoServiceProxy.getUserByUsername(comment.username()).profilePicture();
+                    profilePictureByUsername.putIfAbsent(comment.username(), profilePicture);
+                    
+                    commentsByPostId.putIfAbsent(post.id(), comment);
+                }
+            }
+            model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
+            model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
+            
+            List<User> followings = linkAutoServiceProxy.getUserFollowing(currentUser.username());
+            List<String> followingUsernames = new ArrayList<>();
+            for (User following : followings) {
+                followingUsernames.add(following.username());
+            }
+            model.addAttribute("followings", followingUsernames);
+
+            int followersCount = linkAutoServiceProxy.getUserFollowers(username).size();
+            model.addAttribute("followersCount", followersCount);
+
+            int followingCount = linkAutoServiceProxy.getUserFollowing(username).size();
+            model.addAttribute("followingCount", followingCount);
+
+
+            return "userProfile"; // Vista del perfil de usuario
+        } else {
+            return "redirect:/";
         }
     }
     

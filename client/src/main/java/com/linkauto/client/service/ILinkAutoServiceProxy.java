@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.linkauto.client.data.Comment;
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
@@ -40,4 +41,6 @@ public interface ILinkAutoServiceProxy {
     List<User> getUserFollowing(String username);
     void followUser(String token, String usernameToFollow);
     void unfollowUser(String token, String usernameToUnfollow);
+    List<Post> getUserPosts(String username);
+    List<Comment> getCommentsByPostId(long postId);
 }
