@@ -17,13 +17,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.dto.CommentReturnerDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Comment;
-import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
@@ -266,14 +266,24 @@ public class LinkAutoController {
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
-            PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes());
+            List<Long> comment_ids = new ArrayList<>();
+            for (Comment comment : post.getComentarios()) {
+                comment_ids.add(comment.getId());
+            }
+
+            PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes(), comment_ids);
             postReturnerDTOs.add(postReturnerDTO);
         }
         return postReturnerDTOs;
     }
 
     private PostReturnerDTO parsePostToPostReturnerDTO(Post post) {
-        PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes());
+        List<Long> comment_ids = new ArrayList<>();
+        for (Comment comment : post.getComentarios()) {
+            comment_ids.add(comment.getId());
+        }
+    
+        PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes(), comment_ids);
         return postReturnerDTO;
     }
 
