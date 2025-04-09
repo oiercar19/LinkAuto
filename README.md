@@ -1,4 +1,4 @@
-https://github.com/oiercar19/LinkAuto/actions/workflows/maven.yml/badge.svg
+![example workflow](https://github.com/oiercar19/LinkAuto/actions/workflows/maven.yml/badge.svg)
 
 # LinkAuto
 
