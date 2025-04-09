@@ -7,5 +7,6 @@ public record Post(
     String username,
     String message,
     long creationDate,
-    List<String> images
+    List<String> images,
+    List<Long> comment_ids
 ) {} 

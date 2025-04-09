@@ -13,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
+import com.linkauto.client.data.Comment;
 import com.linkauto.client.data.Credentials;
 
 @Service
@@ -242,6 +243,46 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
                 case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
                 case 404 -> throw new RuntimeException("User not found");
                 default -> throw new RuntimeException("Failed to unfollow user: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public List<Post> getUserPosts(String username) {
+        String url = String.format("%s/api/user/%s/posts", apiBaseUrl, username);
+        
+        try {
+            ResponseEntity<List<Post>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Post>>() {}
+            );
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to get user posts: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public List<Comment> getCommentsByPostId(long postId) {
+        String url = String.format("%s/api/post/%d/comments", apiBaseUrl, postId);
+        
+        try {
+            ResponseEntity<List<Comment>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Comment>>() {}
+            );
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("Post not found");
+                default -> throw new RuntimeException("Failed to get comments: " + e.getStatusText());
             }
         }
     }

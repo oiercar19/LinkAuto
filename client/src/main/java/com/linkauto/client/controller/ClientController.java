@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.linkauto.client.data.Comment;
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
@@ -186,6 +187,35 @@ public class ClientController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al dejar de seguir al usuario: " + e.getMessage());
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
+    @GetMapping("/user/{username}")
+    public String userProfile(@PathVariable String username, Model model) {
+        if (token != null) {
+            User user = linkAutoServiceProxy.getUserByUsername(username);
+            model.addAttribute("user", user); // Agregar usuario al modelo
+            
+            User currentUser = linkAutoServiceProxy.getUserProfile(token);
+            model.addAttribute("currentUser", currentUser); // Agregar usuario al modelo
+            
+            List<Post> userPosts = new ArrayList<>(linkAutoServiceProxy.getUserPosts(username));
+            model.addAttribute("userPosts", userPosts); // Agregar publicaciones al modelo
+
+            Map<String, String> profilePictureByUsername = new HashMap<>();
+            for (Post post : userPosts) {
+                List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
+                
+                for (Comment comment : comments) {
+                    String profilePicture = linkAutoServiceProxy.getUserByUsername(comment.username()).profilePicture();
+                    profilePictureByUsername.putIfAbsent(comment.username(), profilePicture);
+                }
+            }
+            model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
+
+            return "userProfile"; // Vista del perfil de usuario
+        } else {
+            return "redirect:/";
         }
     }
     
