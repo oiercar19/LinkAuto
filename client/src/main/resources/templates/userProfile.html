@@ -356,7 +356,7 @@
                             
                             <!-- Delete Post Button (only shown to post owner) -->
                             <div class="ms-auto" th:if="${currentUser.username == user.username}">
-                                <form th:action="@{/deletePost}" method="post" style="display:inline;">
+                                <form th:action="@{'/deletePost?redirectUrl=/user/' + ${user.username}}" method="post" style="display:inline;">
                                     <input type="hidden" name="id" th:value="${post.id}">
                                     <button type="submit" class="btn btn-sm btn-outline-danger">
                                         <i class="bi bi-trash"></i>

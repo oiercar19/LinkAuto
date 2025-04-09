@@ -155,11 +155,11 @@ public class ClientController {
     }
 
     @PostMapping("/deletePost")
-    public String deletePost(@RequestParam("id") Long id, RedirectAttributes redirectAttributes) {
+    public String deletePost(@RequestParam("id") Long id, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
         try {
             linkAutoServiceProxy.deletePost(token, id);
             redirectAttributes.addFlashAttribute("success", "Publicación eliminada con éxito");
-            return "redirect:/feed"; // Redirigir a la página de inicio después de eliminar la publicación
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/"); // Redirigir a la página de inicio después de seguir al usuario    
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al eliminar la publicación: " + e.getMessage());
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
