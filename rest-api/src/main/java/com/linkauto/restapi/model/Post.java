@@ -1,12 +1,9 @@
 package com.linkauto.restapi.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.Set;
-import java.util.Map;
-import java.util.HashSet;
-import java.util.HashMap;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -21,9 +18,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "post")
@@ -127,7 +121,67 @@ public class Post {
     public Set<String> getLikes() {
         return likes;
     }
+
     
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        result = prime * result + ((usuario == null) ? 0 : usuario.hashCode());
+        result = prime * result + ((mensaje == null) ? 0 : mensaje.hashCode());
+        result = prime * result + (int) (fechaCreacion ^ (fechaCreacion >>> 32));
+        result = prime * result + ((imagenes == null) ? 0 : imagenes.hashCode());
+        result = prime * result + ((comentarios == null) ? 0 : comentarios.hashCode());
+        result = prime * result + ((likes == null) ? 0 : likes.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Post other = (Post) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        if (usuario == null) {
+            if (other.usuario != null)
+                return false;
+        } else if (!usuario.equals(other.usuario))
+            return false;
+        if (mensaje == null) {
+            if (other.mensaje != null)
+                return false;
+        } else if (!mensaje.equals(other.mensaje))
+            return false;
+        if (fechaCreacion != other.fechaCreacion)
+            return false;
+        if (imagenes == null) {
+            if (other.imagenes != null)
+                return false;
+        } else if (!imagenes.equals(other.imagenes))
+            return false;
+        if (comentarios == null) {
+            if (other.comentarios != null)
+                return false;
+        } else if (!comentarios.equals(other.comentarios))
+            return false;
+        if (likes == null) {
+            if (other.likes != null)
+                return false;
+        } else if (!likes.equals(other.likes))
+            return false;
+        return true;
+    }
+
     @Override
     public String toString() {
         return "Post [id=" + id + ", usuario=" + usuario + ", mensaje=" + mensaje 
