@@ -6,15 +6,17 @@ public class CommentReturnerDTO {
     private String text;
     private String username;
     private Long post_id;
+    private Long creationDate;
 
     public CommentReturnerDTO() {
     }
 
-    public CommentReturnerDTO(Long id, String text, String username, Long post_id) {
+    public CommentReturnerDTO(Long id, String text, String username, Long post_id, Long creationDate) {
         this.id = id;
         this.text = text;
         this.username = username;
         this.post_id = post_id;
+        this.creationDate = creationDate;
     }
 
     public Long getId() {
@@ -49,6 +51,14 @@ public class CommentReturnerDTO {
         this.post_id = post_id;
     }
 
+    public Long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Long creationDate) {
+        this.creationDate = creationDate;
+    }
+
     @Override
     public String toString() {
         return "CommentReturner{" +
@@ -56,6 +66,7 @@ public class CommentReturnerDTO {
                 ", text='" + text + '\'' +
                 ", username='" + username + '\'' +
                 ", post_id='" + post_id + '\'' +
+                ", creationDate=" + creationDate +
                 '}';
     }
 }

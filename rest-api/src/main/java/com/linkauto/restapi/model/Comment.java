@@ -23,13 +23,16 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
+    private Long creationDate;
 
     public Comment() {
     }
 
-    public Comment(String text, User user) {
+    public Comment(String text, User user, Post post, Long creationDate) {
         this.text = text;
         this.user = user;
+        this.post = post;
+        this.creationDate = creationDate;
     }
 
     public Long getId() {
@@ -58,6 +61,14 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    public Long getCreationDate() {
+        return creationDate;
+    }
+
+    public void setCreationDate(Long creationDate) {
+        this.creationDate = creationDate;
     }
 
     @Override
