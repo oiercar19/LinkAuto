@@ -17,10 +17,10 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // Unique identifier for the comment
     private String text;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "username", nullable = false)
     private User user; // username of the user who made the comment
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
 
@@ -30,6 +30,10 @@ public class Comment {
     public Comment(String text, User user) {
         this.text = text;
         this.user = user;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getText() {
