@@ -203,16 +203,20 @@ public class ClientController {
             model.addAttribute("userPosts", userPosts); // Agregar publicaciones al modelo
 
             Map<String, String> profilePictureByUsername = new HashMap<>();
+            Map<Long, Comment> commentsByPostId = new HashMap<>();
             for (Post post : userPosts) {
                 List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
                 
                 for (Comment comment : comments) {
                     String profilePicture = linkAutoServiceProxy.getUserByUsername(comment.username()).profilePicture();
                     profilePictureByUsername.putIfAbsent(comment.username(), profilePicture);
+                    
+                    commentsByPostId.putIfAbsent(post.id(), comment);
                 }
             }
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
-
+            model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
+            
             return "userProfile"; // Vista del perfil de usuario
         } else {
             return "redirect:/";

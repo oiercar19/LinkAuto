@@ -374,20 +374,23 @@
 
                         <!-- Comments Section -->
                         <div class="comment-section">
-                            <h6><i class="bi bi-chat-left-text"></i> Comentarios (<span th:text="${post.comments.size()}">0</span>)</h6>
+                            <h6><i class="bi bi-chat-left-text"></i> Comentarios (<span th:text="${post.comment_ids.size()}">0</span>)</h6>
                             
                             <!-- Display Comments -->
-                            <div th:each="comment : ${post.comments}" class="comment">
-                                <div class="d-flex">
-                                    <div class="user-avatar" style="width: 30px; height: 30px;">
-                                        <img th:src="${profilePictureByUsername.get(comment.username) != null && (#strings.endsWith(profilePictureByUsername.get(comment.username), '.png') || #strings.endsWith(profilePictureByUsername.get(comment.username), '.jpg')) ? profilePictureByUsername.get(comment.username) : '/images/default-avatar.png'}" 
-                                             alt="Profile" 
-                                             class="img-fluid rounded-circle" 
-                                             style="width: 30px; height: 30px;">
-                                    </div>
-                                    <div class="ms-2">
-                                        <strong th:text="${comment.user.username}">Usuario</strong>
-                                        <p class="mb-0" th:text="${comment.text}">Texto del comentario</p>
+                            <div th:each="comment_id : ${post.comment_ids}" class="comment">
+                                <!-- Definir la variable comment -->
+                                <div th:with="comment=${commentsByPostId.get(comment_id)}">
+                                    <div class="d-flex">
+                                        <div class="user-avatar" style="width: 30px; height: 30px;">
+                                            <img th:src="${profilePictureByUsername.get(comment.username) != null && (#strings.endsWith(profilePictureByUsername.get(comment.username), '.png') || #strings.endsWith(profilePictureByUsername.get(comment.username), '.jpg')) ? profilePictureByUsername.get(comment.username) : '/images/default-avatar.png'}" 
+                                                 alt="Profile" 
+                                                 class="img-fluid rounded-circle" 
+                                                 style="width: 30px; height: 30px;">
+                                        </div>
+                                        <div class="ms-2">
+                                            <strong th:text="${comment.user.username}">Usuario</strong>
+                                            <p class="mb-0" th:text="${comment.text}">Texto del comentario</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
