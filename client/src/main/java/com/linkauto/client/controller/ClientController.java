@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.linkauto.client.data.Comment;
+import com.linkauto.client.data.CommentCreator;
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
@@ -257,6 +259,18 @@ public class ClientController {
             return "redirect:/feed"; // Redirigir a la página de inicio después de quitar el me gusta a la publicación
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al quitar el me gusta a la publicación: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
+    @PostMapping("/user/{postId}/comment")
+    public String commentPost(@PathVariable Long postId, @ModelAttribute CommentCreator comment, RedirectAttributes redirectAttributes) {
+        try { 
+            linkAutoServiceProxy.commentPost(token, postId, comment);
+            redirectAttributes.addFlashAttribute("success", "Comentario agregado con éxito");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de comentar en la publicación
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al agregar el comentario: " + e.getMessage());
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
         }
     }

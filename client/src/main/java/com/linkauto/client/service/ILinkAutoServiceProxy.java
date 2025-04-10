@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.linkauto.client.data.Comment;
+import com.linkauto.client.data.CommentCreator;
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
@@ -45,4 +46,5 @@ public interface ILinkAutoServiceProxy {
     List<Comment> getCommentsByPostId(long postId);
     void unlikePost(String token, Long postId);
     void likePost(String token, Long postId);
+    void commentPost(String token, Long postId, CommentCreator comment);
 }
