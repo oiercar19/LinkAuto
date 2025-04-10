@@ -49,6 +49,8 @@ public class Post {
 
     public Post() {
         this.imagenes = new ArrayList<>();
+        this.comentarios = new ArrayList<>();
+        this.likes = new HashSet<>();
     }
 
     public Post(Long id, User usuario, String mensaje, long fechaCreacion, List<String> imagenes, List<Comment> comentarios, Set<String> likes) {
