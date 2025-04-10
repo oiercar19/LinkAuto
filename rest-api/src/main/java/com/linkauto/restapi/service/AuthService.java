@@ -62,4 +62,18 @@ public class AuthService {
         userRepository.save(user);
         return true;
     }
+
+    public boolean deleteUser(User user, String token) {
+        try {
+            // Eliminar el usuario del repositorio
+            userRepository.delete(user);
+    
+            // Eliminar el token asociado al usuario del tokenStore
+            tokenStore.entrySet().removeIf(entry -> entry.getValue().equals(user) && entry.getKey().equals(token));
+    
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }
