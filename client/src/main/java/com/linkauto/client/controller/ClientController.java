@@ -78,6 +78,7 @@ public class ClientController {
             for (Post post : posts) {
                 String profilePicture = linkAutoServiceProxy.getUserByUsername(post.username()).profilePicture();
                 profilePictureByUsername.putIfAbsent(post.username(), profilePicture);
+                
             }
             
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
@@ -234,6 +235,29 @@ public class ClientController {
             return "userProfile"; // Vista del perfil de usuario
         } else {
             return "redirect:/";
+        }
+    }
+
+    @PostMapping("/user/{postId}/like")
+    public String likePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.likePost(token, postId);
+            redirectAttributes.addFlashAttribute("success", "Publicación " + postId + " le gusta");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de dar me gusta a la publicación
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al dar me gusta a la publicación: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+    @PostMapping("/user/{postId}/unlike")
+    public String unlikePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.unlikePost(token, postId);
+            redirectAttributes.addFlashAttribute("success", "Publicación " + postId + " ya no le gusta");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de quitar el me gusta a la publicación
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al quitar el me gusta a la publicación: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
         }
     }
     

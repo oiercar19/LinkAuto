@@ -286,4 +286,35 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
+    @Override
+    public void likePost(String token, Long postId) {
+        String url = String.format("%s/api/user/%d/like?userToken=%s", apiBaseUrl, postId, token);
+        
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("Post not found");
+                default -> throw new RuntimeException("Failed to like post: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void unlikePost(String token, Long postId) {
+        String url = String.format("%s/api/user/%d/unlike?userToken=%s", apiBaseUrl, postId, token);
+        
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("Post not found");
+                default -> throw new RuntimeException("Failed to unlike post: " + e.getStatusText());
+            }
+        }
+    }
+    
 }
