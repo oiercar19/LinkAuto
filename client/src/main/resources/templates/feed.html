@@ -158,6 +158,19 @@
         .control-button:hover {
             background-color: #d8dadf;
         }
+
+        .comment-form {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .comment-input {
+            flex-grow: 1;
+            border-radius: 20px;
+            padding: 8px 15px;
+            border: 1px solid #e4e6eb;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -280,6 +293,12 @@
                     </div>
                     <small th:text="${#temporals.format(T(java.time.Instant).ofEpochMilli(post.creationDate), 'dd MMM yyyy, HH:mm')}">Tiempo</small>
                 </div>
+                <form th:action="@{'/user/' + ${post.id} + '/comment'}" method="post" class="d-flex align-items-center mt-3 mb-2 px-2" style="gap: 0.5rem;">
+                    <input type="text" name="text" class="form-control form-control-sm flex-grow-1 rounded-pill px-3 py-2" placeholder="Añadir comentario..." required />
+                    <button type="submit" class="btn btn-sm btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                        <i class="bi bi-send-fill"></i>
+                    </button>
+                </form>
             </div>
         </div>
     </div>
