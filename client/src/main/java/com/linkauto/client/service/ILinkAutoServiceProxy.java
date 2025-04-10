@@ -43,4 +43,6 @@ public interface ILinkAutoServiceProxy {
     void unfollowUser(String token, String usernameToUnfollow);
     List<Post> getUserPosts(String username);
     List<Comment> getCommentsByPostId(long postId);
+    void unlikePost(String token, Long postId);
+    void likePost(String token, Long postId);
 }
