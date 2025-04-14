@@ -206,20 +206,23 @@ public class ClientController {
             model.addAttribute("userPosts", userPosts); // Agregar publicaciones al modelo
 
             Map<String, String> profilePictureByUsername = new HashMap<>();
-            Map<Long, Comment> commentsByPostId = new HashMap<>();
+            Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
             for (Post post : userPosts) {
+                System.out.println("Post: " + post);
                 List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
                 
                 for (Comment comment : comments) {
                     String profilePicture = linkAutoServiceProxy.getUserByUsername(comment.username()).profilePicture();
                     profilePictureByUsername.putIfAbsent(comment.username(), profilePicture);
                     
-                    commentsByPostId.putIfAbsent(post.id(), comment);
+                    commentsByPostId.putIfAbsent(post.id(), new ArrayList<>());
+                    commentsByPostId.get(post.id()).add(comment);
                 }
             }
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
             model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
-            
+            System.out.println("Comentarios por ID de publicación: " + commentsByPostId);
+
             List<User> followings = linkAutoServiceProxy.getUserFollowing(currentUser.username());
             List<String> followingUsernames = new ArrayList<>();
             for (User following : followings) {
