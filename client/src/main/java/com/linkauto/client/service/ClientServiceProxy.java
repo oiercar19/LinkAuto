@@ -288,27 +288,27 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
         }
     }
     @Override
-public boolean sharePost(Long postId) {
-    // Se construye la URL para llamar al endpoint de compartir publicación.
-    String url = String.format("%s/api/client/posts/%d/share", apiBaseUrl, postId);
+    public boolean sharePost(Long postId) {
+        // Se construye la URL para llamar al endpoint que realiza el compartir.
+        String url = String.format("%s/api/linkauto/post/%d/share", apiBaseUrl, postId);
     
-    try {
-        // Se realiza la petición GET.
-        ResponseEntity<String> response = restTemplate.exchange(
-            url,
-            HttpMethod.GET,
-            null,
-            String.class
-        );
-        
-        // Retornamos true si la respuesta es 200 OK.
-        return response.getStatusCode() == HttpStatus.OK;
-    } catch (HttpStatusCodeException e) {
-        // Se gestiona el error según el código de estado HTTP.
-        switch (e.getStatusCode().value()) {
-            case 404 -> throw new RuntimeException("Publicación no encontrada");
-            default -> throw new RuntimeException("Error al compartir la publicación: " + e.getStatusText());
+        try {
+            // Se realiza la petición GET utilizando restTemplate.exchange.
+            ResponseEntity<String> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                String.class
+            );
+    
+            // Se considera exitosa si se recibe un código 200 OK.
+            return response.getStatusCode() == HttpStatus.OK;
+        } catch (HttpStatusCodeException e) {
+            // Se manejan los distintos errores HTTP.
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("Publicación no encontrada");
+                default -> throw new RuntimeException("Error al compartir la publicación: " + e.getStatusText());
+            }
         }
-    }
 }
 }

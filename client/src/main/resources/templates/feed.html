@@ -375,15 +375,19 @@
             });
         });
 
-        // Function to get share post link
         function getSharePost(postId) {
-            const shareLink = `${window.location.origin}/post/${postId}`;
-            navigator.clipboard.writeText(shareLink).then(() => {
-                alert('Enlace copiado al portapapeles: ' + shareLink);
-            }).catch(err => {
-                console.error('Error al copiar el enlace: ', err);
-            });
-        }
+    fetch(`/api/linkauto/post/${postId}/share`)
+        .then(response => response.json())
+        .then(data => {
+            // Se muestra el mensaje devuelto por el endpoint (por ejemplo, "Publicación compartida exitosamente")
+            alert(data.message);
+        })
+        .catch(error => {
+            console.error("Error al compartir la publicación:", error);
+            alert("Error al compartir la publicación");
+        });
+}
+
         /*function getSharePost(postId) {
     fetch(`/api/client/posts/${postId}/share`)
         .then(response => response.text())
