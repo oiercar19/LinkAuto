@@ -237,7 +237,9 @@
                                 method="post">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
                             </form>
-
+                            <button type="button" class="btn btn-outline-secondary">
+                                <i class="bi bi-share"></i>
+                            </button>
                             <form th:action="@{/deletePost?redirectUrl=/feed}" method="post" style="display:inline;">
                                 <input type="hidden" name="id" th:value="${post.id}">
                                 <button th:if="${post.username == username}" type="submit" class="btn btn-sm btn-outline-danger delete-post-btn">
