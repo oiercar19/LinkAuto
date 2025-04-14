@@ -1,13 +1,16 @@
 package com.linkauto.restapi.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.linkauto.restapi.dto.PostDTO;
@@ -73,7 +76,7 @@ public class LinkAutoServiceTest {
     @Test
     public void testCreatePost() {
         
-        PostDTO postDTO = new PostDTO("hola", new ArrayList<>());
+        PostDTO postDTO = new PostDTO("hola", Arrays.asList("image1", "image2"));
         User user = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Post expectedPost = new Post();
         expectedPost.setMensaje(postDTO.getMessage());
@@ -87,8 +90,36 @@ public class LinkAutoServiceTest {
         Post actualPost = linkAutoService.createPost(postDTO, user);
         expectedPost.setFechaCreacion(actualPost.getFechaCreacion());
         assertEquals(expectedPost, actualPost);
+        verify(postRepository).save(actualPost);
     }
 
+    @Test
+    public void testDeletePost() {
+        User usuarioPropietario = new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User usuarioExterno = new User("externalUsername", "externalName", "externalProfilePicture", "externalEmail", new ArrayList<>(), 654321L, Gender.FEMALE, "externalLocation", "externalPassword", "externalDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        //Test with empty post
+        Post post = new Post(1L, usuarioPropietario, "testMessage", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(postRepository.findById(1L)).thenReturn(java.util.Optional.of(post));
+        
+        boolean result = linkAutoService.deletePost(1L, usuarioExterno);
+        assertEquals(false, result);
+
+        result = linkAutoService.deletePost(1L, usuarioPropietario);
+        assertEquals(true, result);
+
+        verify(postRepository).delete(post);
+    
+        //Test con post null
+        when(postRepository.findById(2L)).thenReturn(Optional.empty());
+        Boolean result2 = linkAutoService.deletePost(2L, usuarioPropietario);
+        assertEquals(false, result2);
+
+        //Test con user de post null
+        Post post2 = new Post(3L, null, "testMessage", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(postRepository.findById(3L)).thenReturn(java.util.Optional.of(post2));
+        Boolean result3 = linkAutoService.deletePost(3L, usuarioPropietario);
+        assertEquals(false, result3);
+    }
 
 
 }

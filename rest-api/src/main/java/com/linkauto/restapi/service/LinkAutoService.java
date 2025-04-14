@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.model.Comment;
-import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.repository.CommentRepository;
@@ -62,17 +62,17 @@ public class LinkAutoService {
             return false;
         }
         
-        // Verificar si el usuario tiene permiso para borrar el post
-        if (!post.getUsuario().getUsername().equals(user.getUsername())) {
-            return false;
-        }
         
         try {            
+            // Verificar si el usuario tiene permiso para borrar el post
+            if (post.getUsuario() == null || !post.getUsuario().getUsername().equals(user.getUsername())) {
+                return false;
+            }
+            
             // Desasociar el post del usuario
             User postUser = post.getUsuario();
-            if (postUser != null) {
-                postUser.getPosts().remove(post);
-            }
+            postUser.getPosts().remove(post);
+
             
             // Limpiar imágenes
             post.getImagenes().clear();
