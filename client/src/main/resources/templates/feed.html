@@ -309,7 +309,7 @@
                     <small th:text="${#temporals.format(T(java.time.Instant).ofEpochMilli(post.creationDate), 'dd MMM yyyy, HH:mm')}">Tiempo</small>
                 </div>
                 <!-- Comments Section -->
-                <div class="comment-section">
+                <div class="comment-section d-none">
                     <h6><i class="bi bi-chat-left-text"></i> Comentarios (<span th:text="${post.comment_ids.size()}">0</span>)</h6>
                     
                     <!-- Display Comments -->
@@ -331,13 +331,13 @@
                             </div>
                         </div>
                     </div>
+                    <form th:action="@{'/user/' + ${post.id} + '/comment'}" method="post" class="d-flex align-items-center mt-3 mb-2 px-2" style="gap: 0.5rem;">
+                        <input type="text" name="text" class="form-control form-control-sm flex-grow-1 rounded-pill px-3 py-2" placeholder="Añadir comentario..." required />
+                        <button type="submit" class="btn btn-sm btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </form>
                 </div>
-                <form th:action="@{'/user/' + ${post.id} + '/comment'}" method="post" class="d-flex align-items-center mt-3 mb-2 px-2" style="gap: 0.5rem;">
-                    <input type="text" name="text" class="form-control form-control-sm flex-grow-1 rounded-pill px-3 py-2" placeholder="Añadir comentario..." required />
-                    <button type="submit" class="btn btn-sm btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
-                        <i class="bi bi-send-fill"></i>
-                    </button>
-                </form>
             </div>
         </div>
     </div>
