@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -234,6 +236,20 @@ public class ClientController {
             return "userProfile"; // Vista del perfil de usuario
         } else {
             return "redirect:/";
+        }
+    }
+        @Autowired
+    private ClientServiceProxy clientServiceProxy;
+
+    // Endpoint para compartir una publicación
+    @GetMapping("/posts/{postId}/share")
+    public ResponseEntity<String> sharePost(@PathVariable("postId") Long postId) {
+        boolean isShared = clientServiceProxy.sharePost(postId);
+        if (isShared) {
+            return ResponseEntity.ok("Publicación compartida exitosamente");
+        } else {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                                 .body("Error al compartir la publicación");
         }
     }
     

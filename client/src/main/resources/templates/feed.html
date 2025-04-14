@@ -237,9 +237,9 @@
                                 method="post">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
                             </form>
-                            <button type="button" class="btn btn-outline-secondary">
+                            <button type="button" class="btn btn-outline-secondary" onclick="getSharePost(postId)">
                                 <i class="bi bi-share"></i>
-                            </button>
+                            </button>                            
                             <form th:action="@{/deletePost?redirectUrl=/feed}" method="post" style="display:inline;">
                                 <input type="hidden" name="id" th:value="${post.id}">
                                 <button th:if="${post.username == username}" type="submit" class="btn btn-sm btn-outline-danger delete-post-btn">
@@ -374,6 +374,27 @@
                 alert('Hubo un error al procesar la creación del post: ' + error.message);
             });
         });
+
+        // Function to get share post link
+        function getSharePost(postId) {
+            const shareLink = `${window.location.origin}/post/${postId}`;
+            navigator.clipboard.writeText(shareLink).then(() => {
+                alert('Enlace copiado al portapapeles: ' + shareLink);
+            }).catch(err => {
+                console.error('Error al copiar el enlace: ', err);
+            });
+        }
+        /*function getSharePost(postId) {
+    fetch(`/api/client/posts/${postId}/share`)
+        .then(response => response.text())
+        .then(message => {
+            alert(message);
+        })
+        .catch(error => {
+            console.error("Error compartiendo la publicación:", error);
+        });
+}
+*/
     </script>
 </body>
 </html>
