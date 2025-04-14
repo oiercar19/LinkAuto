@@ -159,6 +159,21 @@
             background-color: #d8dadf;
         }
 
+        .comment-section {
+            margin-top: 15px;
+            border-top: 1px solid #eaeaea;
+            padding-top: 15px;
+            margin: 10px;
+        }
+
+        .comment {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin: 10px;
+        }
+
         .comment-form {
             display: flex;
             margin-top: 15px;
@@ -287,11 +302,35 @@
                             </button>
                         </form>
                 
-                        <button class="btn btn-sm btn-outline-secondary rounded-pill">
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill btn-comment">
                             <i class="bi bi-chat"></i> Comentar
                         </button>
                     </div>
                     <small th:text="${#temporals.format(T(java.time.Instant).ofEpochMilli(post.creationDate), 'dd MMM yyyy, HH:mm')}">Tiempo</small>
+                </div>
+                <!-- Comments Section -->
+                <div class="comment-section">
+                    <h6><i class="bi bi-chat-left-text"></i> Comentarios (<span th:text="${post.comment_ids.size()}">0</span>)</h6>
+                    
+                    <!-- Display Comments -->
+                    <div th:each="post_id : ${post.id}" class="comment">
+                        <!-- Definir la variable comment -->
+                        <div th:with="comments=${commentsByPostId.get(post_id)}">
+                            <div th:each="comment : ${comments}" class="d-flex align-items-start mb-2">
+                                <!-- User Avatar -->
+                                <div class="user-avatar" style="width: 30px; height: 30px;">
+                                    <img th:src="${profilePictureByUsername.get(comment.username) != null && (#strings.endsWith(profilePictureByUsername.get(comment.username), '.png') || #strings.endsWith(profilePictureByUsername.get(comment.username), '.jpg')) ? profilePictureByUsername.get(comment.username) : '/images/default-avatar.png'}" 
+                                            alt="Profile" 
+                                            class="img-fluid rounded-circle" 
+                                            style="width: 30px; height: 30px;">
+                                </div>
+                                <div class="ms-2">
+                                    <strong th:text="${comment.username}">Usuario</strong>
+                                    <p class="mb-0" th:text="${comment.text}">Texto del comentario</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <form th:action="@{'/user/' + ${post.id} + '/comment'}" method="post" class="d-flex align-items-center mt-3 mb-2 px-2" style="gap: 0.5rem;">
                     <input type="text" name="text" class="form-control form-control-sm flex-grow-1 rounded-pill px-3 py-2" placeholder="Añadir comentario..." required />
@@ -403,6 +442,21 @@
                 } else {
                     alert('Hubo un error al procesar la creación del post: ' + error.message);
                 }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            // Event listener para mostrar comentarios y formulario al hacer clic en "Comentar"
+            document.querySelectorAll('.btn-comment').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const postCard = button.closest('.post-card');
+                    const commentSection = postCard.querySelector('.comment-section');
+                    const commentForm = postCard.querySelector('.comment-form');
+        
+                    // Mostrar comentarios y formulario
+                    commentSection.classList.toggle('d-none');
+                    commentForm.classList.toggle('d-none');
+                });
             });
         });
     </script>

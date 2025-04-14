@@ -96,6 +96,18 @@ public class ClientController {
                 followingUsernames.add(following.username());
             }
             model.addAttribute("followings", followingUsernames); // Agregar seguidores al modelo
+            
+            Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
+            for (Post post : posts) {
+                List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
+                
+                for (Comment comment : comments) {                    
+                    commentsByPostId.putIfAbsent(post.id(), new ArrayList<>());
+                    commentsByPostId.get(post.id()).add(comment);
+                }
+            }
+            model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
+            
             return "feed"; // Vista para usuarios autenticados
         } else {
             // Token inválido o no proporcionado, redirigir al inicio de sesión
@@ -208,7 +220,6 @@ public class ClientController {
             Map<String, String> profilePictureByUsername = new HashMap<>();
             Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
             for (Post post : userPosts) {
-                System.out.println("Post: " + post);
                 List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
                 
                 for (Comment comment : comments) {
@@ -221,7 +232,6 @@ public class ClientController {
             }
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
             model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
-            System.out.println("Comentarios por ID de publicación: " + commentsByPostId);
 
             List<User> followings = linkAutoServiceProxy.getUserFollowing(currentUser.username());
             List<String> followingUsernames = new ArrayList<>();
