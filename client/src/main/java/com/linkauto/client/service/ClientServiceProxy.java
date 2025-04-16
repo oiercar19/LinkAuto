@@ -290,7 +290,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     @Override
     public boolean sharePost(Long postId) {
         // Se construye la URL para llamar al endpoint que realiza el compartir.
-        String url = String.format("%s/api/linkauto/post/%d/share", apiBaseUrl, postId);
+        String url = String.format("%s/api/posts/%d", apiBaseUrl, postId);
     
         try {
             // Se realiza la petición GET utilizando restTemplate.exchange.

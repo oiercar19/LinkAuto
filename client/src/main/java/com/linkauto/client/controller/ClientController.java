@@ -242,7 +242,7 @@ public class ClientController {
     private ClientServiceProxy clientServiceProxy;
 
     // Endpoint para compartir una publicación
-    @GetMapping("/posts/{postId}/share")
+    @GetMapping("/posts/{postId}")
     public ResponseEntity<String> sharePost(@PathVariable("postId") Long postId) {
         boolean isShared = clientServiceProxy.sharePost(postId);
         if (isShared) {
