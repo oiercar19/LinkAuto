@@ -243,14 +243,21 @@ public class ClientController {
 
     // Endpoint para compartir una publicación
     @GetMapping("/posts/{postId}")
-    public ResponseEntity<String> sharePost(@PathVariable("postId") Long postId) {
-        boolean isShared = clientServiceProxy.sharePost(postId);
-        if (isShared) {
-            return ResponseEntity.ok("Publicación compartida exitosamente");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                                 .body("Error al compartir la publicación");
+    public String sharePost(Model model, @PathVariable Long postId) {
+        Post post = clientServiceProxy.sharePost(postId);
+        model.addAttribute("post", post);
+        Map<String, String> profilePictureByUsername = new HashMap<>();
+        Map<Long, Comment> commentsByPostId = new HashMap<>();
+        List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
+        for (Comment comment : comments) {
+            String profilePicture = linkAutoServiceProxy.getUserByUsername(comment.username()).profilePicture();
+            profilePictureByUsername.putIfAbsent(comment.username(), profilePicture);
+            
+            commentsByPostId.putIfAbsent(post.id(), comment);
         }
+        model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
+        model.addAttribute("commentsByPostId", commentsByPostId);
+        return "post";
     }
     
     

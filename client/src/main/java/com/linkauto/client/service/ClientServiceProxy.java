@@ -288,21 +288,12 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
         }
     }
     @Override
-    public boolean sharePost(Long postId) {
+    public Post sharePost(Long postId) {
         // Se construye la URL para llamar al endpoint que realiza el compartir.
         String url = String.format("%s/api/posts/%d", apiBaseUrl, postId);
     
         try {
-            // Se realiza la petición GET utilizando restTemplate.exchange.
-            ResponseEntity<String> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                String.class
-            );
-    
-            // Se considera exitosa si se recibe un código 200 OK.
-            return response.getStatusCode() == HttpStatus.OK;
+            return restTemplate.getForObject(url,Post.class);
         } catch (HttpStatusCodeException e) {
             // Se manejan los distintos errores HTTP.
             switch (e.getStatusCode().value()) {
