@@ -89,6 +89,8 @@ public class LinkAutoControllerTest {
         when(authService.isTokenValid(userToken)).thenReturn(true);
         when(authService.getUserByToken(userToken)).thenReturn(usuario);
         Post post = new Post(1L, usuario, "testPost", 1234567, Arrays.asList("img1", "img2"), new ArrayList<>(), new HashSet<>());
+        post.addComentario(new Comment("testComment", usuario, post, 9999L));
+        post.addComentario(new Comment("testComment2", usuario, post, 9999L));
         PostDTO postDTO = new PostDTO("testPost", Arrays.asList("img1", "img2"));
         when(linkAutoService.createPost(postDTO, usuario)).thenReturn(post);
         ResponseEntity<PostReturnerDTO> result2 = linkAutoController.createPost(userToken, postDTO);
