@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.linkauto.client.data.Comment;
+import com.linkauto.client.data.CommentCreator;
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
@@ -78,6 +80,7 @@ public class ClientController {
             for (Post post : posts) {
                 String profilePicture = linkAutoServiceProxy.getUserByUsername(post.username()).profilePicture();
                 profilePictureByUsername.putIfAbsent(post.username(), profilePicture);
+                
             }
             
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
@@ -93,6 +96,18 @@ public class ClientController {
                 followingUsernames.add(following.username());
             }
             model.addAttribute("followings", followingUsernames); // Agregar seguidores al modelo
+            
+            Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
+            for (Post post : posts) {
+                List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
+                
+                for (Comment comment : comments) {                    
+                    commentsByPostId.putIfAbsent(post.id(), new ArrayList<>());
+                    commentsByPostId.get(post.id()).add(comment);
+                }
+            }
+            model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
+            
             return "feed"; // Vista para usuarios autenticados
         } else {
             // Token inválido o no proporcionado, redirigir al inicio de sesión
@@ -203,7 +218,7 @@ public class ClientController {
             model.addAttribute("userPosts", userPosts); // Agregar publicaciones al modelo
 
             Map<String, String> profilePictureByUsername = new HashMap<>();
-            Map<Long, Comment> commentsByPostId = new HashMap<>();
+            Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
             for (Post post : userPosts) {
                 List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
                 
@@ -211,12 +226,13 @@ public class ClientController {
                     String profilePicture = linkAutoServiceProxy.getUserByUsername(comment.username()).profilePicture();
                     profilePictureByUsername.putIfAbsent(comment.username(), profilePicture);
                     
-                    commentsByPostId.putIfAbsent(post.id(), comment);
+                    commentsByPostId.putIfAbsent(post.id(), new ArrayList<>());
+                    commentsByPostId.get(post.id()).add(comment);
                 }
             }
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
             model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
-            
+
             List<User> followings = linkAutoServiceProxy.getUserFollowing(currentUser.username());
             List<String> followingUsernames = new ArrayList<>();
             for (User following : followings) {
@@ -234,6 +250,41 @@ public class ClientController {
             return "userProfile"; // Vista del perfil de usuario
         } else {
             return "redirect:/";
+        }
+    }
+
+    @PostMapping("/user/{postId}/like")
+    public String likePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.likePost(token, postId);
+            redirectAttributes.addFlashAttribute("success", "Publicación " + postId + " le gusta");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de dar me gusta a la publicación
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al dar me gusta a la publicación: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+    @PostMapping("/user/{postId}/unlike")
+    public String unlikePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.unlikePost(token, postId);
+            redirectAttributes.addFlashAttribute("success", "Publicación " + postId + " ya no le gusta");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de quitar el me gusta a la publicación
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al quitar el me gusta a la publicación: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
+    @PostMapping("/user/{postId}/comment")
+    public String commentPost(@PathVariable Long postId, @ModelAttribute CommentCreator comment, RedirectAttributes redirectAttributes) {
+        try { 
+            linkAutoServiceProxy.commentPost(token, postId, comment);
+            redirectAttributes.addFlashAttribute("success", "Comentario agregado con éxito");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de comentar en la publicación
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al agregar el comentario: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
         }
     }
     

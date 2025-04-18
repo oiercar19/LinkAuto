@@ -292,7 +292,7 @@ public class LinkAutoController {
                 comment_ids.add(comment.getId());
             }
 
-            PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes(), comment_ids);
+            PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes(), comment_ids, post.getLikes());
             postReturnerDTOs.add(postReturnerDTO);
         }
         return postReturnerDTOs;
@@ -304,7 +304,7 @@ public class LinkAutoController {
             comment_ids.add(comment.getId());
         }
     
-        PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes(), comment_ids);
+        PostReturnerDTO postReturnerDTO = new PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes(), comment_ids, post.getLikes());
         return postReturnerDTO;
     }
 

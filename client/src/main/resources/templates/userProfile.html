@@ -383,10 +383,11 @@
                             <h6><i class="bi bi-chat-left-text"></i> Comentarios (<span th:text="${post.comment_ids.size()}">0</span>)</h6>
                             
                             <!-- Display Comments -->
-                            <div th:each="comment_id : ${post.comment_ids}" class="comment">
+                            <div th:each="post_id : ${post.id}" class="comment">
                                 <!-- Definir la variable comment -->
-                                <div th:with="comment=${commentsByPostId.get(comment_id)}">
-                                    <div class="d-flex">
+                                <div th:with="comments=${commentsByPostId.get(post_id)}">
+                                    <div th:each="comment : ${comments}" class="d-flex align-items-start mb-2">
+                                        <!-- User Avatar -->
                                         <div class="user-avatar" style="width: 30px; height: 30px;">
                                             <img th:src="${profilePictureByUsername.get(comment.username) != null && (#strings.endsWith(profilePictureByUsername.get(comment.username), '.png') || #strings.endsWith(profilePictureByUsername.get(comment.username), '.jpg')) ? profilePictureByUsername.get(comment.username) : '/images/default-avatar.png'}" 
                                                  alt="Profile" 
