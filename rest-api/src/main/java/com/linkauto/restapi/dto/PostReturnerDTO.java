@@ -1,6 +1,7 @@
 package com.linkauto.restapi.dto;
 
 import java.util.List;
+import java.util.Set;
 
 public class PostReturnerDTO {
     private Long id;
@@ -9,17 +10,19 @@ public class PostReturnerDTO {
     private long creationDate;  
     private List<String> images;
     private List<Long> comment_ids;
+    private Set<String> likes;
     
     public PostReturnerDTO() {
     }
 
-    public PostReturnerDTO(Long id, String username, String message, long creationDate, List<String> images, List<Long> comment_ids) {
+    public PostReturnerDTO(Long id, String username, String message, long creationDate, List<String> images, List<Long> comment_ids, Set<String> likes) {
         this.id = id;
         this.username = username;
         this.message = message;
         this.creationDate = creationDate;
         this.images = images;
         this.comment_ids = comment_ids;
+        this.likes = likes;
     }
 
     public Long getId() {
@@ -70,6 +73,14 @@ public class PostReturnerDTO {
         this.comment_ids = comment_ids;
     }
 
+    public Set<String> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(Set<String> likes) {
+        this.likes = likes;
+    }
+
     @Override
     public String toString() {
         return "PostReturnerDTO{" +
@@ -79,6 +90,7 @@ public class PostReturnerDTO {
                 ", creationDate=" + creationDate +
                 ", images=" + images +
                 ", comment_ids=" + comment_ids +
+                ", likes=" + likes +
                 '}';
     }
 }

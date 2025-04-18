@@ -158,6 +158,34 @@
         .control-button:hover {
             background-color: #d8dadf;
         }
+
+        .comment-section {
+            margin-top: 15px;
+            border-top: 1px solid #eaeaea;
+            padding-top: 15px;
+            margin: 10px;
+        }
+
+        .comment {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin: 10px;
+        }
+
+        .comment-form {
+            display: flex;
+            margin-top: 15px;
+        }
+
+        .comment-input {
+            flex-grow: 1;
+            border-radius: 20px;
+            padding: 8px 15px;
+            border: 1px solid #e4e6eb;
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -238,7 +266,7 @@
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
                             </form>
 
-                            <form th:action="@{/deletePost}" method="post" style="display:inline;">
+                            <form th:action="@{/deletePost?redirectUrl=/feed}" method="post" style="display:inline;">
                                 <input type="hidden" name="id" th:value="${post.id}">
                                 <button th:if="${post.username == username}" type="submit" class="btn btn-sm btn-outline-danger delete-post-btn">
                                     <i class="bi bi-trash"></i>
@@ -261,14 +289,54 @@
                 
                 <div class="card-footer d-flex justify-content-between align-items-center">
                     <div class="d-flex">
-                        <button class="btn btn-sm btn-outline-primary rounded-pill me-2">
-                            <i class="bi bi-hand-thumbs-up"></i> Me gusta
-                        </button>
-                        <button class="btn btn-sm btn-outline-secondary rounded-pill">
+                        <form th:if="${not post.likes.contains(username)}" th:action="@{'/user/' + ${post.id} + '/like?redirectUrl=/feed'}" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-primary rounded-pill me-2">
+                                <i class="bi bi-hand-thumbs-up"></i> Like
+                            </button>
+                        </form>
+                    
+                    <!-- Quitar like si el usuario ya ha dado like -->
+                        <form th:if="${post.likes.contains(username)}" th:action="@{'/user/' + ${post.id} + '/unlike?redirectUrl=/feed'}" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill me-2">
+                                <i class="bi bi-hand-thumbs-up"></i> Dislike
+                            </button>
+                        </form>
+                
+                        <button class="btn btn-sm btn-outline-secondary rounded-pill btn-comment">
                             <i class="bi bi-chat"></i> Comentar
                         </button>
                     </div>
                     <small th:text="${#temporals.format(T(java.time.Instant).ofEpochMilli(post.creationDate), 'dd MMM yyyy, HH:mm')}">Tiempo</small>
+                </div>
+                <!-- Comments Section -->
+                <div class="comment-section d-none">
+                    <h6><i class="bi bi-chat-left-text"></i> Comentarios (<span th:text="${post.comment_ids.size()}">0</span>)</h6>
+                    
+                    <!-- Display Comments -->
+                    <div th:each="post_id : ${post.id}" class="comment">
+                        <!-- Definir la variable comment -->
+                        <div th:with="comments=${commentsByPostId.get(post_id)}">
+                            <div th:each="comment : ${comments}" class="d-flex align-items-start mb-2">
+                                <!-- User Avatar -->
+                                <div class="user-avatar" style="width: 30px; height: 30px;">
+                                    <img th:src="${profilePictureByUsername.get(comment.username) != null && (#strings.endsWith(profilePictureByUsername.get(comment.username), '.png') || #strings.endsWith(profilePictureByUsername.get(comment.username), '.jpg')) ? profilePictureByUsername.get(comment.username) : '/images/default-avatar.png'}" 
+                                            alt="Profile" 
+                                            class="img-fluid rounded-circle" 
+                                            style="width: 30px; height: 30px;">
+                                </div>
+                                <div class="ms-2">
+                                    <strong th:text="${comment.username}">Usuario</strong>
+                                    <p class="mb-0" th:text="${comment.text}">Texto del comentario</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <form th:action="@{'/user/' + ${post.id} + '/comment'}" method="post" class="d-flex align-items-center mt-3 mb-2 px-2" style="gap: 0.5rem;">
+                        <input type="text" name="text" class="form-control form-control-sm flex-grow-1 rounded-pill px-3 py-2" placeholder="Añadir comentario..." required />
+                        <button type="submit" class="btn btn-sm btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                            <i class="bi bi-send-fill"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -369,7 +437,26 @@
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert('Hubo un error al procesar la creación del post: ' + error.message);
+                if (error.message.includes('Error desconocido')) {
+                    window.location.href = '/error'; // Redirect to a custom error page
+                } else {
+                    alert('Hubo un error al procesar la creación del post: ' + error.message);
+                }
+            });
+        });
+        document.addEventListener('DOMContentLoaded', () => {
+            // Event listener para mostrar comentarios y formulario al hacer clic en "Comentar"
+            document.querySelectorAll('.btn-comment').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const postCard = button.closest('.post-card');
+                    const commentSection = postCard.querySelector('.comment-section');
+                    const commentForm = postCard.querySelector('.comment-form');
+        
+                    // Mostrar comentarios y formulario
+                    commentSection.classList.toggle('d-none');
+                    commentForm.classList.toggle('d-none');
+                });
             });
         });
     </script>
