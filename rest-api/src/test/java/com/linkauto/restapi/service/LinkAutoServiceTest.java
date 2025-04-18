@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
@@ -119,7 +120,9 @@ public class LinkAutoServiceTest {
         when(postRepository.findById(3L)).thenReturn(java.util.Optional.of(post2));
         Boolean result3 = linkAutoService.deletePost(3L, usuarioPropietario);
         assertEquals(false, result3);
-    }
 
+        when(postRepository.findById(100L)).thenThrow(new IllegalArgumentException());
+        assertFalse(linkAutoService.deletePost(100L, usuarioPropietario));
+    }
 
 }

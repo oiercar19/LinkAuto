@@ -53,17 +53,16 @@ public class LinkAutoService {
     
     @Transactional
     public boolean deletePost(Long id, User user) {
-        // Buscar el post
-        Post post = postRepository.findById(id)
-            .orElse(null);
-        
-        // Verificar si el post existe
-        if (post == null) {
-            return false;
-        }
-        
-        
         try {            
+            // Buscar el post
+            Post post = postRepository.findById(id)
+                .orElse(null);
+            
+            // Verificar si el post existe
+            if (post == null) {
+                return false;
+            }
+
             // Verificar si el usuario tiene permiso para borrar el post
             if (post.getUsuario() == null || !post.getUsuario().getUsername().equals(user.getUsername())) {
                 return false;
