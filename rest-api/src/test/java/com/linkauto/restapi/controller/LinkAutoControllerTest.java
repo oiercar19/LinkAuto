@@ -19,6 +19,7 @@ import org.springframework.http.ResponseEntity;
 
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
+import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
@@ -118,5 +119,18 @@ public class LinkAutoControllerTest {
         ResponseEntity<Void> result3 = linkAutoController.deletePost(3L, userToken);
         assertEquals(HttpStatus.NOT_FOUND, result3.getStatusCode());
         verify(linkAutoService, times(1)).deletePost(3L, usuario);
+    }
+
+    @Test
+    public void testGetUserFollowers(){
+        List<User> followers = new ArrayList<>();
+        followers.add(usuario);
+        followers.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
+        when(linkAutoService.getFollowersByUsername("test")).thenReturn(followers);
+        ResponseEntity<List<UserReturnerDTO>> result = linkAutoController.getUserFollowers("test");
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        assertEquals(2, result.getBody().size());
+        assertEquals("usuario2", result.getBody().get(1).getUsername());
     }
 }
