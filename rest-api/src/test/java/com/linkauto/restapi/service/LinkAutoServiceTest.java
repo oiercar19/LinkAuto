@@ -11,6 +11,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -177,4 +178,26 @@ public class LinkAutoServiceTest {
         verify(userRepository).save(userToFollow);
     }
 
+    @Test
+    public void testUnfollowUser(){
+        User userToUnfollow = new User("user1", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("user2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), Arrays.asList(userToUnfollow), new ArrayList<>());
+
+        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.save(userToUnfollow)).thenReturn(userToUnfollow);
+        doNothing().when(userRepository).flush();
+        
+
+
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userToUnfollow));
+        Boolean result1 = linkAutoService.unfollowUser(user, "user1");
+        assertTrue(result1);
+
+        when(userRepository.findByUsername("nullUser")).thenReturn(Optional.empty());
+        Boolean result2 = linkAutoService.unfollowUser(user, "nullUser");
+        assertFalse(result2);
+
+        verify(userRepository).save(user);
+        verify(userRepository).save(userToUnfollow);
+    }
 }
