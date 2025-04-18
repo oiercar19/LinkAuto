@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.Mockito.mock;
@@ -153,6 +154,27 @@ public class LinkAutoServiceTest {
         when(userRepository.findByUsername("nonExistentUsername")).thenReturn(Optional.empty());
         List<User> result2 = linkAutoService.getFollowingByUsername("nonExistentUsername");
         assertEquals(null, result2);
+    }
+
+    @Test
+    public void testFollowUser(){
+        User userToFollow = new User("user1", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("user2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.save(userToFollow)).thenReturn(userToFollow);
+
+
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userToFollow));
+        Boolean result1 = linkAutoService.followUser(user, "user1");
+        assertTrue(result1);
+
+        when(userRepository.findByUsername("nullUser")).thenReturn(Optional.empty());
+        Boolean result2 = linkAutoService.followUser(user, "nullUser");
+        assertFalse(result2);
+
+        verify(userRepository).save(user);
+        verify(userRepository).save(userToFollow);
     }
 
 }
