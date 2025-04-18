@@ -71,10 +71,11 @@ public class LinkAutoService {
             // Desasociar el post del usuario
             User postUser = post.getUsuario();
             postUser.getPosts().remove(post);
-
+            userRepository.save(postUser);
             
             // Limpiar imágenes
             post.getImagenes().clear();
+            postRepository.save(post);
             
             // Eliminar post
             postRepository.delete(post);

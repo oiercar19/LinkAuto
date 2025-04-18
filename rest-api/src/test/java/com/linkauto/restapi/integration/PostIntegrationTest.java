@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Ignore;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
@@ -31,12 +32,12 @@ public class PostIntegrationTest {
         List<String> cars = new ArrayList<>();
         cars.add("Audi R8");
         cars.add("Nissan Skyline");
-        UserRegisterDTO user = new UserRegisterDTO("userPruebas6", "userPruebas", "pp.jpg", "user@example.com", cars, 999L, "MALE", "Bilbao", "user123", "hola a todos"); 
+        UserRegisterDTO user = new UserRegisterDTO("integTestUser", "userPruebas", "pp.jpg", "user@example.com", cars, 999L, "MALE", "Bilbao", "user123", "hola a todos"); 
         ResponseEntity<Void> response = testRestTemplate.postForEntity("/auth/register", user, Void.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         
         // Login the user
-        CredencialesDTO credentials = new CredencialesDTO("userPruebas6", "user123");
+        CredencialesDTO credentials = new CredencialesDTO("integTestUser", "user123");
         ResponseEntity<String> response2 = testRestTemplate.postForEntity("/auth/login", credentials, String.class);
         assertEquals(HttpStatus.OK, response2.getStatusCode());
         String token = response2.getBody();
@@ -77,6 +78,13 @@ public class PostIntegrationTest {
         assertEquals(HttpStatus.NOT_FOUND, response6.getStatusCode());
 
         // Delete the user
-        //TODO no esta aun hecho el endpoint
+        System.out.println("User token: " + token);
+        ResponseEntity<Void> response7 = testRestTemplate.exchange(
+            "/api/user/integTestUser?userToken=" + token,
+            HttpMethod.DELETE,
+            null,
+            Void.class
+        );
+        assertEquals(HttpStatus.OK, response7.getStatusCode());
     }
 }
