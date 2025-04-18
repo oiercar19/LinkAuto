@@ -54,9 +54,10 @@ public class LinkAutoController {
     }
 
     @GetMapping("/posts/{id}")
-    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+    public ResponseEntity<PostReturnerDTO> getPostById(@PathVariable Long id) {
         Optional<Post> post = linkAutoService.getPostById(id);
-        return post.isPresent() ? ResponseEntity.ok(post.get()) : ResponseEntity.notFound().build();
+        PostReturnerDTO postReturnerDTO = parsePostToPostReturnerDTO(post.get());
+        return ResponseEntity.ok(postReturnerDTO);
     }
 
     @PostMapping("/posts")

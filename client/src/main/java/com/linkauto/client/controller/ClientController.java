@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -235,6 +237,27 @@ public class ClientController {
         } else {
             return "redirect:/";
         }
+    }
+        @Autowired
+    private ClientServiceProxy clientServiceProxy;
+
+    // Endpoint para compartir una publicación
+    @GetMapping("/posts/{postId}")
+    public String sharePost(Model model, @PathVariable Long postId) {
+        Post post = clientServiceProxy.sharePost(postId);
+        model.addAttribute("post", post);
+        Map<String, String> profilePictureByUsername = new HashMap<>();
+        Map<Long, Comment> commentsByPostId = new HashMap<>();
+        List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
+        for (Comment comment : comments) {
+            String profilePicture = linkAutoServiceProxy.getUserByUsername(comment.username()).profilePicture();
+            profilePictureByUsername.putIfAbsent(comment.username(), profilePicture);
+            
+            commentsByPostId.putIfAbsent(post.id(), comment);
+        }
+        model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
+        model.addAttribute("commentsByPostId", commentsByPostId);
+        return "post";
     }
     
     

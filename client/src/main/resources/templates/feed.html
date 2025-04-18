@@ -236,8 +236,7 @@
                                 th:action="@{'/user/' + ${post.username} + '/unfollow?redirectUrl=/feed'}" 
                                 method="post">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
-                            </form>
-
+                            </form>                            
                             <form th:action="@{/deletePost?redirectUrl=/feed}" method="post" style="display:inline;">
                                 <input type="hidden" name="id" th:value="${post.id}">
                                 <button th:if="${post.username == username}" type="submit" class="btn btn-sm btn-outline-danger delete-post-btn">
@@ -267,6 +266,10 @@
                         <button class="btn btn-sm btn-outline-secondary rounded-pill">
                             <i class="bi bi-chat"></i> Comentar
                         </button>
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill ms-2"
+                            th:onclick="'getSharePost(' + ${post.id} + ', event)'">
+                            <i class="bi bi-share"></i>
+                        </button>
                     </div>
                     <small th:text="${#temporals.format(T(java.time.Instant).ofEpochMilli(post.creationDate), 'dd MMM yyyy, HH:mm')}">Tiempo</small>
                 </div>
@@ -275,6 +278,29 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function getSharePost(postId) {
+            // Make sure we have the event object
+        event = event || window.event;
+    
+        // Copy the postId to clipboard
+        navigator.clipboard.writeText('localhost:8081/posts/' + postId)
+        .then(() => {
+            console.log("Post ID copied to clipboard:", postId);
+            
+            // Get the button that was clicked
+            const shareButton = event.target.closest('button');
+            const originalContent = shareButton.innerHTML;
+            
+            alert('Link copiado al portapapeles');
+        })
+        .catch(err => {
+            console.error('Failed to copy post ID:', err);
+            alert('No se pudo copiar el ID al portapapeles');
+        });
+        }
+    </script>
 
     <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
