@@ -168,4 +168,27 @@ public class LinkAutoControllerTest {
         verify(linkAutoService, times(1)).followUser(usuario, "test3");
     }
 
+    @Test
+    public void testUnfollowUser() {
+        String userToken = "1234";
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+        ResponseEntity<Void> result = linkAutoController.unfollowUser("test", userToken);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+
+        User test = new User("test", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        test.addFollower(usuario);
+        usuario.addFollowing(test);
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(usuario);
+        when(linkAutoService.unfollowUser(usuario, "test")).thenReturn(true);
+        ResponseEntity<Void> result2 = linkAutoController.unfollowUser("test", userToken);
+        assertEquals(HttpStatus.OK, result2.getStatusCode());
+        assertDoesNotThrow(() -> linkAutoController.unfollowUser("test", userToken));
+        verify(linkAutoService, times(2)).unfollowUser(usuario, "test");
+        
+        when(linkAutoService.unfollowUser(usuario, "test3")).thenReturn(false);
+        ResponseEntity<Void> result3 = linkAutoController.unfollowUser("test3", userToken);
+        assertEquals(HttpStatus.NOT_FOUND, result3.getStatusCode());
+        verify(linkAutoService, times(1)).unfollowUser(usuario, "test3");
+    }
 }
