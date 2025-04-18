@@ -99,4 +99,24 @@ public class LinkAutoControllerTest {
         assertEquals(Arrays.asList("img1", "img2"), result2.getBody().getImages());
     }
 
+    @Test
+    public void testDeletePost() {
+        String userToken = "1234";
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+        ResponseEntity<Void> result = linkAutoController.deletePost(1L, userToken);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(usuario);
+        when(linkAutoService.deletePost(2L, usuario)).thenReturn(true);
+        ResponseEntity<Void> result2 = linkAutoController.deletePost(2L, userToken);
+        assertEquals(HttpStatus.OK, result2.getStatusCode());
+        assertDoesNotThrow(() -> linkAutoController.deletePost(2L, userToken));
+        verify(linkAutoService, times(2)).deletePost(2L, usuario);
+
+        when(linkAutoService.deletePost(3L, usuario)).thenReturn(false);
+        ResponseEntity<Void> result3 = linkAutoController.deletePost(3L, userToken);
+        assertEquals(HttpStatus.NOT_FOUND, result3.getStatusCode());
+        verify(linkAutoService, times(1)).deletePost(3L, usuario);
+    }
 }
