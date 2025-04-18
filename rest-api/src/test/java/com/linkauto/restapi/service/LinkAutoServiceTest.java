@@ -125,4 +125,20 @@ public class LinkAutoServiceTest {
         assertFalse(linkAutoService.deletePost(100L, usuarioPropietario));
     }
 
+    @Test
+    public void testGetFollowersByUsername() {
+        List<User> followers = new ArrayList<>();
+        followers.add(new User());
+        followers.add(new User());
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), followers, new ArrayList<>())));
+        List<User> result = linkAutoService.getFollowersByUsername("testUsername");
+        assertEquals(followers, result);
+        assertEquals(2, result.size());
+
+        when(userRepository.findByUsername("nonExistentUsername")).thenReturn(Optional.empty());
+        List<User> result2 = linkAutoService.getFollowersByUsername("nonExistentUsername");
+        assertEquals(null, result2);
+    } 
+    
+
 }
