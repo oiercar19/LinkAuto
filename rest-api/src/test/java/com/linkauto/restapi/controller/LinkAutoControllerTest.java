@@ -146,4 +146,26 @@ public class LinkAutoControllerTest {
         assertEquals(2, result.getBody().size());
         assertEquals("usuario2", result.getBody().get(1).getUsername());
     }
+
+    @Test
+    public void testFollowUser() {
+        String userToken = "1234";
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+        ResponseEntity<Void> result = linkAutoController.followUser("test", userToken);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(usuario);
+        when(linkAutoService.followUser(usuario, "test")).thenReturn(true);
+        ResponseEntity<Void> result2 = linkAutoController.followUser("test", userToken);
+        assertEquals(HttpStatus.OK, result2.getStatusCode());
+        assertDoesNotThrow(() -> linkAutoController.followUser("test", userToken));
+        verify(linkAutoService, times(2)).followUser(usuario, "test");
+        
+        when(linkAutoService.followUser(usuario, "test3")).thenReturn(false);
+        ResponseEntity<Void> result3 = linkAutoController.followUser("test3", userToken);
+        assertEquals(HttpStatus.NOT_FOUND, result3.getStatusCode());
+        verify(linkAutoService, times(1)).followUser(usuario, "test3");
+    }
+
 }
