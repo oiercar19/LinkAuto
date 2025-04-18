@@ -133,4 +133,17 @@ public class LinkAutoControllerTest {
         assertEquals(2, result.getBody().size());
         assertEquals("usuario2", result.getBody().get(1).getUsername());
     }
+
+    @Test
+    public void testGetUserFollowing(){
+        List<User> following = new ArrayList<>();
+        following.add(usuario);
+        following.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
+        when(linkAutoService.getFollowingByUsername("test")).thenReturn(following);
+        ResponseEntity<List<UserReturnerDTO>> result = linkAutoController.getUserFollowing("test");
+        assertEquals(HttpStatus.OK, result.getStatusCode());
+        assertNotNull(result.getBody());
+        assertEquals(2, result.getBody().size());
+        assertEquals("usuario2", result.getBody().get(1).getUsername());
+    }
 }
