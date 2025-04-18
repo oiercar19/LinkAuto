@@ -128,9 +128,6 @@ public class LinkAutoService {
         userRepository.save(user);
         userRepository.save(userToUnfollow);
         userRepository.flush();
-
-        System.out.println(user.getFollowing());
-        System.out.println(userToUnfollow.getFollowers());
     
         return true;
     }

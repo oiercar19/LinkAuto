@@ -135,9 +135,7 @@ public class LinkAutoController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        System.out.println("User token real controller: " + userToken);
         boolean isDeleted = authService.deleteUser(loggedUser, userToken);
-        System.out.println("Is deleted: " + isDeleted);
         return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 

@@ -78,7 +78,6 @@ public class PostIntegrationTest {
         assertEquals(HttpStatus.NOT_FOUND, response6.getStatusCode());
 
         // Delete the user
-        System.out.println("User token: " + token);
         ResponseEntity<Void> response7 = testRestTemplate.exchange(
             "/api/user/integTestUser?userToken=" + token,
             HttpMethod.DELETE,
