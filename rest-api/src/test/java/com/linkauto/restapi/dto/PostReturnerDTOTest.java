@@ -2,6 +2,8 @@ package com.linkauto.restapi.dto;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,8 +21,9 @@ public class PostReturnerDTOTest {
     public void testAllArgsConstructor() {
         List<String> images = Arrays.asList("image1.jpg", "image2.jpg");
         List<Long> commentIds = Arrays.asList(1L, 2L, 3L);
+        Set<String> likes = new HashSet<>(Arrays.asList("user1", "user2"));
 
-        PostReturnerDTO dto = new PostReturnerDTO(1L, "testUser", "Test message", 123456789L, images, commentIds);
+        PostReturnerDTO dto = new PostReturnerDTO(1L, "testUser", "Test message", 123456789L, images, commentIds, likes);
 
         assertEquals(1L, dto.getId());
         assertEquals("testUser", dto.getUsername());
@@ -28,6 +31,7 @@ public class PostReturnerDTOTest {
         assertEquals(123456789L, dto.getCreationDate());
         assertEquals(images, dto.getImages());
         assertEquals(commentIds, dto.getComment_ids());
+        assertEquals(likes, dto.getLikes());
     }
 
     @Test
@@ -53,10 +57,11 @@ public class PostReturnerDTOTest {
     public void testToString() {
         List<String> images = Arrays.asList("image1.jpg", "image2.jpg");
         List<Long> commentIds = Arrays.asList(1L, 2L, 3L);
+        Set<String> likes = new HashSet<>(Arrays.asList("user1", "user2"));
 
-        PostReturnerDTO dto = new PostReturnerDTO(1L, "testUser", "Test message", 123456789L, images, commentIds);
+        PostReturnerDTO dto = new PostReturnerDTO(1L, "testUser", "Test message", 123456789L, images, commentIds, likes);
 
-        String expected = "PostReturnerDTO{id=1, username='testUser', message='Test message', creationDate=123456789, images=[image1.jpg, image2.jpg], comment_ids=[1, 2, 3]}";
+        String expected = "PostReturnerDTO{id=1, username='testUser', message='Test message', creationDate=123456789, images=[image1.jpg, image2.jpg], comment_ids=[1, 2, 3], likes=[user1, user2]}";
         assertEquals(expected, dto.toString());
     }
 }

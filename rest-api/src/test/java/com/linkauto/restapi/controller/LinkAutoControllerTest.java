@@ -68,13 +68,13 @@ public class LinkAutoControllerTest {
     public void testGetPostById() {
         Post post = new Post(1L, usuario, "testMessage", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         when(linkAutoService.getPostById(1L)).thenReturn(Optional.of(post));
-        ResponseEntity<Post> result = linkAutoController.getPostById(1L);
+        ResponseEntity<PostReturnerDTO> result = linkAutoController.getPostById(1L);
         assertEquals(HttpStatus.OK, result.getStatusCode());
         assertNotNull(result.getBody());
         assertEquals(1L, result.getBody().getId());
 
         when(linkAutoService.getPostById(2L)).thenReturn(Optional.empty());
-        ResponseEntity<Post> result2 = linkAutoController.getPostById(2L);
+        ResponseEntity<PostReturnerDTO> result2 = linkAutoController.getPostById(2L);
         assertEquals(HttpStatus.NOT_FOUND, result2.getStatusCode());
     }
 
