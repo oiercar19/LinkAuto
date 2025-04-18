@@ -140,5 +140,19 @@ public class LinkAutoServiceTest {
         assertEquals(null, result2);
     } 
     
+    @Test
+    public void testGetFollowingByUsername() {
+        List<User> followings = new ArrayList<>();
+        followings.add(new User());
+        followings.add(new User());
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), followings)));
+        List<User> result = linkAutoService.getFollowingByUsername("testUsername");
+        assertEquals(followings, result);
+        assertEquals(2, result.size());
+
+        when(userRepository.findByUsername("nonExistentUsername")).thenReturn(Optional.empty());
+        List<User> result2 = linkAutoService.getFollowingByUsername("nonExistentUsername");
+        assertEquals(null, result2);
+    }
 
 }
