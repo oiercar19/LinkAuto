@@ -57,6 +57,13 @@
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
         </dependency>
+
+        <!-- JUNIT Performance testing -->
+        <dependency>
+            <groupId>com.github.noconnor</groupId>
+            <artifactId>junitperf</artifactId>
+            <version>1.22.1</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
