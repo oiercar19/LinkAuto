@@ -240,7 +240,7 @@
                             <form th:action="@{/deletePost?redirectUrl=/feed}" method="post" style="display:inline;">
                                 <input type="hidden" name="id" th:value="${post.id}">
                                 <button th:if="${post.username == username}" type="submit" class="btn btn-sm btn-outline-danger delete-post-btn">
-                                    <i class="bi bi-trash"></i>
+                                    <i class="bi bi-trash"></i> Eliminar
                                 </button>
                             </form>
                         </div>
@@ -268,7 +268,7 @@
                         </button>
                         <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill ms-2"
                             th:onclick="'getSharePost(' + ${post.id} + ', event)'">
-                            <i class="bi bi-share"></i>
+                            <i class="bi bi-share"></i> Compartir
                         </button>
                     </div>
                     <small th:text="${#temporals.format(T(java.time.Instant).ofEpochMilli(post.creationDate), 'dd MMM yyyy, HH:mm')}">Tiempo</small>
