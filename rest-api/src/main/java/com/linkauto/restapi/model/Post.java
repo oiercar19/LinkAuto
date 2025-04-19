@@ -1,12 +1,10 @@
 package com.linkauto.restapi.model;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.Set;
-import java.util.Map;
 import java.util.HashSet;
-import java.util.HashMap;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.CollectionTable;
@@ -21,9 +19,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.JoinColumn;
 
 @Entity
 @Table(name = "post")
@@ -129,7 +124,28 @@ public class Post {
     public Set<String> getLikes() {
         return likes;
     }
-    
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, usuario, mensaje, fechaCreacion, imagenes, comentarios, likes);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+        Post other = (Post) obj;
+        return Objects.equals(id, other.id) &&
+            Objects.equals(usuario, other.usuario) &&
+            Objects.equals(mensaje, other.mensaje) &&
+            Objects.equals(fechaCreacion, other.fechaCreacion) &&
+            Objects.equals(imagenes, other.imagenes) &&
+            Objects.equals(comentarios, other.comentarios) &&
+            Objects.equals(likes, other.likes);
+    }
+
     @Override
     public String toString() {
         return "Post [id=" + id + ", usuario=" + usuario + ", mensaje=" + mensaje 

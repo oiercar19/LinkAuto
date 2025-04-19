@@ -1,0 +1,203 @@
+package com.linkauto.restapi.service;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+import com.linkauto.restapi.dto.PostDTO;
+import com.linkauto.restapi.model.Post;
+import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.model.User.Gender;
+import com.linkauto.restapi.repository.CommentRepository;
+import com.linkauto.restapi.repository.PostRepository;
+import com.linkauto.restapi.repository.UserRepository;
+
+
+public class LinkAutoServiceTest {
+    
+    private PostRepository postRepository;
+    private UserRepository userRepository;
+    private CommentRepository commentRepository;
+    private LinkAutoService linkAutoService;
+
+    @BeforeEach
+    public void setUp() {
+        postRepository = mock(PostRepository.class);
+        userRepository = mock(UserRepository.class);
+        commentRepository = mock(CommentRepository.class);
+        linkAutoService = new LinkAutoService(postRepository, userRepository, commentRepository);
+    }
+
+    @Test
+    public void testGetAllPosts() {
+
+        //Test with empty list
+        List<Post> expectedPosts = new ArrayList<>();
+        when(postRepository.findAll()).thenReturn(expectedPosts);
+        
+        List<Post> actualPosts = linkAutoService.getAllPosts();
+        assertEquals(expectedPosts, actualPosts);
+
+        //Test with non-empty list
+        List<Post> expectedPosts2 = new ArrayList<>();
+        when(postRepository.findAll()).thenReturn(expectedPosts2);
+
+        List<Post> actualPosts2 = linkAutoService.getAllPosts();
+        assertEquals(expectedPosts2, actualPosts2);
+
+    }
+
+    @Test
+    public void testGetPostById() {
+        //Test with empty post
+        Post expectedPost = new Post();
+        when(postRepository.findById(1L)).thenReturn(java.util.Optional.of(expectedPost));
+        
+        Post actualPost = linkAutoService.getPostById(1L).orElse(null);
+        assertEquals(expectedPost, actualPost);
+
+        //Test with non-empty post
+        Post expectedPost2 = new Post(2L, new User(), "hola", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(postRepository.findById(2L)).thenReturn(java.util.Optional.of(expectedPost2));
+
+        Post actualPost2 = linkAutoService.getPostById(2L).orElse(null);
+        assertEquals(expectedPost2, actualPost2);
+    }
+
+    @Test
+    public void testCreatePost() {
+        
+        PostDTO postDTO = new PostDTO("hola", Arrays.asList("image1", "image2"));
+        User user = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Post expectedPost = new Post();
+        expectedPost.setMensaje(postDTO.getMessage());
+        expectedPost.setUsuario(user);
+        for (String imagen : postDTO.getImages()) {
+            expectedPost.addImagen(imagen); //image url
+        }
+        when(postRepository.save(expectedPost)).thenReturn(expectedPost);
+        when(userRepository.save(user)).thenReturn(user);
+        
+        Post actualPost = linkAutoService.createPost(postDTO, user);
+        expectedPost.setFechaCreacion(actualPost.getFechaCreacion());
+        assertEquals(expectedPost, actualPost);
+        verify(postRepository).save(actualPost);
+    }
+
+    @Test
+    public void testDeletePost() {
+        User usuarioPropietario = new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User usuarioExterno = new User("externalUsername", "externalName", "externalProfilePicture", "externalEmail", new ArrayList<>(), 654321L, Gender.FEMALE, "externalLocation", "externalPassword", "externalDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        //Test with empty post
+        Post post = new Post(1L, usuarioPropietario, "testMessage", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(postRepository.findById(1L)).thenReturn(java.util.Optional.of(post));
+        
+        boolean result = linkAutoService.deletePost(1L, usuarioExterno);
+        assertEquals(false, result);
+
+        result = linkAutoService.deletePost(1L, usuarioPropietario);
+        assertEquals(true, result);
+
+        verify(postRepository).delete(post);
+    
+        //Test con post null
+        when(postRepository.findById(2L)).thenReturn(Optional.empty());
+        Boolean result2 = linkAutoService.deletePost(2L, usuarioPropietario);
+        assertEquals(false, result2);
+
+        //Test con user de post null
+        Post post2 = new Post(3L, null, "testMessage", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(postRepository.findById(3L)).thenReturn(java.util.Optional.of(post2));
+        Boolean result3 = linkAutoService.deletePost(3L, usuarioPropietario);
+        assertEquals(false, result3);
+
+        when(postRepository.findById(100L)).thenThrow(new IllegalArgumentException());
+        assertFalse(linkAutoService.deletePost(100L, usuarioPropietario));
+    }
+
+    @Test
+    public void testGetFollowersByUsername() {
+        List<User> followers = new ArrayList<>();
+        followers.add(new User());
+        followers.add(new User());
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), followers, new ArrayList<>())));
+        List<User> result = linkAutoService.getFollowersByUsername("testUsername");
+        assertEquals(followers, result);
+        assertEquals(2, result.size());
+
+        when(userRepository.findByUsername("nonExistentUsername")).thenReturn(Optional.empty());
+        List<User> result2 = linkAutoService.getFollowersByUsername("nonExistentUsername");
+        assertEquals(null, result2);
+    } 
+    
+    @Test
+    public void testGetFollowingByUsername() {
+        List<User> followings = new ArrayList<>();
+        followings.add(new User());
+        followings.add(new User());
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), followings)));
+        List<User> result = linkAutoService.getFollowingByUsername("testUsername");
+        assertEquals(followings, result);
+        assertEquals(2, result.size());
+
+        when(userRepository.findByUsername("nonExistentUsername")).thenReturn(Optional.empty());
+        List<User> result2 = linkAutoService.getFollowingByUsername("nonExistentUsername");
+        assertEquals(null, result2);
+    }
+
+    @Test
+    public void testFollowUser(){
+        User userToFollow = new User("user1", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("user2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.save(userToFollow)).thenReturn(userToFollow);
+
+
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userToFollow));
+        Boolean result1 = linkAutoService.followUser(user, "user1");
+        assertTrue(result1);
+
+        when(userRepository.findByUsername("nullUser")).thenReturn(Optional.empty());
+        Boolean result2 = linkAutoService.followUser(user, "nullUser");
+        assertFalse(result2);
+
+        verify(userRepository).save(user);
+        verify(userRepository).save(userToFollow);
+    }
+
+    @Test
+    public void testUnfollowUser(){
+        User userToUnfollow = new User("user1", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("user2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), Arrays.asList(userToUnfollow), new ArrayList<>());
+
+        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.save(userToUnfollow)).thenReturn(userToUnfollow);
+        doNothing().when(userRepository).flush();
+        
+
+
+        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userToUnfollow));
+        Boolean result1 = linkAutoService.unfollowUser(user, "user1");
+        assertTrue(result1);
+
+        when(userRepository.findByUsername("nullUser")).thenReturn(Optional.empty());
+        Boolean result2 = linkAutoService.unfollowUser(user, "nullUser");
+        assertFalse(result2);
+
+        verify(userRepository).save(user);
+        verify(userRepository).save(userToUnfollow);
+    }
+}
