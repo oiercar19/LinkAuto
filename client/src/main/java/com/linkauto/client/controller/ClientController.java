@@ -290,6 +290,18 @@ public class ClientController {
         }
     }
 
+    @PostMapping("/user/{postId}/commentInProfile")
+    public String commentPostInProfile(@PathVariable Long postId, @ModelAttribute CommentCreator comment, RedirectAttributes redirectAttributes) {
+        try { 
+            linkAutoServiceProxy.commentPost(token, postId, comment);
+            redirectAttributes.addFlashAttribute("success", "Comentario agregado con éxito");
+            return "redirect:/user/" + username; // Redirigir a la página de inicio después de comentar en la publicación
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al agregar el comentario: " + e.getMessage());
+            return "redirect:/user/" + username; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
     // Endpoint para compartir una publicación
     @GetMapping("/posts/{postId}")
     public String sharePost(Model model, @PathVariable Long postId) {
