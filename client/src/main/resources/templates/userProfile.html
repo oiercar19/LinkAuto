@@ -403,11 +403,10 @@
                             </div>
                             
                             <!-- Add Comment Form -->
-                            <form th:action="@{/addComment}" method="post" class="comment-form">
-                                <input type="hidden" name="postId" th:value="${post.id}">
-                                <input type="text" name="commentText" class="form-control comment-input" placeholder="Escribe un comentario...">
-                                <button type="submit" class="btn btn-custom-primary">
-                                    <i class="bi bi-send"></i>
+                            <form th:action="@{'/user/' + ${post.id} + '/commentInProfile'}" method="post" class="d-flex align-items-center mt-3 mb-2 px-2" style="gap: 0.5rem;">
+                                <input type="text" name="text" class="form-control form-control-sm flex-grow-1 rounded-pill px-3 py-2" placeholder="Añadir comentario..." required />
+                                <button type="submit" class="btn btn-sm btn-outline-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 36px; height: 36px;">
+                                    <i class="bi bi-send-fill"></i>
                                 </button>
                             </form>
                         </div>
