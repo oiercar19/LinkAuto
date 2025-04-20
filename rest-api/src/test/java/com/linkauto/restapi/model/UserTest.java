@@ -70,9 +70,9 @@ public class UserTest {
         user.setDescription("New Desc");
 
         assertEquals("user2", user.getUsername());
-        assertEquals("Manola dominguez", user.getName());
+        assertEquals("Alejandro Garcia", user.getName());
         assertEquals("newpic.jpg", user.getProfilePicture());
-        assertEquals("manola@example.com", user.getEmail());
+        assertEquals("garcia@ejempo.com", user.getEmail());
         assertEquals(newCars, user.getCars());
         assertEquals(newBirthDate, user.getBirthDate());
         assertEquals(User.Gender.FEMALE, user.getGender());
