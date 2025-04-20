@@ -10,6 +10,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import com.linkauto.restapi.model.User.Gender;
+
 public class CommentTest {
     
     private Comment comment;
@@ -49,12 +51,58 @@ public class CommentTest {
         comment.setPost(post);
         assertEquals(post, comment.getPost());
     }
-    @Test
-    void testToString() {
+     @Test
+    public void testToString() {
+        // 1. Creamos un User con valores fijos para tener un toString() determinista
+        User user = new User(
+            "testUsername",
+            "testName",
+            "testProfilePicture",
+            "testEmail",
+            new ArrayList<>(),   // seguidores
+            123456L,             // fechaRegistro
+            Gender.MALE,
+            "testLocation",
+            "testPassword",
+            "testDescription",
+            new ArrayList<>(),   // follows
+            new ArrayList<>(),   // blocked
+            new ArrayList<>()    // favoritos
+        );
+
+        // 2. Creamos un Post (necesario en el constructor de Comment, aunque no salga en toString)
+        Post post = new Post(
+            1L,
+            user,
+            "mensaje irrelevante",
+            999999999L,
+            Arrays.asList("img1.jpg", "img2.jpg"),
+            new ArrayList<>(),
+            new HashSet<>()
+        );
+
+        // 3. Instanciamos el Comment bajo prueba
+        Comment comment = new Comment("texto de prueba", user, post, 1616161616L);
+
+        // 4. Construimos la cadena esperada EXACTA
         String expected = "Comment{" +
             "text='" + comment.getText() + '\'' +
-            ", user=" + comment.getUser() +
+            ", user=" + user +
             '}';
+
+        // 5. Verificamos que toString() produce lo esperado
         assertEquals(expected, comment.toString());
+    }
+    @Test
+    public void constructorTest() {
+        User user = new User();
+        Post post = new Post();
+        Long creationDate = 123456789L;
+        Comment comment = new Comment("test comment", user, post, creationDate);
+
+        assertEquals("test comment", comment.getText());
+        assertEquals(user, comment.getUser());
+        assertEquals(post, comment.getPost());
+        assertEquals(creationDate, comment.getCreationDate());
     }
 }
