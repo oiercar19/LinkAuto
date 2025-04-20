@@ -47,4 +47,5 @@ public interface ILinkAutoServiceProxy {
     void unlikePost(String token, Long postId);
     void likePost(String token, Long postId);
     void commentPost(String token, Long postId, CommentCreator comment);
+    Post sharePost(Long postId);
 }

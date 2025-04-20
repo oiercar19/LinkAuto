@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpStatusCodeException;
@@ -287,7 +288,6 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
-
     @Override
     public void commentPost(String token, Long postId, CommentCreator comment) {
         String url = String.format("%s/api/user/%d/comment?userToken=%s", apiBaseUrl, postId, token);
@@ -333,4 +333,19 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
         }
     }
 
+    @Override
+    public Post sharePost(Long postId) {
+        // Se construye la URL para llamar al endpoint que realiza el compartir.
+        String url = String.format("%s/api/posts/%d", apiBaseUrl, postId);
+    
+        try {
+            return restTemplate.getForObject(url,Post.class);
+        } catch (HttpStatusCodeException e) {
+            // Se manejan los distintos errores HTTP.
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("Publicación no encontrada");
+                default -> throw new RuntimeException("Error al compartir la publicación: " + e.getStatusText());
+            }
+        }
+    }
 }
