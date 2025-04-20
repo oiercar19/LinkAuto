@@ -8,6 +8,7 @@ class RestApiApplicationTests {
 
 	@Test
 	void contextLoads() {
+		RestApiApplication.main(new String[]{});
 	}
 
 }
