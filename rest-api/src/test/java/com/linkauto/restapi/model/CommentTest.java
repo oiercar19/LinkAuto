@@ -53,7 +53,6 @@ public class CommentTest {
     }
      @Test
     public void testToString() {
-        // 1. Creamos un User con valores fijos para tener un toString() determinista
         User user = new User(
             "testUsername",
             "testName",
@@ -70,7 +69,6 @@ public class CommentTest {
             new ArrayList<>()    // favoritos
         );
 
-        // 2. Creamos un Post (necesario en el constructor de Comment, aunque no salga en toString)
         Post post = new Post(
             1L,
             user,
@@ -81,16 +79,14 @@ public class CommentTest {
             new HashSet<>()
         );
 
-        // 3. Instanciamos el Comment bajo prueba
+
         Comment comment = new Comment("texto de prueba", user, post, 1616161616L);
 
-        // 4. Construimos la cadena esperada EXACTA
         String expected = "Comment{" +
             "text='" + comment.getText() + '\'' +
             ", user=" + user +
             '}';
 
-        // 5. Verificamos que toString() produce lo esperado
         assertEquals(expected, comment.toString());
     }
     @Test
