@@ -23,13 +23,13 @@ public class UserTest {
         List<User> following = new ArrayList<>();
         user = new User(
             "user1",
-            "John Doe",
+            "Alejandro Martinez",
             "profile.jpg",
-            "john@example.com",
+            "mega@ejemplo.com",
             cars,
             BIRTH_DATE,
             User.Gender.MALE,
-            "NY",
+            "Bilbao",
             "password123",
             "Desc",
             posts,
@@ -46,20 +46,20 @@ public class UserTest {
     @Test
     public void testGettersAndSetters() {
         assertEquals("user1", user.getUsername());
-        assertEquals("John Doe", user.getName());
+        assertEquals("Alejandro Martinez", user.getName());
         assertEquals("profile.jpg", user.getProfilePicture());
-        assertEquals("john@example.com", user.getEmail());
+        assertEquals("mega@ejemplo.com", user.getEmail());
         assertEquals(Arrays.asList("Toyota", "BMW"), user.getCars());
         assertEquals(BIRTH_DATE, user.getBirthDate());
         assertEquals(User.Gender.MALE, user.getGender());
-        assertEquals("NY", user.getLocation());
+        assertEquals("Bilbao", user.getLocation());
         assertEquals("password123", user.getPassword());
         assertEquals("Desc", user.getDescription());
 
         user.setUsername("user2");
-        user.setName("Jane Doe");
+        user.setName("Alejandro Garcia");
         user.setProfilePicture("newpic.jpg");
-        user.setEmail("jane@example.com");
+        user.setEmail("garcia@ejempo.com");
         List<String> newCars = Arrays.asList("Audi");
         user.setCars(newCars);
         long newBirthDate = 123456789L;
@@ -70,9 +70,9 @@ public class UserTest {
         user.setDescription("New Desc");
 
         assertEquals("user2", user.getUsername());
-        assertEquals("Jane Doe", user.getName());
+        assertEquals("Manola dominguez", user.getName());
         assertEquals("newpic.jpg", user.getProfilePicture());
-        assertEquals("jane@example.com", user.getEmail());
+        assertEquals("manola@example.com", user.getEmail());
         assertEquals(newCars, user.getCars());
         assertEquals(newBirthDate, user.getBirthDate());
         assertEquals(User.Gender.FEMALE, user.getGender());
@@ -148,7 +148,7 @@ public class UserTest {
         User u1 = new User(
             "sameUser",
             "A",
-            "picA",
+            "pic A",
             "a@mail",
             new ArrayList<>(),
             111L,
@@ -163,7 +163,7 @@ public class UserTest {
         User u2 = new User(
             "sameUser",
             "B",
-            "picB",
+            "pic B",
             "b@mail",
             new ArrayList<>(),
             222L,
@@ -181,7 +181,7 @@ public class UserTest {
         User u3 = new User(
             "otherUser",
             "A",
-            "picA",
+            "pic A",
             "a@mail",
             new ArrayList<>(),
             111L,
