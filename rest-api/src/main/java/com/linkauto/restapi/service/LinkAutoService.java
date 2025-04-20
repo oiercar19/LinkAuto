@@ -167,7 +167,7 @@ public class LinkAutoService {
         c.setUser(u);
         c.setText(comment.getText());
         c.setPost(p);
-        c.setCreationDate(comment.getCreationDate());
+        c.setCreationDate(System.currentTimeMillis());
         post.addComentario(c);
         postRepository.save(post);
     
