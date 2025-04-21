@@ -110,12 +110,25 @@ public class LinkAutoController {
         @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken, 
         @RequestBody UserDTO userDetails) {
-            if (!authService.isTokenValid(userToken)) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
-            User oldUser = authService.getUserByToken(userToken);
-            User updatedUser = parseUserDTOToUser(userDetails, oldUser);
-            return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        User requestingUser = authService.getUserByToken(userToken);
+        User oldUser = authService.getUserByToken(userToken);
+    
+        // Verificar si el usuario que realiza la solicitud es administrador
+        if (!requestingUser.getRole().equals(Role.ADMIN) && !requestingUser.getUsername().equals(oldUser.getUsername())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    
+        // Si el usuario no es administrador, no puede cambiar el rol
+        if (!requestingUser.getRole().equals(Role.ADMIN) && !oldUser.getRole().toString().equals(userDetails.getRole().toUpperCase())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    
+        User updatedUser = parseUserDTOToUser(userDetails, oldUser);
+        return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/user/{username}")
@@ -143,6 +156,39 @@ public class LinkAutoController {
 
         boolean isDeleted = authService.deleteUser(targetUser, userToken);
         return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+        @PutMapping("/user/{username}/role/admin")
+    public ResponseEntity<Void> promoteToAdmin(
+        @Parameter(name = "username", description = "Username of the user to promote", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user making the request", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        // Verificar si el token es válido
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        // Obtener el usuario que realiza la solicitud
+        User requestingUser = authService.getUserByToken(userToken);
+    
+        // Verificar si el usuario que realiza la solicitud es administrador
+        if (!requestingUser.getRole().equals(Role.ADMIN)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    
+        // Obtener el usuario objetivo
+        User targetUser = authService.getUserByUsername(username);
+        if (targetUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+    
+        // Cambiar el rol del usuario objetivo a ADMIN
+        targetUser.setRole(Role.ADMIN);
+        boolean isUpdated = authService.updateUser(targetUser, userToken);
+    
+        return isUpdated ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @GetMapping("/user/{username}/posts")
