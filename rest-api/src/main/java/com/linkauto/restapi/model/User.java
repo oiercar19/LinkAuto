@@ -42,7 +42,7 @@ public class User {
     @JoinTable(name = "user_followers", joinColumns = @JoinColumn(name = "key_user_username"), inverseJoinColumns = @JoinColumn(name = "follower_username"))
     private List<User> followers;
 
-    @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<User> following;
 
     // No-argument constructor

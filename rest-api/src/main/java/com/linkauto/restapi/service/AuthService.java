@@ -73,10 +73,15 @@ public class AuthService {
     public boolean deleteUser(User user, String token) {
         try {
             // Eliminar los posts explícitamente
-            user.getPosts().clear(); // Esto activa orphanRemoval
+            user.getPosts().forEach(post -> {
+                post.setUsuario(null);
+            });
+            user.getPosts().clear();
 
             // Eliminar followers y following si hace falta (para evitar foreign key conflicts)
+            user.getFollowers().forEach(follower -> follower.getFollowing().remove(user));
             user.getFollowers().clear();
+            user.getFollowing().forEach(following -> following.getFollowers().remove(user));
             user.getFollowing().clear();
 
             // Eliminar el usuario del repositorio
