@@ -54,6 +54,10 @@ public class AuthService {
     public User getUserByToken(String token) {
         return tokenStore.get(token);
     }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findById(username).orElse(null);
+    }
     
     private static synchronized String generateToken() {
         return Long.toHexString(System.currentTimeMillis());

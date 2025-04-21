@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.model.Role;
 import com.linkauto.restapi.model.User.Gender;
 import com.linkauto.restapi.repository.UserRepository;
 
@@ -26,7 +27,7 @@ public class AuthServiceTest {
 
     @Test
     public void testRegister_UserAlreadyExists() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.existsByUsername(user.getUsername())).thenReturn(true);
 
         boolean result = authService.register(user);
@@ -35,7 +36,7 @@ public class AuthServiceTest {
 
     @Test
     public void testRegister_NewUser() {
-        User user = new User("newUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("newUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.existsByUsername(user.getUsername())).thenReturn(false);
         when(userRepository.save(user)).thenReturn(user);
 
@@ -46,7 +47,7 @@ public class AuthServiceTest {
 
     @Test
     public void testLogin_Success() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
 
         String token = authService.login("testUser", "password");
@@ -58,7 +59,7 @@ public class AuthServiceTest {
 
     @Test
     public void testLogin_InvalidPassword() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
 
         String token = authService.login("testUser", "wrongPassword");
@@ -77,7 +78,7 @@ public class AuthServiceTest {
 
     @Test
     public void testLogout() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         String token = authService.login("testUser", "password");
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
 
@@ -103,7 +104,7 @@ public class AuthServiceTest {
 
     @Test
     public void testUpdateUser() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         String token = authService.login("testUser", "password");
 
         when(userRepository.save(user)).thenReturn(user);
@@ -116,7 +117,7 @@ public class AuthServiceTest {
 
     @Test
     public void testDeleteUser_Success() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         String token = authService.login("testUser", "password");
 
         doNothing().when(userRepository).delete(user);
@@ -129,7 +130,7 @@ public class AuthServiceTest {
 
     @Test
     public void testDeleteUser_Exception() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         String token = authService.login("testUser", "password");
 
         doThrow(new RuntimeException("Error de base de datos")).when(userRepository).delete(user);

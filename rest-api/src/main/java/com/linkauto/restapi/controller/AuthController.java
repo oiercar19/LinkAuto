@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.linkauto.restapi.dto.CredencialesDTO;
 import com.linkauto.restapi.dto.UserRegisterDTO;
 import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.model.Role;
 import com.linkauto.restapi.model.User.Gender;
 import com.linkauto.restapi.service.AuthService;
 
@@ -63,7 +64,7 @@ public class AuthController {
     }
         
     public User parseUserRegisterDTOToUser(UserRegisterDTO userRegisterDTO) {
-        User user = new User(userRegisterDTO.getUsername(), userRegisterDTO.getName(), userRegisterDTO.getProfilePicture(), userRegisterDTO.getEmail(), userRegisterDTO.getCars(), userRegisterDTO.getBirthDate(), Gender.valueOf(userRegisterDTO.getGender()), userRegisterDTO.getLocation(), userRegisterDTO.getPassword(), userRegisterDTO.getDescription(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User(userRegisterDTO.getUsername(), Role.valueOf(userRegisterDTO.getRole()) , userRegisterDTO.getName(), userRegisterDTO.getProfilePicture(), userRegisterDTO.getEmail(), userRegisterDTO.getCars(), userRegisterDTO.getBirthDate(), Gender.valueOf(userRegisterDTO.getGender()), userRegisterDTO.getLocation(), userRegisterDTO.getPassword(), userRegisterDTO.getDescription(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         return user;   
     }
     

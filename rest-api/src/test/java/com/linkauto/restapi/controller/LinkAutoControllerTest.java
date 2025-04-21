@@ -22,6 +22,7 @@ import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.Post;
+import com.linkauto.restapi.model.Role;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.model.User.Gender;
 import com.linkauto.restapi.service.AuthService;
@@ -39,7 +40,7 @@ public class LinkAutoControllerTest {
         linkAutoService = mock(LinkAutoService.class);
         authService = mock(AuthService.class);
         linkAutoController = new LinkAutoController(linkAutoService, authService);
-        usuario = new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        usuario = new User("ownerUsername", Role.USER , "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
     
     @Test
@@ -127,7 +128,7 @@ public class LinkAutoControllerTest {
     public void testGetUserFollowers(){
         List<User> followers = new ArrayList<>();
         followers.add(usuario);
-        followers.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
+        followers.add(new User("usuario2", Role.USER , "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
         when(linkAutoService.getFollowersByUsername("test")).thenReturn(followers);
         ResponseEntity<List<UserReturnerDTO>> result = linkAutoController.getUserFollowers("test");
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -140,7 +141,7 @@ public class LinkAutoControllerTest {
     public void testGetUserFollowing(){
         List<User> following = new ArrayList<>();
         following.add(usuario);
-        following.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
+        following.add(new User("usuario2", Role.USER , "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
         when(linkAutoService.getFollowingByUsername("test")).thenReturn(following);
         ResponseEntity<List<UserReturnerDTO>> result = linkAutoController.getUserFollowing("test");
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -177,7 +178,7 @@ public class LinkAutoControllerTest {
         ResponseEntity<Void> result = linkAutoController.unfollowUser("test", userToken);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
 
-        User test = new User("test", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User test = new User("test", Role.USER , "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         test.addFollower(usuario);
         usuario.addFollowing(test);
         when(authService.isTokenValid(userToken)).thenReturn(true);

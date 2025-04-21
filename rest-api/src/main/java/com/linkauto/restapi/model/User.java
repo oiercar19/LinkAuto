@@ -25,6 +25,7 @@ public class User {
 
     @Id
     private String username;
+    private Role role;
     private String name;
     private String profilePicture;
     private String email;
@@ -49,12 +50,13 @@ public class User {
     }
 
     // Constructor with arguments
-    public User(String username, String name,
+    public User(String username, Role role, String name,
             String profilePicture, String email,
             List<String> cars, long birthDate,
             Gender gender, String location,
             String password, String description, List<Post> posts, List<User> followers, List<User> following) {
         this.username = username;
+        this.role = role;
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
@@ -84,6 +86,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getName() {
@@ -219,6 +229,7 @@ public class User {
     public String toString() {
         return "User{" +
                 "username='" + username + '\'' +
+                ", role=" + role + '\'' +
                 ", name='" + name + '\'' +
                 ", profilePicture='" + profilePicture + '\'' +
                 ", email='" + email + '\'' +

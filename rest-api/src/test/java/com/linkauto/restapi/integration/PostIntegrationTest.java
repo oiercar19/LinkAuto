@@ -32,7 +32,7 @@ public class PostIntegrationTest {
         List<String> cars = new ArrayList<>();
         cars.add("Audi R8");
         cars.add("Nissan Skyline");
-        UserRegisterDTO user = new UserRegisterDTO("integTestUser", "userPruebas", "pp.jpg", "user@example.com", cars, 999L, "MALE", "Bilbao", "user123", "hola a todos"); 
+        UserRegisterDTO user = new UserRegisterDTO("integTestUser", "USER" , "userPruebas", "pp.jpg", "user@example.com", cars, 999L, "MALE", "Bilbao", "user123", "hola a todos"); 
         ResponseEntity<Void> response = testRestTemplate.postForEntity("/auth/register", user, Void.class);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         

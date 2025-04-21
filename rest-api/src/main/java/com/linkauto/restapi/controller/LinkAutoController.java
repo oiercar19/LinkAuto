@@ -28,6 +28,7 @@ import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
 import com.linkauto.restapi.service.LinkAutoService;
+import com.linkauto.restapi.model.Role;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -130,12 +131,17 @@ public class LinkAutoController {
 
         User loggedUser = authService.getUserByToken(userToken);
 
-        // Verificar que el usuario logueado es el mismo que se quiere borrar
-        if (!loggedUser.getUsername().equals(username)) {
+        // Verificar que el usuario logueado es el mismo que se quiere borrar o que el usuario logueado es admin
+        if (!loggedUser.getUsername().equals(username) && !loggedUser.getRole().equals(Role.ADMIN)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        boolean isDeleted = authService.deleteUser(loggedUser, userToken);
+        User targetUser = authService.getUserByUsername(username);
+        if (targetUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        boolean isDeleted = authService.deleteUser(targetUser, userToken);
         return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
@@ -314,12 +320,12 @@ public class LinkAutoController {
     }
 
     private User parseUserDTOToUser(UserDTO userDTO, User oldUser) {
-        return new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing());
+        return new User(oldUser.getUsername(), oldUser.getRole() , userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing());
     }
 
     private UserReturnerDTO parseUserToUserReturnerDTO(User u){
         List<PostReturnerDTO> postReturner = parsePostsToPostReturnerDTO(u.getPosts());
-        return new UserReturnerDTO(u.getUsername(), u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
+        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
     }
 
     private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {

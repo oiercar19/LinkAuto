@@ -4,6 +4,7 @@ import java.util.List;
 
 public class UserRegisterDTO {
     private String username;
+    private String role;
     private String name;
     private String profilePicture;
     private String email;
@@ -15,8 +16,9 @@ public class UserRegisterDTO {
     private String description;
 
     // Constructor
-    public UserRegisterDTO(String username, String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description) {
+    public UserRegisterDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description) {
         this.username = username;
+        this.role = role;
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
@@ -36,6 +38,14 @@ public class UserRegisterDTO {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getName() {
