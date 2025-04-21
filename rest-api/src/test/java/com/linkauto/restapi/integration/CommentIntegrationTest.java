@@ -2,7 +2,6 @@ package com.linkauto.restapi.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
@@ -22,20 +21,6 @@ import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.dto.CommentReturnerDTO;
 
-/**
- * Prueba de integración para la funcionalidad de comentarios.
- * <p>
- * Flujo completo:
- *  <ol>
- *      <li>Registrar usuario</li>
- *      <li>Iniciar sesión y obtener token</li>
- *      <li>Crear un post de soporte</li>
- *      <li>Agregar un comentario a dicho post</li>
- *      <li>Obtener lista de comentarios del post y verificar contenido</li>
- *      <li>Eliminar el post (que también elimina comentarios en cascada)</li>
- *      <li>Eliminar el usuario</li>
- *  </ol>
- */
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class CommentIntegrationTest {
 
@@ -54,7 +39,7 @@ public class CommentIntegrationTest {
                 List.of(), // coches
                 0L,        
                 "MALE",  
-                "Madrid", 
+                "Bilbao", 
                 "pass123",
                 "¡Hola a todos!" 
         );
@@ -84,7 +69,7 @@ public class CommentIntegrationTest {
         Long postId = postResp.getBody().getId();
         assertNotNull(postId);
 
-        // 4. Agregar un comentario al post
+        // 4. Agregamos un comentario al post
         CommentDTO commentDTO = new CommentDTO("Este es un comentario de prueba");
         ResponseEntity<Void> commentResp = testRestTemplate.postForEntity(
                 "/api/user/" + postId + "/comment?userToken=" + token,
@@ -109,9 +94,11 @@ public class CommentIntegrationTest {
                 break;
             }
         }
-        assertTrue(found, "El comentario creado debe aparecer en la lista");
 
-        // 6. Limpiar: eliminar post / comentarios
+        assertTrue(found, "El comentario deberia estar en la lista de comentarios del post");
+        
+
+        // 6. Limpiar: eliminar post / comentarios (Cascade)
         ResponseEntity<Void> deletePostResp = testRestTemplate.exchange(
                 "/api/posts/" + postId + "?userToken=" + token,
                 HttpMethod.DELETE,
