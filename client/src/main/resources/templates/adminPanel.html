@@ -78,7 +78,7 @@
                             <input type="text" id="username" name="username" class="form-control" placeholder="Enter username" required>
                         </div>
                         <div class="col-md-4 d-flex align-items-end">
-                            <button type="submit" class="btn btn-primary w-100">Promote</button>
+                            <button type="button" class="btn btn-primary w-100" onclick="promoteUser()">Promote</button>
                         </div>
                     </form>
                 </div>
@@ -91,5 +91,27 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function promoteUser() {
+            const username = document.getElementById('username').value;
+            if (username.trim() === '') {
+                alert('Please enter a username.');
+                return;
+            }
+
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/admin/promoteToAdmin';
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'username';
+            input.value = username;
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
 </body>
 </html>

@@ -361,4 +361,17 @@ public class ClientController {
       return "redirect:/adminPanel"; // Redirect back to the admin panel
   }
   
+  @PostMapping("/admin/promoteToAdmin")
+  public String promoteToAdmin(@RequestParam("username") String usernameToPromote, RedirectAttributes redirectAttributes) {
+      try {
+          linkAutoServiceProxy.promoteToAdmin(token, usernameToPromote);
+          redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToPromote + " promovido a administrador con éxito.");
+      } catch (Exception e) {
+          redirectAttributes.addFlashAttribute("error", "Error al promover al usuario: " + e.getMessage());
+      }
+      return "redirect:/adminPanel"; // Redirect back to the admin panel
+  }
+  
+  
+
 }

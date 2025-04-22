@@ -393,5 +393,21 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
+    @Override
+    public void promoteToAdmin(String token, String username) {
+        String url = String.format("%s/api/user/%s/role/admin?userToken=%s", apiBaseUrl, username, token);
+        
+        try {
+            restTemplate.put(url, null);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to promote this user");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to promote user to admin: " + e.getStatusText());
+            }
+        }
+    }
     
 }

@@ -50,4 +50,5 @@ public interface ILinkAutoServiceProxy {
     Post sharePost(Long postId);
     List<User> getAllUsers();
     void deleteUser(String token, String username);
+    void promoteToAdmin(String token, String username);
 }
