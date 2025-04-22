@@ -373,5 +373,25 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             e.printStackTrace();
             throw new RuntimeException("Error inesperado al obtener usuarios", e);
         }
-    }    
+    }
+    
+    @Override
+    public void deleteUser(String token, String username) {
+        String url = String.format("%s/api/user/%s?userToken=%s", apiBaseUrl, username, token);
+        System.out.println("Sending DELETE request to URL: " + url); // Debug log
+    
+        try {
+            restTemplate.delete(url);
+            System.out.println("User deleted successfully: " + username); // Debug log
+        } catch (HttpStatusCodeException e) {
+            System.err.println("Error response from server: " + e.getStatusCode() + " - " + e.getResponseBodyAsString()); // Debug log
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to delete this user");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to delete user: " + e.getStatusText());
+            }
+        }
+    }
+    
 }

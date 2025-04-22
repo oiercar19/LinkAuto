@@ -49,4 +49,5 @@ public interface ILinkAutoServiceProxy {
     void commentPost(String token, Long postId, CommentCreator comment);
     Post sharePost(Long postId);
     List<User> getAllUsers();
+    void deleteUser(String token, String username);
 }

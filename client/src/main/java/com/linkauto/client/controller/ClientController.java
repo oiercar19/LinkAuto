@@ -347,4 +347,18 @@ public class ClientController {
   
       return "adminPanel"; // Vista del panel de administrador
   }
+
+  @PostMapping("/admin/deleteUser")
+  public String deleteUser(@RequestParam("username") String usernameToDelete, RedirectAttributes redirectAttributes) {
+      try {
+          System.out.println("Attempting to delete user: " + usernameToDelete); // Debug log
+          linkAutoServiceProxy.deleteUser(token, usernameToDelete);
+          redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToDelete + " eliminado con éxito.");
+      } catch (Exception e) {
+          System.err.println("Error deleting user: " + e.getMessage()); // Debug log
+          redirectAttributes.addFlashAttribute("error", "Error al eliminar el usuario: " + e.getMessage());
+      }
+      return "redirect:/adminPanel"; // Redirect back to the admin panel
+  }
+  
 }
