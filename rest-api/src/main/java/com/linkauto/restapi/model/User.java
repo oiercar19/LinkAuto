@@ -227,7 +227,7 @@ public class User {
                 ", gender=" + gender +
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
-                ", posts=" + posts +
+                ", posts=" + posts.stream().map(Post::getId).toList() +
                 ", followers=" + followers +
                 ", following=" + following +
                 '}';

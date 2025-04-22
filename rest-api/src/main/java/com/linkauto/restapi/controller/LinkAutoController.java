@@ -56,6 +56,9 @@ public class LinkAutoController {
     @GetMapping("/posts/{id}")
     public ResponseEntity<PostReturnerDTO> getPostById(@PathVariable Long id) {
         Optional<Post> post = linkAutoService.getPostById(id);
+        if (post.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
         PostReturnerDTO postReturnerDTO = parsePostToPostReturnerDTO(post.get());
         return ResponseEntity.ok(postReturnerDTO);
     }
@@ -114,26 +117,27 @@ public class LinkAutoController {
             return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/user")
+    @DeleteMapping("/user/{username}")
     public ResponseEntity<Void> deleteUser(
         @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken,
         @Parameter(name = "username", description = "Username of the user to delete", required = true, example = "johndoe")
-        @RequestParam("username") String username) {
-            if (!authService.isTokenValid(userToken)) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
+        @PathVariable("username") String username
+        ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
-            User loggedUser = authService.getUserByToken(userToken);
+        User loggedUser = authService.getUserByToken(userToken);
 
-            // Verificar que el usuario logueado es el mismo que se quiere borrar
-            if (!loggedUser.getUsername().equals(username)) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-            }
+        // Verificar que el usuario logueado es el mismo que se quiere borrar
+        if (!loggedUser.getUsername().equals(username)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
 
-            boolean isDeleted = authService.deleteUser(loggedUser, userToken);
-            return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
-}
+        boolean isDeleted = authService.deleteUser(loggedUser, userToken);
+        return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
 
     @GetMapping("/user/{username}/posts")
     public ResponseEntity<List<PostReturnerDTO>> getUserPosts(

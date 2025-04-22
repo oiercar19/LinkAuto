@@ -301,7 +301,6 @@ public class ClientController {
             return "redirect:/user/" + username; // Redirigir a la página de inicio en caso de error
         }
     }
-    
 
     // Endpoint para compartir una publicación
     @GetMapping("/posts/{postId}")

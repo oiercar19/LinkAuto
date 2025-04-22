@@ -288,6 +288,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
     @Override
     public void commentPost(String token, Long postId, CommentCreator comment) {
         String url = String.format("%s/api/user/%d/comment?userToken=%s", apiBaseUrl, postId, token);

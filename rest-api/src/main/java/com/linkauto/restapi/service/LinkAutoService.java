@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.model.Comment;
-import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.repository.CommentRepository;
@@ -53,29 +53,29 @@ public class LinkAutoService {
     
     @Transactional
     public boolean deletePost(Long id, User user) {
-        // Buscar el post
-        Post post = postRepository.findById(id)
-            .orElse(null);
-        
-        // Verificar si el post existe
-        if (post == null) {
-            return false;
-        }
-        
-        // Verificar si el usuario tiene permiso para borrar el post
-        if (!post.getUsuario().getUsername().equals(user.getUsername())) {
-            return false;
-        }
-        
         try {            
+            // Buscar el post
+            Post post = postRepository.findById(id)
+                .orElse(null);
+            
+            // Verificar si el post existe
+            if (post == null) {
+                return false;
+            }
+
+            // Verificar si el usuario tiene permiso para borrar el post
+            if (post.getUsuario() == null || !post.getUsuario().getUsername().equals(user.getUsername())) {
+                return false;
+            }
+            
             // Desasociar el post del usuario
             User postUser = post.getUsuario();
-            if (postUser != null) {
-                postUser.getPosts().remove(post);
-            }
+            postUser.getPosts().remove(post);
+            userRepository.save(postUser);
             
             // Limpiar imágenes
             post.getImagenes().clear();
+            postRepository.save(post);
             
             // Eliminar post
             postRepository.delete(post);
@@ -128,9 +128,6 @@ public class LinkAutoService {
         userRepository.save(user);
         userRepository.save(userToUnfollow);
         userRepository.flush();
-
-        System.out.println(user.getFollowing());
-        System.out.println(userToUnfollow.getFollowers());
     
         return true;
     }
