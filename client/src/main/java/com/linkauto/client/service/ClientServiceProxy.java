@@ -349,4 +349,29 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        String url = String.format("%s/api/users", apiBaseUrl);
+
+        try {
+            ResponseEntity<List<User>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<User>>() {}
+            );
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            // Manejar errores HTTP específicos
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to access this resource");
+                default -> throw new RuntimeException("Failed to fetch users: " + e.getStatusText());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error inesperado al obtener usuarios", e);
+        }
+    }    
 }

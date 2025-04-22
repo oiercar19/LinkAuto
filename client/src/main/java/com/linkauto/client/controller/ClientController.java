@@ -324,24 +324,27 @@ public class ClientController {
         return "post";
     }
     
-    //Endpoint para el panel de administrador
-    @GetMapping("/adminPanel")
-    public String adminPanel(Model model, RedirectAttributes redirectAttributes) {
-        if (token == null) {
-            // Si no hay token, redirigir al inicio de sesión
-            redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al panel de administrador.");
-            return "redirect:/";
-        }
-    
-        // Obtener el perfil del usuario logueado
-        User user = linkAutoServiceProxy.getUserProfile(token);
-    
-        // Verificar si el usuario tiene el rol de ADMIN
-        if (!user.role().equals("ADMIN")) {
-            redirectAttributes.addFlashAttribute("error", "No tienes permisos para acceder al panel de administrador.");
-            return "redirect:/feed"; // Redirigir al feed si no es administrador
-        }
-    
-        return "adminPanel"; // Vista del panel de administrador
-    }
+  //Endpoint para el panel de administrador
+  @GetMapping("/adminPanel")
+  public String adminPanel(Model model, RedirectAttributes redirectAttributes) {
+      if (token == null) {
+          // Si no hay token, redirigir al inicio de sesión
+          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al panel de administrador.");
+          return "redirect:/";
+      }
+  
+      // Obtener el perfil del usuario logueado
+      User user = linkAutoServiceProxy.getUserProfile(token);
+  
+      // Verificar si el usuario tiene el rol de ADMIN
+      if (!user.role().equals("ADMIN")) {
+          redirectAttributes.addFlashAttribute("error", "No tienes permisos para acceder al panel de administrador.");
+          return "redirect:/feed"; // Redirigir al feed si no es administrador
+      }
+
+      List<User> users = linkAutoServiceProxy.getAllUsers();
+      model.addAttribute("users", users);
+  
+      return "adminPanel"; // Vista del panel de administrador
+  }
 }

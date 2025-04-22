@@ -131,6 +131,20 @@ public class LinkAutoController {
         return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<List<UserReturnerDTO>> getAllUsers() {
+        // Obtener todos los usuarios
+        List<User> users = linkAutoService.getAllUsers();
+    
+        // Convertir la lista de usuarios a UserReturnerDTO
+        List<UserReturnerDTO> userReturnerDTOs = new ArrayList<>();
+        for (User user : users) {
+            userReturnerDTOs.add(parseUserToUserReturnerDTO(user));
+        }
+    
+        return ResponseEntity.ok(userReturnerDTOs);
+    }    
+
     @DeleteMapping("/user/{username}")
     public ResponseEntity<Void> deleteUser(
         @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
