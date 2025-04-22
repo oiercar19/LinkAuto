@@ -89,8 +89,11 @@ public class ClientController {
             
             model.addAttribute("posts", posts); // Agregar publicaciones al modelo
             model.addAttribute("username", username); // Agregar nombre de usuario al modelo
-            String profilePicture = linkAutoServiceProxy.getUserProfile(token).profilePicture();
+            
+            User user = linkAutoServiceProxy.getUserProfile(token);
+            String profilePicture = user.profilePicture();
             model.addAttribute("profilePicture", profilePicture); // Agregar foto de perfil al modelo
+            model.addAttribute("role", user.role()); // Agregar rol al modelo
 
             List<User> followings = linkAutoServiceProxy.getUserFollowing(username);
             List<String> followingUsernames = new ArrayList<>();
@@ -321,5 +324,24 @@ public class ClientController {
         return "post";
     }
     
+    //Endpoint para el panel de administrador
+    @GetMapping("/adminPanel")
+    public String adminPanel(Model model, RedirectAttributes redirectAttributes) {
+        if (token == null) {
+            // Si no hay token, redirigir al inicio de sesión
+            redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al panel de administrador.");
+            return "redirect:/";
+        }
     
+        // Obtener el perfil del usuario logueado
+        User user = linkAutoServiceProxy.getUserProfile(token);
+    
+        // Verificar si el usuario tiene el rol de ADMIN
+        if (!user.role().equals("ADMIN")) {
+            redirectAttributes.addFlashAttribute("error", "No tienes permisos para acceder al panel de administrador.");
+            return "redirect:/feed"; // Redirigir al feed si no es administrador
+        }
+    
+        return "adminPanel"; // Vista del panel de administrador
+    }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 public record User(
     String username,
+    String role,
     String name,
     String profilePicture,
     String email,
