@@ -16,8 +16,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.model.Post;
+import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.Role;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.model.User.Gender;
@@ -201,4 +203,97 @@ public class LinkAutoServiceTest {
         verify(userRepository).save(user);
         verify(userRepository).save(userToUnfollow);
     }
+
+        @Test
+    public void testCommentPost() {
+        User user = new User("user1", Role.USER, "User One", "", "", new ArrayList<>(), 123456L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Post post = new Post(1L, user, "Post message", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        CommentDTO commentDTO = new CommentDTO("This is a comment");
+
+        when(postRepository.findById(1L)).thenReturn(Optional.of(post));
+        
+        boolean result = linkAutoService.commentPost(1L, user, commentDTO);
+        assertTrue(result);
+        
+        // Verifying the post now has the comment
+        assertEquals(1, post.getComentarios().size());
+        assertEquals("This is a comment", post.getComentarios().get(0).getText());
+        verify(postRepository).save(post);
+    }
+
+    @Test
+    public void testLikePost() {
+        Post post = new Post(1L, new User(), "Post message", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(postRepository.findById(1L)).thenReturn(Optional.of(post));
+
+        boolean result = linkAutoService.likePost(1L, "user1");
+        assertTrue(result);
+        assertTrue(post.getLikes().contains("user1"));
+        verify(postRepository).save(post);
+    }
+
+    @Test
+    public void testUnlikePost() {
+        Post post = new Post(1L, new User(), "testMessage", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        post.setLikes("user1");
+    
+        when(postRepository.findById(1L)).thenReturn(Optional.of(post));
+    
+        Boolean result = linkAutoService.unlikePost(1L, "user1");
+        assertTrue(result);  
+    
+        assertFalse(post.getLikes().contains("user1"));
+    
+        verify(postRepository).save(post);
+    }
+
+    @Test
+    public void testGetAllUsers() {
+        List<User> users = List.of(new User("user1", Role.USER , "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())
+        , new User("user2", Role.USER , "externalName", "externalProfilePicture", "externalEmail", new ArrayList<>(), 654321L, Gender.FEMALE, "externalLocation", "externalPassword", "externalDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+
+        when(userRepository.findAll()).thenReturn(users);
+
+        List<User> result = linkAutoService.getAllUsers();
+
+        assertEquals(2, result.size());
+        assertEquals("user1", result.get(0).getUsername());
+        verify(userRepository).findAll();
+    }
+
+    @Test
+    public void testGetAllComments() {
+        List<Comment> comments = List.of(
+            new Comment(),
+            new Comment()
+        );
+        comments.get(0).setText("Comentario 1");
+        comments.get(1).setText("Comentario 2");
+
+        when(commentRepository.findAll()).thenReturn(comments);
+
+        List<Comment> result = linkAutoService.getAllComments();
+
+        assertEquals(2, result.size());
+        assertEquals("Comentario 1", result.get(0).getText());
+        verify(commentRepository).findAll();
+    }
+
+    @Test
+    public void testGetPostsByUsername() {
+        // Arrange
+        String username = "usuario1";
+        Post post1 = new Post();
+        Post post2 = new Post();
+    
+        when(postRepository.findByUsuario_Username(username)).thenReturn(List.of(post1, post2));
+    
+        // Act
+        List<Post> result = linkAutoService.getPostsByUsername(username);
+    
+        // Assert
+        assertEquals(2, result.size());
+        verify(postRepository).findByUsuario_Username(username);
+    }
+
 }

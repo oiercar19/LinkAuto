@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.Role;
 import com.linkauto.restapi.model.User.Gender;
 import com.linkauto.restapi.repository.UserRepository;
@@ -138,5 +139,50 @@ public class AuthServiceTest {
         boolean result = authService.deleteUser(user, token);
         assertFalse(result);
     }
+
+    @Test
+    public void testChangeRole() {
+        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        when(userRepository.save(user)).thenReturn(user);
+
+        boolean result = authService.changeRole(user, Role.ADMIN);
+
+        assertTrue(result);
+        assertEquals(Role.ADMIN, user.getRole());
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    public void testGetUserByUsername_UserExists() {
+        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
+
+        User result = authService.getUserByUsername("testUser");
+
+        assertNotNull(result);
+        assertEquals("testUser", result.getUsername());
+    }
+
+    @Test
+    public void testGetUserByUsername_UserNotFound() {
+        when(userRepository.findById("nonExistent")).thenReturn(Optional.empty());
+
+        User result = authService.getUserByUsername("nonExistent");
+
+        assertNull(result);
+    }
+
+    @Test
+    public void testIsTokenValid_False() {
+        String invalidToken = "fakeToken";
+        assertFalse(authService.isTokenValid(invalidToken));
+    }
+
+    @Test
+    public void testGetUserByToken_Null() {
+        String invalidToken = "nonExistentToken";
+        assertNull(authService.getUserByToken(invalidToken));
+    }
+
 
 }
