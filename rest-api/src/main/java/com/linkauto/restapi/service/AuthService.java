@@ -85,14 +85,10 @@ public class AuthService {
             user.getFollowing().clear();
 
             // Eliminar el usuario del repositorio
-            System.out.println("Voy a borrar");
             userRepository.delete(user);
-            System.out.println("Usuario borrado");
             
-            System.out.println("Token store before deletion: " + tokenStore);
             // Eliminar el token asociado al usuario del tokenStore
             tokenStore.entrySet().removeIf(entry -> entry.getValue().equals(user) && entry.getKey().equals(token));
-            System.out.println("Token store after deletion: " + tokenStore);
             return true;
         } catch (Exception e) {
             System.out.println("Error al eliminar el usuario o el token: " + e.getMessage());

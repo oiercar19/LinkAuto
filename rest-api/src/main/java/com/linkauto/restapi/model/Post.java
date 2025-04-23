@@ -148,7 +148,7 @@ public class Post {
 
     @Override
     public String toString() {
-        return "Post [id=" + id + ", usuario=" + usuario + ", mensaje=" + mensaje + ", fechaCreacion=" + fechaCreacion
+        return "Post [id=" + id + ", usuario=" + usuario.getUsername() + ", mensaje=" + mensaje + ", fechaCreacion=" + fechaCreacion
                 + ", imagenes=" + imagenes + ", comentarios=" + comentarios + ", likes=" + likes + "]";
     }
 }
