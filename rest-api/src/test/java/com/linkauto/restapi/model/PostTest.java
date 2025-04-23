@@ -157,7 +157,7 @@ public class PostTest {
         List<String> images = Arrays.asList("image1.jpg", "image2.jpg");
         Post post1 = new Post(1L, user, "test message", 999999999L, images, new ArrayList<>(), new HashSet<>());
         System.out.println(post1.toString());
-        String expected = "Post [id=1, usuario=" + user + ", mensaje=test message, fechaCreacion=999999999, imagenes=[image1.jpg, image2.jpg], comentarios=[]]";
+        String expected = "Post [id=1, usuario=" + user + ", mensaje=test message, fechaCreacion=999999999, imagenes=[image1.jpg, image2.jpg], comentarios=[], likes=[]]";
         assertEquals(expected, post1.toString());
     }
 

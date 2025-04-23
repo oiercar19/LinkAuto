@@ -226,21 +226,11 @@ public class User {
     }
 
     @Override
-public String toString() {
-    return "User{" +
-            "username='" + username + '\'' +
-            ", name='" + name + '\'' +
-            ", profilePicture='" + profilePicture + '\'' +
-            ", email='" + email + '\'' +
-            ", cars=" + cars +
-            ", birthDate=" + birthDate +
-            ", gender=" + gender +
-            ", location='" + location + '\'' +
-            ", description='" + description + '\'' +
-            ", posts=" + posts +
-            ", followers=" + followers +
-            ", following=" + following +
-            '}';
-}
+    public String toString() {
+        return "User [username=" + username + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
+                + ", email=" + email + ", cars=" + cars + ", birthDate=" + birthDate + ", gender=" + gender
+                + ", location=" + location + ", password=" + password + ", description=" + description + ", posts="
+                + posts + ", followers=" + followers + ", following=" + following + "]";
+    }
     
 }
