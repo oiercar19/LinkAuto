@@ -231,7 +231,7 @@ public class LinkAutoControllerTest {
     }
 
     @Test
-    void testPromoteToAdmin_AllCases() {
+    void testPromoteToAdmin() {
         // Arrange
         String userToken = "validToken";
         String invalidToken = "invalidToken";
@@ -274,6 +274,53 @@ public class LinkAutoControllerTest {
         ResponseEntity<Void> responseSuccess = linkAutoController.promoteToAdmin(username, userToken);
         assertEquals(HttpStatus.OK, responseSuccess.getStatusCode());
         verify(authService, times(1)).changeRole(targetUser, Role.ADMIN);
+    }
+
+    @Test
+    void testDemoteToUser() {
+        // Arrange
+        String userToken = "validToken";
+        String invalidToken = "invalidToken";
+        String username = "johndoe";
+
+        User requestingUser = new User();
+        requestingUser.setRole(Role.ADMIN);
+
+        User targetUser = new User();
+
+        // Case 1: Invalid token
+        when(authService.isTokenValid(invalidToken)).thenReturn(false);
+
+        ResponseEntity<Void> responseInvalidToken = linkAutoController.demoteToUser(username, invalidToken);
+        assertEquals(HttpStatus.UNAUTHORIZED, responseInvalidToken.getStatusCode());
+        verify(authService, times(1)).isTokenValid(invalidToken);
+
+        // Case 2: Requesting user is not an admin
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        requestingUser.setRole(Role.USER);
+        when(authService.getUserByToken(userToken)).thenReturn(requestingUser);
+
+        ResponseEntity<Void> responseNotAdmin = linkAutoController.demoteToUser(username, userToken);
+        assertEquals(HttpStatus.FORBIDDEN, responseNotAdmin.getStatusCode());
+        verify(authService, times(1)).getUserByToken(userToken);
+
+        // Case 3: Target user not found
+        requestingUser.setRole(Role.ADMIN);
+        when(authService.getUserByToken(userToken)).thenReturn(requestingUser);
+        when(authService.getUserByUsername(username)).thenReturn(null);
+
+        ResponseEntity<Void> responseUserNotFound = linkAutoController.demoteToUser(username, userToken);
+        assertEquals(HttpStatus.NOT_FOUND, responseUserNotFound.getStatusCode());
+        verify(authService, times(1)).getUserByUsername(username);
+
+        // Case 4: Successful demotion
+        when(authService.getUserByUsername(username)).thenReturn(targetUser);
+        when(authService.changeRole(targetUser, Role.USER)).thenReturn(true);
+
+        ResponseEntity<Void> responseSuccess = linkAutoController.demoteToUser(username, userToken);
+        assertEquals(HttpStatus.OK, responseSuccess.getStatusCode());
+        verify(authService, times(1)).changeRole(targetUser, Role.USER);
+
     }
     
 }
