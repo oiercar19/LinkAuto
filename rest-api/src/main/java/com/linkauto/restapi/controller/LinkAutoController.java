@@ -199,8 +199,7 @@ public class LinkAutoController {
         }
     
         // Cambiar el rol del usuario objetivo a ADMIN
-        targetUser.setRole(Role.ADMIN);
-        boolean isUpdated = authService.updateUser(targetUser, userToken);
+        boolean isUpdated = authService.changeRole(targetUser, Role.ADMIN);
     
         return isUpdated ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }

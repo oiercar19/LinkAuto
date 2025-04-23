@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.repository.UserRepository;
+import com.linkauto.restapi.model.Role; // Ensure Role is imported from the correct package
 
 import jakarta.transaction.Transactional;
 
@@ -65,6 +66,12 @@ public class AuthService {
 
     public boolean updateUser(User user, String token) {
         tokenStore.put(token, user);
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean changeRole(User user, Role role) {
+        user.setRole(role);
         userRepository.save(user);
         return true;
     }
