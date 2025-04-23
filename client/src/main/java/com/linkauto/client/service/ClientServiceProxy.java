@@ -409,5 +409,21 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
+    @Override
+    public void demoteToUser(String token, String username) {
+        String url = String.format("%s/api/user/%s/role/user?userToken=%s", apiBaseUrl, username, token);
+        
+        try {
+            restTemplate.put(url, null);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to demote this admin");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to demote admin to user: " + e.getStatusText());
+            }
+        }
+    }
     
 }

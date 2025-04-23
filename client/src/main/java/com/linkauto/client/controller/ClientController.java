@@ -373,5 +373,14 @@ public class ClientController {
   }
   
   
-
+  @PostMapping("/admin/demoteToUser")
+  public String demoteToUser(@RequestParam("username") String usernameToDemote, RedirectAttributes redirectAttributes) {
+      try {
+          linkAutoServiceProxy.promoteToAdmin(token, usernameToDemote);
+          redirectAttributes.addFlashAttribute("success", "Administrador " + usernameToDemote + " degradado con éxito.");
+      } catch (Exception e) {
+          redirectAttributes.addFlashAttribute("error", "Error al degradar al administrador: " + e.getMessage());
+      }
+      return "redirect:/adminPanel"; // Redirect back to the admin panel
+  }
 }

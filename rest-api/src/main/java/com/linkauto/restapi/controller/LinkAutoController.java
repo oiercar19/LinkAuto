@@ -204,6 +204,38 @@ public class LinkAutoController {
         return isUpdated ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
+    @PutMapping("/user/{username}/role/user")
+    public ResponseEntity<Void> demoteToUser(
+        @Parameter(name = "username", description = "Username of the user to promote", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user making the request", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        // Verificar si el token es válido
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        // Obtener el usuario que realiza la solicitud
+        User requestingUser = authService.getUserByToken(userToken);
+    
+        // Verificar si el usuario que realiza la solicitud es administrador
+        if (!requestingUser.getRole().equals(Role.ADMIN)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    
+        // Obtener el usuario objetivo
+        User targetUser = authService.getUserByUsername(username);
+        if (targetUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+    
+        // Cambiar el rol del usuario objetivo a USER
+        boolean isUpdated = authService.changeRole(targetUser, Role.USER);
+    
+        return isUpdated ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
     @GetMapping("/user/{username}/posts")
     public ResponseEntity<List<PostReturnerDTO>> getUserPosts(
         @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")

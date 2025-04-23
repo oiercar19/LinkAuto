@@ -83,6 +83,25 @@
                     </form>
                 </div>
             </div>
+
+
+            <!-- Demote User Form -->
+            <div class="card shadow-sm mt-4">
+                <div class="card-header bg-warning text-white">
+                    <h2 class="h5 mb-0">Demote User</h2>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/api/user/{username}/role/user(username=${username})}" method="POST" class="row g-3">
+                        <div class="col-md-8">
+                            <label for="demote-username" class="form-label">Username:</label>
+                            <input type="text" id="demote-username" name="username" class="form-control" placeholder="Enter username" required>
+                        </div>
+                        <div class="col-md-4 d-flex align-items-end">
+                            <button type="button" class="btn btn-warning w-100" onclick="demoteToUser()">Demote</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </section>
     </main>
 
@@ -102,6 +121,29 @@
             const form = document.createElement('form');
             form.method = 'POST';
             form.action = '/admin/promoteToAdmin';
+
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'username';
+            input.value = username;
+
+            form.appendChild(input);
+            document.body.appendChild(form);
+            form.submit();
+        }
+    </script>
+
+    <script>
+        function demoteToUser() {
+            const username = document.getElementById('demote-username').value;
+            if (username.trim() === '') {
+                alert('Please enter a username.');
+                return;
+            }
+
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/admin/demoteToUser';
 
             const input = document.createElement('input');
             input.type = 'hidden';
