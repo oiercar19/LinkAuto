@@ -194,4 +194,40 @@ public class LinkAutoControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, result3.getStatusCode());
         verify(linkAutoService, times(1)).unfollowUser(usuario, "test3");
     }
+
+    @Test
+    public void testDeleteUser() {
+        String userToken = "1234";
+        String targetUsername = "targetUser";
+
+        // Scenario 1: Invalid token
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+        ResponseEntity<Void> result = linkAutoController.deleteUser(userToken, targetUsername);
+        assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
+        verify(authService, times(1)).isTokenValid(userToken);
+
+        // Scenario 2: Logged-in user not authorized to delete target user
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        User loggedUser = new User("loggedUser", Role.USER, "name", "profilePic", "email", new ArrayList<>(), 123456L, Gender.MALE, "location", "password", "description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        when(authService.getUserByToken(userToken)).thenReturn(loggedUser);
+        ResponseEntity<Void> result2 = linkAutoController.deleteUser(userToken, targetUsername);
+        assertEquals(HttpStatus.FORBIDDEN, result2.getStatusCode());
+        verify(authService, times(1)).getUserByToken(userToken);
+
+        // Scenario 3: Target user does not exist
+        loggedUser.setRole(Role.ADMIN); // Make logged user an admin
+        when(authService.getUserByUsername(targetUsername)).thenReturn(null);
+        ResponseEntity<Void> result3 = linkAutoController.deleteUser(userToken, targetUsername);
+        assertEquals(HttpStatus.NOT_FOUND, result3.getStatusCode());
+        verify(authService, times(1)).getUserByUsername(targetUsername);
+
+        // Scenario 4: Successful deletion
+        User targetUser = new User(targetUsername, Role.USER, "name", "profilePic", "email", new ArrayList<>(), 123456L, Gender.MALE, "location", "password", "description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        when(authService.getUserByUsername(targetUsername)).thenReturn(targetUser);
+        when(authService.deleteUser(targetUser, userToken)).thenReturn(true);
+        ResponseEntity<Void> result4 = linkAutoController.deleteUser(userToken, targetUsername);
+        assertEquals(HttpStatus.OK, result4.getStatusCode());
+        verify(authService, times(1)).deleteUser(targetUser, userToken);
+    }
+    
 }
