@@ -12,6 +12,7 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.autoconfigure.integration.IntegrationProperties.RSocket.Client;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -298,6 +299,86 @@ public class ClientControllerTest {
 
         verify(linkAutoServiceProxy).deletePost(clientController.token, postId);
         verify(redirectAttributes).addFlashAttribute("success", "Publicación eliminada con éxito");
+        assertEquals("redirect:/", result);
+    }
+
+    @Test
+    public void testFollowUser_Success() {
+        clientController.token = "validToken";
+        String usernameToFollow = "testUser";
+        String redirectUrl = "/feed";
+
+        String result = clientController.followUser(usernameToFollow, redirectUrl, redirectAttributes);
+
+        verify(linkAutoServiceProxy).followUser(clientController.token, usernameToFollow);
+        verify(redirectAttributes).addFlashAttribute("success", "Siguiendo a " + usernameToFollow);
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testFollowUser_Error() {
+        clientController.token = "validToken";
+        String usernameToFollow = "testUser";
+        String redirectUrl = "/feed";
+
+        doThrow(new RuntimeException("Error al seguir al usuario")).when(linkAutoServiceProxy).followUser("validToken", usernameToFollow);
+
+        String result = clientController.followUser(usernameToFollow, redirectUrl, redirectAttributes);
+
+        verify(linkAutoServiceProxy).followUser(clientController.token, usernameToFollow);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al seguir al usuario: Error al seguir al usuario");
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testFollowUser_WithNullRedirectUrl() {
+        clientController.token = "validToken";
+        String usernameToFollow = "testUser";
+
+        String result = clientController.followUser(usernameToFollow, null, redirectAttributes);
+
+        verify(linkAutoServiceProxy).followUser(clientController.token, usernameToFollow);
+        verify(redirectAttributes).addFlashAttribute("success", "Siguiendo a " + usernameToFollow);
+        assertEquals("redirect:/", result);
+    }
+
+    @Test
+    public void testUnfollowUser_Success() {
+        clientController.token = "validToken";
+        String usernameToUnfollow = "testUser";
+        String redirectUrl = "/feed";
+
+        String result = clientController.unfollowUser(usernameToUnfollow, redirectUrl, redirectAttributes);
+
+        verify(linkAutoServiceProxy).unfollowUser(clientController.token, usernameToUnfollow);
+        verify(redirectAttributes).addFlashAttribute("success", "Dejado de seguir a " + usernameToUnfollow);
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testUnfollowUser_Error() {
+        clientController.token = "validToken";
+        String usernameToUnfollow = "testUser";
+        String redirectUrl = "/feed";
+
+        doThrow(new RuntimeException("Error al dejar de seguir al usuario")).when(linkAutoServiceProxy).unfollowUser("validToken", usernameToUnfollow);
+
+        String result = clientController.unfollowUser(usernameToUnfollow, redirectUrl, redirectAttributes);
+
+        verify(linkAutoServiceProxy).unfollowUser(clientController.token, usernameToUnfollow);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al dejar de seguir al usuario: Error al dejar de seguir al usuario");
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testUnfollowUser_WithNullRedirectUrl() {
+        clientController.token = "validToken";
+        String usernameToUnfollow = "testUser";
+
+        String result = clientController.unfollowUser(usernameToUnfollow, null, redirectAttributes);
+
+        verify(linkAutoServiceProxy).unfollowUser(clientController.token, usernameToUnfollow);
+        verify(redirectAttributes).addFlashAttribute("success", "Dejado de seguir a " + usernameToUnfollow);
         assertEquals("redirect:/", result);
     }
 
