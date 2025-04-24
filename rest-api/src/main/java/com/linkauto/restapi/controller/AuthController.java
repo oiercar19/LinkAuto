@@ -66,7 +66,6 @@ public class AuthController {
     public User parseUserRegisterDTOToUser(UserRegisterDTO userRegisterDTO) {
         User user = new User(
             userRegisterDTO.getUsername(),
-            Role.valueOf(userRegisterDTO.getRole().toUpperCase()), // Normalize input to uppercase
             userRegisterDTO.getName(),
             userRegisterDTO.getProfilePicture(),
             userRegisterDTO.getEmail(),
@@ -80,6 +79,7 @@ public class AuthController {
             new ArrayList<>(),
             new ArrayList<>()
         );
+        user.setRole(Role.valueOf(userRegisterDTO.getRole().toUpperCase()));
         return user;   
     }
     

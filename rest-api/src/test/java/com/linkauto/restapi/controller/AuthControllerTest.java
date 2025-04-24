@@ -30,7 +30,7 @@ public class AuthControllerTest {
 
     @Test
     public void testRegisterSuccess() {
-        UserRegisterDTO userDTO = new UserRegisterDTO("user1", "USER" , "User One", "profile.jpg", "user1@example.com", new ArrayList<>(), 123456L, "MALE", "Somewhere", "password123", "A description");
+        UserRegisterDTO userDTO = new UserRegisterDTO("user1", "User One", "profile.jpg", "user1@example.com", new ArrayList<>(), 123456L, "MALE", "Somewhere", "password123", "A description");
         User user = authController.parseUserRegisterDTOToUser(userDTO);
         
         when(authService.register(any(User.class))).thenReturn(true);
@@ -43,7 +43,7 @@ public class AuthControllerTest {
 
     @Test
     public void testRegisterFailure() {
-        UserRegisterDTO userDTO = new UserRegisterDTO("user2", "USER" , "User Two", "profile2.jpg", "user2@example.com", new ArrayList<>(), 987654L, "FEMALE", "Nowhere", "password456", "Another description");
+        UserRegisterDTO userDTO = new UserRegisterDTO("user2", "User Two", "profile2.jpg", "user2@example.com", new ArrayList<>(), 987654L, "FEMALE", "Nowhere", "password456", "Another description");
         
         when(authService.register(any(User.class))).thenReturn(false);
 

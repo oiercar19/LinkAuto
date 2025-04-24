@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -376,7 +374,7 @@ public class ClientController {
   @PostMapping("/admin/demoteToUser")
   public String demoteToUser(@RequestParam("username") String usernameToDemote, RedirectAttributes redirectAttributes) {
       try {
-          linkAutoServiceProxy.promoteToAdmin(token, usernameToDemote);
+          linkAutoServiceProxy.demoteToUser(token, usernameToDemote);
           redirectAttributes.addFlashAttribute("success", "Administrador " + usernameToDemote + " degradado con éxito.");
       } catch (Exception e) {
           redirectAttributes.addFlashAttribute("error", "Error al degradar al administrador: " + e.getMessage());

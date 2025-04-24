@@ -2,8 +2,11 @@ package com.linkauto.restapi.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 public class UserRegisterDTO {
     private String username;
+    @JsonIgnore
     private String role;
     private String name;
     private String profilePicture;
@@ -16,9 +19,9 @@ public class UserRegisterDTO {
     private String description;
 
     // Constructor
-    public UserRegisterDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description) {
+    public UserRegisterDTO(String username, String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description) {
         this.username = username;
-        this.role = role;
+        this.role = "USER";
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
