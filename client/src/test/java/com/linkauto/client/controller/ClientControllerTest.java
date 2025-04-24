@@ -92,4 +92,29 @@ public class ClientControllerTest {
         verify(redirectAttributes).addFlashAttribute("error", "Error al eliminar el usuario: Error al eliminar el usuario");
         assertEquals("redirect:/adminPanel", result);
     }
+
+    @Test
+    public void testPromoteToAdmin_Success() {
+        clientController.token = "validToken";
+        String usernameToPromote = "testUser";
+
+        String result = clientController.promoteToAdmin(usernameToPromote, redirectAttributes);
+
+        verify(linkAutoServiceProxy).promoteToAdmin(clientController.token, usernameToPromote);
+        verify(redirectAttributes).addFlashAttribute("success", "Usuario " + usernameToPromote + " promovido a administrador con éxito.");
+        assertEquals("redirect:/adminPanel", result);
+    }
+
+    @Test
+    public void testPromoteToAdmin_Error() {
+        clientController.token = "validToken";
+        String usernameToPromote = "testUser";
+        doThrow(new RuntimeException("Error al promover al usuario")).when(linkAutoServiceProxy).promoteToAdmin("validToken", usernameToPromote);
+
+        String result = clientController.promoteToAdmin(usernameToPromote, redirectAttributes);
+
+        verify(linkAutoServiceProxy).promoteToAdmin(clientController.token, usernameToPromote);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al promover al usuario: Error al promover al usuario");
+        assertEquals("redirect:/adminPanel", result);
+    }
 }
