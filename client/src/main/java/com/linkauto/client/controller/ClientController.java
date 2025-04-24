@@ -36,10 +36,10 @@ import jakarta.servlet.http.HttpServletRequest;
 public class ClientController {
 
     @Autowired
-    private ClientServiceProxy linkAutoServiceProxy;
+    public ClientServiceProxy linkAutoServiceProxy;
 	
-    private String token; // Stores the session token
-    private String username; // Stores the username
+    public String token; // Stores the session token
+    public String username; // Stores the username
 
     public void addAttributes(Model model, HttpServletRequest request) {
 		String currentUrl = ServletUriComponentsBuilder.fromRequestUri(request).toUriString();
