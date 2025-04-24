@@ -197,6 +197,10 @@ public class LinkAutoController {
         if (targetUser == null) {
             return ResponseEntity.notFound().build();
         }
+
+        if (requestingUser.equals(targetUser)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
     
         // Cambiar el rol del usuario objetivo a ADMIN
         boolean isUpdated = authService.changeRole(targetUser, Role.ADMIN);
@@ -223,11 +227,16 @@ public class LinkAutoController {
         if (!requestingUser.getRole().equals(Role.ADMIN)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
-    
+
+        
         // Obtener el usuario objetivo
         User targetUser = authService.getUserByUsername(username);
         if (targetUser == null) {
             return ResponseEntity.notFound().build();
+        }
+        
+        if (requestingUser.equals(targetUser)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     
         // Cambiar el rol del usuario objetivo a USER
