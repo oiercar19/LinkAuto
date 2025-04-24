@@ -67,4 +67,29 @@ public class ClientControllerTest {
         verify(model).addAttribute("users", users);
         assertEquals("adminPanel", result);
     }
+
+    @Test
+    public void testDeleteUser_Success() {
+        clientController.token = "validToken";
+        String usernameToDelete = "testUser";
+
+        String result = clientController.deleteUser(usernameToDelete, redirectAttributes);
+
+        verify(linkAutoServiceProxy).deleteUser(clientController.token, usernameToDelete);
+        verify(redirectAttributes).addFlashAttribute("success", "Usuario " + usernameToDelete + " eliminado con éxito.");
+        assertEquals("redirect:/adminPanel", result);
+    }
+
+    @Test
+    public void testDeleteUser_Error() {
+        clientController.token = "validToken";
+        String usernameToDelete = "testUser";
+        doThrow(new RuntimeException("Error al eliminar el usuario")).when(linkAutoServiceProxy).deleteUser("validToken", usernameToDelete);
+
+        String result = clientController.deleteUser(usernameToDelete, redirectAttributes);
+
+        verify(linkAutoServiceProxy).deleteUser(clientController.token, usernameToDelete);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al eliminar el usuario: Error al eliminar el usuario");
+        assertEquals("redirect:/adminPanel", result);
+    }
 }
