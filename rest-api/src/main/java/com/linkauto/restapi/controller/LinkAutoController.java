@@ -28,6 +28,7 @@ import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
 import com.linkauto.restapi.service.LinkAutoService;
+import com.linkauto.restapi.model.Role;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -109,13 +110,40 @@ public class LinkAutoController {
         @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken, 
         @RequestBody UserDTO userDetails) {
-            if (!authService.isTokenValid(userToken)) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-            }
-            User oldUser = authService.getUserByToken(userToken);
-            User updatedUser = parseUserDTOToUser(userDetails, oldUser);
-            return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        User requestingUser = authService.getUserByToken(userToken);
+        User oldUser = authService.getUserByToken(userToken);
+    
+        // Verificar si el usuario que realiza la solicitud es administrador
+        if (!requestingUser.getRole().equals(Role.ADMIN) && !requestingUser.getUsername().equals(oldUser.getUsername())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    
+        // Si el usuario no es administrador, no puede cambiar el rol
+        if (!requestingUser.getRole().equals(Role.ADMIN) && !oldUser.getRole().toString().equals(userDetails.getRole().toUpperCase())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    
+        User updatedUser = parseUserDTOToUser(userDetails, oldUser);
+        return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
     }
+
+    @GetMapping("/users")
+    public ResponseEntity<List<UserReturnerDTO>> getAllUsers() {
+        // Obtener todos los usuarios
+        List<User> users = linkAutoService.getAllUsers();
+    
+        // Convertir la lista de usuarios a UserReturnerDTO
+        List<UserReturnerDTO> userReturnerDTOs = new ArrayList<>();
+        for (User user : users) {
+            userReturnerDTOs.add(parseUserToUserReturnerDTO(user));
+        }
+    
+        return ResponseEntity.ok(userReturnerDTOs);
+    }    
 
     @DeleteMapping("/user/{username}")
     public ResponseEntity<Void> deleteUser(
@@ -130,13 +158,82 @@ public class LinkAutoController {
 
         User loggedUser = authService.getUserByToken(userToken);
 
-        // Verificar que el usuario logueado es el mismo que se quiere borrar
-        if (!loggedUser.getUsername().equals(username)) {
+        // Verificar que el usuario logueado es el mismo que se quiere borrar o que el usuario logueado es admin
+        if (!loggedUser.getUsername().equals(username) && !loggedUser.getRole().equals(Role.ADMIN)) {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
-        boolean isDeleted = authService.deleteUser(loggedUser, userToken);
+        User targetUser = authService.getUserByUsername(username);
+        if (targetUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        boolean isDeleted = authService.deleteUser(targetUser, userToken);
         return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+        @PutMapping("/user/{username}/role/admin")
+    public ResponseEntity<Void> promoteToAdmin(
+        @Parameter(name = "username", description = "Username of the user to promote", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user making the request", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        // Verificar si el token es válido
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        // Obtener el usuario que realiza la solicitud
+        User requestingUser = authService.getUserByToken(userToken);
+    
+        // Verificar si el usuario que realiza la solicitud es administrador
+        if (!requestingUser.getRole().equals(Role.ADMIN)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    
+        // Obtener el usuario objetivo
+        User targetUser = authService.getUserByUsername(username);
+        if (targetUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+    
+        // Cambiar el rol del usuario objetivo a ADMIN
+        boolean isUpdated = authService.changeRole(targetUser, Role.ADMIN);
+    
+        return isUpdated ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    @PutMapping("/user/{username}/role/user")
+    public ResponseEntity<Void> demoteToUser(
+        @Parameter(name = "username", description = "Username of the user to promote", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user making the request", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        // Verificar si el token es válido
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        // Obtener el usuario que realiza la solicitud
+        User requestingUser = authService.getUserByToken(userToken);
+    
+        // Verificar si el usuario que realiza la solicitud es administrador
+        if (!requestingUser.getRole().equals(Role.ADMIN)) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    
+        // Obtener el usuario objetivo
+        User targetUser = authService.getUserByUsername(username);
+        if (targetUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+    
+        // Cambiar el rol del usuario objetivo a USER
+        boolean isUpdated = authService.changeRole(targetUser, Role.USER);
+    
+        return isUpdated ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
 
     @GetMapping("/user/{username}/posts")
@@ -314,12 +411,12 @@ public class LinkAutoController {
     }
 
     private User parseUserDTOToUser(UserDTO userDTO, User oldUser) {
-        return new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing());
+        return new User(oldUser.getUsername(), oldUser.getRole() , userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing());
     }
 
     private UserReturnerDTO parseUserToUserReturnerDTO(User u){
         List<PostReturnerDTO> postReturner = parsePostsToPostReturnerDTO(u.getPosts());
-        return new UserReturnerDTO(u.getUsername(), u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
+        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
     }
 
     private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {

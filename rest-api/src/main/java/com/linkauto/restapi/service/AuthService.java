@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.repository.UserRepository;
+import com.linkauto.restapi.model.Role; // Ensure Role is imported from the correct package
 
 import jakarta.transaction.Transactional;
 
@@ -54,6 +55,10 @@ public class AuthService {
     public User getUserByToken(String token) {
         return tokenStore.get(token);
     }
+
+    public User getUserByUsername(String username) {
+        return userRepository.findById(username).orElse(null);
+    }
     
     private static synchronized String generateToken() {
         return Long.toHexString(System.currentTimeMillis());
@@ -65,25 +70,32 @@ public class AuthService {
         return true;
     }
 
+    public boolean changeRole(User user, Role role) {
+        user.setRole(role);
+        userRepository.save(user);
+        return true;
+    }
+
     @Transactional
     public boolean deleteUser(User user, String token) {
         try {
             // Eliminar los posts explícitamente
-            user.getPosts().clear(); // Esto activa orphanRemoval
+            user.getPosts().forEach(post -> {
+                post.setUsuario(null);
+            });
+            user.getPosts().clear();
 
             // Eliminar followers y following si hace falta (para evitar foreign key conflicts)
+            user.getFollowers().forEach(follower -> follower.getFollowing().remove(user));
             user.getFollowers().clear();
+            user.getFollowing().forEach(following -> following.getFollowers().remove(user));
             user.getFollowing().clear();
 
             // Eliminar el usuario del repositorio
-            System.out.println("Voy a borrar");
             userRepository.delete(user);
-            System.out.println("Usuario borrado");
             
-            System.out.println("Token store before deletion: " + tokenStore);
             // Eliminar el token asociado al usuario del tokenStore
             tokenStore.entrySet().removeIf(entry -> entry.getValue().equals(user) && entry.getKey().equals(token));
-            System.out.println("Token store after deletion: " + tokenStore);
             return true;
         } catch (Exception e) {
             System.out.println("Error al eliminar el usuario o el token: " + e.getMessage());

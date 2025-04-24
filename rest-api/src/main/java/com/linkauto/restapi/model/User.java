@@ -12,6 +12,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import com.linkauto.restapi.model.Role;
 
 @Entity
 @Table(name = "user")
@@ -25,6 +26,7 @@ public class User {
 
     @Id
     private String username;
+    private Role role;
     private String name;
     private String profilePicture;
     private String email;
@@ -41,7 +43,7 @@ public class User {
     @JoinTable(name = "user_followers", joinColumns = @JoinColumn(name = "key_user_username"), inverseJoinColumns = @JoinColumn(name = "follower_username"))
     private List<User> followers;
 
-    @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<User> following;
 
     // No-argument constructor
@@ -49,12 +51,13 @@ public class User {
     }
 
     // Constructor with arguments
-    public User(String username, String name,
+    public User(String username, Role role, String name,
             String profilePicture, String email,
             List<String> cars, long birthDate,
             Gender gender, String location,
             String password, String description, List<Post> posts, List<User> followers, List<User> following) {
         this.username = username;
+        this.role = role;
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
@@ -84,6 +87,14 @@ public class User {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public String getName() {
@@ -217,20 +228,10 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" +
-                "username='" + username + '\'' +
-                ", name='" + name + '\'' +
-                ", profilePicture='" + profilePicture + '\'' +
-                ", email='" + email + '\'' +
-                ", cars=" + cars +
-                ", birthDate=" + birthDate +
-                ", gender=" + gender +
-                ", location='" + location + '\'' +
-                ", description='" + description + '\'' +
-                ", posts=" + posts.stream().map(Post::getId).toList() +
-                ", followers=" + followers +
-                ", following=" + following +
-                '}';
+        return "User [username=" + username + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
+                + ", email=" + email + ", cars=" + cars + ", birthDate=" + birthDate + ", gender=" + gender
+                + ", location=" + location + ", password=" + password + ", description=" + description + ", posts="
+                + posts + ", followers=" + followers + ", following=" + following + "]";
     }
     
 }

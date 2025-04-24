@@ -119,7 +119,7 @@ public class PostTest {
         assertFalse(post7.equals(null));  // Check equals(null)
         
         // Diferente usuario
-        User user3 = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user3 = new User("testUsername", Role.USER , "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Post post8 = new Post(1L, user3, "Mensaje A", 123L, images, comments, likes);
         assertNotEquals(post7, post8);  // Distinto usuario
         assertNotEquals(post7.hashCode(), post8.hashCode());  // Distinto usuario, hashCode diferente
@@ -153,17 +153,17 @@ public class PostTest {
 
     @Test
     public void testToString() {
-        User user = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUsername", Role.USER , "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         List<String> images = Arrays.asList("image1.jpg", "image2.jpg");
         Post post1 = new Post(1L, user, "test message", 999999999L, images, new ArrayList<>(), new HashSet<>());
         System.out.println(post1.toString());
-        String expected = "Post [id=1, usuario=" + user + ", mensaje=test message, fechaCreacion=999999999, imagenes=[image1.jpg, image2.jpg], comentarios=[]]";
+        String expected = "Post [id=1, usuario=" + user.getUsername() + ", mensaje=test message, fechaCreacion=999999999, imagenes=[image1.jpg, image2.jpg], comentarios=[], likes=[]]";
         assertEquals(expected, post1.toString());
     }
 
     @Test
     public void constructorTest() {
-        User user3 = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user3 = new User("testUsername", Role.USER , "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         List<String> images = Arrays.asList("image1.jpg", "image2.jpg");
         List<Comment> comments = new ArrayList<>();
         Comment comment1 = new Comment("test", user3, post, 123L);

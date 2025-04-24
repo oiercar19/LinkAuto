@@ -12,6 +12,7 @@ public class UserDTOTest {
     @Test
     public void testAllArgsConstructor() {
         String name = "John Doe";
+        String role = "USER";
         String profilePicture = "profile.jpg";
         String email = "john@example.com";
         List<String> cars = Arrays.asList("BMW", "Audi");
@@ -21,9 +22,10 @@ public class UserDTOTest {
         String password = "securePassword";
         String description = "Enthusiast car lover";
 
-        UserDTO user = new UserDTO(name, profilePicture, email, cars, birthDate, gender, location, password, description);
+        UserDTO user = new UserDTO(name, role, profilePicture, email, cars, birthDate, gender, location, password, description);
 
         assertEquals(name, user.getName());
+        assertEquals(role, user.getRole());
         assertEquals(profilePicture, user.getProfilePicture());
         assertEquals(email, user.getEmail());
         assertEquals(cars, user.getCars());
@@ -36,9 +38,10 @@ public class UserDTOTest {
 
     @Test
     public void testSettersAndGetters() {
-        UserDTO user = new UserDTO("", "", "", null, 0L, "", "", "", "");
+        UserDTO user = new UserDTO("", "",  "", "", null, 0L, "", "", "", "");
 
         String name = "Jane Doe";
+        String role = "USER";
         String profilePicture = "avatar.png";
         String email = "jane@example.com";
         List<String> cars = Arrays.asList("Tesla", "Ford");
@@ -49,6 +52,7 @@ public class UserDTOTest {
         String description = "Electric car enthusiast";
 
         user.setName(name);
+        user.setRole(role);
         user.setProfilePicture(profilePicture);
         user.setEmail(email);
         user.setCars(cars);
@@ -59,6 +63,7 @@ public class UserDTOTest {
         user.setDescription(description);
 
         assertEquals(name, user.getName());
+        assertEquals(role, user.getRole());
         assertEquals(profilePicture, user.getProfilePicture());
         assertEquals(email, user.getEmail());
         assertEquals(cars, user.getCars());

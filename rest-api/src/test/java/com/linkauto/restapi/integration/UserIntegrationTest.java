@@ -33,6 +33,7 @@ public class UserIntegrationTest {
         String username = "userTestUser_" + System.currentTimeMillis();  
         UserRegisterDTO user = new UserRegisterDTO(
                 username,
+                "USER",
                 "Test User", 
                 "avatar.jpg", 
                 "user@test.com", 
@@ -77,6 +78,7 @@ public class UserIntegrationTest {
         // 4. Actualizar perfil de usuario
         UserDTO updatedUserInfo = new UserDTO(
                 "Updated Name",
+                "USER",
                 "new_avatar.jpg",
                 "updated@test.com",
                 List.of("Ford Mustang", "Porsche 911"),

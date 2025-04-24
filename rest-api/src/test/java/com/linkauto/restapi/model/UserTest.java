@@ -23,6 +23,7 @@ public class UserTest {
         List<User> following = new ArrayList<>();
         user = new User(
             "user1",
+            Role.USER,
             "Alejandro Martinez",
             "profile.jpg",
             "mega@ejemplo.com",
@@ -46,6 +47,7 @@ public class UserTest {
     @Test
     public void testGettersAndSetters() {
         assertEquals("user1", user.getUsername());
+        assertEquals(Role.USER, user.getRole());
         assertEquals("Alejandro Martinez", user.getName());
         assertEquals("profile.jpg", user.getProfilePicture());
         assertEquals("mega@ejemplo.com", user.getEmail());
@@ -57,6 +59,7 @@ public class UserTest {
         assertEquals("Desc", user.getDescription());
 
         user.setUsername("user2");
+        user.setRole(Role.ADMIN);
         user.setName("Alejandro Garcia");
         user.setProfilePicture("newpic.jpg");
         user.setEmail("garcia@ejempo.com");
@@ -70,6 +73,7 @@ public class UserTest {
         user.setDescription("New Desc");
 
         assertEquals("user2", user.getUsername());
+        assertEquals(Role.ADMIN, user.getRole());
         assertEquals("Alejandro Garcia", user.getName());
         assertEquals("newpic.jpg", user.getProfilePicture());
         assertEquals("garcia@ejempo.com", user.getEmail());
@@ -95,6 +99,7 @@ public class UserTest {
         assertTrue(user.getFollowers().isEmpty());
         User follower = new User(
             "follower1",
+            Role.USER,
             "Name",
             "pic",
             "e@mail",
@@ -121,6 +126,7 @@ public class UserTest {
         assertTrue(user.getFollowing().isEmpty());
         User followingUser = new User(
             "follow1",
+            Role.USER,
             "Name",
             "pic",
             "e@mail",
@@ -147,6 +153,7 @@ public class UserTest {
     public void testEqualsAndHashCode() {
         User u1 = new User(
             "sameUser",
+            Role.USER,
             "A",
             "pic A",
             "a@mail",
@@ -162,6 +169,7 @@ public class UserTest {
         );
         User u2 = new User(
             "sameUser",
+            Role.USER,
             "B",
             "pic B",
             "b@mail",
@@ -180,6 +188,7 @@ public class UserTest {
 
         User u3 = new User(
             "otherUser",
+            Role.ADMIN,
             "A",
             "pic A",
             "a@mail",
@@ -205,6 +214,7 @@ public class UserTest {
     public void testToString() {
         User u = new User(
             "u1",
+            Role.USER,
             "Name",
             "pic",
             "e@mail",
@@ -218,7 +228,7 @@ public class UserTest {
             new ArrayList<>(),
             new ArrayList<>()
         );
-        String expected = "User{username='u1', name='Name', profilePicture='pic', email='e@mail', cars=[car1], birthDate=12345, gender=OTHER, location='Loc', description='Desc', posts=[], followers=[], following=[]}";
+        String expected = "User [username=u1, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[], followers=[], following=[]]";
         assertEquals(expected, u.toString());
     }
 
@@ -231,6 +241,7 @@ public class UserTest {
         List<User> originalFollowers = new ArrayList<>();
         User follower = new User(
             "f1",
+            Role.USER,
             "N",
             "p",
             "e@",
@@ -249,6 +260,7 @@ public class UserTest {
         List<User> originalFollowing = new ArrayList<>();
         User followingU = new User(
             "f2",
+            Role.USER,
             "N",
             "p",
             "e@",
@@ -266,6 +278,7 @@ public class UserTest {
 
         User deepCopyUser = new User(
             "copyUser",
+            Role.USER,
             "X",
             "xp",
             "x@",

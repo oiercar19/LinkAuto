@@ -349,4 +349,81 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
+    @Override
+    public List<User> getAllUsers() {
+        String url = String.format("%s/api/users", apiBaseUrl);
+
+        try {
+            ResponseEntity<List<User>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<User>>() {}
+            );
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            // Manejar errores HTTP específicos
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to access this resource");
+                default -> throw new RuntimeException("Failed to fetch users: " + e.getStatusText());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Error inesperado al obtener usuarios", e);
+        }
+    }
+    
+    @Override
+    public void deleteUser(String token, String username) {
+        String url = String.format("%s/api/user/%s?userToken=%s", apiBaseUrl, username, token);
+        System.out.println("Sending DELETE request to URL: " + url); // Debug log
+    
+        try {
+            restTemplate.delete(url);
+            System.out.println("User deleted successfully: " + username); // Debug log
+        } catch (HttpStatusCodeException e) {
+            System.err.println("Error response from server: " + e.getStatusCode() + " - " + e.getResponseBodyAsString()); // Debug log
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to delete this user");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to delete user: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void promoteToAdmin(String token, String username) {
+        String url = String.format("%s/api/user/%s/role/admin?userToken=%s", apiBaseUrl, username, token);
+        
+        try {
+            restTemplate.put(url, null);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to promote this user");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to promote user to admin: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void demoteToUser(String token, String username) {
+        String url = String.format("%s/api/user/%s/role/user?userToken=%s", apiBaseUrl, username, token);
+        
+        try {
+            restTemplate.put(url, null);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to demote this admin");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to demote admin to user: " + e.getStatusText());
+            }
+        }
+    }
+    
 }

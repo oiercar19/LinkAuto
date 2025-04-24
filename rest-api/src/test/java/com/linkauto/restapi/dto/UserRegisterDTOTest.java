@@ -14,6 +14,7 @@ public class UserRegisterDTOTest {
     public void testAllArgsConstructor() {
         String username = "testUser";
         String name = "Test Name";
+        String role = "USER";
         String profilePicture = "profile.jpg";
         String email = "test@example.com";
         List<String> cars = Arrays.asList("Car1", "Car2");
@@ -23,9 +24,10 @@ public class UserRegisterDTOTest {
         String password = "securePassword";
         String description = "This is a test user.";
 
-        UserRegisterDTO dto = new UserRegisterDTO(username, name, profilePicture, email, cars, birthDate, gender, location, password, description);
+        UserRegisterDTO dto = new UserRegisterDTO(username, role , name, profilePicture, email, cars, birthDate, gender, location, password, description);
 
         assertEquals(username, dto.getUsername());
+        assertEquals(role, dto.getRole());
         assertEquals(name, dto.getName());
         assertEquals(profilePicture, dto.getProfilePicture());
         assertEquals(email, dto.getEmail());
@@ -39,9 +41,10 @@ public class UserRegisterDTOTest {
 
     @Test
     public void testSettersAndGetters() {
-        UserRegisterDTO dto = new UserRegisterDTO(null, null, null, null, null, 0, null, null, null, null);
+        UserRegisterDTO dto = new UserRegisterDTO(null, null,  null, null, null, null, 0, null, null, null, null);
 
         String username = "updatedUser";
+        String role = "ADMIN";
         String name = "Updated Name";
         String profilePicture = "updated.jpg";
         String email = "updated@example.com";
@@ -53,6 +56,7 @@ public class UserRegisterDTOTest {
         String description = "Updated description.";
 
         dto.setUsername(username);
+        dto.setRole(role);
         dto.setName(name);
         dto.setProfilePicture(profilePicture);
         dto.setEmail(email);
@@ -64,6 +68,7 @@ public class UserRegisterDTOTest {
         dto.setDescription(description);
 
         assertEquals(username, dto.getUsername());
+        assertEquals(role, dto.getRole());
         assertEquals(name, dto.getName());
         assertEquals(profilePicture, dto.getProfilePicture());
         assertEquals(email, dto.getEmail());
