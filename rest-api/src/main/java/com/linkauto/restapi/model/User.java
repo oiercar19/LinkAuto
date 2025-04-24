@@ -12,7 +12,6 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import com.linkauto.restapi.model.Role;
 
 @Entity
 @Table(name = "user")
@@ -51,13 +50,13 @@ public class User {
     }
 
     // Constructor with arguments
-    public User(String username, Role role, String name,
+    public User(String username, String name,
             String profilePicture, String email,
             List<String> cars, long birthDate,
             Gender gender, String location,
             String password, String description, List<Post> posts, List<User> followers, List<User> following) {
         this.username = username;
-        this.role = role;
+        this.role = Role.USER;
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
