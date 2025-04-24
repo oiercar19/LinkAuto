@@ -243,8 +243,10 @@ public class LinkAutoControllerTest {
 
         User requestingUser = new User();
         requestingUser.setRole(Role.ADMIN);
+        requestingUser.setUsername("requestingUser");
 
         User targetUser = new User();
+        targetUser.setUsername("targetUser");
 
         // Case 1: Invalid token
         when(authService.isTokenValid(invalidToken)).thenReturn(false);
@@ -289,8 +291,10 @@ public class LinkAutoControllerTest {
 
         User requestingUser = new User();
         requestingUser.setRole(Role.ADMIN);
+        requestingUser.setUsername("requestingUser");
 
         User targetUser = new User();
+        targetUser.setUsername("targetUser");
 
         // Case 1: Invalid token
         when(authService.isTokenValid(invalidToken)).thenReturn(false);
