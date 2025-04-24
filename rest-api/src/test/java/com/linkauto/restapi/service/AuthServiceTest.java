@@ -20,15 +20,21 @@ public class AuthServiceTest {
     private UserRepository userRepository;
     private AuthService authService;
 
+    private User user;
+
     @BeforeEach
     public void setUp() {
         userRepository = mock(UserRepository.class);
         authService = new AuthService(userRepository);
     }
 
+    @BeforeEach
+    public void setUpUser() {
+        user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    }
+
     @Test
     public void testRegister_UserAlreadyExists() {
-        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.existsByUsername(user.getUsername())).thenReturn(true);
 
         boolean result = authService.register(user);
@@ -37,7 +43,7 @@ public class AuthServiceTest {
 
     @Test
     public void testRegister_NewUser() {
-        User user = new User("newUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("newUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.existsByUsername(user.getUsername())).thenReturn(false);
         when(userRepository.save(user)).thenReturn(user);
 
@@ -48,7 +54,6 @@ public class AuthServiceTest {
 
     @Test
     public void testLogin_Success() {
-        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
 
         String token = authService.login("testUser", "password");
@@ -60,7 +65,6 @@ public class AuthServiceTest {
 
     @Test
     public void testLogin_InvalidPassword() {
-        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
 
         String token = authService.login("testUser", "wrongPassword");
@@ -79,7 +83,6 @@ public class AuthServiceTest {
 
     @Test
     public void testLogout() {
-        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         String token = authService.login("testUser", "password");
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
 
@@ -105,7 +108,6 @@ public class AuthServiceTest {
 
     @Test
     public void testUpdateUser() {
-        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         String token = authService.login("testUser", "password");
 
         when(userRepository.save(user)).thenReturn(user);
@@ -118,7 +120,7 @@ public class AuthServiceTest {
 
     @Test
     public void testDeleteUser_Success() {
-        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         String token = authService.login("testUser", "password");
 
         doNothing().when(userRepository).delete(user);
@@ -131,7 +133,6 @@ public class AuthServiceTest {
 
     @Test
     public void testDeleteUser_Exception() {
-        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         String token = authService.login("testUser", "password");
 
         doThrow(new RuntimeException("Error de base de datos")).when(userRepository).delete(user);
@@ -142,7 +143,6 @@ public class AuthServiceTest {
 
     @Test
     public void testChangeRole() {
-        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.save(user)).thenReturn(user);
 
         boolean result = authService.changeRole(user, Role.ADMIN);
@@ -154,7 +154,6 @@ public class AuthServiceTest {
 
     @Test
     public void testGetUserByUsername_UserExists() {
-        User user = new User("testUser", Role.USER , "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
 
         User result = authService.getUserByUsername("testUser");

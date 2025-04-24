@@ -55,7 +55,6 @@ public class CommentTest {
     public void testToString() {
         User user = new User(
             "testUsername",
-            Role.USER,
             "testName",
             "testProfilePicture",
             "testEmail",

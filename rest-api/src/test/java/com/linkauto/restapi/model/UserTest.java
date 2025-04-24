@@ -23,7 +23,6 @@ public class UserTest {
         List<User> following = new ArrayList<>();
         user = new User(
             "user1",
-            Role.USER,
             "Alejandro Martinez",
             "profile.jpg",
             "mega@ejemplo.com",
@@ -99,7 +98,6 @@ public class UserTest {
         assertTrue(user.getFollowers().isEmpty());
         User follower = new User(
             "follower1",
-            Role.USER,
             "Name",
             "pic",
             "e@mail",
@@ -126,7 +124,6 @@ public class UserTest {
         assertTrue(user.getFollowing().isEmpty());
         User followingUser = new User(
             "follow1",
-            Role.USER,
             "Name",
             "pic",
             "e@mail",
@@ -153,7 +150,6 @@ public class UserTest {
     public void testEqualsAndHashCode() {
         User u1 = new User(
             "sameUser",
-            Role.USER,
             "A",
             "pic A",
             "a@mail",
@@ -169,7 +165,6 @@ public class UserTest {
         );
         User u2 = new User(
             "sameUser",
-            Role.USER,
             "B",
             "pic B",
             "b@mail",
@@ -188,7 +183,6 @@ public class UserTest {
 
         User u3 = new User(
             "otherUser",
-            Role.ADMIN,
             "A",
             "pic A",
             "a@mail",
@@ -202,6 +196,8 @@ public class UserTest {
             new ArrayList<>(),
             new ArrayList<>()
         );
+        u3.setRole(Role.ADMIN);
+
         assertNotEquals(u1, u3);
         assertNotEquals(u1.hashCode(), u3.hashCode());
 
@@ -214,7 +210,6 @@ public class UserTest {
     public void testToString() {
         User u = new User(
             "u1",
-            Role.USER,
             "Name",
             "pic",
             "e@mail",
@@ -241,7 +236,6 @@ public class UserTest {
         List<User> originalFollowers = new ArrayList<>();
         User follower = new User(
             "f1",
-            Role.USER,
             "N",
             "p",
             "e@",
@@ -260,7 +254,6 @@ public class UserTest {
         List<User> originalFollowing = new ArrayList<>();
         User followingU = new User(
             "f2",
-            Role.USER,
             "N",
             "p",
             "e@",
@@ -278,7 +271,6 @@ public class UserTest {
 
         User deepCopyUser = new User(
             "copyUser",
-            Role.USER,
             "X",
             "xp",
             "x@",
