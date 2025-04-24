@@ -33,7 +33,6 @@ public class UserIntegrationTest {
         String username = "userTestUser_" + System.currentTimeMillis();  
         UserRegisterDTO user = new UserRegisterDTO(
                 username,
-                "USER",
                 "Test User", 
                 "avatar.jpg", 
                 "user@test.com", 
