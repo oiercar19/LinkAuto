@@ -117,4 +117,29 @@ public class ClientControllerTest {
         verify(redirectAttributes).addFlashAttribute("error", "Error al promover al usuario: Error al promover al usuario");
         assertEquals("redirect:/adminPanel", result);
     }
+
+    @Test
+    public void testDemoteToUser_Success() {
+        clientController.token = "validToken";
+        String usernameToDemote = "testAdmin";
+
+        String result = clientController.demoteToUser(usernameToDemote, redirectAttributes);
+
+        verify(linkAutoServiceProxy).promoteToAdmin(clientController.token, usernameToDemote);
+        verify(redirectAttributes).addFlashAttribute("success", "Administrador " + usernameToDemote + " degradado con éxito.");
+        assertEquals("redirect:/adminPanel", result);
+    }
+
+    @Test
+    public void testDemoteToUser_Error() {
+        clientController.token = "validToken";
+        String usernameToDemote = "testAdmin";
+        doThrow(new RuntimeException("Error al degradar al administrador")).when(linkAutoServiceProxy).promoteToAdmin("validToken", usernameToDemote);
+
+        String result = clientController.demoteToUser(usernameToDemote, redirectAttributes);
+
+        verify(linkAutoServiceProxy).promoteToAdmin(clientController.token, usernameToDemote);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al degradar al administrador: Error al degradar al administrador");
+        assertEquals("redirect:/adminPanel", result);
+    }
 }
