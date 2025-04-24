@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Comment;
 import com.linkauto.client.data.Post;
+import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
 import com.linkauto.client.service.ClientServiceProxy;
 
@@ -127,6 +128,7 @@ public class ClientControllerTest {
         @Test
     public void testFeed_WithValidToken() {
         clientController.token = "validToken";
+        clientController.username = "testUser";
 
         // Mocking data
         List<Post> posts = new ArrayList<>();
@@ -231,6 +233,72 @@ public class ClientControllerTest {
         verify(linkAutoServiceProxy).updateProfile(clientController.token, user);
         verify(redirectAttributes).addFlashAttribute("error", "Error al actualizar el perfil: Error al actualizar el perfil");
         assertEquals("redirect:/feed", result);
+    }
+
+        @Test
+    public void testCreatePost_Success() {
+        clientController.token = "validToken";
+        PostCreator post = mock(PostCreator.class);
+
+        String result = clientController.createPost(post, redirectAttributes);
+
+        verify(linkAutoServiceProxy).createPost(clientController.token, post);
+        verify(redirectAttributes).addFlashAttribute("success", "Publicación creada con éxito");
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testCreatePost_Error() {
+        clientController.token = "validToken";
+        PostCreator post = mock(PostCreator.class);
+
+        doThrow(new RuntimeException("Error al crear la publicación")).when(linkAutoServiceProxy).createPost("validToken", post);
+
+        String result = clientController.createPost(post, redirectAttributes);
+
+        verify(linkAutoServiceProxy).createPost(clientController.token, post);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al crear la publicación: Error al crear la publicación");
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testDeletePost_Success() {
+        clientController.token = "validToken";
+        Long postId = 1L;
+        String redirectUrl = "/feed";
+
+        String result = clientController.deletePost(postId, redirectUrl, redirectAttributes);
+
+        verify(linkAutoServiceProxy).deletePost(clientController.token, postId);
+        verify(redirectAttributes).addFlashAttribute("success", "Publicación eliminada con éxito");
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testDeletePost_Error() {
+        clientController.token = "validToken";
+        Long postId = 1L;
+        String redirectUrl = "/feed";
+
+        doThrow(new RuntimeException("Error al eliminar la publicación")).when(linkAutoServiceProxy).deletePost("validToken", postId);
+
+        String result = clientController.deletePost(postId, redirectUrl, redirectAttributes);
+
+        verify(linkAutoServiceProxy).deletePost(clientController.token, postId);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al eliminar la publicación: Error al eliminar la publicación");
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testDeletePost_WithNullRedirectUrl() {
+        clientController.token = "validToken";
+        Long postId = 1L;
+
+        String result = clientController.deletePost(postId, null, redirectAttributes);
+
+        verify(linkAutoServiceProxy).deletePost(clientController.token, postId);
+        verify(redirectAttributes).addFlashAttribute("success", "Publicación eliminada con éxito");
+        assertEquals("redirect:/", result);
     }
 
     @Test
