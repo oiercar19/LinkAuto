@@ -1,10 +1,14 @@
 package com.linkauto.client.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +16,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.linkauto.client.data.Credentials;
+import com.linkauto.client.data.Comment;
+import com.linkauto.client.data.Post;
 import com.linkauto.client.data.User;
 import com.linkauto.client.service.ClientServiceProxy;
 
@@ -96,19 +102,7 @@ public class ClientControllerTest {
 
     @Test
     public void testPerformRegister_Success() {
-        User user = new User(
-            "testUser",          // username
-            "USER",             // role
-            "Test Name",         // name
-            "profilePic.jpg",    // profilePicture
-            "test@example.com",  // email
-            List.of("Car1", "Car2"), // cars
-            123456789L,          // birthDate
-            "MALE",              // gender
-            "Test Location",     // location
-            "password123",       // password
-            "Test description"   // description
-        );
+        User user = mock(User.class);
 
         String result = clientController.performRegister(user, redirectAttributes);
 
@@ -119,19 +113,7 @@ public class ClientControllerTest {
 
     @Test
     public void testPerformRegister_Error() {
-        User user = new User(
-            "testUser",          // username
-            "USER",             // role
-            "Test Name",         // name
-            "profilePic.jpg",    // profilePicture
-            "test@example.com",  // email
-            List.of("Car1", "Car2"), // cars
-            123456789L,          // birthDate
-            "MALE",              // gender
-            "Test Location",     // location
-            "password123",       // password
-            "Test description"   // description
-        );
+        User user = mock(User.class);
 
         doThrow(new RuntimeException("Error al registrar el usuario")).when(linkAutoServiceProxy).register(user);
 
@@ -142,6 +124,115 @@ public class ClientControllerTest {
         assertEquals("redirect:/register", result);
     }
  
+        @Test
+    public void testFeed_WithValidToken() {
+        clientController.token = "validToken";
+
+        // Mocking data
+        List<Post> posts = new ArrayList<>();
+        Post post1 = mock(Post.class);
+        Post post2 = mock(Post.class);
+        posts.add(post1);
+        posts.add(post2);
+
+        User user = mock(User.class);
+        when(linkAutoServiceProxy.getFeed()).thenReturn(posts);
+        when(linkAutoServiceProxy.getUserProfile(clientController.token)).thenReturn(user);
+        when(user.profilePicture()).thenReturn("profilePic.jpg");
+        when(user.role()).thenReturn("USER");
+
+        when(post1.username()).thenReturn("user1");
+        when(post2.username()).thenReturn("user2");
+        when(linkAutoServiceProxy.getUserByUsername("user1")).thenReturn(new User("user1", "USER", "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc"));
+        when(linkAutoServiceProxy.getUserByUsername("user2")).thenReturn(new User("user2", "USER", "User Two", "pic2.jpg", "user2@example.com", null, 0, "Female", "Location2", "password", "desc"));
+
+        List<User> followings = new ArrayList<>();
+        followings.add(new User("user3", "USER", "User Three", "pic3.jpg", "user3@example.com", null, 0, "Male", "Location3", "password", "desc"));
+        when(linkAutoServiceProxy.getUserFollowing("testUser")).thenReturn(followings);
+
+        List<Comment> comments = new ArrayList<>();
+        Comment comment = mock(Comment.class);
+        comments.add(comment);
+        when(linkAutoServiceProxy.getCommentsByPostId(anyLong())).thenReturn(comments);
+
+        // Call the method
+        String result = clientController.feed(model);
+
+        // Verify interactions and attributes
+        verify(model).addAttribute(eq("profilePictureByUsername"), any(Map.class));
+        verify(model).addAttribute("posts", posts);
+        verify(model).addAttribute("username", "testUser");
+        verify(model).addAttribute("profilePicture", "profilePic.jpg");
+        verify(model).addAttribute("role", "USER");
+        verify(model).addAttribute(eq("followings"), any(List.class));
+        verify(model).addAttribute(eq("commentsByPostId"), any(Map.class));
+
+        assertEquals("feed", result);
+    }
+
+    @Test
+    public void testFeed_WithInvalidToken() {
+        clientController.token = null;
+
+        // Call the method
+        String result = clientController.feed(model);
+
+        // Verify no interactions with the model
+        verifyNoInteractions(model);
+
+        // Verify redirection to login
+        assertEquals("redirect:/", result);
+    }
+
+    @Test
+    public void testShowUpdateProfile_WithValidToken() {
+        clientController.token = "validToken";
+        User user = mock(User.class);
+
+        when(linkAutoServiceProxy.getUserProfile(clientController.token)).thenReturn(user);
+
+        String result = clientController.showUpdateProfile(model);
+
+        verify(model).addAttribute("user", user);
+        assertEquals("editProfile", result);
+    }
+
+    @Test
+    public void testShowUpdateProfile_WithInvalidToken() {
+        clientController.token = null;
+
+        String result = clientController.showUpdateProfile(model);
+
+        verifyNoInteractions(model);
+        assertEquals("redirect:/", result);
+    }
+
+    @Test
+    public void testUpdateProfile_Success() {
+        clientController.token = "validToken";
+        User user = mock(User.class);
+
+        String result = clientController.updateProfile(user, redirectAttributes);
+
+        verify(linkAutoServiceProxy).updateProfile(clientController.token, user);
+        verify(redirectAttributes).addFlashAttribute("success", "Perfil actualizado con éxito");
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testUpdateProfile_Error() {
+        clientController.token = "validToken";
+        User user = mock(User.class);
+
+        doThrow(new RuntimeException("Error al actualizar el perfil")).when(linkAutoServiceProxy).updateProfile(clientController.token, user);
+
+        String result = clientController.updateProfile(user, redirectAttributes);
+
+        verify(linkAutoServiceProxy).updateProfile(clientController.token, user);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al actualizar el perfil: Error al actualizar el perfil");
+        assertEquals("redirect:/feed", result);
+    }
+
     @Test
     public void testAdminPanel_TokenNull() {
         clientController.token = null;
