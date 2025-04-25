@@ -60,8 +60,12 @@ jobs:
     - name: Unit Test
       run: mvn test
 
-    - name: Integration Test
-      run: mvn -Pintegration integration-test
+    - name: Run Integration Tests and Verify
+      run: |
+        mvn -Pintegration integration-test
+        mvn failsafe:verify
 
     - name: Performance Test
-      run: mvn -Pperformance integration-test
+      run: |
+        mvn -Pperformance integration-test
+        mvn failsafe:verify
