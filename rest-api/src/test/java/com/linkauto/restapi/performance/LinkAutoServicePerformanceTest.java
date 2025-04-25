@@ -27,8 +27,10 @@ public class LinkAutoServicePerformanceTest {
 
 
     @Test
-    @JUnitPerfTest(threads = 10, durationMs = 10000, warmUpMs = 2000)
-    @JUnitPerfTestRequirement(executionsPerSec = 50, percentiles = "95:300ms")
+    @JUnitPerfTest(threads = 10, durationMs = 5000, warmUpMs = 2000)
+    @JUnitPerfTestRequirement(
+        executionsPerSec = 100, meanLatency = 50
+    )    
     public void testGetAllPostsPerformance() {
         linkAutoService.getAllPosts();
     }

@@ -60,7 +60,6 @@
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>2.2.0</version> <!-- Define the version here -->
             </dependency>
-            
         </dependencies>
     </dependencyManagement>
 
@@ -145,10 +144,25 @@
 					<plugin>
 						<artifactId>maven-failsafe-plugin</artifactId>
 						<configuration>
+                            <testFailureIgnore>false</testFailureIgnore>  <!-- No ignorar fallos en pruebas -->
 							<includes>
 								<include>**/integration/**</include>
 							</includes>
 						</configuration>
+                        <executions>
+                            <execution>
+                                <id>integration-test</id>
+                                <goals>
+                                    <goal>integration-test</goal>
+                                </goals>
+                                </execution>
+                            <execution>
+                                <id>verify</id>
+                                <goals>
+                                    <goal>verify</goal>
+                                </goals>
+                            </execution>
+                    </executions>
 					</plugin>
 				</plugins>
 			</build>
@@ -160,6 +174,7 @@
 					<plugin>
 						<artifactId>maven-failsafe-plugin</artifactId>
 						<configuration>
+                            <testFailureIgnore>false</testFailureIgnore>  <!-- No ignorar fallos en pruebas -->
 							<includes>
 								<include>**/performance/**</include>
 							</includes>
