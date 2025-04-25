@@ -79,6 +79,11 @@
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>0.8.10</version>
+                <configuration>
+                    <excludes>
+                        <exclude>com/linkauto/restapi/RestApiApplication.class</exclude>
+                    </excludes>
+                </configuration>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -93,11 +98,106 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
+                    <execution>
+						<id>jacoco-check</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<rule>
+									<element>BUNDLE</element>
+									<limits>
+										<limit>
+											<counter>LINE</counter>
+											<value>COVEREDRATIO</value>
+											<minimum>0.75</minimum>
+										</limit>
+									</limits>
+								</rule>
+							</rules>
+							<excludes>
+								<exclude>com/linkauto/restapi/RestApiApplication*.*</exclude>
+							</excludes>
+						</configuration>
+					</execution>
                 </executions>
             </plugin>
+            <plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/RestApiApplicationTests.java</exclude>
+						<exclude>**/integration/**</exclude>
+						<exclude>**/performance/**</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 
         </plugins>
     </build>
+    <profiles>
+		<profile>
+			<id>integration</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<configuration>
+							<includes>
+								<include>**/integration/**</include>
+							</includes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>performance</id>
+			<build>
+				<plugins>
+					<plugin>
+						<artifactId>maven-failsafe-plugin</artifactId>
+						<configuration>
+							<includes>
+								<include>**/performance/**</include>
+							</includes>
+						</configuration>
+					</plugin>
+					<!-- Copy the report into the site directory
+					Use the maven-resources-plugin or maven-antrun-plugin to copy your generated report
+					(perf-report.html) 
+					from target/reports to the site output directory before site generation. -->
+					<plugin>
+						<artifactId>maven-resources-plugin</artifactId>
+						<version>3.3.1</version>
+						<executions>
+							<execution>
+								<id>copy-perf-report</id>
+								<phase>prepare-package</phase>
+								<goals>
+									<goal>copy-resources</goal>
+								</goals>
+								<configuration>
+									<outputDirectory>${project.build.directory}/site/reports</outputDirectory>
+									<resources>
+										<resource>
+											<directory>${project.build.directory}/reports</directory>
+											<includes>
+												<include>perf-report.html</include>
+											</includes>
+										</resource>
+									</resources>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 
     <repositories>
         <repository>
