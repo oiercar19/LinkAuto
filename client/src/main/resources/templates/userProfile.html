@@ -220,6 +220,19 @@
             border: 1px solid #e4e6eb;
             margin-right: 10px;
         }
+        
+        /* Estilo para los nombres de usuarios en comentarios que son enlaces */
+        .comment-username {
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        
+        .comment-username:hover {
+            color: #2a75e6;
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -227,6 +240,18 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light w-100 fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/feed">LinkAuto</a>
+            <div class="d-flex justify-content-center w-100">
+                <div class="search-container" style="max-width: 700px; width: 100%;">
+                    <form th:action="@{/search}" method="get" class="d-flex">
+                        <input type="text" class="form-control form-control-sm rounded-pill" 
+                            name="username" placeholder="Buscar usuario..." required
+                            th:value="${param.username}">
+                        <button type="submit" class="btn btn-sm btn-outline-primary ms-2 rounded-pill">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
             <div class="ms-auto d-flex align-items-center">
                 <div class="user-profile me-3">
                     <div class="user-avatar">
@@ -395,7 +420,8 @@
                                                  style="width: 30px; height: 30px;">
                                         </div>
                                         <div class="ms-2">
-                                            <strong th:text="${comment.username}">Usuario</strong>
+                                            <!-- Nombre de usuario como enlace al perfil -->
+                                            <a th:href="@{'/user/' + ${comment.username}}" class="comment-username" th:text="${comment.username}">Usuario</a>
                                             <p class="mb-0" th:text="${comment.text}">Texto del comentario</p>
                                         </div>
                                     </div>

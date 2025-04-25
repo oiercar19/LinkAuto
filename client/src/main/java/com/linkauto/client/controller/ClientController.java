@@ -4,10 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -258,6 +257,50 @@ public class ClientController {
         }
     }
 
+    @GetMapping("/search")
+    public String searchUsers(@RequestParam(required = false) String username, Model model, RedirectAttributes redirectAttributes) {
+        if (token == null) {
+            return "redirect:/";
+        }
+        
+        try {
+            // Si el término de búsqueda es null o vacío, redirigir al feed
+            if (username == null || username.trim().isEmpty()) {
+                return "redirect:/feed";
+            }
+            
+            // Obtener todos los usuarios
+            List<User> allUsers = linkAutoServiceProxy.getAllUsers();
+            
+            // Filtrar usuarios que coincidan con el término de búsqueda (ignorando mayúsculas y minúsculas)
+            List<User> matchingUsers = allUsers.stream()
+                .filter(user -> user.username().toLowerCase().contains(username.toLowerCase()))
+                .collect(Collectors.toList());
+            
+            model.addAttribute("searchTerm", username);
+            model.addAttribute("users", matchingUsers);
+            
+            // Añadir datos del usuario actual
+            User currentUser = linkAutoServiceProxy.getUserProfile(token);
+            model.addAttribute("currentUser", currentUser);
+            model.addAttribute("username", this.username);
+            model.addAttribute("profilePicture", currentUser.profilePicture());
+            model.addAttribute("role", currentUser.role());
+            
+            // Obtener usuarios que sigue el usuario actual
+            List<User> followings = linkAutoServiceProxy.getUserFollowing(this.username);
+            List<String> followingUsernames = followings.stream()
+                .map(User::username)
+                .collect(Collectors.toList());
+            model.addAttribute("followings", followingUsernames);
+            
+            return "searchResults"; // Nueva plantilla para mostrar resultados
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al buscar usuarios: " + e.getMessage());
+            return "redirect:/feed";
+        }
+}
+
     @PostMapping("/user/{postId}/like")
     public String likePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
         try {
@@ -376,7 +419,7 @@ public class ClientController {
   @PostMapping("/admin/demoteToUser")
   public String demoteToUser(@RequestParam("username") String usernameToDemote, RedirectAttributes redirectAttributes) {
       try {
-          linkAutoServiceProxy.promoteToAdmin(token, usernameToDemote);
+          linkAutoServiceProxy.demoteToUser(token, usernameToDemote);
           redirectAttributes.addFlashAttribute("success", "Administrador " + usernameToDemote + " degradado con éxito.");
       } catch (Exception e) {
           redirectAttributes.addFlashAttribute("error", "Error al degradar al administrador: " + e.getMessage());

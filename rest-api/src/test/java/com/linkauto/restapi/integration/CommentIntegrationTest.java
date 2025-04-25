@@ -33,7 +33,6 @@ public class CommentIntegrationTest {
         String username = "commentTestUser";
         UserRegisterDTO user = new UserRegisterDTO(
                 username,
-                "USER",
                 "nombrePrueba",
                 "avatar.jpg",
                 "comment@test.com",
