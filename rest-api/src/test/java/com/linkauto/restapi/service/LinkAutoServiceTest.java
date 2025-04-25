@@ -165,7 +165,6 @@ public class LinkAutoServiceTest {
         User user = new User("user2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         when(userRepository.save(user)).thenReturn(user);
-        when(userRepository.save(userToFollow)).thenReturn(userToFollow);
 
 
         when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userToFollow));
@@ -177,7 +176,6 @@ public class LinkAutoServiceTest {
         assertFalse(result2);
 
         verify(userRepository).save(user);
-        verify(userRepository).save(userToFollow);
     }
 
     @Test

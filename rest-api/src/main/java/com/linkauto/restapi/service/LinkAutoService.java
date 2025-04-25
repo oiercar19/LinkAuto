@@ -113,7 +113,6 @@ public class LinkAutoService {
         user.addFollowing(userToFollow);
         userToFollow.addFollower(user);
         userRepository.save(user);
-        userRepository.save(userToFollow);
     
         return true;
     }
