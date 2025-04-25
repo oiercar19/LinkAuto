@@ -55,7 +55,7 @@ jobs:
     - name: Run DB initialization script
       run: |
         echo "Running DB setup..."
-        mysql -h 127.0.0.1 -uroot -proot < src/main/resources/dbsetup.sql
+        mysql -h 127.0.0.1 -uroot -proot < rest-api/src/main/resources/dbsetup.sql
 
     - name: Unit Test
       run: mvn test
