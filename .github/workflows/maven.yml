@@ -52,19 +52,16 @@ jobs:
           sleep 5
         done
 
-    - name: Create DB and user
+    - name: Run DB initialization script
       run: |
-        mysql -h 127.0.0.1 -uroot -proot <<EOF
-        DROP USER IF EXISTS 'la'@'%';
-        CREATE USER IF NOT EXISTS 'la'@'%' IDENTIFIED BY 'la';
-        DROP SCHEMA IF EXISTS linkautodb;
-        CREATE SCHEMA linkautodb;
-        GRANT ALL ON linkautodb.* TO 'la'@'%';
-        FLUSH PRIVILEGES;
-        EOF
+        echo "Running DB setup..."
+        mysql -h 127.0.0.1 -uroot -proot < src/main/resources/dbsetup.sql
 
-    - name: Build REST API
-      run: mvn -pl rest-api package
+    - name: Unit Test
+      run: mvn test
 
-    - name: Build Client
-      run: mvn -pl client package
+    - name: Integration Test
+      run: mvn -Pintegration integration-test
+
+    - name: Performance Test
+      run: mvn -Pperformance integration-test
