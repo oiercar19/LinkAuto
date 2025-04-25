@@ -12,16 +12,21 @@ import java.util.Map;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockedStatic;
 import org.springframework.boot.autoconfigure.integration.IntegrationProperties.RSocket.Client;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Comment;
+import com.linkauto.client.data.CommentCreator;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
 import com.linkauto.client.service.ClientServiceProxy;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 public class ClientControllerTest {
 
@@ -493,5 +498,219 @@ public class ClientControllerTest {
         verify(linkAutoServiceProxy).promoteToAdmin(clientController.token, usernameToDemote);
         verify(redirectAttributes).addFlashAttribute("error", "Error al degradar al administrador: Error al degradar al administrador");
         assertEquals("redirect:/adminPanel", result);
+    }
+
+    @Test
+    public void testHome() {
+        String result = clientController.home();
+        
+        assertEquals("index", result);
+    }
+    
+    @Test
+    public void testAddAttributes() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        
+        // Mock the static method in ServletUriComponentsBuilder
+        try (MockedStatic<ServletUriComponentsBuilder> mockBuilder = mockStatic(ServletUriComponentsBuilder.class)) {
+            ServletUriComponentsBuilder mockUriBuilder = mock(ServletUriComponentsBuilder.class);
+            mockBuilder.when(() -> ServletUriComponentsBuilder.fromRequestUri(any(HttpServletRequest.class)))
+                    .thenReturn(mockUriBuilder);
+            when(mockUriBuilder.toUriString()).thenReturn("http://test.com/feed");
+            
+            clientController.addAttributes(model, request);
+            
+            verify(model).addAttribute("currentUrl", "http://test.com/feed");
+        }
+    }
+    
+    @Test
+    public void testUserProfile_WithValidToken() {
+        clientController.token = "validToken";
+        clientController.username = "currentUser";
+        
+        String profileUsername = "testUser";
+        User profileUser = mock(User.class);
+        User currentUser = mock(User.class);
+        
+        List<Post> userPosts = new ArrayList<>();
+        Post post1 = mock(Post.class);
+        when(post1.id()).thenReturn(1L);
+        userPosts.add(post1);
+        
+        List<Comment> comments = new ArrayList<>();
+        Comment comment = mock(Comment.class);
+        when(comment.username()).thenReturn("commenter");
+        comments.add(comment);
+        
+        List<User> followings = new ArrayList<>();
+        User following = mock(User.class);
+        when(following.username()).thenReturn("followedUser");
+        followings.add(following);
+        
+        List<User> followers = new ArrayList<>();
+        followers.add(mock(User.class));
+        
+        // Mock service calls
+        when(linkAutoServiceProxy.getUserByUsername(profileUsername)).thenReturn(profileUser);
+        when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(currentUser);
+        when(linkAutoServiceProxy.getUserPosts(profileUsername)).thenReturn(userPosts);
+        when(linkAutoServiceProxy.getCommentsByPostId(anyLong())).thenReturn(comments);
+        when(linkAutoServiceProxy.getUserByUsername("commenter")).thenReturn(new User("commenter", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
+        when(currentUser.username()).thenReturn("currentUser");
+        when(linkAutoServiceProxy.getUserFollowing("currentUser")).thenReturn(followings);
+        when(linkAutoServiceProxy.getUserFollowers(profileUsername)).thenReturn(followers);
+        when(linkAutoServiceProxy.getUserFollowing(profileUsername)).thenReturn(followings);
+        
+        String result = clientController.userProfile(profileUsername, model);
+        
+        verify(model).addAttribute("user", profileUser);
+        verify(model).addAttribute("currentUser", currentUser);
+        verify(model).addAttribute("userPosts", userPosts);
+        verify(model).addAttribute(eq("profilePictureByUsername"), any(Map.class));
+        verify(model).addAttribute(eq("commentsByPostId"), any(Map.class));
+        verify(model).addAttribute(eq("followings"), any(List.class));
+        verify(model).addAttribute("followersCount", 1);
+        verify(model).addAttribute("followingCount", 1);
+        
+        assertEquals("userProfile", result);
+    }
+    
+    @Test
+    public void testUserProfile_WithInvalidToken() {
+        clientController.token = null;
+        
+        String result = clientController.userProfile("testUser", model);
+        
+        verifyNoInteractions(model);
+        assertEquals("redirect:/", result);
+    }
+    
+    @Test
+    public void testSharePost() {
+        Post post = mock(Post.class);
+        when(post.id()).thenReturn(1L);
+        when(post.username()).thenReturn("postOwner");
+        
+        List<Comment> comments = new ArrayList<>();
+        Comment comment = mock(Comment.class);
+        when(comment.username()).thenReturn("commenter");
+        comments.add(comment);
+        
+        when(linkAutoServiceProxy.sharePost(1L)).thenReturn(post);
+        when(linkAutoServiceProxy.getCommentsByPostId(1L)).thenReturn(comments);
+        when(linkAutoServiceProxy.getUserByUsername("commenter")).thenReturn(new User("commenter", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
+        
+        String result = clientController.sharePost(model, 1L);
+        
+        verify(model).addAttribute("post", post);
+        verify(model).addAttribute(eq("profilePictureByUsername"), any(Map.class));
+        verify(model).addAttribute(eq("commentsByPostId"), any(Map.class));
+        
+        assertEquals("post", result);
+    }
+    
+    @Test
+    public void testCommentPost_Success() {
+        clientController.token = "validToken";
+        
+        CommentCreator comment = mock(CommentCreator.class);
+        
+        String result = clientController.commentPost(1L, comment, redirectAttributes);
+        
+        verify(linkAutoServiceProxy).commentPost("validToken", 1L, comment);
+        verify(redirectAttributes).addFlashAttribute("success", "Comentario agregado con éxito");
+        assertEquals("redirect:/feed", result);
+    }
+    
+    @Test
+    public void testCommentPost_Error() {
+        clientController.token = "validToken";
+        
+        CommentCreator comment = mock(CommentCreator.class);
+        doThrow(new RuntimeException("Error adding comment")).when(linkAutoServiceProxy).commentPost("validToken", 1L, comment);
+        
+        String result = clientController.commentPost(1L, comment, redirectAttributes);
+        
+        verify(linkAutoServiceProxy).commentPost("validToken", 1L, comment);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al agregar el comentario: Error adding comment");
+        assertEquals("redirect:/feed", result);
+    }
+    
+    @Test
+    public void testCommentPostInProfile_Success() {
+        clientController.token = "validToken";
+        clientController.username = "testUser";
+        
+        CommentCreator comment = mock(CommentCreator.class);
+        
+        String result = clientController.commentPostInProfile(1L, comment, redirectAttributes);
+        
+        verify(linkAutoServiceProxy).commentPost("validToken", 1L, comment);
+        verify(redirectAttributes).addFlashAttribute("success", "Comentario agregado con éxito");
+        assertEquals("redirect:/user/testUser", result);
+    }
+    
+    @Test
+    public void testCommentPostInProfile_Error() {
+        clientController.token = "validToken";
+        clientController.username = "testUser";
+        
+        CommentCreator comment = mock(CommentCreator.class);
+        doThrow(new RuntimeException("Error adding comment")).when(linkAutoServiceProxy).commentPost("validToken", 1L, comment);
+        
+        String result = clientController.commentPostInProfile(1L, comment, redirectAttributes);
+        
+        verify(linkAutoServiceProxy).commentPost("validToken", 1L, comment);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al agregar el comentario: Error adding comment");
+        assertEquals("redirect:/user/testUser", result);
+    }
+    
+    @Test
+    public void testLikePost_Success() {
+        clientController.token = "validToken";
+        
+        String result = clientController.likePost(1L, redirectAttributes);
+        
+        verify(linkAutoServiceProxy).likePost("validToken", 1L);
+        verify(redirectAttributes).addFlashAttribute("success", "Publicación 1 le gusta");
+        assertEquals("redirect:/feed", result);
+    }
+    
+    @Test
+    public void testLikePost_Error() {
+        clientController.token = "validToken";
+        
+        doThrow(new RuntimeException("Error liking post")).when(linkAutoServiceProxy).likePost("validToken", 1L);
+        
+        String result = clientController.likePost(1L, redirectAttributes);
+        
+        verify(linkAutoServiceProxy).likePost("validToken", 1L);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al dar me gusta a la publicación: Error liking post");
+        assertEquals("redirect:/feed", result);
+    }
+    
+    @Test
+    public void testUnlikePost_Success() {
+        clientController.token = "validToken";
+        
+        String result = clientController.unlikePost(1L, redirectAttributes);
+        
+        verify(linkAutoServiceProxy).unlikePost("validToken", 1L);
+        verify(redirectAttributes).addFlashAttribute("success", "Publicación 1 ya no le gusta");
+        assertEquals("redirect:/feed", result);
+    }
+    
+    @Test
+    public void testUnlikePost_Error() {
+        clientController.token = "validToken";
+        
+        doThrow(new RuntimeException("Error unliking post")).when(linkAutoServiceProxy).unlikePost("validToken", 1L);
+        
+        String result = clientController.unlikePost(1L, redirectAttributes);
+        
+        verify(linkAutoServiceProxy).unlikePost("validToken", 1L);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al quitar el me gusta a la publicación: Error unliking post");
+        assertEquals("redirect:/feed", result);
     }
 }
