@@ -1,0 +1,70 @@
+# This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ROOT_PASSWORD: root
+        options: >-
+          --health-cmd="mysqladmin ping --silent"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up JDK 21
+      uses: actions/setup-java@v4
+      with:
+        java-version: '21'
+        distribution: 'temurin'
+        cache: maven
+
+    - name: Wait for MySQL to be ready
+      run: |
+        for i in {1..10}; do
+          if mysqladmin ping -h 127.0.0.1 -uroot -proot --silent; then
+            echo "MySQL is up!"
+            break
+          fi
+          echo "Waiting for MySQL..."
+          sleep 5
+        done
+
+    - name: Create DB and user
+      run: |
+        mysql -h 127.0.0.1 -uroot -proot <<EOF
+        DROP USER IF EXISTS 'la'@'%';
+        CREATE USER IF NOT EXISTS 'la'@'%' IDENTIFIED BY 'la';
+        DROP SCHEMA IF EXISTS linkautodb;
+        CREATE SCHEMA linkautodb;
+        GRANT ALL ON linkautodb.* TO 'la'@'%';
+        FLUSH PRIVILEGES;
+        EOF
+
+    - name: Build REST API
+      run: mvn -pl rest-api package
+
+    - name: Build Client
+      run: mvn -pl client package
