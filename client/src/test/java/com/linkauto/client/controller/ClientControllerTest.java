@@ -44,7 +44,7 @@ public class ClientControllerTest {
         redirectAttributes = mock(RedirectAttributes.class);
     }
 
-        @Test
+    @Test
     public void testLogin_Success() {
         String username = "testUser";
         String password = "testPassword";
@@ -450,7 +450,7 @@ public class ClientControllerTest {
         assertEquals("redirect:/adminPanel", result);
     }
 
-    /*@Test
+    @Test
     public void testPromoteToAdmin_Success() {
         clientController.token = "validToken";
         String usernameToPromote = "testUser";
@@ -482,7 +482,7 @@ public class ClientControllerTest {
 
         String result = clientController.demoteToUser(usernameToDemote, redirectAttributes);
 
-        verify(linkAutoServiceProxy).promoteToAdmin(clientController.token, usernameToDemote);
+        verify(linkAutoServiceProxy).demoteToUser(clientController.token, usernameToDemote);
         verify(redirectAttributes).addFlashAttribute("success", "Administrador " + usernameToDemote + " degradado con éxito.");
         assertEquals("redirect:/adminPanel", result);
     }
@@ -491,15 +491,15 @@ public class ClientControllerTest {
     public void testDemoteToUser_Error() {
         clientController.token = "validToken";
         String usernameToDemote = "testAdmin";
-        doThrow(new RuntimeException("Error al degradar al administrador")).when(linkAutoServiceProxy).promoteToAdmin("validToken", usernameToDemote);
+        doThrow(new RuntimeException("Error al degradar al administrador")).when(linkAutoServiceProxy).demoteToUser("validToken", usernameToDemote);
 
         String result = clientController.demoteToUser(usernameToDemote, redirectAttributes);
 
-        verify(linkAutoServiceProxy).promoteToAdmin(clientController.token, usernameToDemote);
+        verify(linkAutoServiceProxy).demoteToUser(clientController.token, usernameToDemote);
         verify(redirectAttributes).addFlashAttribute("error", "Error al degradar al administrador: Error al degradar al administrador");
         assertEquals("redirect:/adminPanel", result);
     }
-*/
+
     @Test
     public void testHome() {
         String result = clientController.home();
