@@ -227,6 +227,18 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light w-100 fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/feed">LinkAuto</a>
+            <div class="d-flex justify-content-center w-100">
+                <div class="search-container" style="max-width: 700px; width: 100%;">
+                    <form th:action="@{/search}" method="get" class="d-flex">
+                        <input type="text" class="form-control form-control-sm rounded-pill" 
+                            name="username" placeholder="Buscar usuario..." required
+                            th:value="${param.username}">
+                        <button type="submit" class="btn btn-sm btn-outline-primary ms-2 rounded-pill">
+                            <i class="bi bi-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
             <div class="ms-auto d-flex align-items-center">
                 <div class="user-profile me-3">
                     <div class="user-avatar">
