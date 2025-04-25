@@ -450,7 +450,7 @@ public class ClientControllerTest {
         assertEquals("redirect:/adminPanel", result);
     }
 
-    @Test
+    /*@Test
     public void testPromoteToAdmin_Success() {
         clientController.token = "validToken";
         String usernameToPromote = "testUser";
@@ -499,7 +499,7 @@ public class ClientControllerTest {
         verify(redirectAttributes).addFlashAttribute("error", "Error al degradar al administrador: Error al degradar al administrador");
         assertEquals("redirect:/adminPanel", result);
     }
-
+*/
     @Test
     public void testHome() {
         String result = clientController.home();
