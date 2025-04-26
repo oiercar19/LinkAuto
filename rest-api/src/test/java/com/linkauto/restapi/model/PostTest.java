@@ -85,14 +85,30 @@ public class PostTest {
     @Test
     @SuppressWarnings("ObjectEqualsNull")
     public void testEqualsAndHashCode() {
-        User user1 = new User();
+        User user1 = new User(
+            "u1",
+            "Name",
+            "pic",
+            "e@mail",
+            Arrays.asList("car1"),
+            12345L,
+            User.Gender.OTHER,
+            "Loc",
+            "pwd",
+            "Desc",
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>()
+        );
         List<String> images = List.of("img.jpg");
         List<Comment> comments = new ArrayList<>();
         HashSet<String> likes = new HashSet<>();
-
+        
         //Post iguales
         Post post1 = new Post(1L, user1, "Mensaje A", 123L, images, comments, likes);
         Post post2 = new Post(1L, user1, "Mensaje A", 123L, images, comments, likes);
+        user1.addPost(post1);
+        user1.addPost(post2);
     
         assertEquals(post1, post2);  // Mismo ID, deberían ser iguales
         assertEquals(post1.hashCode(), post2.hashCode());  // El hashCode debe ser el mismo
@@ -127,8 +143,8 @@ public class PostTest {
         // Diferentes imagenes
         List<String> images2 = List.of("img2.jpg");
         Post post9 = new Post(1L, user3, "Mensaje A", 123L, images2, comments, likes);
-        assertNotEquals(post7, post9);  // Distintas imagenes
-        assertNotEquals(post7.hashCode(), post9.hashCode());  // Distintas imagenes, hashCode diferente
+        assertNotEquals(post8, post9);  // Distintas imagenes
+        assertNotEquals(post8.hashCode(), post9.hashCode());  // Distintas imagenes, hashCode diferente
         
         // Diferentes comentarios
         List<Comment> comments2 = new ArrayList<>();
@@ -148,6 +164,11 @@ public class PostTest {
         Post post13 = new Post(1L, user3, "Mensaje A", 123L, images, comments, new HashSet<>());
         assertNotEquals(post12, post13);  // Distintos likes
         assertNotEquals(post12.hashCode(), post13.hashCode());  // Distintos likes, hashCode diferente    
+    
+        // Diferente mensaje
+        Post post14 = new Post(1L, user3, "Mensaje B", 123L, images, comments, likes);
+        assertNotEquals(post12, post14);  // Distinto mensaje
+        assertNotEquals(post12.hashCode(), post14.hashCode());  // Distinto mensaje, hashCode diferente
     }
     
 
