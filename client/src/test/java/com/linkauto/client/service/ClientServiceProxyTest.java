@@ -1130,4 +1130,15 @@ class ClientServiceProxyTest {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.demoteToUser(TOKEN, "adminuser"));
         assertEquals("User not found", exception.getMessage());
     }
+
+    @Test
+    void testDemoteToUser_OtherError() {
+        String url = String.format("%s/api/user/%s/role/user?userToken=%s", API_BASE_URL, "adminuser", TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
+            .when(restTemplate).put(eq(url), isNull());
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.demoteToUser(TOKEN, "adminuser"));
+        assertEquals("Failed to demote admin to user: Server Error", exception.getMessage());
+    }
 }
