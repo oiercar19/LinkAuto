@@ -263,9 +263,9 @@ public class LinkAutoController {
         @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
         @PathVariable String username
     ) {
-        User user = linkAutoService.getUserByUsername(username).get();
-        if (user != null) {
-            return parseUserToUserReturnerDTO(user);
+        Optional<User> user = linkAutoService.getUserByUsername(username);
+        if (user.isPresent()) {
+            return parseUserToUserReturnerDTO(user.get());
         }
         return null;
     }

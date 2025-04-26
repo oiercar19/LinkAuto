@@ -3,6 +3,7 @@ package com.linkauto.restapi.controller;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -286,6 +287,18 @@ public class LinkAutoControllerTest {
         ResponseEntity<Void> responseSuccess = linkAutoController.promoteToAdmin(username, userToken);
         assertEquals(HttpStatus.OK, responseSuccess.getStatusCode());
         verify(authService, times(1)).changeRole(targetUser, Role.ADMIN);
+
+        // Case 5: User promoting themselves
+        when(authService.getUserByToken(userToken)).thenReturn(requestingUser);
+        when(authService.getUserByUsername(requestingUser.getUsername())).thenReturn(requestingUser);
+        ResponseEntity<Void> responseSelfPromotion = linkAutoController.promoteToAdmin(requestingUser.getUsername(), userToken);
+        assertEquals(HttpStatus.FORBIDDEN, responseSelfPromotion.getStatusCode());
+        verify(authService, times(1)).getUserByUsername(requestingUser.getUsername());
+        
+        // Case 6: Promotion failed
+        when(authService.changeRole(targetUser, Role.ADMIN)).thenReturn(false);
+        ResponseEntity<Void> responsePromotionFailed = linkAutoController.promoteToAdmin(username, userToken);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responsePromotionFailed.getStatusCode());
     }
 
     @Test
@@ -334,6 +347,18 @@ public class LinkAutoControllerTest {
         ResponseEntity<Void> responseSuccess = linkAutoController.demoteToUser(username, userToken);
         assertEquals(HttpStatus.OK, responseSuccess.getStatusCode());
         verify(authService, times(1)).changeRole(targetUser, Role.USER);
+
+        // Case 5: User demoting themselves
+        when(authService.getUserByToken(userToken)).thenReturn(requestingUser);
+        when(authService.getUserByUsername(requestingUser.getUsername())).thenReturn(requestingUser);
+        ResponseEntity<Void> responseSelfDemotion = linkAutoController.demoteToUser(requestingUser.getUsername(), userToken);
+        assertEquals(HttpStatus.FORBIDDEN, responseSelfDemotion.getStatusCode());
+        verify(authService, times(1)).getUserByUsername(requestingUser.getUsername());
+
+        // Case 6: Demotion failed
+        when(authService.changeRole(targetUser, Role.USER)).thenReturn(false);
+        ResponseEntity<Void> responseDemotionFailed = linkAutoController.demoteToUser(username, userToken);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseDemotionFailed.getStatusCode());
 
     }
 
@@ -471,6 +496,11 @@ public class LinkAutoControllerTest {
         assertEquals(username, response.getUsername());
         assertEquals("testName", response.getName());
         assertEquals("testEmail", response.getEmail());
+
+        // Case 2: User is null
+        when(linkAutoService.getUserByUsername("nonExistentUser")).thenReturn(Optional.empty());
+        UserReturnerDTO nullResponse = linkAutoController.getUserByUsername("nonExistentUser");
+        assertNull(nullResponse);
 
     }
 
