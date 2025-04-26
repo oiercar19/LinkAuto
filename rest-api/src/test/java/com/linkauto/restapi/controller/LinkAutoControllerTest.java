@@ -239,6 +239,14 @@ public class LinkAutoControllerTest {
         ResponseEntity<Void> result5 = linkAutoController.deleteUser(userToken, targetUsername);
         assertEquals(HttpStatus.NOT_FOUND, result5.getStatusCode());
         verify(authService, times(2)).deleteUser(targetUser, userToken);
+
+        // Scenario 6: User trying to delete themselves
+        when(authService.getUserByToken(userToken)).thenReturn(targetUser);
+        when(authService.getUserByUsername(targetUser.getUsername())).thenReturn(targetUser);
+        when(authService.deleteUser(targetUser, userToken)).thenReturn(true);
+        ResponseEntity<Void> result6 = linkAutoController.deleteUser(userToken, targetUsername);
+        assertEquals(HttpStatus.OK, result6.getStatusCode());
+        verify(authService, times(3)).deleteUser(targetUser, userToken);
     }
 
     @Test
