@@ -345,11 +345,10 @@ public class LinkAutoControllerTest {
         assertEquals("ownerUsername", response.getBody().getUsername());
         assertEquals("ownerName", response.getBody().getName());
         assertEquals("ownerEmail", response.getBody().getEmail());
-        /* 
         // Test null user scenario
         when(authService.getUserByToken("invalidToken")).thenReturn(null);
         ResponseEntity<UserReturnerDTO> nullResponse = linkAutoController.getUserDetails("invalidToken");
-        assertEquals(HttpStatus.NOT_FOUND, nullResponse.getStatusCode()); */
+        assertEquals(HttpStatus.UNAUTHORIZED, nullResponse.getStatusCode());
     }
 
     @Test
