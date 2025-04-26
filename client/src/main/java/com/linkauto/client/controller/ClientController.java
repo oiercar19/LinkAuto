@@ -341,10 +341,10 @@ public class ClientController {
         try { 
             linkAutoServiceProxy.commentPost(token, postId, comment);
             redirectAttributes.addFlashAttribute("success", "Comentario agregado con éxito");
-            return "redirect:/user/" + username; // Redirigir a la página de inicio después de comentar en la publicación
+            return "redirect:/user/" + linkAutoServiceProxy.getPostById(postId).username(); // Redirigir a la página de inicio después de comentar en la publicación
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al agregar el comentario: " + e.getMessage());
-            return "redirect:/user/" + username; // Redirigir a la página de inicio en caso de error
+            return "redirect:/user/" + linkAutoServiceProxy.getPostById(postId).username(); // Redirigir a la página de inicio en caso de error
         }
     }
 
