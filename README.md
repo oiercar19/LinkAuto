@@ -1,3 +1,4 @@
+
 ![example workflow](https://github.com/oiercar19/LinkAuto/actions/workflows/maven.yml/badge.svg)
 
 # LinkAuto
@@ -70,6 +71,28 @@ Una vez que el servidor y el cliente estén en funcionamiento, puede acceder a L
 ```
 http://localhost:8081
 ```
+
+## Ejecución de tests
+
+Puede ejecutar las distintas pruebas del proyecto utilizando los siguientes comandos:
+
+- **Tests unitarios**:
+
+  ```
+  mvn test
+  ```
+
+- **Tests de integración**:
+
+  ```
+  mvn -Pintegration integration-test
+  ```
+
+- **Tests de rendimiento**:
+
+  ```
+  mvn -Pperformance integration-test
+  ```
 
 ## Configuración personalizada
 
