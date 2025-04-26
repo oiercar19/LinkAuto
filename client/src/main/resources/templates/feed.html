@@ -197,6 +197,16 @@
         .user-link:hover {
             text-decoration: underline;
         }
+
+        .btn-icon-text {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .btn-icon-text i {
+            display: inline-flex;
+        }
     </style>
 </head>
 <body>
@@ -228,14 +238,23 @@
                 </div>
 
                 <a th:if="${role == 'ADMIN'}" href="/adminPanel" class="btn btn-custom-outline btn-sm me-2">
-                    <i class="bi bi-shield-lock"></i> <span class="d-none d-md-inline">Panel de Admin</span>
+                    <span class="btn-icon-text">
+                        <i class="bi bi-shield-lock"></i>
+                        <span class="d-none d-md-inline">Panel de Admin</span>
+                    </span>
                 </a>
 
                 <a th:href="@{'/user/' + ${username}}" class="btn btn-custom-outline btn-sm me-2">
-                    <i class="bi bi-gear"></i> <span class="d-none d-md-inline">Perfil</span>
+                    <span class="btn-icon-text">
+                        <i class="bi bi-gear"></i>
+                        <span class="d-none d-md-inline">Perfil</span>
+                    </span>
                 </a>
                 <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm">
-                    <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Salir</span>
+                    <span class="btn-icon-text">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="d-none d-md-inline">Salir</span>
+                    </span>
                 </a>
             </div>
         </div>

@@ -233,6 +233,16 @@
             color: #2a75e6;
             text-decoration: underline;
         }
+        
+        .nav-button-text {
+            margin-left: 5px;
+        }
+        
+        .nav-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -262,11 +272,13 @@
                     </div>
                     <span class="d-none d-md-inline" th:text="${currentUser.username}">Usuario</span>
                 </div>
-                <a th:href="@{'/user/' + ${currentUser.username}}" class="btn btn-custom-outline btn-sm me-2">
-                    <i class="bi bi-gear"></i> <span class="d-none d-md-inline">Perfil</span>
+                <a th:href="@{'/user/' + ${currentUser.username}}" class="btn btn-custom-outline btn-sm me-2 nav-button">
+                    <i class="bi bi-gear"></i>
+                    <span class="d-none d-md-inline nav-button-text">Perfil</span>
                 </a>
-                <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm">
-                    <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Salir</span>
+                <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm nav-button">
+                    <i class="bi bi-box-arrow-right"></i>
+                    <span class="d-none d-md-inline nav-button-text">Salir</span>
                 </a>
             </div>
         </div>
