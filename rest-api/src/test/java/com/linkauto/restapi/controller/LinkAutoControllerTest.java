@@ -396,6 +396,13 @@ public class LinkAutoControllerTest {
         when(authService.updateUser(any(User.class), eq(userToken))).thenReturn(false);
         ResponseEntity<User> failedResponse = linkAutoController.updateUser(userToken, userDto);
         assertEquals(HttpStatus.NOT_FOUND, failedResponse.getStatusCode());
+
+        // Case 6: Random user trying to update another user
+        when(authService.isTokenValid("randomUser1Token")).thenReturn(true);
+        User randomUser1 = new User("randomUser1", "randomUser1", "adminPic", "adminEmail", new ArrayList<>(), 123456L, Gender.MALE, "adminLocation", "adminPassword", "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        when(authService.getUserByToken("randomUser1Token")).thenReturn(randomUser1).thenReturn(usuario);
+        ResponseEntity<User> randomUserResponse = linkAutoController.updateUser("randomUser1Token", userDto);
+        assertEquals(HttpStatus.FORBIDDEN, randomUserResponse.getStatusCode());
     }
 
     @Test
