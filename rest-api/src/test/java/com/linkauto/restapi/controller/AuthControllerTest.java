@@ -7,7 +7,6 @@ import static org.mockito.Mockito.*;
 import com.linkauto.restapi.dto.CredencialesDTO;
 import com.linkauto.restapi.dto.UserRegisterDTO;
 import com.linkauto.restapi.model.User;
-import com.linkauto.restapi.model.User.Gender;
 import com.linkauto.restapi.service.AuthService;
 
 import org.junit.jupiter.api.BeforeEach;
