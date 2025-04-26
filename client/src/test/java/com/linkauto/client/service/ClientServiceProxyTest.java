@@ -506,4 +506,628 @@ class ClientServiceProxyTest {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.demoteToUser(TOKEN, "adminuser"));
         assertEquals("Forbidden: You do not have permission to demote this admin", exception.getMessage());
     }
+
+    @Test
+    void testRegister_UsernameAlreadyExists() {
+        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        String url = API_BASE_URL + "/auth/register";
+        
+        when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.CONFLICT));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.register(user));
+        assertEquals("Registration failed: Username or email already exists", exception.getMessage());
+    }
+
+    @Test
+    void testRegister_OtherError() {
+        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        String url = API_BASE_URL + "/auth/register";
+        
+        when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.register(user));
+        assertEquals("Registration failed: Server Error", exception.getMessage());
+    }
+
+    // Login - Additional error case
+    @Test
+    void testLogin_OtherError() {
+        Credentials credentials = new Credentials("testuser", "password");
+        String url = API_BASE_URL + "/auth/login";
+        
+        when(restTemplate.postForObject(eq(url), eq(credentials), eq(String.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.login(credentials));
+        assertEquals("Login failed: Server Error", exception.getMessage());
+    }
+
+    // Logout - Additional error case
+    @Test
+    void testLogout_OtherError() {
+        String url = String.format("%s/auth/logout?userToken=%s", API_BASE_URL, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), eq(TOKEN), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.logout(TOKEN));
+        assertEquals("Logout failed: Server Error", exception.getMessage());
+    }
+
+    // Get User Profile - Additional error case
+    @Test
+    void testGetUserProfile_OtherError() {
+        String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
+        
+        when(restTemplate.getForObject(url, User.class))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserProfile(TOKEN));
+        assertEquals("Failed to get user profile: Server Error", exception.getMessage());
+    }
+
+    // Update Profile - Additional error case
+    @Test
+    void testUpdateProfile_NotFound() {
+        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
+            .when(restTemplate).put(url, user, Void.class);
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.updateProfile(TOKEN, user));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testUpdateProfile_OtherError() {
+        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
+            .when(restTemplate).put(url, user, Void.class);
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.updateProfile(TOKEN, user));
+        assertEquals("Failed to update profile: Server Error", exception.getMessage());
+    }
+
+    // Create Post - Missing tests for error handling
+    @Test
+    void testCreatePost_OtherError() {
+        PostCreator post = new PostCreator("Test post content", new ArrayList<>());
+        String url = String.format("%s/api/posts?userToken=%s", API_BASE_URL, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), eq(post), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.createPost(TOKEN, post));
+        assertEquals("Logout failed: Server Error", exception.getMessage());
+    }
+
+    // GetFeed - Missing tests for error handling
+    @Test
+    void testGetFeed_Error() {
+        String url = String.format("%s/api/posts", API_BASE_URL);
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getFeed());
+        assertEquals("Failed to get feed: Server Error", exception.getMessage());
+    }
+
+    // GetPostById - Missing additional error case
+    @Test
+    void testGetPostById_OtherError() {
+        String url = String.format("%s/api/posts/%d", API_BASE_URL, 1);
+        
+        when(restTemplate.getForObject(url, Post.class))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getPostById(1));
+        assertEquals("Failed to get post: Server Error", exception.getMessage());
+    }
+
+    // DeletePost - Missing test cases
+    @Test
+    void testDeletePost_NotFound() {
+        String url = String.format("%s/api/posts/%d?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
+            .when(restTemplate).delete(url);
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deletePost(TOKEN, 1L));
+        assertEquals("Post not found", exception.getMessage());
+    }
+
+    @Test
+    void testDeletePost_OtherError() {
+        String url = String.format("%s/api/posts/%d?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
+            .when(restTemplate).delete(url);
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deletePost(TOKEN, 1L));
+        assertEquals("Failed to delete post: Server Error", exception.getMessage());
+    }
+
+    // GetUserByUsername - Missing additional error case
+    @Test
+    void testGetUserByUsername_OtherError() {
+        String url = String.format("%s/api/user/%s", API_BASE_URL, "testuser");
+        
+        when(restTemplate.getForObject(url, User.class))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserByUsername("testuser"));
+        assertEquals("Failed to get user: Server Error", exception.getMessage());
+    }
+
+    // GetUserFollowers - Missing test cases
+    @Test
+    void testGetUserFollowers_NotFound() {
+        String url = String.format("%s/api/user/%s/followers", API_BASE_URL, "testuser");
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserFollowers("testuser"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testGetUserFollowers_OtherError() {
+        String url = String.format("%s/api/user/%s/followers", API_BASE_URL, "testuser");
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserFollowers("testuser"));
+        assertEquals("Failed to get user followers: Server Error", exception.getMessage());
+    }
+
+    // GetUserFollowing - Missing test cases
+    @Test
+    void testGetUserFollowing_NotFound() {
+        String url = String.format("%s/api/user/%s/following", API_BASE_URL, "testuser");
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserFollowing("testuser"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testGetUserFollowing_OtherError() {
+        String url = String.format("%s/api/user/%s/following", API_BASE_URL, "testuser");
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserFollowing("testuser"));
+        assertEquals("Failed to get user following: Server Error", exception.getMessage());
+    }
+
+    // FollowUser - Missing test cases
+    @Test
+    void testFollowUser_Unauthorized() {
+        String url = String.format("%s/api/user/%s/follow?userToken=%s", API_BASE_URL, "userToFollow", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.followUser(TOKEN, "userToFollow"));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testFollowUser_NotFound() {
+        String url = String.format("%s/api/user/%s/follow?userToken=%s", API_BASE_URL, "userToFollow", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.followUser(TOKEN, "userToFollow"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testFollowUser_OtherError() {
+        String url = String.format("%s/api/user/%s/follow?userToken=%s", API_BASE_URL, "userToFollow", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.followUser(TOKEN, "userToFollow"));
+        assertEquals("Failed to follow user: Server Error", exception.getMessage());
+    }
+
+    // UnfollowUser - Missing test cases
+    @Test
+    void testUnfollowUser_Unauthorized() {
+        String url = String.format("%s/api/user/%s/unfollow?userToken=%s", API_BASE_URL, "userToUnfollow", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.unfollowUser(TOKEN, "userToUnfollow"));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testUnfollowUser_NotFound() {
+        String url = String.format("%s/api/user/%s/unfollow?userToken=%s", API_BASE_URL, "userToUnfollow", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.unfollowUser(TOKEN, "userToUnfollow"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testUnfollowUser_OtherError() {
+        String url = String.format("%s/api/user/%s/unfollow?userToken=%s", API_BASE_URL, "userToUnfollow", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.unfollowUser(TOKEN, "userToUnfollow"));
+        assertEquals("Failed to unfollow user: Server Error", exception.getMessage());
+    }
+
+    // GetUserPosts - Missing test cases
+    @Test
+    void testGetUserPosts_NotFound() {
+        String url = String.format("%s/api/user/%s/posts", API_BASE_URL, "testuser");
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserPosts("testuser"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testGetUserPosts_OtherError() {
+        String url = String.format("%s/api/user/%s/posts", API_BASE_URL, "testuser");
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserPosts("testuser"));
+        assertEquals("Failed to get user posts: Server Error", exception.getMessage());
+    }
+
+    // GetCommentsByPostId - Missing test cases
+    @Test
+    void testGetCommentsByPostId_NotFound() {
+        String url = String.format("%s/api/post/%d/comments", API_BASE_URL, 1L);
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getCommentsByPostId(1L));
+        assertEquals("Post not found", exception.getMessage());
+    }
+
+    @Test
+    void testGetCommentsByPostId_OtherError() {
+        String url = String.format("%s/api/post/%d/comments", API_BASE_URL, 1L);
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getCommentsByPostId(1L));
+        assertEquals("Failed to get comments: Server Error", exception.getMessage());
+    }
+
+    // CommentPost - Missing test cases
+    @Test
+    void testCommentPost_Unauthorized() {
+        CommentCreator comment = new CommentCreator("Test comment content");
+        String url = String.format("%s/api/user/%d/comment?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), eq(comment), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.commentPost(TOKEN, 1L, comment));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testCommentPost_NotFound() {
+        CommentCreator comment = new CommentCreator("Test comment content");
+        String url = String.format("%s/api/user/%d/comment?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), eq(comment), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.commentPost(TOKEN, 1L, comment));
+        assertEquals("Post not found", exception.getMessage());
+    }
+
+    @Test
+    void testCommentPost_OtherError() {
+        CommentCreator comment = new CommentCreator("Test comment content");
+        String url = String.format("%s/api/user/%d/comment?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), eq(comment), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.commentPost(TOKEN, 1L, comment));
+        assertEquals("Failed to comment on post: Server Error", exception.getMessage());
+    }
+
+    // LikePost - Missing test cases
+    @Test
+    void testLikePost_Unauthorized() {
+        String url = String.format("%s/api/user/%d/like?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.likePost(TOKEN, 1L));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testLikePost_NotFound() {
+        String url = String.format("%s/api/user/%d/like?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.likePost(TOKEN, 1L));
+        assertEquals("Post not found", exception.getMessage());
+    }
+
+    @Test
+    void testLikePost_OtherError() {
+        String url = String.format("%s/api/user/%d/like?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.likePost(TOKEN, 1L));
+        assertEquals("Failed to like post: Server Error", exception.getMessage());
+    }
+
+    // UnlikePost - Missing test cases
+    @Test
+    void testUnlikePost_Unauthorized() {
+        String url = String.format("%s/api/user/%d/unlike?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.unlikePost(TOKEN, 1L));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testUnlikePost_NotFound() {
+        String url = String.format("%s/api/user/%d/unlike?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.unlikePost(TOKEN, 1L));
+        assertEquals("Post not found", exception.getMessage());
+    }
+
+    @Test
+    void testUnlikePost_OtherError() {
+        String url = String.format("%s/api/user/%d/unlike?userToken=%s", API_BASE_URL, 1L, TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.unlikePost(TOKEN, 1L));
+        assertEquals("Failed to unlike post: Server Error", exception.getMessage());
+    }
+
+    // SharePost - Additional error case
+    @Test
+    void testSharePost_OtherError() {
+        String url = String.format("%s/api/posts/%d", API_BASE_URL, 1L);
+        
+        when(restTemplate.getForObject(url, Post.class))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.sharePost(1L));
+        assertEquals("Error al compartir la publicación: Server Error", exception.getMessage());
+    }
+
+    // GetAllUsers - Missing test cases
+    @Test
+    void testGetAllUsers_Unauthorized() {
+        String url = String.format("%s/api/users", API_BASE_URL);
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getAllUsers());
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testGetAllUsers_Forbidden() {
+        String url = String.format("%s/api/users", API_BASE_URL);
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getAllUsers());
+        assertEquals("Forbidden: You do not have permission to access this resource", exception.getMessage());
+    }
+
+    @Test
+    void testGetAllUsers_OtherError() {
+        String url = String.format("%s/api/users", API_BASE_URL);
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getAllUsers());
+        assertEquals("Failed to fetch users: Server Error", exception.getMessage());
+    }
+
+    @Test
+    void testGetAllUsers_GenericException() {
+        String url = String.format("%s/api/users", API_BASE_URL);
+        
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new RuntimeException("Network error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getAllUsers());
+        assertEquals("Error inesperado al obtener usuarios", exception.getMessage());
+        assertTrue(exception.getCause() instanceof RuntimeException);
+        assertEquals("Network error", exception.getCause().getMessage());
+    }
+
+    // DeleteUser - Missing test cases
+    @Test
+    void testDeleteUser_Forbidden() {
+        String url = String.format("%s/api/user/%s?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN))
+            .when(restTemplate).delete(url);
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteUser(TOKEN, "testuser"));
+        assertEquals("Forbidden: You do not have permission to delete this user", exception.getMessage());
+    }
+
+    @Test
+    void testDeleteUser_NotFound() {
+        String url = String.format("%s/api/user/%s?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
+            .when(restTemplate).delete(url);
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteUser(TOKEN, "testuser"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testDeleteUser_OtherError() {
+        String url = String.format("%s/api/user/%s?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
+            .when(restTemplate).delete(url);
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteUser(TOKEN, "testuser"));
+        assertEquals("Failed to delete user: Server Error", exception.getMessage());
+    }
+
+    // PromoteToAdmin - Missing test cases
+    @Test
+    void testPromoteToAdmin_Unauthorized() {
+        String url = String.format("%s/api/user/%s/role/admin?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
+            .when(restTemplate).put(eq(url), isNull());
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.promoteToAdmin(TOKEN, "testuser"));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testPromoteToAdmin_NotFound() {
+        String url = String.format("%s/api/user/%s/role/admin?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
+            .when(restTemplate).put(eq(url), isNull());
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.promoteToAdmin(TOKEN, "testuser"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testPromoteToAdmin_OtherError() {
+        String url = String.format("%s/api/user/%s/role/admin?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
+            .when(restTemplate).put(eq(url), isNull());
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.promoteToAdmin(TOKEN, "testuser"));
+        assertEquals("Failed to promote user to admin: Server Error", exception.getMessage());
+    }
+
+    // DemoteToUser - Missing test cases
+    @Test
+    void testDemoteToUser_Unauthorized() {
+        String url = String.format("%s/api/user/%s/role/user?userToken=%s", API_BASE_URL, "adminuser", TOKEN);
+        
+        doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
+            .when(restTemplate).put(eq(url), isNull());
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.demoteToUser(TOKEN, "adminuser"));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+    @Test
+    void testDemoteToUser_NotFound() {
+        String url = String.format("%s/api/user/%s/role/user?userToken=%s", API_BASE_URL, "adminuser", TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
+                .when(restTemplate).put(eq(url), isNull());
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.demoteToUser(TOKEN, "adminuser"));
+        assertEquals("User not found", exception.getMessage());
+    }
 }
