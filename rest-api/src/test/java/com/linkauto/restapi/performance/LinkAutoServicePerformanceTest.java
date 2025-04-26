@@ -35,4 +35,22 @@ public class LinkAutoServicePerformanceTest {
         linkAutoService.getAllPosts();
     }
 
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 5000, warmUpMs = 2000)
+    @JUnitPerfTestRequirement(
+        executionsPerSec = 100, meanLatency = 40, maxLatency = 2000, minLatency = 10
+    )    
+    public void testGetAllUsersPerformance() {
+        linkAutoService.getAllUsers();
+    }
+
+    @Test
+    @JUnitPerfTest(threads = 10, durationMs = 5000, warmUpMs = 2000)
+    @JUnitPerfTestRequirement(
+        executionsPerSec = 100, meanLatency = 40, maxLatency = 2000, minLatency = 10
+    )    
+    public void testGetAllCommentsPerformance() {
+        linkAutoService.getAllComments();
+    }
+
 }
