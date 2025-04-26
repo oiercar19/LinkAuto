@@ -3,6 +3,7 @@ package com.linkauto.restapi.controller;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
@@ -232,6 +233,20 @@ public class LinkAutoControllerTest {
         ResponseEntity<Void> result4 = linkAutoController.deleteUser(userToken, targetUsername);
         assertEquals(HttpStatus.OK, result4.getStatusCode());
         verify(authService, times(1)).deleteUser(targetUser, userToken);
+
+        // Scenario 5: Deletion failed
+        when(authService.deleteUser(targetUser, userToken)).thenReturn(false);
+        ResponseEntity<Void> result5 = linkAutoController.deleteUser(userToken, targetUsername);
+        assertEquals(HttpStatus.NOT_FOUND, result5.getStatusCode());
+        verify(authService, times(2)).deleteUser(targetUser, userToken);
+
+        // Scenario 6: User trying to delete themselves
+        when(authService.getUserByToken(userToken)).thenReturn(targetUser);
+        when(authService.getUserByUsername(targetUser.getUsername())).thenReturn(targetUser);
+        when(authService.deleteUser(targetUser, userToken)).thenReturn(true);
+        ResponseEntity<Void> result6 = linkAutoController.deleteUser(userToken, targetUsername);
+        assertEquals(HttpStatus.OK, result6.getStatusCode());
+        verify(authService, times(3)).deleteUser(targetUser, userToken);
     }
 
     @Test
@@ -280,6 +295,18 @@ public class LinkAutoControllerTest {
         ResponseEntity<Void> responseSuccess = linkAutoController.promoteToAdmin(username, userToken);
         assertEquals(HttpStatus.OK, responseSuccess.getStatusCode());
         verify(authService, times(1)).changeRole(targetUser, Role.ADMIN);
+
+        // Case 5: User promoting themselves
+        when(authService.getUserByToken(userToken)).thenReturn(requestingUser);
+        when(authService.getUserByUsername(requestingUser.getUsername())).thenReturn(requestingUser);
+        ResponseEntity<Void> responseSelfPromotion = linkAutoController.promoteToAdmin(requestingUser.getUsername(), userToken);
+        assertEquals(HttpStatus.FORBIDDEN, responseSelfPromotion.getStatusCode());
+        verify(authService, times(1)).getUserByUsername(requestingUser.getUsername());
+        
+        // Case 6: Promotion failed
+        when(authService.changeRole(targetUser, Role.ADMIN)).thenReturn(false);
+        ResponseEntity<Void> responsePromotionFailed = linkAutoController.promoteToAdmin(username, userToken);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responsePromotionFailed.getStatusCode());
     }
 
     @Test
@@ -329,6 +356,18 @@ public class LinkAutoControllerTest {
         assertEquals(HttpStatus.OK, responseSuccess.getStatusCode());
         verify(authService, times(1)).changeRole(targetUser, Role.USER);
 
+        // Case 5: User demoting themselves
+        when(authService.getUserByToken(userToken)).thenReturn(requestingUser);
+        when(authService.getUserByUsername(requestingUser.getUsername())).thenReturn(requestingUser);
+        ResponseEntity<Void> responseSelfDemotion = linkAutoController.demoteToUser(requestingUser.getUsername(), userToken);
+        assertEquals(HttpStatus.FORBIDDEN, responseSelfDemotion.getStatusCode());
+        verify(authService, times(1)).getUserByUsername(requestingUser.getUsername());
+
+        // Case 6: Demotion failed
+        when(authService.changeRole(targetUser, Role.USER)).thenReturn(false);
+        ResponseEntity<Void> responseDemotionFailed = linkAutoController.demoteToUser(username, userToken);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, responseDemotionFailed.getStatusCode());
+
     }
 
     @Test
@@ -345,11 +384,10 @@ public class LinkAutoControllerTest {
         assertEquals("ownerUsername", response.getBody().getUsername());
         assertEquals("ownerName", response.getBody().getName());
         assertEquals("ownerEmail", response.getBody().getEmail());
-        /* 
         // Test null user scenario
         when(authService.getUserByToken("invalidToken")).thenReturn(null);
         ResponseEntity<UserReturnerDTO> nullResponse = linkAutoController.getUserDetails("invalidToken");
-        assertEquals(HttpStatus.NOT_FOUND, nullResponse.getStatusCode()); */
+        assertEquals(HttpStatus.UNAUTHORIZED, nullResponse.getStatusCode());
     }
 
     @Test
@@ -397,6 +435,13 @@ public class LinkAutoControllerTest {
         when(authService.updateUser(any(User.class), eq(userToken))).thenReturn(false);
         ResponseEntity<User> failedResponse = linkAutoController.updateUser(userToken, userDto);
         assertEquals(HttpStatus.NOT_FOUND, failedResponse.getStatusCode());
+
+        // Case 6: Random user trying to update another user
+        when(authService.isTokenValid("randomUser1Token")).thenReturn(true);
+        User randomUser1 = new User("randomUser1", "randomUser1", "adminPic", "adminEmail", new ArrayList<>(), 123456L, Gender.MALE, "adminLocation", "adminPassword", "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        when(authService.getUserByToken("randomUser1Token")).thenReturn(randomUser1).thenReturn(usuario);
+        ResponseEntity<User> randomUserResponse = linkAutoController.updateUser("randomUser1Token", userDto);
+        assertEquals(HttpStatus.FORBIDDEN, randomUserResponse.getStatusCode());
     }
 
     @Test
@@ -459,6 +504,11 @@ public class LinkAutoControllerTest {
         assertEquals(username, response.getUsername());
         assertEquals("testName", response.getName());
         assertEquals("testEmail", response.getEmail());
+
+        // Case 2: User is null
+        when(linkAutoService.getUserByUsername("nonExistentUser")).thenReturn(Optional.empty());
+        UserReturnerDTO nullResponse = linkAutoController.getUserByUsername("nonExistentUser");
+        assertNull(nullResponse);
 
     }
 

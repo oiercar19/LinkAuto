@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -121,6 +122,14 @@ public class AuthServiceTest {
     @Test
     public void testDeleteUser_Success() {
         User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        Post post = new Post(1L, user, "Post message", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        user.addPost(post);
+        User user2 = new User("testUser2", "name2", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        user.addFollower(user2);
+        user2.addFollowing(user);
+        user.addFollowing(user2);
+        user2.addFollower(user);
+
         String token = authService.login("testUser", "password");
 
         doNothing().when(userRepository).delete(user);
@@ -139,6 +148,9 @@ public class AuthServiceTest {
 
         boolean result = authService.deleteUser(user, token);
         assertFalse(result);
+
+        boolean result2 = authService.deleteUser(null, null);
+        assertFalse(result2);
     }
 
     @Test

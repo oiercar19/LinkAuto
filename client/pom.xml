@@ -36,6 +36,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- JUNIT Performance testing -->
+        <dependency>
+            <groupId>com.github.noconnor</groupId>
+            <artifactId>junitperf</artifactId>
+            <version>1.22.1</version>
+        </dependency>
 
         <!-- OpenAPI for documentation -->
         <dependency>

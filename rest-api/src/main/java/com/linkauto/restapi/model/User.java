@@ -230,7 +230,7 @@ public class User {
         return "User [username=" + username + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
                 + ", email=" + email + ", cars=" + cars + ", birthDate=" + birthDate + ", gender=" + gender
                 + ", location=" + location + ", password=" + password + ", description=" + description + ", posts="
-                + posts + ", followers=" + followers + ", following=" + following + "]";
+                + posts + "]";
     }
     
 }

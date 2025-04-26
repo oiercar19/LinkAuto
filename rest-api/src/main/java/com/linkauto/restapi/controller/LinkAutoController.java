@@ -101,8 +101,11 @@ public class LinkAutoController {
         @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken) {
         User user = authService.getUserByToken(userToken);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         UserReturnerDTO userResult = parseUserToUserReturnerDTO(user);
-        return userResult != null ? ResponseEntity.ok(userResult) : ResponseEntity.notFound().build();
+        return ResponseEntity.ok(userResult);
     }
 
     @PutMapping("/user")
@@ -260,9 +263,9 @@ public class LinkAutoController {
         @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
         @PathVariable String username
     ) {
-        User user = linkAutoService.getUserByUsername(username).get();
-        if (user != null) {
-            return parseUserToUserReturnerDTO(user);
+        Optional<User> user = linkAutoService.getUserByUsername(username);
+        if (user.isPresent()) {
+            return parseUserToUserReturnerDTO(user.get());
         }
         return null;
     }

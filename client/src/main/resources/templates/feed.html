@@ -186,6 +186,17 @@
             border: 1px solid #e4e6eb;
             margin-right: 10px;
         }
+        
+        /* Estilo para los enlaces de usuario */
+        .user-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .user-link:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -193,7 +204,19 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light w-100 fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/feed">LinkAuto</a>
-            <div class="ms-auto d-flex align-items-center">
+                <div class="d-flex justify-content-center w-100">
+                    <div class="search-container" style="max-width: 700px; width: 100%;">
+                        <form th:action="@{/search}" method="get" class="d-flex">
+                            <input type="text" class="form-control form-control-sm rounded-pill" 
+                                name="username" placeholder="Buscar usuario..." required
+                                th:value="${param.username}">
+                            <button type="submit" class="btn btn-sm btn-outline-primary ms-2 rounded-pill">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="ms-auto d-flex align-items-center">
                 <div class="user-profile me-3">
                     <div class="user-avatar">
                         <img th:src="${profilePicture != null && (#strings.endsWith(profilePicture, '.png') || #strings.endsWith(profilePicture, '.jpg')) ? profilePicture : '/images/default-avatar.png'}" 
@@ -257,7 +280,8 @@
                             <img th:src="${profilePictureByUsername.get(post.username) != null && (#strings.endsWith(profilePictureByUsername.get(post.username), '.png') || #strings.endsWith(profilePictureByUsername.get(post.username), '.jpg')) ? profilePictureByUsername.get(post.username) : '/images/default-avatar.png'}" style="width: 38px; height: 38px;" class="img-fluid rounded-circle">
                         </div>
                         <div>
-                            <strong th:text="${post.username}">Nombre de Usuario</strong>
+                            <!-- Cambio: Convertir el nombre de usuario en un enlace al perfil -->
+                            <a th:href="@{'/user/' + ${post.username}}" class="user-link" th:text="${post.username}">Nombre de Usuario</a>
                         </div>
                         <div class="ms-auto">
                             <form th:if="${not #lists.contains(followings, post.username) && not #strings.equals(username, post.username)}"
@@ -333,7 +357,8 @@
                                             style="width: 30px; height: 30px;">
                                 </div>
                                 <div class="ms-2">
-                                    <strong th:text="${comment.username}">Usuario</strong>
+                                    <!-- Cambio: Convertir el nombre de usuario en un enlace al perfil -->
+                                    <a th:href="@{'/user/' + ${comment.username}}" class="user-link" th:text="${comment.username}">Usuario</a>
                                     <p class="mb-0" th:text="${comment.text}">Texto del comentario</p>
                                 </div>
                             </div>
