@@ -375,7 +375,13 @@ public class ClientController {
           redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al panel de administrador.");
           return "redirect:/";
       }
-  
+
+      String profilePicture = linkAutoServiceProxy.getUserByUsername(username).profilePicture();
+      model.addAttribute("profilePicture", profilePicture); // Agregar fotos de perfil al modelo
+            
+      model.addAttribute("username", username); // Agregar nombre de usuario al modelo
+      
+
       // Obtener el perfil del usuario logueado
       User user = linkAutoServiceProxy.getUserProfile(token);
   
