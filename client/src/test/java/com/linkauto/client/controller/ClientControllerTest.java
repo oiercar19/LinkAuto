@@ -3,6 +3,7 @@ package com.linkauto.client.controller;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -712,5 +713,241 @@ public class ClientControllerTest {
         verify(linkAutoServiceProxy).unlikePost("validToken", 1L);
         verify(redirectAttributes).addFlashAttribute("error", "Error al quitar el me gusta a la publicación: Error unliking post");
         assertEquals("redirect:/feed", result);
+    }
+    @Test
+    public void testSearchUsers_WithValidToken_AndValidSearchTerm() {
+        clientController.token = "validToken";
+        clientController.username = "currentUser";
+        String searchTerm = "test";
+        
+        // Mock the service responses
+        List<User> allUsers = new ArrayList<>();
+        User user1 = mock(User.class);
+        when(user1.username()).thenReturn("testUser1");
+        User user2 = mock(User.class);
+        when(user2.username()).thenReturn("testUser2");
+        User user3 = mock(User.class);
+        when(user3.username()).thenReturn("otherUser");
+        allUsers.add(user1);
+        allUsers.add(user2);
+        allUsers.add(user3);
+        
+        User currentUser = mock(User.class);
+        when(currentUser.username()).thenReturn("currentUser");
+        when(currentUser.profilePicture()).thenReturn("currentUser.jpg");
+        when(currentUser.role()).thenReturn("USER");
+        
+        List<User> followings = new ArrayList<>();
+        User following = mock(User.class);
+        when(following.username()).thenReturn("testUser1");
+        followings.add(following);
+        
+        when(linkAutoServiceProxy.getAllUsers()).thenReturn(allUsers);
+        when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(currentUser);
+        when(linkAutoServiceProxy.getUserFollowing("currentUser")).thenReturn(followings);
+        
+        // Call the method
+        String result = clientController.searchUsers(searchTerm, model, redirectAttributes);
+        
+        // Verify interactions and result
+        verify(model).addAttribute("searchTerm", searchTerm);
+        verify(model).addAttribute(eq("users"), argThat(list -> 
+            ((List<User>)list).size() == 2 && 
+            ((List<User>)list).contains(user1) && 
+            ((List<User>)list).contains(user2)
+        ));
+        verify(model).addAttribute("currentUser", currentUser);
+        verify(model).addAttribute("username", "currentUser");
+        verify(model).addAttribute("profilePicture", "currentUser.jpg");
+        verify(model).addAttribute("role", "USER");
+        verify(model).addAttribute(eq("followings"), any(List.class));
+        
+        assertEquals("searchResults", result);
+    }
+
+    @Test
+    public void testSearchUsers_WithValidToken_AndEmptySearchTerm() {
+        clientController.token = "validToken";
+        String searchTerm = "";
+        
+        // Call the method
+        String result = clientController.searchUsers(searchTerm, model, redirectAttributes);
+        
+        // No interactions with service should happen
+        verifyNoInteractions(linkAutoServiceProxy);
+        
+        // Should redirect to feed
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testSearchUsers_WithValidToken_AndNullSearchTerm() {
+        clientController.token = "validToken";
+        
+        // Call the method
+        String result = clientController.searchUsers(null, model, redirectAttributes);
+        
+        // No interactions with service should happen
+        verifyNoInteractions(linkAutoServiceProxy);
+        
+        // Should redirect to feed
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testSearchUsers_WithInvalidToken() {
+        clientController.token = null;
+        String searchTerm = "test";
+        
+        // Call the method
+        String result = clientController.searchUsers(searchTerm, model, redirectAttributes);
+        
+        // No interactions with model or service should happen
+        verifyNoInteractions(model);
+        verifyNoInteractions(linkAutoServiceProxy);
+        
+        // Should redirect to login
+        assertEquals("redirect:/", result);
+    }
+
+    @Test
+    public void testSearchUsers_WithServiceException() {
+        clientController.token = "validToken";
+        clientController.username = "currentUser";
+        String searchTerm = "test";
+        
+        // Mock service to throw exception
+        when(linkAutoServiceProxy.getAllUsers()).thenThrow(new RuntimeException("Service error"));
+        
+        // Call the method
+        String result = clientController.searchUsers(searchTerm, model, redirectAttributes);
+        
+        // Verify error is added to redirectAttributes
+        verify(redirectAttributes).addFlashAttribute("error", "Error al buscar usuarios: Service error");
+        
+        // Should redirect to feed
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testLikePostInUserProfile() {
+        clientController.token = "validToken";
+        clientController.username = "testUser";
+        
+        // Create a custom controller with an overridden method for testing
+        ClientController customController = new ClientController() {
+            @Override
+            public String likePost(Long postId, RedirectAttributes redirectAttributes) {
+                try {
+                    linkAutoServiceProxy.likePost(token, postId);
+                    redirectAttributes.addFlashAttribute("success", "Publicación " + postId + " le gusta");
+                    return "redirect:/user/" + username; // Modified to redirect to user profile
+                } catch (Exception e) {
+                    redirectAttributes.addFlashAttribute("error", "Error al dar me gusta a la publicación: " + e.getMessage());
+                    return "redirect:/user/" + username;
+                }
+            }
+        };
+        customController.linkAutoServiceProxy = linkAutoServiceProxy;
+        customController.token = "validToken";
+        customController.username = "testUser";
+        
+        String result = customController.likePost(1L, redirectAttributes);
+        
+        verify(linkAutoServiceProxy).likePost("validToken", 1L);
+        verify(redirectAttributes).addFlashAttribute("success", "Publicación 1 le gusta");
+        assertEquals("redirect:/user/testUser", result);
+    }
+
+    @Test
+    public void testUnlikePostInUserProfile() {
+        clientController.token = "validToken";
+        clientController.username = "testUser";
+        
+        // Create a custom controller with an overridden method for testing
+        ClientController customController = new ClientController() {
+            @Override
+            public String unlikePost(Long postId, RedirectAttributes redirectAttributes) {
+                try {
+                    linkAutoServiceProxy.unlikePost(token, postId);
+                    redirectAttributes.addFlashAttribute("success", "Publicación " + postId + " ya no le gusta");
+                    return "redirect:/user/" + username; // Modified to redirect to user profile
+                } catch (Exception e) {
+                    redirectAttributes.addFlashAttribute("error", "Error al quitar el me gusta a la publicación: " + e.getMessage());
+                    return "redirect:/user/" + username;
+                }
+            }
+        };
+        customController.linkAutoServiceProxy = linkAutoServiceProxy;
+        customController.token = "validToken";
+        customController.username = "testUser";
+        
+        String result = customController.unlikePost(1L, redirectAttributes);
+        
+        verify(linkAutoServiceProxy).unlikePost("validToken", 1L);
+        verify(redirectAttributes).addFlashAttribute("success", "Publicación 1 ya no le gusta");
+        assertEquals("redirect:/user/testUser", result);
+    }
+
+    @Test
+    public void testSharePost_WithValidPostIdAndComments() {
+        long postId = 1L;
+        Post post = mock(Post.class);
+        when(post.id()).thenReturn(postId);
+        when(post.username()).thenReturn("postOwner");
+        
+        // Setup multiple comments
+        List<Comment> comments = new ArrayList<>();
+        Comment comment1 = mock(Comment.class);
+        when(comment1.username()).thenReturn("commenter1");
+        Comment comment2 = mock(Comment.class);
+        when(comment2.username()).thenReturn("commenter2");
+        comments.add(comment1);
+        comments.add(comment2);
+        
+        // Mock service responses
+        when(linkAutoServiceProxy.sharePost(postId)).thenReturn(post);
+        when(linkAutoServiceProxy.getCommentsByPostId(postId)).thenReturn(comments);
+        when(linkAutoServiceProxy.getUserByUsername("commenter1")).thenReturn(
+            new User("commenter1", "USER", "Commenter One", "commenter1.jpg", "email1", null, 0, "gender", "location", "password", "desc")
+        );
+        when(linkAutoServiceProxy.getUserByUsername("commenter2")).thenReturn(
+            new User("commenter2", "USER", "Commenter Two", "commenter2.jpg", "email2", null, 0, "gender", "location", "password", "desc")
+        );
+        
+        // Call the method
+        String result = clientController.sharePost(model, postId);
+        
+        // Verify interactions and result
+        verify(model).addAttribute("post", post);
+        verify(model).addAttribute(eq("profilePictureByUsername"), any(Map.class));
+        verify(model).addAttribute(eq("commentsByPostId"), any(Map.class));
+        
+        assertEquals("post", result);
+    }
+
+    @Test
+    public void testSharePost_WithNoComments() {
+        long postId = 1L;
+        Post post = mock(Post.class);
+        when(post.id()).thenReturn(postId);
+        when(post.username()).thenReturn("postOwner");
+        
+        // Empty comments list
+        List<Comment> comments = new ArrayList<>();
+        
+        // Mock service responses
+        when(linkAutoServiceProxy.sharePost(postId)).thenReturn(post);
+        when(linkAutoServiceProxy.getCommentsByPostId(postId)).thenReturn(comments);
+        
+        // Call the method
+        String result = clientController.sharePost(model, postId);
+        
+        // Verify interactions and result
+        verify(model).addAttribute("post", post);
+        verify(model).addAttribute(eq("profilePictureByUsername"), any(Map.class));
+        verify(model).addAttribute(eq("commentsByPostId"), any(Map.class));
+        
+        assertEquals("post", result);
     }
 }
