@@ -30,7 +30,6 @@ import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
-import com.linkauto.client.service.ClientServiceProxy;
 
 class ClientServiceProxyTest {
 
