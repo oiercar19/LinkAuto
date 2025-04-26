@@ -201,7 +201,7 @@ public class LinkAutoServiceTest {
         verify(userRepository).save(userToUnfollow);
     }
 
-        @Test
+    @Test
     public void testCommentPost() {
         User user = new User("user1", "User One", "", "", new ArrayList<>(), 123456L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Post post = new Post(1L, user, "Post message", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
@@ -216,6 +216,11 @@ public class LinkAutoServiceTest {
         assertEquals(1, post.getComentarios().size());
         assertEquals("This is a comment", post.getComentarios().get(0).getText());
         verify(postRepository).save(post);
+
+        // Case with null post
+        when(postRepository.findById(2L)).thenReturn(Optional.empty());
+        boolean result2 = linkAutoService.commentPost(2L, user, commentDTO);
+        assertFalse(result2);
     }
 
     @Test
@@ -227,6 +232,11 @@ public class LinkAutoServiceTest {
         assertTrue(result);
         assertTrue(post.getLikes().contains("user1"));
         verify(postRepository).save(post);
+
+        // Case with null post
+        when(postRepository.findById(2L)).thenReturn(Optional.empty());
+        boolean result2 = linkAutoService.likePost(2L, "user1");
+        assertFalse(result2);
     }
 
     @Test
@@ -242,6 +252,11 @@ public class LinkAutoServiceTest {
         assertFalse(post.getLikes().contains("user1"));
     
         verify(postRepository).save(post);
+
+        // Case with null post
+        when(postRepository.findById(2L)).thenReturn(Optional.empty());
+        boolean result2 = linkAutoService.unlikePost(2L, "user1");
+        assertFalse(result2);
     }
 
     @Test
@@ -293,4 +308,31 @@ public class LinkAutoServiceTest {
         verify(postRepository).findByUsuario_Username(username);
     }
 
+    @Test
+    public void testGetCommentsByPostId() {
+        // Arrange
+        Long postId = 1L;
+        Comment comment1 = new Comment();
+        comment1.setText("Comment 1");
+        Comment comment2 = new Comment();
+        comment2.setText("Comment 2");
+        Post post = new Post();
+        post.setComentarios(List.of(comment1, comment2));
+
+        when(postRepository.findById(postId)).thenReturn(Optional.of(post));
+
+        // Act
+        List<Comment> result = linkAutoService.getCommentsByPostId(postId);
+
+        // Assert
+        assertEquals(2, result.size());
+        assertEquals("Comment 1", result.get(0).getText());
+        assertEquals("Comment 2", result.get(1).getText());
+        verify(postRepository).findById(postId);
+
+        // Case with null post
+        when(postRepository.findById(2L)).thenReturn(Optional.empty());
+        List<Comment> result2 = linkAutoService.getCommentsByPostId(2L);
+        assertEquals(null, result2);
+    }
 }
