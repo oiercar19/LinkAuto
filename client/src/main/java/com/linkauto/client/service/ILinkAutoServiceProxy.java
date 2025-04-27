@@ -34,7 +34,7 @@ public interface ILinkAutoServiceProxy {
     List<Post> getFeed(); //DEVUELVE TODOS LOS POSTS. CAMBIARLO
    
     //Obtener datos de un post en concreto. FALTA DE AÑADIR
-    Post getPostById(int postId);
+    Post getPostById(Long postId);
 
     User getUserByUsername(String username);
 

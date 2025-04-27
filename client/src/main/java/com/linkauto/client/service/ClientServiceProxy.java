@@ -136,7 +136,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public Post getPostById(int postId) {
+    public Post getPostById(Long postId) {
         String url = String.format("%s/api/posts/%d", apiBaseUrl, postId);
         
         try {

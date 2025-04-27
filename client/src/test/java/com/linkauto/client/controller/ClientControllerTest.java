@@ -8,9 +8,11 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
@@ -400,9 +402,11 @@ public class ClientControllerTest {
     @Test
     public void testAdminPanel_UserNotAdmin() {
         clientController.token = "validToken";
-        User user = mock(User.class);
+        clientController.username = "commonUser";
+        User user = new User("commonUser", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc");
+        
+        when(linkAutoServiceProxy.getUserByUsername("commonUser")).thenReturn(user);
         when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(user);
-        when(user.role()).thenReturn("USER");
 
         String result = clientController.adminPanel(model, redirectAttributes);
 
@@ -413,10 +417,11 @@ public class ClientControllerTest {
     @Test
     public void testAdminPanel_UserAdmin() {
         clientController.token = "validToken";
-        User user = mock(User.class);
+        clientController.username = "adminUser";
+        User user = new User("adminUser", "ADMIN", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc");
         List<User> users = new ArrayList<>();
+        when(linkAutoServiceProxy.getUserByUsername("adminUser")).thenReturn(user);
         when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(user);
-        when(user.role()).thenReturn("ADMIN");
         when(linkAutoServiceProxy.getAllUsers()).thenReturn(users);
 
         String result = clientController.adminPanel(model, redirectAttributes);
@@ -641,29 +646,32 @@ public class ClientControllerTest {
     public void testCommentPostInProfile_Success() {
         clientController.token = "validToken";
         clientController.username = "testUser";
-        
+        Post post = new Post(1L, "username1", "content1", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+
         CommentCreator comment = mock(CommentCreator.class);
         
+        when(linkAutoServiceProxy.getPostById(1L)).thenReturn(post);
         String result = clientController.commentPostInProfile(1L, comment, redirectAttributes);
         
         verify(linkAutoServiceProxy).commentPost("validToken", 1L, comment);
         verify(redirectAttributes).addFlashAttribute("success", "Comentario agregado con éxito");
-        assertEquals("redirect:/user/testUser", result);
+        assertEquals("redirect:/user/username1", result);
     }
     
     @Test
     public void testCommentPostInProfile_Error() {
         clientController.token = "validToken";
         clientController.username = "testUser";
-        
-        CommentCreator comment = mock(CommentCreator.class);
+        Post post = new Post(1L, "username1", "content1", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+
+        CommentCreator comment = new CommentCreator("test");
         doThrow(new RuntimeException("Error adding comment")).when(linkAutoServiceProxy).commentPost("validToken", 1L, comment);
-        
+        when(linkAutoServiceProxy.getPostById(1L)).thenReturn(post);
         String result = clientController.commentPostInProfile(1L, comment, redirectAttributes);
         
         verify(linkAutoServiceProxy).commentPost("validToken", 1L, comment);
         verify(redirectAttributes).addFlashAttribute("error", "Error al agregar el comentario: Error adding comment");
-        assertEquals("redirect:/user/testUser", result);
+        assertEquals("redirect:/user/username1", result);
     }
     
     @Test

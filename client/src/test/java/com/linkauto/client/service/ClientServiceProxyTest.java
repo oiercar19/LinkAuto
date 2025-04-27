@@ -219,7 +219,7 @@ class ClientServiceProxyTest {
         
         when(restTemplate.getForObject(url, Post.class)).thenReturn(post);
         
-        Post result = clientServiceProxy.getPostById(1);
+        Post result = clientServiceProxy.getPostById(1L);
         assertEquals(post, result);
     }
 
@@ -230,7 +230,7 @@ class ClientServiceProxyTest {
         when(restTemplate.getForObject(url, Post.class))
             .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
         
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getPostById(1));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getPostById(1L));
         assertEquals("Post not found", exception.getMessage());
     }
 
@@ -629,7 +629,7 @@ class ClientServiceProxyTest {
         when(restTemplate.getForObject(url, Post.class))
             .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
         
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getPostById(1));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getPostById(1L));
         assertEquals("Failed to get post: Server Error", exception.getMessage());
     }
 
