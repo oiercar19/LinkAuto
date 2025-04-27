@@ -79,6 +79,14 @@ public class AuthService {
     @Transactional
     public boolean deleteUser(User user, String token) {
         try {
+            if (!tokenStore.containsKey(token)) {
+                return false;
+                
+            }
+
+            if (!tokenStore.get(token).getUsername().equals(user.getUsername()) && !tokenStore.get(token).getRole().equals(Role.ADMIN)) {
+                return false;
+            }
             // Eliminar los posts explícitamente
             user.getPosts().forEach(post -> {
                 post.setUsuario(null);
@@ -95,7 +103,7 @@ public class AuthService {
             userRepository.delete(user);
             
             // Eliminar el token asociado al usuario del tokenStore
-            tokenStore.entrySet().removeIf(entry -> entry.getValue().equals(user) && entry.getKey().equals(token));
+            tokenStore.remove(token);
             return true;
         } catch (Exception e) {
             System.out.println("Error al eliminar el usuario o el token: " + e.getMessage());

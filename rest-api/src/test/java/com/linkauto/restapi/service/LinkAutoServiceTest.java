@@ -292,6 +292,30 @@ public class LinkAutoServiceTest {
     }
 
     @Test
+    public void testGetUserByUsername_Found() {
+        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+    
+        when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(user));
+    
+        Optional<User> result = linkAutoService.getUserByUsername("testUser");
+    
+        assertTrue(result.isPresent());
+        assertEquals("testUser", result.get().getUsername());
+        verify(userRepository).findByUsername("testUser");
+    }
+    
+    @Test
+    public void testGetUserByUsername_NotFound() {
+        when(userRepository.findByUsername("nonExistingUser")).thenReturn(Optional.empty());
+    
+        Optional<User> result = linkAutoService.getUserByUsername("nonExistingUser");
+    
+        assertFalse(result.isPresent());
+        verify(userRepository).findByUsername("nonExistingUser");
+    }
+
+
+    @Test
     public void testGetPostsByUsername() {
         // Arrange
         String username = "usuario1";

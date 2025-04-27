@@ -1,6 +1,7 @@
 package com.linkauto.restapi.service;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import java.util.ArrayList;
@@ -130,6 +131,7 @@ public class AuthServiceTest {
         user.addFollowing(user2);
         user2.addFollower(user);
 
+        when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
         String token = authService.login("testUser", "password");
 
         doNothing().when(userRepository).delete(user);
@@ -152,6 +154,39 @@ public class AuthServiceTest {
         boolean result2 = authService.deleteUser(null, null);
         assertFalse(result2);
     }
+
+    @Test
+    public void testDeleteUser_CatchException() {
+        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
+
+        String token = authService.login("testUser", "password");
+
+        doThrow(new RuntimeException("Error de base de datos")).when(userRepository).delete(any(User.class));
+
+        boolean result = authService.deleteUser(user, token);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testDeleteUser_AdminCanDeleteOtherUser() {
+        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        User adminUser = new User("adminUser", "Admin Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        adminUser.setRole(Role.ADMIN);
+
+        when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
+        when(userRepository.findById("adminUser")).thenReturn(Optional.of(adminUser));
+
+        String tokenAdmin = authService.login("adminUser", "password");
+
+        doNothing().when(userRepository).delete(user);
+
+        boolean result = authService.deleteUser(user, tokenAdmin);
+
+        assertTrue(result);
+        assertFalse(authService.isTokenValid(tokenAdmin)); 
+}
 
     @Test
     public void testChangeRole() {
