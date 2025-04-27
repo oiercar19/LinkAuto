@@ -51,7 +51,7 @@ class ClientServiceProxyTest {
     @Test
     void testRegister_Success() {
         // Create User record with constructor parameters
-        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         String url = API_BASE_URL + "/auth/register";
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class))).thenReturn(null);
         
@@ -61,7 +61,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testRegister_BadRequest() {
-        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         String url = API_BASE_URL + "/auth/register";
         
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
@@ -117,7 +117,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testGetUserProfile_Success() {
-        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         when(restTemplate.getForObject(url, User.class)).thenReturn(user);
@@ -150,7 +150,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_Success() {
-        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doNothing().when(restTemplate).put(url, user, Void.class);
@@ -160,7 +160,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_Unauthorized() {
-        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
@@ -192,6 +192,7 @@ class ClientServiceProxyTest {
         assertEquals("Logout failed: Invalid token", exception.getMessage());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetFeed_Success() {
         Post post1 = new Post(1L, "username1", "content1", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
@@ -256,7 +257,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testGetUserByUsername_Success() {
-        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         String url = String.format("%s/api/user/%s", API_BASE_URL, "testuser");
         
         when(restTemplate.getForObject(url, User.class)).thenReturn(user);
@@ -276,10 +277,11 @@ class ClientServiceProxyTest {
         assertEquals("User not found", exception.getMessage());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetUserFollowers_Success() {
-        User user1 = new User("follower", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user2 = new User("follower2", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user1 = new User("follower", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user2 = new User("follower2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         List<User> followers = Arrays.asList(user1, user2);
         String url = String.format("%s/api/user/%s/followers", API_BASE_URL, "testuser");
         
@@ -296,10 +298,11 @@ class ClientServiceProxyTest {
         assertEquals(followers, result);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetUserFollowing_Success() {
-        User user1 = new User("following1", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user2 = new User("following2", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user1 = new User("following1", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user2 = new User("following2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
 
         List<User> following = Arrays.asList(user1, user2);
         String url = String.format("%s/api/user/%s/following", API_BASE_URL, "testuser");
@@ -335,6 +338,7 @@ class ClientServiceProxyTest {
         assertDoesNotThrow(() -> clientServiceProxy.unfollowUser(TOKEN, "userToUnfollow"));
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetUserPosts_Success() {
         Post post1 = new Post(1L, "username1", "content1", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
@@ -355,6 +359,7 @@ class ClientServiceProxyTest {
         assertEquals(posts, result);
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetCommentsByPostId_Success() {
         Comment comment1 = new Comment(1L, "texto", "testuser", 1L, 43456L);
@@ -425,10 +430,11 @@ class ClientServiceProxyTest {
         assertEquals("Publicación no encontrada", exception.getMessage());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetAllUsers_Success() {
-        User user1 = new User("testuser1", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user2 = new User("testuser2", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user1 = new User("testuser1", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user2 = new User("testuser2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
 
         List<User> users = Arrays.asList(user1, user2);
         String url = String.format("%s/api/users", API_BASE_URL);
@@ -508,7 +514,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testRegister_UsernameAlreadyExists() {
-        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         String url = API_BASE_URL + "/auth/register";
         
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
@@ -520,7 +526,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testRegister_OtherError() {
-        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         String url = API_BASE_URL + "/auth/register";
         
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
@@ -570,7 +576,7 @@ class ClientServiceProxyTest {
     // Update Profile - Additional error case
     @Test
     void testUpdateProfile_NotFound() {
-        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
@@ -582,7 +588,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_OtherError() {
-        User user = new User("testuser", "MALE", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
@@ -606,6 +612,7 @@ class ClientServiceProxyTest {
     }
 
     // GetFeed - Missing tests for error handling
+    @SuppressWarnings("unchecked")
     @Test
     void testGetFeed_Error() {
         String url = String.format("%s/api/posts", API_BASE_URL);
@@ -669,6 +676,7 @@ class ClientServiceProxyTest {
     }
 
     // GetUserFollowers - Missing test cases
+    @SuppressWarnings("unchecked")
     @Test
     void testGetUserFollowers_NotFound() {
         String url = String.format("%s/api/user/%s/followers", API_BASE_URL, "testuser");
@@ -684,6 +692,7 @@ class ClientServiceProxyTest {
         assertEquals("User not found", exception.getMessage());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetUserFollowers_OtherError() {
         String url = String.format("%s/api/user/%s/followers", API_BASE_URL, "testuser");
@@ -700,6 +709,7 @@ class ClientServiceProxyTest {
     }
 
     // GetUserFollowing - Missing test cases
+    @SuppressWarnings("unchecked")
     @Test
     void testGetUserFollowing_NotFound() {
         String url = String.format("%s/api/user/%s/following", API_BASE_URL, "testuser");
@@ -715,6 +725,7 @@ class ClientServiceProxyTest {
         assertEquals("User not found", exception.getMessage());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetUserFollowing_OtherError() {
         String url = String.format("%s/api/user/%s/following", API_BASE_URL, "testuser");
@@ -799,6 +810,7 @@ class ClientServiceProxyTest {
     }
 
     // GetUserPosts - Missing test cases
+    @SuppressWarnings("unchecked")
     @Test
     void testGetUserPosts_NotFound() {
         String url = String.format("%s/api/user/%s/posts", API_BASE_URL, "testuser");
@@ -814,6 +826,7 @@ class ClientServiceProxyTest {
         assertEquals("User not found", exception.getMessage());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetUserPosts_OtherError() {
         String url = String.format("%s/api/user/%s/posts", API_BASE_URL, "testuser");
@@ -830,6 +843,7 @@ class ClientServiceProxyTest {
     }
 
     // GetCommentsByPostId - Missing test cases
+    @SuppressWarnings("unchecked")
     @Test
     void testGetCommentsByPostId_NotFound() {
         String url = String.format("%s/api/post/%d/comments", API_BASE_URL, 1L);
@@ -845,6 +859,7 @@ class ClientServiceProxyTest {
         assertEquals("Post not found", exception.getMessage());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetCommentsByPostId_OtherError() {
         String url = String.format("%s/api/post/%d/comments", API_BASE_URL, 1L);
@@ -978,6 +993,7 @@ class ClientServiceProxyTest {
     }
 
     // GetAllUsers - Missing test cases
+    @SuppressWarnings("unchecked")
     @Test
     void testGetAllUsers_Unauthorized() {
         String url = String.format("%s/api/users", API_BASE_URL);
@@ -993,6 +1009,7 @@ class ClientServiceProxyTest {
         assertEquals("Unauthorized: Invalid token", exception.getMessage());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetAllUsers_Forbidden() {
         String url = String.format("%s/api/users", API_BASE_URL);
@@ -1008,6 +1025,7 @@ class ClientServiceProxyTest {
         assertEquals("Forbidden: You do not have permission to access this resource", exception.getMessage());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetAllUsers_OtherError() {
         String url = String.format("%s/api/users", API_BASE_URL);
@@ -1023,6 +1041,7 @@ class ClientServiceProxyTest {
         assertEquals("Failed to fetch users: Server Error", exception.getMessage());
     }
 
+    @SuppressWarnings("unchecked")
     @Test
     void testGetAllUsers_GenericException() {
         String url = String.format("%s/api/users", API_BASE_URL);
