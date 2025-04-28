@@ -1,26 +1,31 @@
 package com.linkauto.client.controller;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.*;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.MockedStatic;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Comment;
 import com.linkauto.client.data.CommentCreator;
+import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
@@ -591,6 +596,7 @@ public class ClientControllerTest {
         when(linkAutoServiceProxy.sharePost(1L)).thenReturn(post);
         when(linkAutoServiceProxy.getCommentsByPostId(1L)).thenReturn(comments);
         when(linkAutoServiceProxy.getUserByUsername("commenter")).thenReturn(new User("commenter", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
+        when(linkAutoServiceProxy.getUserByUsername("postOwner")).thenReturn(new User("postOwner", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
         
         String result = clientController.sharePost(model, 1L);
         
@@ -895,6 +901,8 @@ public class ClientControllerTest {
             new User("commenter2", "USER", "Commenter Two", "commenter2.jpg", "email2", null, 0, "gender", "location", "password", "desc")
         );
         
+        when(linkAutoServiceProxy.getUserByUsername("postOwner")).thenReturn(new User("postOwner", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
+
         // Call the method
         String result = clientController.sharePost(model, 1L);
         
@@ -909,7 +917,7 @@ public class ClientControllerTest {
     @Test
     public void testSharePost_WithNoComments() {
         Post post = new Post(1L, "postOwner", "content1", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
-        
+        User user = new User("postOwner", "USER", "Post owner", "commenter1.jpg", "email1", null, 0, "gender", "location", "password", "desc");
         // Empty comments list
         List<Comment> comments = new ArrayList<>();
         
@@ -918,6 +926,7 @@ public class ClientControllerTest {
         when(linkAutoServiceProxy.getCommentsByPostId(1L)).thenReturn(comments);
         
         // Call the method
+        when(linkAutoServiceProxy.getUserByUsername("postOwner")).thenReturn(user);
         String result = clientController.sharePost(model, 1L);
         
         // Verify interactions and result
