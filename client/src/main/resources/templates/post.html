@@ -142,7 +142,7 @@
     <div class="post-card">
         <div class="post-header">
             <div class="user-avatar">
-                <img th:src="${profilePictureByUsername.get(post.username) != null && (#strings.endsWith(profilePictureByUsername.get(post.username), '.png') || #strings.endsWith(profilePictureByUsername.get(post.username), '.jpg')) ? profilePictureByUsername.get(post.username) : '/images/default-avatar.png'}" alt="User">
+                <img th:src="${profilePicture != null && (#strings.endsWith(profilePicture, '.png') || #strings.endsWith(profilePicture, '.jpg')) ? profilePicture : '/images/default-avatar.png'}" alt="User">
             </div>
             <div>
                 <p class="username" th:text="${post.username}">Nombre de Usuario</p>

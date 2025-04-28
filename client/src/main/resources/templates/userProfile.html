@@ -142,6 +142,12 @@
             font-weight: bold;
         }
 
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
         .user-profile {
             display: flex;
             align-items: center;
@@ -243,6 +249,19 @@
             align-items: center;
             justify-content: center;
         }
+
+        
+        .btn-icon-text {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
+        
+        .btn-icon-text i {
+            display: inline-flex;
+        }
+
     </style>
 </head>
 <body>
@@ -256,7 +275,7 @@
                         <input type="text" class="form-control form-control-sm rounded-pill" 
                             name="username" placeholder="Buscar usuario..." required
                             th:value="${param.username}">
-                        <button type="submit" class="btn btn-sm btn-outline-primary ms-2 rounded-pill">
+                        <button type="submit" class="btn btn-sm btn-outline-primary ms-2 me-3 rounded-pill">
                             <i class="bi bi-search"></i>
                         </button>
                     </form>
@@ -272,6 +291,14 @@
                     </div>
                     <span class="d-none d-md-inline" th:text="${currentUser.username}">Usuario</span>
                 </div>
+
+                <a th:if="${role == 'ADMIN'}" href="/adminPanel" class="btn btn-custom-outline btn-sm me-2">
+                    <span class="btn-icon-text">
+                        <i class="bi bi-shield-lock"></i>
+                        <span class="d-none d-md-inline">Admin</span>
+                    </span>
+                </a>
+
                 <a th:href="@{'/user/' + ${currentUser.username}}" class="btn btn-custom-outline btn-sm me-2 nav-button">
                     <i class="bi bi-gear"></i>
                     <span class="d-none d-md-inline nav-button-text">Perfil</span>

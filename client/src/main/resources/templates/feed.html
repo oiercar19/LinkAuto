@@ -125,6 +125,12 @@
             color: #65676b;
             font-weight: bold;
         }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         
         .post-images {
             margin-top: 15px;
@@ -201,6 +207,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
+            font-weight: 500;
         }
         
         .btn-icon-text i {
@@ -219,7 +226,7 @@
                             <input type="text" class="form-control form-control-sm rounded-pill" 
                                 name="username" placeholder="Buscar usuario..." required
                                 th:value="${param.username}">
-                            <button type="submit" class="btn btn-sm btn-outline-primary ms-2 rounded-pill">
+                            <button type="submit" class="btn btn-sm btn-outline-primary ms-2 me-3 rounded-pill">
                                 <i class="bi bi-search"></i>
                             </button>
                         </form>

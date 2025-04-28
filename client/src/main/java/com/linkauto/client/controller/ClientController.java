@@ -212,8 +212,11 @@ public class ClientController {
     @GetMapping("/user/{username}")
     public String userProfile(@PathVariable String username, Model model) {
         if (token != null) {
+            
             User user = linkAutoServiceProxy.getUserByUsername(username);
             model.addAttribute("user", user); // Agregar usuario al modelo
+            
+            model.addAttribute("role", user.role()); // Agregar rol al modelo
             
             User currentUser = linkAutoServiceProxy.getUserProfile(token);
             model.addAttribute("currentUser", currentUser); // Agregar usuario al modelo
@@ -362,6 +365,8 @@ public class ClientController {
             
             commentsByPostId.putIfAbsent(post.id(), comment);
         }
+        String profilePicture = linkAutoServiceProxy.getUserByUsername(post.username()).profilePicture();
+        model.addAttribute("profilePicture", profilePicture); // Agregar foto de perfil al modelo
         model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
         model.addAttribute("commentsByPostId", commentsByPostId);
         return "post";

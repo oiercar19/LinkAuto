@@ -21,7 +21,6 @@
         .navbar {
             background-color: white !important;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            padding: 12px 0;
             width: 100%;
         }
         
@@ -33,7 +32,7 @@
         
         .results-container {
             max-width: 700px;
-            margin: 30px auto;
+            margin: 100px auto;
         }
         
         .user-card {
@@ -57,17 +56,22 @@
         }
         
         .user-avatar {
-            width: 50px;
-            height: 50px;
+            width: 38px;
+            height: 38px;
             border-radius: 50%;
-            margin-right: 15px;
+            margin-right: 10px;
             background-color: #e4e6eb;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #65676b;
             font-weight: bold;
-            overflow: hidden;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .btn-custom-primary {
@@ -97,6 +101,17 @@
             border-radius: 10px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
+
+        .btn-icon-text {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
+        
+        .btn-icon-text i {
+            display: inline-flex;
+        }
     </style>
 </head>
 <body>
@@ -104,19 +119,19 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light w-100 fixed-top">
         <div class="container">
             <a class="navbar-brand" href="/feed">LinkAuto</a>
-            <div class="d-flex justify-content-center w-100">
-                <div class="search-container" style="max-width: 700px; width: 100%;">
-                    <form th:action="@{/search}" method="get" class="d-flex">
-                        <input type="text" class="form-control form-control-sm rounded-pill" 
-                            name="username" placeholder="Buscar usuario..." required
-                            th:value="${param.username}">
-                        <button type="submit" class="btn btn-sm btn-outline-primary ms-2 rounded-pill">
-                            <i class="bi bi-search"></i>
-                        </button>
-                    </form>
+                <div class="d-flex justify-content-center w-100">
+                    <div class="search-container" style="max-width: 700px; width: 100%;">
+                        <form th:action="@{/search}" method="get" class="d-flex">
+                            <input type="text" class="form-control form-control-sm rounded-pill" 
+                                name="username" placeholder="Buscar usuario..." required
+                                th:value="${param.username}">
+                            <button type="submit" class="btn btn-sm btn-outline-primary ms-2 me-3 rounded-pill">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </form>
+                    </div>
                 </div>
-            </div>
-            <div class="ms-auto d-flex align-items-center">
+                <div class="ms-auto d-flex align-items-center">
                 <div class="user-profile me-3">
                     <div class="user-avatar">
                         <img th:src="${profilePicture != null && (#strings.endsWith(profilePicture, '.png') || #strings.endsWith(profilePicture, '.jpg')) ? profilePicture : '/images/default-avatar.png'}" 
@@ -128,14 +143,23 @@
                 </div>
 
                 <a th:if="${role == 'ADMIN'}" href="/adminPanel" class="btn btn-custom-outline btn-sm me-2">
-                    <i class="bi bi-shield-lock"></i> <span class="d-none d-md-inline">Panel de Admin</span>
+                    <span class="btn-icon-text">
+                        <i class="bi bi-shield-lock"></i>
+                        <span class="d-none d-md-inline">Admin</span>
+                    </span>
                 </a>
 
                 <a th:href="@{'/user/' + ${username}}" class="btn btn-custom-outline btn-sm me-2">
-                    <i class="bi bi-gear"></i> <span class="d-none d-md-inline">Perfil</span>
+                    <span class="btn-icon-text">
+                        <i class="bi bi-gear"></i>
+                        <span class="d-none d-md-inline">Perfil</span>
+                    </span>
                 </a>
                 <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm">
-                    <i class="bi bi-box-arrow-right"></i> <span class="d-none d-md-inline">Salir</span>
+                    <span class="btn-icon-text">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="d-none d-md-inline">Salir</span>
+                    </span>
                 </a>
             </div>
         </div>
@@ -164,7 +188,7 @@
                 <div th:each="user : ${users}" class="user-card">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="user-profile">
-                            <div class="user-avatar">
+                            <div class="user-avatar" style="width: 50px; heigh: 50px">
                                 <img th:src="${user.profilePicture != null && (#strings.endsWith(user.profilePicture, '.png') || #strings.endsWith(user.profilePicture, '.jpg')) ? user.profilePicture : '/images/default-avatar.png'}" 
                                      alt="Profile" 
                                      class="img-fluid rounded-circle" 
