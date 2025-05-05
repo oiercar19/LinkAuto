@@ -35,6 +35,7 @@ public class User {
     private String location;
     private String password;
     private String description;
+    private boolean isBanned = false;
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts;
 
@@ -54,7 +55,7 @@ public class User {
             String profilePicture, String email,
             List<String> cars, long birthDate,
             Gender gender, String location,
-            String password, String description, List<Post> posts, List<User> followers, List<User> following) {
+            String password, String description,List<Post> posts, List<User> followers, List<User> following) {
         this.username = username;
         this.role = Role.USER;
         this.name = name;
@@ -166,6 +167,14 @@ public class User {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean isBanned) {
+        this.isBanned = isBanned;
     }
 
     public List<Post> getPosts() {
