@@ -66,6 +66,7 @@ public class CommentTest {
             "testDescription",
             new ArrayList<>(),   // follows
             new ArrayList<>(),   // blocked
+            new ArrayList<>(), 
             new ArrayList<>()    // favoritos
         );
 

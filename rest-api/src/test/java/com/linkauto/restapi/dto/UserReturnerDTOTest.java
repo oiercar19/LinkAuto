@@ -16,6 +16,9 @@ public class UserReturnerDTOTest {
         List<PostReturnerDTO> posts = new ArrayList<>();
         posts.add(new PostReturnerDTO());
         posts.add(new PostReturnerDTO());
+        List<PostReturnerDTO> savedPosts = new ArrayList<>();
+        savedPosts.add(new PostReturnerDTO());
+        savedPosts.add(new PostReturnerDTO());
 
         UserReturnerDTO user = new UserReturnerDTO(
             "username123",
@@ -29,7 +32,8 @@ public class UserReturnerDTOTest {
             "New York",
             "password123",
             "This is a description.",
-            posts
+            posts,
+            savedPosts
         );
 
         assertEquals("username123", user.getUsername());
@@ -44,6 +48,7 @@ public class UserReturnerDTOTest {
         assertEquals("password123", user.getPassword());
         assertEquals("This is a description.", user.getDescription());
         assertEquals(posts, user.getPosts());
+        assertEquals(savedPosts, user.getSavedPost());
     }
 
     @Test
@@ -60,6 +65,7 @@ public class UserReturnerDTOTest {
             "New York",
             "password123",
             "This is a description.",
+            new ArrayList<>(),
             new ArrayList<>()
         );
 
@@ -102,6 +108,7 @@ public class UserReturnerDTOTest {
             "New York",
             "password123",
             "This is a description.",
+            new ArrayList<>(),
             new ArrayList<>()
         );
 

@@ -45,7 +45,7 @@ public class LinkAutoControllerTest {
         linkAutoService = mock(LinkAutoService.class);
         authService = mock(AuthService.class);
         linkAutoController = new LinkAutoController(linkAutoService, authService);
-        usuario = new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        usuario = new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
     
     @Test
@@ -133,7 +133,7 @@ public class LinkAutoControllerTest {
     public void testGetUserFollowers(){
         List<User> followers = new ArrayList<>();
         followers.add(usuario);
-        followers.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
+        followers.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
         when(linkAutoService.getFollowersByUsername("test")).thenReturn(followers);
         ResponseEntity<List<UserReturnerDTO>> result = linkAutoController.getUserFollowers("test");
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -146,7 +146,7 @@ public class LinkAutoControllerTest {
     public void testGetUserFollowing(){
         List<User> following = new ArrayList<>();
         following.add(usuario);
-        following.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
+        following.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
         when(linkAutoService.getFollowingByUsername("test")).thenReturn(following);
         ResponseEntity<List<UserReturnerDTO>> result = linkAutoController.getUserFollowing("test");
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -183,7 +183,7 @@ public class LinkAutoControllerTest {
         ResponseEntity<Void> result = linkAutoController.unfollowUser("test", userToken);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
 
-        User test = new User("test", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User test = new User("test", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         test.addFollower(usuario);
         usuario.addFollowing(test);
         when(authService.isTokenValid(userToken)).thenReturn(true);
@@ -213,7 +213,7 @@ public class LinkAutoControllerTest {
 
         // Scenario 2: Logged-in user not authorized to delete target user
         when(authService.isTokenValid(userToken)).thenReturn(true);
-        User loggedUser = new User("loggedUser", "name", "profilePic", "email", new ArrayList<>(), 123456L, Gender.MALE, "location", "password", "description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User loggedUser = new User("loggedUser", "name", "profilePic", "email", new ArrayList<>(), 123456L, Gender.MALE, "location", "password", "description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(authService.getUserByToken(userToken)).thenReturn(loggedUser);
         ResponseEntity<Void> result2 = linkAutoController.deleteUser(userToken, targetUsername);
         assertEquals(HttpStatus.FORBIDDEN, result2.getStatusCode());
@@ -227,7 +227,7 @@ public class LinkAutoControllerTest {
         verify(authService, times(1)).getUserByUsername(targetUsername);
 
         // Scenario 4: Successful deletion
-        User targetUser = new User(targetUsername, "name", "profilePic", "email", new ArrayList<>(), 123456L, Gender.MALE, "location", "password", "description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User targetUser = new User(targetUsername, "name", "profilePic", "email", new ArrayList<>(), 123456L, Gender.MALE, "location", "password", "description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(authService.getUserByUsername(targetUsername)).thenReturn(targetUser);
         when(authService.deleteUser(targetUser, userToken)).thenReturn(true);
         ResponseEntity<Void> result4 = linkAutoController.deleteUser(userToken, targetUsername);
@@ -424,7 +424,7 @@ public class LinkAutoControllerTest {
         User adminUser = new User("adminUsername", "adminName", "adminPic", "adminEmail", 
                                 new ArrayList<>(), 123456L, Gender.MALE, "adminLocation", 
                                 "adminPassword", "adminDescription", new ArrayList<>(), 
-                                new ArrayList<>(), new ArrayList<>());
+                                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         adminUser.setRole(Role.ADMIN);
         
         when(authService.getUserByToken(userToken)).thenReturn(adminUser).thenReturn(usuario);
@@ -438,7 +438,7 @@ public class LinkAutoControllerTest {
 
         // Case 6: Random user trying to update another user
         when(authService.isTokenValid("randomUser1Token")).thenReturn(true);
-        User randomUser1 = new User("randomUser1", "randomUser1", "adminPic", "adminEmail", new ArrayList<>(), 123456L, Gender.MALE, "adminLocation", "adminPassword", "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User randomUser1 = new User("randomUser1", "randomUser1", "adminPic", "adminEmail", new ArrayList<>(), 123456L, Gender.MALE, "adminLocation", "adminPassword", "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(authService.getUserByToken("randomUser1Token")).thenReturn(randomUser1).thenReturn(usuario);
         ResponseEntity<User> randomUserResponse = linkAutoController.updateUser("randomUser1Token", userDto);
         assertEquals(HttpStatus.FORBIDDEN, randomUserResponse.getStatusCode());
@@ -451,7 +451,7 @@ public class LinkAutoControllerTest {
         users.add(new User("user2", "name2", "pic2", "email2", 
                         new ArrayList<>(), 123456L, Gender.FEMALE, "location2", 
                         "password2", "description2", new ArrayList<>(), 
-                        new ArrayList<>(), new ArrayList<>()));
+                        new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
         
         when(linkAutoService.getAllUsers()).thenReturn(users);
         
@@ -494,7 +494,7 @@ public class LinkAutoControllerTest {
         User testUser = new User(username, "testName", "testPic", "testEmail", 
                                 new ArrayList<>(), 123456L, Gender.MALE, "testLocation", 
                                 "testPassword", "testDescription", new ArrayList<>(), 
-                                new ArrayList<>(), new ArrayList<>());
+                                new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
         when(linkAutoService.getUserByUsername(username)).thenReturn(Optional.of(testUser));
         

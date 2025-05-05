@@ -21,6 +21,7 @@ public class UserTest {
         List<Post> posts = new ArrayList<>();
         List<User> followers = new ArrayList<>();
         List<User> following = new ArrayList<>();
+        List<Post> savedPosts = new ArrayList<>();
         user = new User(
             "user1",
             "Alejandro Martinez",
@@ -34,7 +35,8 @@ public class UserTest {
             "Desc",
             posts,
             followers,
-            following
+            following,
+            savedPosts
         );
     }
 
@@ -94,6 +96,15 @@ public class UserTest {
     }
 
     @Test
+    public void testSavedPostOperations() {
+        assertTrue(user.getSavedPosts().isEmpty());
+        Post savedPost = new Post();
+        user.addSavedPost(savedPost);
+        assertEquals(1, user.getSavedPosts().size());
+        assertTrue(user.getSavedPosts().contains(savedPost));
+    }
+
+    @Test
     public void testFollowerOperations() {
         assertTrue(user.getFollowers().isEmpty());
         User follower = new User(
@@ -107,6 +118,7 @@ public class UserTest {
             "Loc",
             "pwd",
             "desc",
+            new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>()
@@ -135,6 +147,7 @@ public class UserTest {
             "desc",
             new ArrayList<>(),
             new ArrayList<>(),
+            new ArrayList<>(),
             new ArrayList<>()
         );
         user.addFollowing(followingUser);
@@ -161,6 +174,7 @@ public class UserTest {
             "d1",
             new ArrayList<>(),
             new ArrayList<>(),
+            new ArrayList<>(),
             new ArrayList<>()
         );
         User u2 = new User(
@@ -174,6 +188,7 @@ public class UserTest {
             "L2",
             "p2",
             "d2",
+            new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>()
@@ -192,6 +207,7 @@ public class UserTest {
             "L1",
             "p1",
             "d1",
+            new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>()
@@ -221,9 +237,10 @@ public class UserTest {
             "Desc",
             new ArrayList<>(),
             new ArrayList<>(),
+            new ArrayList<>(),
             new ArrayList<>()
         );
-        String expected = "User [username=u1, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[]]";
+        String expected = "User [username=u1, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[], savedPost=[]]";
         assertEquals(expected, u.toString());
     }
 
@@ -232,6 +249,11 @@ public class UserTest {
         List<Post> originalPosts = new ArrayList<>();
         Post firstPost = new Post(1L, new User(), "msg", 0L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         originalPosts.add(firstPost);
+
+        List<Post> originalSavedPosts = new ArrayList<>();
+        Post savedPost = new Post(2L, new User(), "saved", 0L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        originalSavedPosts.add(savedPost);
+
 
         List<User> originalFollowers = new ArrayList<>();
         User follower = new User(
@@ -245,6 +267,7 @@ public class UserTest {
             "loc",
             "pw",
             "d",
+            new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>()
@@ -265,6 +288,7 @@ public class UserTest {
             "d",
             new ArrayList<>(),
             new ArrayList<>(),
+            new ArrayList<>(),
             new ArrayList<>()
         );
         originalFollowing.add(followingU);
@@ -282,7 +306,8 @@ public class UserTest {
             "xd",
             originalPosts,
             originalFollowers,
-            originalFollowing
+            originalFollowing,
+            originalSavedPosts
         );
 
         originalPosts.add(new Post());
