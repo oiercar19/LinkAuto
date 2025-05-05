@@ -423,14 +423,15 @@ public class LinkAutoController {
     }
 
     private User parseUserDTOToUser(UserDTO userDTO, User oldUser) {
-        User u = new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing());
+        User u = new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing(), oldUser.getSavedPosts());
         u.setRole(oldUser.getRole());
         return u;
     }
 
     private UserReturnerDTO parseUserToUserReturnerDTO(User u){
         List<PostReturnerDTO> postReturner = parsePostsToPostReturnerDTO(u.getPosts());
-        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
+        List<PostReturnerDTO> savedPost = parsePostsToPostReturnerDTO(u.getSavedPosts());
+        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost);
     }
 
     private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {

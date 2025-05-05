@@ -77,6 +77,7 @@ public class AuthController {
             userRegisterDTO.getDescription(),
             new ArrayList<>(),
             new ArrayList<>(),
+            new ArrayList<>(),
             new ArrayList<>()
         );
         user.setRole(Role.valueOf(userRegisterDTO.getRole().toUpperCase()));
