@@ -398,6 +398,21 @@ public class LinkAutoController {
         return ResponseEntity.ok(commentReturnerDTOs);
     }
 
+    @PostMapping("/post/{post_id}/save")
+    public ResponseEntity<Void> savePost(
+        @Parameter(name = "post_id", description = "ID of the post to save", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isSaved = linkAutoService.savePost(post_id, user);
+        return isSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
