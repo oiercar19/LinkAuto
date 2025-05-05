@@ -57,7 +57,7 @@ public class User {
             String profilePicture, String email,
             List<String> cars, long birthDate,
             Gender gender, String location,
-            String password, String description, List<Post> posts, List<User> followers, List<User> following) {
+            String password, String description, List<Post> posts, List<User> followers, List<User> following, List<Post> savedPosts) {
         this.username = username;
         this.role = Role.USER;
         this.name = name;
@@ -80,6 +80,10 @@ public class User {
         this.following = new ArrayList<>();
         for (User follow : following) {
             this.following.add(follow);
+        }
+        this.savedPosts = new ArrayList<>();
+        for (Post post : savedPosts) {
+            this.savedPosts.add(post);
         }
     }
 
@@ -241,7 +245,7 @@ public class User {
         return "User [username=" + username + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
                 + ", email=" + email + ", cars=" + cars + ", birthDate=" + birthDate + ", gender=" + gender
                 + ", location=" + location + ", password=" + password + ", description=" + description + ", posts="
-                + posts + ", savedPost=" + savedPosts + "]";
+                + posts +", savedPost=" + savedPosts +"]";
     }
     
 }
