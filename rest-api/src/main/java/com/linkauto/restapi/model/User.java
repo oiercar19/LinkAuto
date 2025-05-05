@@ -45,6 +45,9 @@ public class User {
     @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<User> following;
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private List<Post> savedPosts;
+
     // No-argument constructor
     public User() {
     }
@@ -200,6 +203,14 @@ public class User {
         this.following.remove(following);
     }
 
+    public List<Post> getSavedPosts() {
+        return savedPosts;
+    }
+
+    public void addSavedPost(Post post) {
+        this.savedPosts.add(post);
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -230,7 +241,7 @@ public class User {
         return "User [username=" + username + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
                 + ", email=" + email + ", cars=" + cars + ", birthDate=" + birthDate + ", gender=" + gender
                 + ", location=" + location + ", password=" + password + ", description=" + description + ", posts="
-                + posts + "]";
+                + posts + ", savedPost=" + savedPosts + "]";
     }
     
 }
