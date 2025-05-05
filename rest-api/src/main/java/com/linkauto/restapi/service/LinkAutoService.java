@@ -170,6 +170,17 @@ public class LinkAutoService {
         return true;
     }
 
+    public Boolean savePost (Long postId, User u) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            return false;
+        }
+        u.addSavedPost(post);
+        userRepository.save(u);
+    
+        return true;
+    }
+
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
     }
