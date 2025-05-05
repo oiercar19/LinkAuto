@@ -45,7 +45,11 @@ public class User {
     @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<User> following;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+    name = "user_saved_posts",
+    joinColumns = @JoinColumn(name = "user_username"),
+    inverseJoinColumns = @JoinColumn(name = "post_id") )
     private List<Post> savedPosts;
 
     // No-argument constructor
