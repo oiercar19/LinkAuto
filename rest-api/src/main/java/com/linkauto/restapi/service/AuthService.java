@@ -114,6 +114,11 @@ public class AuthService {
 
     public boolean banUser(String username, boolean banStatus) {
         try {
+
+            System.out.println("\n\n\n\nBan request received for username: " + username + ", banStatus: " + banStatus + "\\n" + //
+                        "\n" + //
+                        "\n" + //
+                        "\n");
             User user = userRepository.findById(username).orElse(null);
             if (user == null) {
                 return false; // Usuario no encontrado

@@ -183,6 +183,11 @@ public class LinkAutoController {
     @RequestParam("banStatus") boolean banStatus,
     @Parameter(name = "userToken", description = "Token of the user making the request", required = true, example = "1234567890")
     @RequestParam("userToken") String userToken) {
+
+        System.out.println("\n\n\n\nBan request received for username: " + username + ", banStatus: " + banStatus + "\\n" + //
+                        "\n" + //
+                        "\n" + //
+                        "\n");   
     // Verificar si el token es válido
     if (!authService.isTokenValid(userToken)) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();

@@ -414,6 +414,23 @@ public class ClientController {
       }
       return "redirect:/adminPanel"; // Redirect back to the admin panel
   }
+
+  @PostMapping("/admin/banUser")
+    public String banUser(
+    @RequestParam("username") String usernameToBan,
+    @RequestParam("banStatus") boolean banStatus,
+    RedirectAttributes redirectAttributes) {
+    try {
+        System.out.println("Attempting to update ban status for user: " + usernameToBan); // Debug log
+        linkAutoServiceProxy.banUser(token, usernameToBan, banStatus);
+        String action = banStatus ? "baneado" : "desbaneado";
+        redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToBan + " " + action + " con éxito.");
+    } catch (Exception e) {
+        System.err.println("Error updating ban status for user: " + e.getMessage()); // Debug log
+        redirectAttributes.addFlashAttribute("error", "Error al actualizar el estado de baneo del usuario: " + e.getMessage());
+    }
+    return "redirect:/adminPanel"; // Redirect back to the admin panel
+}
   
   @PostMapping("/admin/promoteToAdmin")
   public String promoteToAdmin(@RequestParam("username") String usernameToPromote, RedirectAttributes redirectAttributes) {

@@ -226,7 +226,7 @@ public class UserTest {
             new ArrayList<>(),
             new ArrayList<>()
         );
-        String expected = "User [username=u1, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[]]";
+        String expected = "User [username=u1, banned=false, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[]]";
         assertEquals(expected, u.toString());
     }
 
