@@ -126,24 +126,16 @@ public class Post {
     }
 
     @Override
-    public int hashCode() {
-        return Objects.hash(id, usuario, mensaje, fechaCreacion, imagenes, comentarios, likes);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Post)) return false;
+        Post post = (Post) o;
+        return id != null && id.equals(post.id);
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-        Post other = (Post) obj;
-        return Objects.equals(id, other.id) &&
-            Objects.equals(usuario, other.usuario) &&
-            Objects.equals(mensaje, other.mensaje) &&
-            Objects.equals(fechaCreacion, other.fechaCreacion) &&
-            Objects.equals(imagenes, other.imagenes) &&
-            Objects.equals(comentarios, other.comentarios) &&
-            Objects.equals(likes, other.likes);
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @Override
