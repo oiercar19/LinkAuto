@@ -71,6 +71,7 @@ public class LinkAutoService {
             // Desasociar el post del usuario
             User postUser = post.getUsuario();
             postUser.getPosts().remove(post);
+            postUser.getSavedPosts().remove(post); 
             userRepository.save(postUser);
             
             // Limpiar imágenes
@@ -177,6 +178,7 @@ public class LinkAutoService {
         }
         u.addSavedPost(post);
         userRepository.save(u);
+        userRepository.flush();
     
         return true;
     }
@@ -193,6 +195,7 @@ public class LinkAutoService {
             
         }
         userRepository.save(u);
+        userRepository.flush();
     
         return true;
     }

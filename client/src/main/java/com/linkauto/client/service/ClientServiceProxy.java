@@ -447,7 +447,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
 
     @Override
     public void savePost(String token, Long postId) {
-        String url = String.format("%s/api/user/%d/save?userToken=%s", apiBaseUrl, postId, token);
+        String url = String.format("%s/api/post/%d/save?userToken=%s", apiBaseUrl, postId, token);
         
         try {
             restTemplate.postForObject(url, null, Void.class);
@@ -462,7 +462,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
 
     @Override
     public void unsavePost(String token, Long postId) {
-        String url = String.format("%s/api/user/%d/unsave?userToken=%s", apiBaseUrl, postId, token);
+        String url = String.format("%s/api/post/%d/unsave?userToken=%s", apiBaseUrl, postId, token);
         
         try {
             restTemplate.postForObject(url, null, Void.class);

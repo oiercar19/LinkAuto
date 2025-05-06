@@ -216,8 +216,11 @@ public class User {
     }
 
     public void addSavedPost(Post post) {
-        this.savedPosts.add(post);
+        if (!this.savedPosts.contains(post)) {
+            this.savedPosts.add(post);
+        }
     }
+    
 
     @Override
     public int hashCode() {

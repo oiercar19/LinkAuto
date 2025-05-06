@@ -25,10 +25,10 @@ import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.Post;
-import com.linkauto.restapi.model.Role;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
 import com.linkauto.restapi.service.LinkAutoService;
+import com.linkauto.restapi.model.Role;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -258,16 +258,6 @@ public class LinkAutoController {
         return ResponseEntity.ok(postReturnerDTOs);
     }
 
-    @GetMapping("/user/{username}/savedPosts")
-    public ResponseEntity<List<PostReturnerDTO>> getUserSavedPosts(
-        @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
-        @PathVariable String username
-    ) {
-        List<Post> savedPosts = linkAutoService.getSavedPostsByUsername(username);
-        List<PostReturnerDTO> postReturnerDTOs = parsePostsToPostReturnerDTO(savedPosts);
-        return ResponseEntity.ok(postReturnerDTOs);
-    }
-
     @GetMapping("/user/{username}")
     public UserReturnerDTO getUserByUsername(
         @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
@@ -408,7 +398,7 @@ public class LinkAutoController {
         return ResponseEntity.ok(commentReturnerDTOs);
     }
 
-    @PostMapping("/user/{post_id}/save")
+    @PostMapping("/post/{post_id}/save")
     public ResponseEntity<Void> savePost(
         @Parameter(name = "post_id", description = "ID of the post to save", required = true, example = "1")
         @PathVariable Long post_id,
