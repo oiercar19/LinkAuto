@@ -56,6 +56,7 @@ public class UserTest {
         assertEquals("Bilbao", user.getLocation());
         assertEquals("password123", user.getPassword());
         assertEquals("Desc", user.getDescription());
+        assertFalse(user.isBanned());
 
         user.setUsername("user2");
         user.setRole(Role.ADMIN);
@@ -70,6 +71,7 @@ public class UserTest {
         user.setLocation("LA");
         user.setPassword("newpass");
         user.setDescription("New Desc");
+        user.setBanned(true);
 
         assertEquals("user2", user.getUsername());
         assertEquals(Role.ADMIN, user.getRole());
@@ -82,6 +84,7 @@ public class UserTest {
         assertEquals("LA", user.getLocation());
         assertEquals("newpass", user.getPassword());
         assertEquals("New Desc", user.getDescription());
+        assertTrue(user.isBanned());
     }
 
     @Test
@@ -223,7 +226,7 @@ public class UserTest {
             new ArrayList<>(),
             new ArrayList<>()
         );
-        String expected = "User [username=u1, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[]]";
+        String expected = "User [username=u1, banned=false, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[]]";
         assertEquals(expected, u.toString());
     }
 

@@ -393,6 +393,25 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
         }
     }
 
+        @Override
+        public void banUser(String token, String username, boolean banStatus) {
+        String url = String.format("%s/api/user/%s/ban?banStatus=%s&userToken=%s", apiBaseUrl, username, banStatus, token);
+        System.out.println("Sending PUT request to URL: " + url); // Debug log
+    
+        try {
+            restTemplate.put(url, null);
+            System.out.println("User ban status updated successfully: " + username); // Debug log
+        } catch (HttpStatusCodeException e) {
+            System.err.println("Error response from server: " + e.getStatusCode() + " - " + e.getResponseBodyAsString()); // Debug log
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to ban this user");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to update ban status: " + e.getStatusText());
+            }
+        }
+    }
+
     @Override
     public void promoteToAdmin(String token, String username) {
         String url = String.format("%s/api/user/%s/role/admin?userToken=%s", apiBaseUrl, username, token);
