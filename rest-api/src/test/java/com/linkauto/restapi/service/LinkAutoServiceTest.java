@@ -8,9 +8,12 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -80,28 +83,44 @@ public class LinkAutoServiceTest {
 
     @Test
     public void testCreatePost() {
-        
         PostDTO postDTO = new PostDTO("hola", Arrays.asList("image1", "image2"));
-        User user = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User(
+            "testUsername", "testName", "testProfilePicture", "testEmail",
+            new ArrayList<>(), 123456L, Gender.MALE, "testLocation",
+            "testPassword", "testDescription",
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>()
+        );
+
         Post expectedPost = new Post();
         expectedPost.setMensaje(postDTO.getMessage());
         expectedPost.setUsuario(user);
         for (String imagen : postDTO.getImages()) {
-            expectedPost.addImagen(imagen); //image url
+            expectedPost.addImagen(imagen);
         }
-        when(postRepository.save(expectedPost)).thenReturn(expectedPost);
+
+        // Simula el comportamiento de save devolviendo el post con fecha
+        when(postRepository.save(any(Post.class))).thenAnswer(invocation -> {
+            Post savedPost = invocation.getArgument(0);
+            savedPost.setFechaCreacion(System.currentTimeMillis()); // o una fecha fija si quieres
+            return savedPost;
+        });
         when(userRepository.save(user)).thenReturn(user);
-        
+
         Post actualPost = linkAutoService.createPost(postDTO, user);
-        expectedPost.setFechaCreacion(actualPost.getFechaCreacion());
-        assertEquals(expectedPost, actualPost);
-        verify(postRepository).save(actualPost);
+
+        // Validaciones campo por campo
+        assertEquals(expectedPost.getMensaje(), actualPost.getMensaje());
+        assertEquals(expectedPost.getUsuario(), actualPost.getUsuario());
+        assertEquals(expectedPost.getImagenes(), actualPost.getImagenes());
+        assertNotNull(actualPost.getFechaCreacion());
+
+        verify(postRepository).save(any(Post.class));
     }
 
     @Test
     public void testDeletePost() {
-        User usuarioPropietario = new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        User usuarioExterno = new User("externalUsername", "externalName", "externalProfilePicture", "externalEmail", new ArrayList<>(), 654321L, Gender.FEMALE, "externalLocation", "externalPassword", "externalDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User usuarioPropietario = new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User usuarioExterno = new User("externalUsername", "externalName", "externalProfilePicture", "externalEmail", new ArrayList<>(), 654321L, Gender.FEMALE, "externalLocation", "externalPassword", "externalDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         //Test with empty post
         Post post = new Post(1L, usuarioPropietario, "testMessage", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         when(postRepository.findById(1L)).thenReturn(java.util.Optional.of(post));
@@ -134,7 +153,7 @@ public class LinkAutoServiceTest {
         List<User> followers = new ArrayList<>();
         followers.add(new User());
         followers.add(new User());
-        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), followers, new ArrayList<>(), new ArrayList<>())));
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), followers, new ArrayList<>(), new HashSet<>())));
         List<User> result = linkAutoService.getFollowersByUsername("testUsername");
         assertEquals(followers, result);
         assertEquals(2, result.size());
@@ -149,7 +168,7 @@ public class LinkAutoServiceTest {
         List<User> followings = new ArrayList<>();
         followings.add(new User());
         followings.add(new User());
-        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), followings, new ArrayList<>())));
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), followings, new HashSet<>())));
         List<User> result = linkAutoService.getFollowingByUsername("testUsername");
         assertEquals(followings, result);
         assertEquals(2, result.size());
@@ -161,8 +180,8 @@ public class LinkAutoServiceTest {
 
     @Test
     public void testFollowUser(){
-        User userToFollow = new User("user1", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        User user = new User("user2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User userToFollow = new User("user1", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User user = new User("user2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
 
         when(userRepository.save(user)).thenReturn(user);
 
@@ -180,8 +199,8 @@ public class LinkAutoServiceTest {
 
     @Test
     public void testUnfollowUser(){
-        User userToUnfollow = new User("user1" , "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
-        User user = new User("user2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), Arrays.asList(userToUnfollow), new ArrayList<>(), new ArrayList<>());
+        User userToUnfollow = new User("user1" , "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User user = new User("user2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), Arrays.asList(userToUnfollow), new ArrayList<>(), new HashSet<>());
 
         when(userRepository.save(user)).thenReturn(user);
         when(userRepository.save(userToUnfollow)).thenReturn(userToUnfollow);
@@ -203,7 +222,7 @@ public class LinkAutoServiceTest {
 
     @Test
     public void testCommentPost() {
-        User user = new User("user1", "User One", "", "", new ArrayList<>(), 123456L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("user1", "User One", "", "", new ArrayList<>(), 123456L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         Post post = new Post(1L, user, "Post message", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         CommentDTO commentDTO = new CommentDTO("This is a comment");
 
@@ -261,8 +280,8 @@ public class LinkAutoServiceTest {
 
     @Test
     public void testGetAllUsers() {
-        List<User> users = List.of(new User("user1", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>())
-        , new User("user2", "externalName", "externalProfilePicture", "externalEmail", new ArrayList<>(), 654321L, Gender.FEMALE, "externalLocation", "externalPassword", "externalDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+        List<User> users = List.of(new User("user1", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>())
+        , new User("user2", "externalName", "externalProfilePicture", "externalEmail", new ArrayList<>(), 654321L, Gender.FEMALE, "externalLocation", "externalPassword", "externalDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>()));
 
         when(userRepository.findAll()).thenReturn(users);
 
@@ -293,7 +312,7 @@ public class LinkAutoServiceTest {
 
     @Test
     public void testGetUserByUsername_Found() {
-        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
     
         when(userRepository.findByUsername("testUser")).thenReturn(Optional.of(user));
     

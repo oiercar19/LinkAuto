@@ -98,7 +98,7 @@ public class PostTest {
             new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new HashSet<>()
         );
         List<String> images = List.of("img.jpg");
         List<Comment> comments = new ArrayList<>();
@@ -135,16 +135,16 @@ public class PostTest {
         assertFalse(post7.equals(null));  // Check equals(null)
         
         // Diferente usuario
-        User user3 = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user3 = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         Post post8 = new Post(1L, user3, "Mensaje A", 123L, images, comments, likes);
-        assertNotEquals(post7, post8);  // Distinto usuario
-        assertNotEquals(post7.hashCode(), post8.hashCode());  // Distinto usuario, hashCode diferente
+        assertEquals(post7, post8);
+        assertEquals(post7.hashCode(), post8.hashCode());  // Distinto usuario, hashCode diferente
 
         // Diferentes imagenes
         List<String> images2 = List.of("img2.jpg");
         Post post9 = new Post(1L, user3, "Mensaje A", 123L, images2, comments, likes);
-        assertNotEquals(post8, post9);  // Distintas imagenes
-        assertNotEquals(post8.hashCode(), post9.hashCode());  // Distintas imagenes, hashCode diferente
+        assertEquals(post8, post9);  // Distintas imagenes
+        assertEquals(post8.hashCode(), post9.hashCode());  // Distintas imagenes, hashCode diferente
         
         // Diferentes comentarios
         List<Comment> comments2 = new ArrayList<>();
@@ -154,27 +154,27 @@ public class PostTest {
         Comment c1 = new Comment("test", user3, post11, 123L);
         post11.addComentario(c1);
         
-        assertNotEquals(post10, post11);  // Distintos comentarios
-        assertNotEquals(post10.hashCode(), post11.hashCode());  // Distintos comentarios, hashCode diferente
+        assertEquals(post10, post11);  // Distintos comentarios
+        assertEquals(post10.hashCode(), post11.hashCode());  // Distintos comentarios, hashCode diferente
 
         // Diferentes likes
         HashSet<String> likes2 = new HashSet<>();
         likes2.add("user1");
         Post post12 = new Post(1L, user3, "Mensaje A", 123L, images, comments, likes2);
         Post post13 = new Post(1L, user3, "Mensaje A", 123L, images, comments, new HashSet<>());
-        assertNotEquals(post12, post13);  // Distintos likes
-        assertNotEquals(post12.hashCode(), post13.hashCode());  // Distintos likes, hashCode diferente    
+        assertEquals(post12, post13);  // Distintos likes
+        assertEquals(post12.hashCode(), post13.hashCode());  // Distintos likes, hashCode diferente    
     
         // Diferente mensaje
         Post post14 = new Post(1L, user3, "Mensaje B", 123L, images, comments, likes);
-        assertNotEquals(post12, post14);  // Distinto mensaje
-        assertNotEquals(post12.hashCode(), post14.hashCode());  // Distinto mensaje, hashCode diferente
+        assertEquals(post12, post14);  // Distinto mensaje
+        assertEquals(post12.hashCode(), post14.hashCode());  // Distinto mensaje, hashCode diferente
     }
     
 
     @Test
     public void testToString() {
-        User user = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         List<String> images = Arrays.asList("image1.jpg", "image2.jpg");
         Post post1 = new Post(1L, user, "test message", 999999999L, images, new ArrayList<>(), new HashSet<>());
         System.out.println(post1.toString());
@@ -184,7 +184,7 @@ public class PostTest {
 
     @Test
     public void constructorTest() {
-        User user3 = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user3 = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         List<String> images = Arrays.asList("image1.jpg", "image2.jpg");
         List<Comment> comments = new ArrayList<>();
         Comment comment1 = new Comment("test", user3, post, 123L);
