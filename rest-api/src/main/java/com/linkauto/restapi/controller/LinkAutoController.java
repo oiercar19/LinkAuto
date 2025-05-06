@@ -175,7 +175,40 @@ public class LinkAutoController {
         return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-        @PutMapping("/user/{username}/role/admin")
+    @PutMapping("/user/{username}/ban")
+    public ResponseEntity<Void> banUser(
+    @Parameter(name = "username", description = "Username of the user to ban or unban", required = true, example = "johndoe")
+    @PathVariable String username,
+    @Parameter(name = "banStatus", description = "Ban status (true to ban, false to unban)", required = true, example = "true")
+    @RequestParam("banStatus") boolean banStatus,
+    @Parameter(name = "userToken", description = "Token of the user making the request", required = true, example = "1234567890")
+    @RequestParam("userToken") String userToken) {
+    // Verificar si el token es válido
+    if (!authService.isTokenValid(userToken)) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }
+
+    // Obtener el usuario que realiza la solicitud
+    User requestingUser = authService.getUserByToken(userToken);
+
+    // Verificar si el usuario que realiza la solicitud es administrador
+    if (!requestingUser.getRole().equals(Role.ADMIN)) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+
+    // Obtener el usuario objetivo
+    User targetUser = authService.getUserByUsername(username);
+    if (targetUser == null) {
+        return ResponseEntity.notFound().build();
+    }
+
+    // Actualizar el estado de baneo del usuario objetivo
+    boolean isBanned = authService.banUser(username, banStatus);
+
+    return isBanned ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+}
+
+    @PutMapping("/user/{username}/role/admin")
     public ResponseEntity<Void> promoteToAdmin(
         @Parameter(name = "username", description = "Username of the user to promote", required = true, example = "johndoe")
         @PathVariable String username,
