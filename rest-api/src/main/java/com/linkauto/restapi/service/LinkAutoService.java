@@ -220,5 +220,13 @@ public class LinkAutoService {
     public List<Post> getPostsByUsername(String username) {
         return postRepository.findByUsuario_Username(username);
     }
+
+    public List<Post> getSavedPostsByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        return user.getSavedPosts();
+    }
 }
 
