@@ -181,6 +181,22 @@ public class LinkAutoService {
         return true;
     }
 
+    @Transactional
+    public Boolean unsavePost (Long postId, User u) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) {
+            return false;
+        }
+        u.getSavedPosts().remove(post);
+        if (u.getSavedPosts().isEmpty()) {
+            System.out.println("User has no saved posts.");
+            
+        }
+        userRepository.save(u);
+    
+        return true;
+    }
+
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
     }

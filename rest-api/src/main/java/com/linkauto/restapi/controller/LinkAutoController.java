@@ -413,6 +413,21 @@ public class LinkAutoController {
         return isSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
+    @DeleteMapping("/post/{post_id}/unsave")
+    public ResponseEntity<Void> unsavePost(
+        @Parameter(name = "post_id", description = "ID of the post to unsave", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isUnSaved = linkAutoService.unsavePost(post_id, user);
+        return isUnSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
