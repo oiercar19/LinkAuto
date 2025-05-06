@@ -109,6 +109,9 @@ public class ClientController {
             }
             model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
 
+            List<Post> savedPosts = new ArrayList<>(linkAutoServiceProxy.getUserSavedPosts(username));
+            model.addAttribute("savedPosts", savedPosts); // Agregar publicaciones guardadas al modelo
+
             return "feed"; // Vista para usuarios autenticados
         } else {
             // Token inválido o no proporcionado, redirigir al inicio de sesión
@@ -445,7 +448,7 @@ public class ClientController {
         }
     }
 
-    @PostMapping("/user/{postId}/unsavePost")
+    @PostMapping("/user/{postId}/unSavePost")
     public String unsavePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
         try {
             linkAutoServiceProxy.unsavePost(token, postId);
