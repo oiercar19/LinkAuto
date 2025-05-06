@@ -1,6 +1,7 @@
 package com.linkauto.restapi.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -78,7 +79,7 @@ public class AuthController {
             new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new HashSet<>()
         );
         user.setRole(Role.valueOf(userRegisterDTO.getRole().toUpperCase()));
         return user;   

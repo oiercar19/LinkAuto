@@ -81,6 +81,7 @@ public class LinkAutoController {
         return ResponseEntity.ok(postReturnerDTO);
     }
 
+
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<Void> deletePost(
         @Parameter(name = "id", description = "Post ID", required = true, example = "1")
@@ -428,6 +429,16 @@ public class LinkAutoController {
         return isUnSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
+    @GetMapping("/user/{username}/savedPosts")
+    public ResponseEntity<List<PostReturnerDTO>> getSavedPostsByUsername(
+        @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
+        @PathVariable String username
+    ) {
+        List<Post> savedPosts = linkAutoService.getSavedPostsByUsername(username);
+        List<PostReturnerDTO> savedPostReturnerDTOs = parsePostsToPostReturnerDTO(savedPosts);
+        return ResponseEntity.ok(savedPostReturnerDTOs);
+    }
+
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
@@ -460,7 +471,8 @@ public class LinkAutoController {
 
     private UserReturnerDTO parseUserToUserReturnerDTO(User u){
         List<PostReturnerDTO> postReturner = parsePostsToPostReturnerDTO(u.getPosts());
-        List<PostReturnerDTO> savedPost = parsePostsToPostReturnerDTO(u.getSavedPosts());
+        List<Post> savedPosts = new ArrayList<>(u.getSavedPosts());
+        List<PostReturnerDTO> savedPost = parsePostsToPostReturnerDTO(savedPosts);
         return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost);
     }
 

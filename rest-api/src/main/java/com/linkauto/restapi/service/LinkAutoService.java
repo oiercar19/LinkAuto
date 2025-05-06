@@ -1,5 +1,6 @@
 package com.linkauto.restapi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -171,33 +172,42 @@ public class LinkAutoService {
         return true;
     }
 
+    @Transactional
     public Boolean savePost (Long postId, User u) {
         Post post = postRepository.findById(postId).orElse(null);
-        if (post == null) {
-            return false;
-        }
-        u.addSavedPost(post);
-        userRepository.save(u);
-        userRepository.flush();
+        if (post == null) return false;
     
+        // Recupera el usuario desde DB para que tenga su Set<Post> sincronizado
+        User user = userRepository.findByUsername(u.getUsername()).orElse(null);
+        if (u == null) return false;
+    
+        boolean added = user.getSavedPosts().add(post); // Evita duplicados si ya existe en Set
+        if (!added) return false; // Ya estaba guardado
+    
+        userRepository.save(user);
         return true;
     }
 
     @Transactional
     public Boolean unsavePost (Long postId, User u) {
         Post post = postRepository.findById(postId).orElse(null);
-        if (post == null) {
-            return false;
-        }
-        u.getSavedPosts().remove(post);
-        if (u.getSavedPosts().isEmpty()) {
-            System.out.println("User has no saved posts.");
-            
-        }
-        userRepository.save(u);
-        userRepository.flush();
+        if (post == null) return false;
     
-        return true;
+        User user = userRepository.findByUsername(u.getUsername()).orElse(null);
+        // Buscar el post a eliminar dentro del Set de guardados
+        Post postToRemove = user.getSavedPosts().stream()
+            .filter(p -> p.getId().equals(postId))
+            .findFirst()
+            .orElse(null);
+    
+        if (postToRemove != null) {
+            user.getSavedPosts().remove(postToRemove);
+            userRepository.save(user);
+            userRepository.flush();
+            return true;
+        }
+    
+        return false;
     }
 
     public List<Comment> getAllComments() {
@@ -229,7 +239,7 @@ public class LinkAutoService {
         if (user == null) {
             return null;
         }
-        return user.getSavedPosts();
+        return new ArrayList<>(user.getSavedPosts());
     }
 }
 
