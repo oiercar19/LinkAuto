@@ -49,7 +49,7 @@ public class User {
     @JoinTable(
     name = "user_saved_posts",
     joinColumns = @JoinColumn(name = "user_username"),
-    inverseJoinColumns = @JoinColumn(name = "post_id") )
+    inverseJoinColumns = @JoinColumn(name = "post_id"))
     private List<Post> savedPosts;
 
     // No-argument constructor
