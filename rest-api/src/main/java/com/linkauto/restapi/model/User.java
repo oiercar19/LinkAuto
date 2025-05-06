@@ -1,7 +1,9 @@
 package com.linkauto.restapi.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -50,7 +52,7 @@ public class User {
     name = "user_saved_posts",
     joinColumns = @JoinColumn(name = "user_username"),
     inverseJoinColumns = @JoinColumn(name = "post_id"))
-    private List<Post> savedPosts;
+    private Set<Post> savedPosts;
 
     // No-argument constructor
     public User() {
@@ -61,7 +63,7 @@ public class User {
             String profilePicture, String email,
             List<String> cars, long birthDate,
             Gender gender, String location,
-            String password, String description, List<Post> posts, List<User> followers, List<User> following, List<Post> savedPosts) {
+            String password, String description, List<Post> posts, List<User> followers, List<User> following, Set<Post> savedPosts) {
         this.username = username;
         this.role = Role.USER;
         this.name = name;
@@ -85,7 +87,7 @@ public class User {
         for (User follow : following) {
             this.following.add(follow);
         }
-        this.savedPosts = new ArrayList<>();
+        this.savedPosts = new HashSet<>();
         for (Post post : savedPosts) {
             this.savedPosts.add(post);
         }
@@ -211,7 +213,7 @@ public class User {
         this.following.remove(following);
     }
 
-    public List<Post> getSavedPosts() {
+    public Set<Post> getSavedPosts() {
         return savedPosts;
     }
 

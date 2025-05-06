@@ -132,10 +132,10 @@ public class Post {
         Post post = (Post) o;
         return id != null && id.equals(post.id);
     }
-
+    
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return id != null ? id.hashCode() : System.identityHashCode(this);
     }
 
     @Override
