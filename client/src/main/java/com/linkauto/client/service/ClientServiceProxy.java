@@ -465,7 +465,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
         String url = String.format("%s/api/post/%d/unsave?userToken=%s", apiBaseUrl, postId, token);
         
         try {
-            restTemplate.postForObject(url, null, Void.class);
+            restTemplate.delete(url);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {
                 case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
