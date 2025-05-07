@@ -35,6 +35,7 @@ public class User {
     private String location;
     private String password;
     private String description;
+    private Boolean isVerified;
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts;
 
@@ -78,6 +79,7 @@ public class User {
         for (User follow : following) {
             this.following.add(follow);
         }
+        this.isVerified = false;
     }
 
     public String getUsername() {
@@ -166,6 +168,14 @@ public class User {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
     }
 
     public List<Post> getPosts() {

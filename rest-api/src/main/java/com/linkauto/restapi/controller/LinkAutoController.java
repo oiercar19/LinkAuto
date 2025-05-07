@@ -25,10 +25,10 @@ import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.Post;
+import com.linkauto.restapi.model.Role;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
 import com.linkauto.restapi.service.LinkAutoService;
-import com.linkauto.restapi.model.Role;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -396,6 +396,40 @@ public class LinkAutoController {
             commentReturnerDTOs.add(commentReturnerDTO);
         }
         return ResponseEntity.ok(commentReturnerDTOs);
+    }
+
+    @PostMapping("/user/{username}/verify")
+    public ResponseEntity<Void> verifyUser(
+        @Parameter(name = "username", description = "Username of the user to verify", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user making the request", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        
+        User requestingUser = authService.getUserByToken(userToken);
+        
+        // Verificar si el usuario que realiza la solicitud es administrador
+        // O si el usuario que realiza la solicitud es el mismo que se quiere verificar
+        if (!requestingUser.getRole().equals(Role.ADMIN) && !requestingUser.getUsername().equals(username)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        // Obtener el usuario objetivo
+        User targetUser = authService.getUserByUsername(username);
+        if (targetUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        Boolean isVerified = linkAutoService.verifyUser(targetUser);
+        if (isVerified == null) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        
+        return isVerified ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {

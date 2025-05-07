@@ -193,5 +193,15 @@ public class LinkAutoService {
     public List<Post> getPostsByUsername(String username) {
         return postRepository.findByUsuario_Username(username);
     }
+
+    public Boolean verifyUser(User user) {
+        // Comprobar si tiene al menos 3 posts y 3 seguidores
+        if (user.getPosts().size() < 3 || user.getFollowers().size() < 3) {
+            return false;
+        }
+        user.setIsVerified(true);
+        userRepository.save(user);
+        return true;
+    }
 }
 
