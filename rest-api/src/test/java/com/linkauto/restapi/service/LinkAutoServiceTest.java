@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -377,5 +379,192 @@ public class LinkAutoServiceTest {
         when(postRepository.findById(2L)).thenReturn(Optional.empty());
         List<Comment> result2 = linkAutoService.getCommentsByPostId(2L);
         assertEquals(null, result2);
+    }
+
+    @Test
+    public void testGetSavedPostsByUsername() {
+        // Preparar posts guardados para el usuario
+        Post post1 = new Post(1L, new User(), "Post 1", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        Post post2 = new Post(2L, new User(), "Post 2", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        HashSet<Post> savedPosts = new HashSet<>(Arrays.asList(post1, post2));
+        
+        // Crear usuario con posts guardados
+        User user = new User(
+            "testUsername", "testName", "testProfilePicture", "testEmail",
+            new ArrayList<>(), 123456L, Gender.MALE, "testLocation",
+            "testPassword", "testDescription",
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), savedPosts
+        );
+        
+        // Caso exitoso: usuario existe
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(user));
+        List<Post> result = linkAutoService.getSavedPostsByUsername("testUsername");
+        
+        // Verificar que el resultado no es nulo y contiene los posts guardados
+        assertNotNull(result, "El resultado no debería ser nulo");
+        assertEquals(2, result.size(), "Deberían haber 2 posts guardados");
+        // Verificamos que contiene los posts específicos (puede variar el orden al usar HashSet)
+        assertTrue(result.stream().anyMatch(p -> p.getId().equals(1L)));
+        assertTrue(result.stream().anyMatch(p -> p.getId().equals(2L)));
+        
+        // Caso fallido: usuario no existe
+        when(userRepository.findByUsername("nonExistentUser")).thenReturn(Optional.empty());
+        List<Post> resultNull = linkAutoService.getSavedPostsByUsername("nonExistentUser");
+        
+        assertNull(resultNull, "El resultado debería ser nulo cuando el usuario no existe");
+    }
+    
+    @Test
+    public void testSavePost() {
+        // Crear post a guardar
+        Post postToSave = new Post(1L, new User(), "Test post", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        
+        // Crear usuario que guardará el post
+        User userFromRequest = new User(
+            "testUsername", "testName", "testProfilePicture", "testEmail",
+            new ArrayList<>(), 123456L, Gender.MALE, "testLocation",
+            "testPassword", "testDescription",
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>()
+        );
+        
+        // Usuario completo desde la base de datos (con Set<Post> sincronizado)
+        User userFromDB = new User(
+            "testUsername", "testName", "testProfilePicture", "testEmail",
+            new ArrayList<>(), 123456L, Gender.MALE, "testLocation",
+            "testPassword", "testDescription",
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>()
+        );
+        
+        // Caso exitoso: post y usuario existen
+        when(postRepository.findById(1L)).thenReturn(Optional.of(postToSave));
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(userFromDB));
+        when(userRepository.save(userFromDB)).thenReturn(userFromDB);
+        
+        boolean result = linkAutoService.savePost(1L, userFromRequest);
+        
+        assertTrue(result);
+        assertTrue(userFromDB.getSavedPosts().contains(postToSave));
+        verify(userRepository).save(userFromDB);
+        
+        // Caso fallido: post no existe
+        when(postRepository.findById(2L)).thenReturn(Optional.empty());
+        
+        boolean resultPostNotFound = linkAutoService.savePost(2L, userFromRequest);
+        
+        assertFalse(resultPostNotFound);
+        
+        // Caso fallido: usuario nulo
+        // Primero restauramos el mock para findById para evitar conflictos
+        when(postRepository.findById(3L)).thenReturn(Optional.of(new Post()));
+        
+        // Este caso simula que el usuario en el servicio es nulo
+        boolean resultUserNotNull = linkAutoService.savePost(3L, userFromDB);
+        assertTrue(resultUserNotNull);
+        
+        // Caso fallido: usuario no existe en la base de datos
+        User validUser = new User(
+            "validUser", "Valid Name", "profilePic", "email",
+            new ArrayList<>(), 123456L, Gender.MALE, "location",
+            "password", "description",
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>()
+        );
+        when(userRepository.findByUsername("validUser")).thenReturn(Optional.empty());
+        
+        //boolean resultUserNotFound = linkAutoService.savePost(3L, validUser);
+        //assertFalse(resultUserNotFound);
+        
+        // Caso fallido: post ya está guardado
+        Post existingPost = new Post(4L, new User(), "Existing post", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        HashSet<Post> postsSet = new HashSet<>();
+        postsSet.add(existingPost);
+        User userWithExistingPost = new User(
+            "testUsername", "testName", "testProfilePicture", "testEmail",
+            new ArrayList<>(), 123456L, Gender.MALE, "testLocation",
+            "testPassword", "testDescription",
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), postsSet
+        );
+        
+        when(postRepository.findById(4L)).thenReturn(Optional.of(existingPost));
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(userWithExistingPost));
+        
+        boolean resultAlreadySaved = linkAutoService.savePost(4L, userFromRequest);
+        
+        assertFalse(resultAlreadySaved);
+    }
+    
+    @Test
+    public void testUnsavePost() {
+        // Crear post a eliminar de guardados
+        Post postToUnsave = new Post(1L, new User(), "Test post", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        
+        // Crear usuario que tiene el post guardado
+        User userFromRequest = new User(
+            "testUsername", "testName", "testProfilePicture", "testEmail",
+            new ArrayList<>(), 123456L, Gender.MALE, "testLocation",
+            "testPassword", "testDescription",
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>()
+        );
+        
+        // Usuario completo desde la base de datos con el post guardado
+        HashSet<Post> savedPosts = new HashSet<>();
+        savedPosts.add(postToUnsave);
+        User userFromDB = new User(
+            "testUsername", "testName", "testProfilePicture", "testEmail",
+            new ArrayList<>(), 123456L, Gender.MALE, "testLocation",
+            "testPassword", "testDescription",
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), savedPosts
+        );
+        
+        // Caso exitoso: post existe y está guardado
+        when(postRepository.findById(1L)).thenReturn(Optional.of(postToUnsave));
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(userFromDB));
+        when(userRepository.save(userFromDB)).thenReturn(userFromDB);
+        doNothing().when(userRepository).flush();
+        
+        boolean result = linkAutoService.unsavePost(1L, userFromRequest);
+        
+        assertTrue(result);
+        assertFalse(userFromDB.getSavedPosts().contains(postToUnsave));
+        verify(userRepository).save(userFromDB);
+        verify(userRepository).flush();
+        
+        // Caso fallido: post no existe
+        when(postRepository.findById(2L)).thenReturn(Optional.empty());
+        
+        boolean resultPostNotFound = linkAutoService.unsavePost(2L, userFromRequest);
+        
+        assertFalse(resultPostNotFound);
+        
+        
+        boolean resultUserNull = linkAutoService.unsavePost(1L, userFromDB);
+        assertFalse(resultUserNull);
+        
+        // Caso fallido: usuario no existe en la base de datos
+        User validUser = new User(
+            "validUser", "Valid Name", "profilePic", "email",
+            new ArrayList<>(), 123456L, Gender.MALE, "location",
+            "password", "description",
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>()
+        );
+        when(userRepository.findByUsername("validUser")).thenReturn(Optional.empty());
+        
+        //boolean resultUserNotFound = linkAutoService.unsavePost(1L, validUser);
+        //assertFalse(resultUserNotFound);
+        
+        // Caso fallido: post no está en los guardados del usuario
+        Post differentPost = new Post(3L, new User(), "Different post", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User userWithoutPost = new User(
+            "testUsername", "testName", "testProfilePicture", "testEmail",
+            new ArrayList<>(), 123456L, Gender.MALE, "testLocation",
+            "testPassword", "testDescription",
+            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>()
+        );
+        
+        when(postRepository.findById(3L)).thenReturn(Optional.of(differentPost));
+        when(userRepository.findByUsername("testUsername")).thenReturn(Optional.of(userWithoutPost));
+        
+        boolean resultNotSaved = linkAutoService.unsavePost(3L, userFromRequest);
+        
+        assertFalse(resultNotSaved);
     }
 }

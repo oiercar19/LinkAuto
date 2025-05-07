@@ -638,4 +638,104 @@ public class LinkAutoControllerTest {
         assertEquals(2L, response.getBody().get(1).getId());
     }
     
+
+    @Test
+    public void testSavePost_Unauthorized() {
+        Long postId = 1L;
+        String userToken = "invalidToken";
+
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+
+        ResponseEntity<Void> response = linkAutoController.savePost(postId, userToken);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(authService, times(1)).isTokenValid(userToken);
+    }
+
+    @Test
+    public void testSavePost_Success() {
+        Long postId = 1L;
+        String userToken = "validToken";
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(usuario);
+        when(linkAutoService.savePost(postId, usuario)).thenReturn(true);
+
+        ResponseEntity<Void> response = linkAutoController.savePost(postId, userToken);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(linkAutoService, times(1)).savePost(eq(postId), any(User.class));
+    }
+
+    @Test
+    public void testSavePost_NotFound() {
+        Long postId = 99L;
+        String userToken = "validToken";
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(usuario);
+        when(linkAutoService.savePost(postId, usuario)).thenReturn(false);
+
+        ResponseEntity<Void> response = linkAutoController.savePost(postId, userToken);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(linkAutoService, times(1)).savePost(postId, usuario);
+    }
+
+    @Test
+    public void testUnsavePost() {
+        Long postId = 1L;
+        String userToken = "1234567890";
+
+        // Caso 1: Token inválido
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+        ResponseEntity<Void> responseInvalid = linkAutoController.unsavePost(postId, userToken);
+        assertEquals(HttpStatus.UNAUTHORIZED, responseInvalid.getStatusCode());
+        verify(authService, times(1)).isTokenValid(userToken);
+
+        // Caso 2: Unsave exitoso
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(usuario);
+        when(linkAutoService.unsavePost(postId, usuario)).thenReturn(true);
+
+        ResponseEntity<Void> responseSuccess = linkAutoController.unsavePost(postId, userToken);
+        assertEquals(HttpStatus.OK, responseSuccess.getStatusCode());
+        verify(linkAutoService, times(1)).unsavePost(postId, usuario);
+
+        // Caso 3: Post no encontrado o no guardado
+        when(linkAutoService.unsavePost(postId, usuario)).thenReturn(false);
+        ResponseEntity<Void> responseNotFound = linkAutoController.unsavePost(postId, userToken);
+        assertEquals(HttpStatus.NOT_FOUND, responseNotFound.getStatusCode());
+        verify(linkAutoService, times(2)).unsavePost(postId, usuario);
+    }
+
+    @Test
+    void testGetSavedPostsByUsername() {
+        // Arrange
+        String username = "johndoe";
+    
+        User user = new User();
+        user.setUsername(username); // o usa constructor si tienes
+    
+        Post post1 = new Post();
+        post1.setUsuario(user);
+    
+        Post post2 = new Post();
+        post2.setUsuario(user);
+    
+        List<Post> savedPosts = List.of(post1, post2);
+    
+        when(linkAutoService.getSavedPostsByUsername(username)).thenReturn(savedPosts);
+    
+        // Act
+        ResponseEntity<List<PostReturnerDTO>> response = linkAutoController.getSavedPostsByUsername(username);
+    
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().size());
+    }
+
+
+
 }

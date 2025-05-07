@@ -439,7 +439,7 @@ public class LinkAutoController {
         return ResponseEntity.ok(savedPostReturnerDTOs);
     }
 
-    private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
+    public List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
             List<Long> comment_ids = new ArrayList<>();
