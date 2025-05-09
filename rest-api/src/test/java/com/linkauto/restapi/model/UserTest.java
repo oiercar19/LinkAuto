@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +22,7 @@ public class UserTest {
         List<Post> posts = new ArrayList<>();
         List<User> followers = new ArrayList<>();
         List<User> following = new ArrayList<>();
+        Set<Post> savedPosts = new HashSet<>();
         user = new User(
             "user1",
             "Alejandro Martinez",
@@ -34,7 +36,8 @@ public class UserTest {
             "Desc",
             posts,
             followers,
-            following
+            following,
+            savedPosts
         );
     }
 
@@ -94,6 +97,15 @@ public class UserTest {
     }
 
     @Test
+    public void testSavedPostOperations() {
+        assertTrue(user.getSavedPosts().isEmpty());
+        Post savedPost = new Post();
+        user.addSavedPost(savedPost);
+        assertEquals(1, user.getSavedPosts().size());
+        assertTrue(user.getSavedPosts().contains(savedPost));
+    }
+
+    @Test
     public void testFollowerOperations() {
         assertTrue(user.getFollowers().isEmpty());
         User follower = new User(
@@ -109,7 +121,8 @@ public class UserTest {
             "desc",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
         user.addFollower(follower);
         assertEquals(1, user.getFollowers().size());
@@ -135,7 +148,8 @@ public class UserTest {
             "desc",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
         user.addFollowing(followingUser);
         assertEquals(1, user.getFollowing().size());
@@ -161,7 +175,8 @@ public class UserTest {
             "d1",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
         User u2 = new User(
             "sameUser",
@@ -176,7 +191,8 @@ public class UserTest {
             "d2",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
         assertEquals(u1, u2);
         assertEquals(u1.hashCode(), u2.hashCode());
@@ -194,7 +210,8 @@ public class UserTest {
             "d1",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
         u3.setRole(Role.ADMIN);
 
@@ -221,9 +238,10 @@ public class UserTest {
             "Desc",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
-        String expected = "User [username=u1, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[]]";
+        String expected = "User [username=u1, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[], savedPost=[]]";
         assertEquals(expected, u.toString());
     }
 
@@ -232,6 +250,11 @@ public class UserTest {
         List<Post> originalPosts = new ArrayList<>();
         Post firstPost = new Post(1L, new User(), "msg", 0L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         originalPosts.add(firstPost);
+
+        Set<Post> originalSavedPosts = new HashSet<>();
+        Post savedPost = new Post(2L, new User(), "saved", 0L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        originalSavedPosts.add(savedPost);
+
 
         List<User> originalFollowers = new ArrayList<>();
         User follower = new User(
@@ -247,7 +270,8 @@ public class UserTest {
             "d",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
         originalFollowers.add(follower);
 
@@ -265,7 +289,8 @@ public class UserTest {
             "d",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
         originalFollowing.add(followingU);
 
@@ -282,7 +307,8 @@ public class UserTest {
             "xd",
             originalPosts,
             originalFollowers,
-            originalFollowing
+            originalFollowing,
+            originalSavedPosts
         );
 
         originalPosts.add(new Post());

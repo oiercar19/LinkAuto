@@ -1,5 +1,6 @@
 package com.linkauto.restapi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -71,6 +72,7 @@ public class LinkAutoService {
             // Desasociar el post del usuario
             User postUser = post.getUsuario();
             postUser.getPosts().remove(post);
+            postUser.getSavedPosts().remove(post); 
             userRepository.save(postUser);
             
             // Limpiar imágenes
@@ -170,6 +172,44 @@ public class LinkAutoService {
         return true;
     }
 
+    @Transactional
+    public Boolean savePost (Long postId, User u) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) return false;
+    
+        // Recupera el usuario desde DB para que tenga su Set<Post> sincronizado
+        User user = userRepository.findByUsername(u.getUsername()).orElse(null);
+        if (u == null) return false;
+    
+        boolean added = user.getSavedPosts().add(post); // Evita duplicados si ya existe en Set
+        if (!added) return false; // Ya estaba guardado
+    
+        userRepository.save(user);
+        return true;
+    }
+
+    @Transactional
+    public Boolean unsavePost (Long postId, User u) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) return false;
+    
+        User user = userRepository.findByUsername(u.getUsername()).orElse(null);
+        // Buscar el post a eliminar dentro del Set de guardados
+        Post postToRemove = user.getSavedPosts().stream()
+            .filter(p -> p.getId().equals(postId))
+            .findFirst()
+            .orElse(null);
+    
+        if (postToRemove != null) {
+            user.getSavedPosts().remove(postToRemove);
+            userRepository.save(user);
+            userRepository.flush();
+            return true;
+        }
+    
+        return false;
+    }
+
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
     }
@@ -192,6 +232,14 @@ public class LinkAutoService {
 
     public List<Post> getPostsByUsername(String username) {
         return postRepository.findByUsuario_Username(username);
+    }
+
+    public List<Post> getSavedPostsByUsername(String username) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        return new ArrayList<>(user.getSavedPosts());
     }
 }
 

@@ -81,6 +81,7 @@ public class LinkAutoController {
         return ResponseEntity.ok(postReturnerDTO);
     }
 
+
     @DeleteMapping("/posts/{id}")
     public ResponseEntity<Void> deletePost(
         @Parameter(name = "id", description = "Post ID", required = true, example = "1")
@@ -398,7 +399,47 @@ public class LinkAutoController {
         return ResponseEntity.ok(commentReturnerDTOs);
     }
 
-    private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
+    @PostMapping("/post/{post_id}/save")
+    public ResponseEntity<Void> savePost(
+        @Parameter(name = "post_id", description = "ID of the post to save", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isSaved = linkAutoService.savePost(post_id, user);
+        return isSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @DeleteMapping("/post/{post_id}/unsave")
+    public ResponseEntity<Void> unsavePost(
+        @Parameter(name = "post_id", description = "ID of the post to unsave", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User user = authService.getUserByToken(userToken);
+        boolean isUnSaved = linkAutoService.unsavePost(post_id, user);
+        return isUnSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
+    }
+
+    @GetMapping("/user/{username}/savedPosts")
+    public ResponseEntity<List<PostReturnerDTO>> getSavedPostsByUsername(
+        @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
+        @PathVariable String username
+    ) {
+        List<Post> savedPosts = linkAutoService.getSavedPostsByUsername(username);
+        List<PostReturnerDTO> savedPostReturnerDTOs = parsePostsToPostReturnerDTO(savedPosts);
+        return ResponseEntity.ok(savedPostReturnerDTOs);
+    }
+
+    public List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
             List<Long> comment_ids = new ArrayList<>();
@@ -423,14 +464,16 @@ public class LinkAutoController {
     }
 
     private User parseUserDTOToUser(UserDTO userDTO, User oldUser) {
-        User u = new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing());
+        User u = new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing(), oldUser.getSavedPosts());
         u.setRole(oldUser.getRole());
         return u;
     }
 
     private UserReturnerDTO parseUserToUserReturnerDTO(User u){
         List<PostReturnerDTO> postReturner = parsePostsToPostReturnerDTO(u.getPosts());
-        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner);
+        List<Post> savedPosts = new ArrayList<>(u.getSavedPosts());
+        List<PostReturnerDTO> savedPost = parsePostsToPostReturnerDTO(savedPosts);
+        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost);
     }
 
     private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {

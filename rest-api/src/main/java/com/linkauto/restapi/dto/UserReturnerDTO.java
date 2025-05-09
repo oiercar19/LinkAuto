@@ -16,9 +16,10 @@ public class UserReturnerDTO {
     private String password;
     private String description;
     private List<PostReturnerDTO> posts;
+    private List<PostReturnerDTO> savedPost;
 
     // Constructor
-    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts) {
+    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts, List<PostReturnerDTO> savedPost) {
         this.username = username;
         this.role = role;
         this.name = name;
@@ -33,6 +34,10 @@ public class UserReturnerDTO {
         this.posts = new ArrayList<>();
         for (PostReturnerDTO post : posts){
             this.posts.add(post);
+        }
+        this.savedPost = new ArrayList<>();
+        for (PostReturnerDTO post : savedPost){
+            this.savedPost.add(post);
         }
     }
 
@@ -132,5 +137,13 @@ public class UserReturnerDTO {
 
     public void addPost(PostReturnerDTO post){
         this.posts.add(post);
+    }
+
+    public List<PostReturnerDTO> getSavedPost() {
+        return savedPost;
+    }
+
+    public void addSavedPost(PostReturnerDTO post) {
+        this.savedPost.add(post);
     }
 }

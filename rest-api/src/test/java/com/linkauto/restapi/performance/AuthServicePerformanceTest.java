@@ -11,6 +11,8 @@ import com.linkauto.restapi.model.User.Gender;
 import com.linkauto.restapi.service.AuthService;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +38,7 @@ public class AuthServicePerformanceTest {
         executionsPerSec = 100, meanLatency = 10, maxLatency = 1500, minLatency = 10
     )    
     public void testRegisterPerformance() {
-        User user = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUsername", "testName", "testProfilePicture", "testEmail", new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         authService.register(user);
     }
 
