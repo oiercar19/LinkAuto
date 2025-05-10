@@ -51,7 +51,7 @@ class ClientServiceProxyTest {
     @Test
     void testRegister_Success() {
         // Create User record with constructor parameters
-        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         String url = API_BASE_URL + "/auth/register";
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class))).thenReturn(null);
         
@@ -61,7 +61,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testRegister_BadRequest() {
-        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         String url = API_BASE_URL + "/auth/register";
         
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
@@ -117,7 +117,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testGetUserProfile_Success() {
-        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         when(restTemplate.getForObject(url, User.class)).thenReturn(user);
@@ -150,7 +150,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_Success() {
-        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doNothing().when(restTemplate).put(url, user, Void.class);
@@ -160,7 +160,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_Unauthorized() {
-        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
@@ -225,12 +225,12 @@ class ClientServiceProxyTest {
     }
 
     @Test
-    void testGetPostById_NotFound() {
+
+            void testGetPostById_NotFound() {
         String url = String.format("%s/api/posts/%d", API_BASE_URL, 1);
         
         when(restTemplate.getForObject(url, Post.class))
             .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
-        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getPostById(1L));
         assertEquals("Post not found", exception.getMessage());
     }
@@ -257,7 +257,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testGetUserByUsername_Success() {
-        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         String url = String.format("%s/api/user/%s", API_BASE_URL, "testuser");
         
         when(restTemplate.getForObject(url, User.class)).thenReturn(user);
@@ -280,8 +280,8 @@ class ClientServiceProxyTest {
     @SuppressWarnings("unchecked")
     @Test
     void testGetUserFollowers_Success() {
-        User user1 = new User("follower", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user2 = new User("follower2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user1 = new User("follower", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
+        User user2 = new User("follower2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         List<User> followers = Arrays.asList(user1, user2);
         String url = String.format("%s/api/user/%s/followers", API_BASE_URL, "testuser");
         
@@ -301,8 +301,8 @@ class ClientServiceProxyTest {
     @SuppressWarnings("unchecked")
     @Test
     void testGetUserFollowing_Success() {
-        User user1 = new User("following1", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user2 = new User("following2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user1 = new User("following1", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
+        User user2 = new User("following2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
 
         List<User> following = Arrays.asList(user1, user2);
         String url = String.format("%s/api/user/%s/following", API_BASE_URL, "testuser");
@@ -433,8 +433,8 @@ class ClientServiceProxyTest {
     @SuppressWarnings("unchecked")
     @Test
     void testGetAllUsers_Success() {
-        User user1 = new User("testuser1", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user2 = new User("testuser2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user1 = new User("testuser1", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
+        User user2 = new User("testuser2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
 
         List<User> users = Arrays.asList(user1, user2);
         String url = String.format("%s/api/users", API_BASE_URL);
@@ -514,7 +514,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testRegister_UsernameAlreadyExists() {
-        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         String url = API_BASE_URL + "/auth/register";
         
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
@@ -526,7 +526,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testRegister_OtherError() {
-        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         String url = API_BASE_URL + "/auth/register";
         
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
@@ -576,7 +576,7 @@ class ClientServiceProxyTest {
     // Update Profile - Additional error case
     @Test
     void testUpdateProfile_NotFound() {
-        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
@@ -588,7 +588,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_OtherError() {
-        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))

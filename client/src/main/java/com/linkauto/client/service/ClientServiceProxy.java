@@ -424,5 +424,21 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
+    @Override
+    public void verifyUser(String token, String username) {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", apiBaseUrl, username, token);
+        
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to verify this user");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to verify user: " + e.getStatusText());
+            }
+        }
+    }
     
 }

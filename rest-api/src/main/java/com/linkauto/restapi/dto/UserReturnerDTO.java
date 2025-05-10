@@ -16,9 +16,10 @@ public class UserReturnerDTO {
     private String password;
     private String description;
     private List<PostReturnerDTO> posts;
+    private Boolean isVerified;
 
     // Constructor
-    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts) {
+    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts, Boolean isVerified) {
         this.username = username;
         this.role = role;
         this.name = name;
@@ -34,6 +35,7 @@ public class UserReturnerDTO {
         for (PostReturnerDTO post : posts){
             this.posts.add(post);
         }
+        this.isVerified = isVerified;
     }
 
     // Getters and Setters
@@ -132,5 +134,13 @@ public class UserReturnerDTO {
 
     public void addPost(PostReturnerDTO post){
         this.posts.add(post);
+    }
+    
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
+    public Boolean getIsVerified() {
+        return isVerified;
     }
 }

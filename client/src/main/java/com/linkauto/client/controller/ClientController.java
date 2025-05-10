@@ -111,7 +111,7 @@ public class ClientController {
                 }
             }
             model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
-            
+            model.addAttribute("isVerified", user.isVerified()); // Agregar verificación al modelo
             return "feed"; // Vista para usuarios autenticados
         } else {
             // Token inválido o no proporcionado, redirigir al inicio de sesión
@@ -437,4 +437,15 @@ public class ClientController {
       }
       return "redirect:/adminPanel"; // Redirect back to the admin panel
   }
+
+  @PostMapping("/user/{username}/verify")
+    public String verifyUser(@PathVariable String username, RedirectAttributes redirectAttributes, String redirect) {
+        try {
+            linkAutoServiceProxy.verifyUser(token, username);
+            redirectAttributes.addFlashAttribute("success", "Usuario " + username + " verificado con éxito.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al verificar al usuario: " + e.getMessage());
+        }
+        return "redirect:" + redirect; // Redirect back to the admin panel
+    }
 }

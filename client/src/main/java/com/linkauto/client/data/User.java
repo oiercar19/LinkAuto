@@ -13,7 +13,8 @@ public record User(
     String gender,
     String location,
     String password,
-    String description
+    String description,
+    Boolean isVerified
 ) {}
 
 
