@@ -432,6 +432,19 @@ public class LinkAutoController {
         return isVerified ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
+    @GetMapping("/user/{username}/verify")
+    public ResponseEntity<Boolean> isUserVerified(
+        @Parameter(name = "username", description = "Username of the user to verify", required = true, example = "johndoe")
+        @PathVariable String username
+    ) {
+        User user = authService.getUserByUsername(username);
+        System.out.println("User: " + user);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user.getIsVerified());
+    }
+
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {

@@ -326,6 +326,10 @@
                         <div>
                             <!-- Cambio: Convertir el nombre de usuario en un enlace al perfil -->
                             <a th:href="@{'/user/' + ${post.username}}" class="user-link" th:text="${post.username}">Nombre de Usuario</a>
+                            <!-- Badge de verificación para el usuario actual en la navbar -->
+                            <span th:if="${verifiedUsers != null and verifiedUsers.contains(post.username)}" class="verified-badge" title="Usuario verificado">
+                                <i class="bi bi-check"></i>
+                            </span>
                         </div>
                         <div class="ms-auto">
                             <form th:if="${not #lists.contains(followings, post.username) && not #strings.equals(username, post.username)}"

@@ -2,8 +2,10 @@ package com.linkauto.client.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,12 +80,19 @@ public class ClientController {
         if (token != null) {
             List<Post> posts = new ArrayList<>(linkAutoServiceProxy.getFeed());
             Map<String, String> profilePictureByUsername = new HashMap<>();
+            Set<String> verifiedUsers = new HashSet<>();
             for (Post post : posts) {
                 String profilePicture = linkAutoServiceProxy.getUserByUsername(post.username()).profilePicture();
                 profilePictureByUsername.putIfAbsent(post.username(), profilePicture);
-                
+                if (verifiedUsers.contains(post.username())) {
+                    continue;
+                }
+                Boolean isUserVerified = linkAutoServiceProxy.isUserVerified(post.username());
+                if (isUserVerified) {
+                    verifiedUsers.add(post.username());
+                }
             }
-            
+            model.addAttribute("verifiedUsers", verifiedUsers); // Agregar usuarios verificados al modelo
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
             
             model.addAttribute("posts", posts); // Agregar publicaciones al modelo

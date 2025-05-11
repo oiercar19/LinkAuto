@@ -440,5 +440,19 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
+    @Override
+    public Boolean isUserVerified(String username) {
+        String url = String.format("%s/api/user/%s/verify", apiBaseUrl, username);
+        
+        try {
+            return restTemplate.getForObject(url, Boolean.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to check user verification: " + e.getStatusText());
+            }
+        }
+    }
     
 }
