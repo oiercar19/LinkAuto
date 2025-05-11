@@ -288,7 +288,18 @@ public class ClientController {
             List<User> matchingUsers = allUsers.stream()
                 .filter(user -> user.username().toLowerCase().contains(username.toLowerCase()))
                 .collect(Collectors.toList());
-            
+
+            Set <String> verifiedUsers = new HashSet<>();
+            for (User user : matchingUsers) {
+                if (verifiedUsers.contains(user.username())) {
+                    continue;
+                }
+                Boolean isUserVerified = linkAutoServiceProxy.isUserVerified(user.username());
+                if (isUserVerified) {
+                    verifiedUsers.add(user.username());
+                }
+            }
+            model.addAttribute("verifiedUsers", verifiedUsers);
             model.addAttribute("searchTerm", username);
             model.addAttribute("users", matchingUsers);
             
