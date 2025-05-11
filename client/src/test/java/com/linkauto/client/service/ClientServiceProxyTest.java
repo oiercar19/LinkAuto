@@ -1159,4 +1159,91 @@ class ClientServiceProxyTest {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.demoteToUser(TOKEN, "adminuser"));
         assertEquals("Failed to demote admin to user: Server Error", exception.getMessage());
     }
+    @Test
+    void testVerifyUser_Success() {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class))).thenReturn(null);
+        
+        assertDoesNotThrow(() -> clientServiceProxy.verifyUser(TOKEN, "testuser"));
+        verify(restTemplate).postForObject(url, null, Void.class);
+    }
+    
+    @Test
+    void testVerifyUser_Unauthorized() {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.verifyUser(TOKEN, "testuser"));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+    
+    @Test
+    void testVerifyUser_Forbidden() {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.verifyUser(TOKEN, "testuser"));
+        assertEquals("Forbidden: You do not have permission to verify this user", exception.getMessage());
+    }
+
+    @Test
+    void testVerifyUser_NotFound() {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", API_BASE_URL, "nonexistent", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.verifyUser(TOKEN, "nonexistent"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testVerifyUser_OtherError() {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.verifyUser(TOKEN, "testuser"));
+        assertEquals("Failed to verify user: Server Error", exception.getMessage());
+    }
+    @Test
+    void testIsUserVerified_Success() {
+        String username = "testuser";
+        String url = String.format("%s/api/user/%s/verify", API_BASE_URL, username);
+        
+        when(restTemplate.getForObject(url, Boolean.class)).thenReturn(true);
+        
+        Boolean result = clientServiceProxy.isUserVerified(username);
+        assertTrue(result);
+    }
+    
+    @Test
+    void testIsUserVerified_UserNotFound() {
+        String username = "nonexistent";
+        String url = String.format("%s/api/user/%s/verify", API_BASE_URL, username);
+        
+        when(restTemplate.getForObject(url, Boolean.class))
+        .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.isUserVerified(username));
+        assertEquals("User not found", exception.getMessage());
+    }
+    
+    @Test
+    void testIsUserVerified_Failure() {
+        String username = "testuser";
+        String url = String.format("%s/api/user/%s/verify", API_BASE_URL, username);
+        
+        when(restTemplate.getForObject(url, Boolean.class))
+        .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.isUserVerified(username));
+        assertEquals("Failed to check user verification: INTERNAL_SERVER_ERROR", exception.getMessage());
+    }
 }

@@ -142,15 +142,18 @@ public class ClientControllerTest {
         List<Post> posts = new ArrayList<>();
         Post post1 = new Post(1L, "user1", "content1", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         Post post2 = new Post(2L, "user2", "content2", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        Post post3 = new Post(3L, "user2", "content2", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         posts.add(post1);
         posts.add(post2);
+        posts.add(post3);
 
-        User user = new User("user1", "USER", "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc", false);
-    
+        when(linkAutoServiceProxy.isUserVerified("user2")).thenReturn(true);
+
+        User user = new User("user1", "USER", "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc", true);
         when(linkAutoServiceProxy.getFeed()).thenReturn(posts);
         when(linkAutoServiceProxy.getUserProfile(clientController.token)).thenReturn(user);
 
-        when(linkAutoServiceProxy.getUserByUsername("user1")).thenReturn(new User("user1", "USER", "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc", false));
+        when(linkAutoServiceProxy.getUserByUsername("user1")).thenReturn(new User("user1", "USER", "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc", true));
         when(linkAutoServiceProxy.getUserByUsername("user2")).thenReturn(new User("user2", "USER", "User Two", "pic2.jpg", "user2@example.com", null, 0, "Female", "Location2", "password", "desc", false));
 
         List<User> followings = new ArrayList<>();
@@ -725,7 +728,7 @@ public class ClientControllerTest {
         List<User> allUsers = new ArrayList<>();
         User user1 = new User("testuser1", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         User user2 = new User("testuser2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
-        User user3 = new User("testuser3", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
+        User user3 = new User("testuser3", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", true);
 
         allUsers.add(user1);
         allUsers.add(user2);
@@ -737,6 +740,7 @@ public class ClientControllerTest {
         User following = new User("testUser1", "USER", "test", "currentUser.jpg", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", false);
         followings.add(following);
         
+        when(linkAutoServiceProxy.isUserVerified("testuser3")).thenReturn(true);
         when(linkAutoServiceProxy.getAllUsers()).thenReturn(allUsers);
         when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(currentUser);
         when(linkAutoServiceProxy.getUserFollowing("currentUser")).thenReturn(followings);
@@ -936,4 +940,31 @@ public class ClientControllerTest {
         
         assertEquals("post", result);
     }
+    @Test
+    public void testVerifyUser_Success() {
+        clientController.token = "validToken";
+        String usernameToVerify = "testUser";
+        String redirectUrl = "/adminPanel";
+        
+        String result = clientController.verifyUser(usernameToVerify, redirectAttributes, redirectUrl);
+        
+        verify(linkAutoServiceProxy).verifyUser(clientController.token, usernameToVerify);
+        verify(redirectAttributes).addFlashAttribute("success", "Usuario " + usernameToVerify + " verificado con éxito.");
+        assertEquals("redirect:/adminPanel", result);
+    }
+    
+    @Test
+    public void testVerifyUser_Error() {
+        clientController.token = "validToken";
+        String usernameToVerify = "testUser";
+        String redirectUrl = "/adminPanel";
+        
+        doThrow(new RuntimeException("Error al verificar al usuario")).when(linkAutoServiceProxy).verifyUser(clientController.token, usernameToVerify);
+        
+        String result = clientController.verifyUser(usernameToVerify, redirectAttributes, redirectUrl);
+        
+        verify(linkAutoServiceProxy).verifyUser(clientController.token, usernameToVerify);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al verificar al usuario: Error al verificar al usuario");
+        assertEquals("redirect:/adminPanel", result);
+    }   
 }

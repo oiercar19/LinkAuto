@@ -291,9 +291,6 @@ public class ClientController {
 
             Set <String> verifiedUsers = new HashSet<>();
             for (User user : matchingUsers) {
-                if (verifiedUsers.contains(user.username())) {
-                    continue;
-                }
                 Boolean isUserVerified = linkAutoServiceProxy.isUserVerified(user.username());
                 if (isUserVerified) {
                     verifiedUsers.add(user.username());
