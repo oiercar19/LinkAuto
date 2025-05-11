@@ -203,7 +203,7 @@
                 <div th:each="user : ${users}" class="user-card">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="user-profile">
-                            <div class="user-avatar" style="width: 50px; heigh: 50px">
+                            <div class="user-avatar" style="width: 50px; height: 50px">
                                 <img th:src="${user.profilePicture != null && (#strings.endsWith(user.profilePicture, '.png') || #strings.endsWith(user.profilePicture, '.jpg')) ? user.profilePicture : '/images/default-avatar.png'}" 
                                      alt="Profile" 
                                      class="img-fluid rounded-circle" 
