@@ -372,6 +372,7 @@ public class ClientController {
         return "post";
     }
     
+    
   //Endpoint para el panel de administrador
   @GetMapping("/adminPanel")
   public String adminPanel(Model model, RedirectAttributes redirectAttributes) {
@@ -437,4 +438,16 @@ public class ClientController {
       }
       return "redirect:/adminPanel"; // Redirect back to the admin panel
   }
+
+    @PostMapping("/user/{username}/report")
+    public String reportUser(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.reportUser(token, username);
+            redirectAttributes.addFlashAttribute("success", "Usuario " + username + " reportado con éxito.");
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/"); // Redirigir a la página de inicio después de seguir al usuario    
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al reportar al usuario: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
 }
