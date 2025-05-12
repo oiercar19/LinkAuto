@@ -1,7 +1,9 @@
 package com.linkauto.restapi.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -35,6 +37,7 @@ public class User {
     private String location;
     private String password;
     private String description;
+    private Set <User> reporters = new HashSet<>();
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts;
 
@@ -170,6 +173,13 @@ public class User {
 
     public List<Post> getPosts() {
         return posts;
+    }
+    
+    public Set<User> getReporters() {
+        return reporters;
+    }
+    public void setReporters(Set<User> reporters) {
+        this.reporters = reporters;
     }
 
     public void addPost(Post post) {
