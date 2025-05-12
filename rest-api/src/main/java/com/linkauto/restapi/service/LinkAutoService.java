@@ -170,6 +170,10 @@ public class LinkAutoService {
         return true;
     }
 
+    public Boolean reportUser (User user, User userToReport) {
+        return true;
+    }
+
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
     }
