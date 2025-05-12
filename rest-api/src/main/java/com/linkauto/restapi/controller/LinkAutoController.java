@@ -398,6 +398,29 @@ public class LinkAutoController {
         return ResponseEntity.ok(commentReturnerDTOs);
     }
 
+    @PostMapping ("/user/{username}/report")
+    public ResponseEntity<Void> reportUser(
+        @Parameter(name = "username", description = "Username of the user to report", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user making the report", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        User reportingUser = authService.getUserByToken(userToken);
+        User reportedUser = authService.getUserByUsername(username);
+    
+        if (reportedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+    
+        boolean isReported = linkAutoService.reportUser(reportingUser, reportedUser);
+    
+        return isReported ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
     private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
