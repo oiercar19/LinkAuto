@@ -318,7 +318,15 @@
                                 th:action="@{'/user/' + ${post.username} + '/unfollow?redirectUrl=/feed'}" 
                                 method="post">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
-                            </form>                            
+                            </form>             
+                            <form th:if="${not #strings.equals(username, post.username)}" 
+                                th:action="@{'/report/' + ${post.username}}" 
+                                method="post" 
+                                style="display:inline;">
+                                <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill">
+                                     <i class="bi bi-flag"></i> Reportar
+                                </button>
+                            </form>
                             <form th:action="@{/deletePost?redirectUrl=/feed}" method="post" style="display:inline;">
                                 <input type="hidden" name="id" th:value="${post.id}">
                                 <button th:if="${post.username == username}" type="submit" class="btn btn-sm btn-outline-danger delete-post-btn">
