@@ -6,7 +6,7 @@ import java.util.List;
 public class UserReturnerDTO {
     private String username;
     private String role;
-    private boolean isBanned;
+    private boolean banned;
     private String name;
     private String profilePicture;
     private String email;
@@ -23,7 +23,7 @@ public class UserReturnerDTO {
     public UserReturnerDTO(String username, String role , boolean isBanned , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts) {
         this.username = username;
         this.role = role;
-        this.isBanned = isBanned;
+        this.banned = isBanned;
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
@@ -130,11 +130,11 @@ public class UserReturnerDTO {
     }
 
     public boolean isBanned() {
-        return isBanned;
+        return banned;
     }
 
     public void setBanned(boolean isBanned) {
-        this.isBanned = isBanned;
+        this.banned = isBanned;
     }
 
     public List<PostReturnerDTO> getPosts(){
