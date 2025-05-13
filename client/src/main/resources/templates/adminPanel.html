@@ -121,11 +121,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="user : ${users}" th:classappend="${user.isBanned} ? 'table-danger' : ''">
+                            <tr th:each="user : ${users}" th:classappend="${user.banned} ? 'table-danger' : ''">
                                 <td th:text="${user.username}">Username</td>
                                 <td th:text="${user.email}">Email</td>
                                 <td th:text="${user.role}">Role</td>
-                                <td th:text="${user.isBanned} ? 'Sí' : 'No'">Banned</td>
+                                <td th:text="${user.banned} ? 'Sí' : 'No'">Banned</td>
                                 <td>
                                     <!-- Botón para eliminar usuario -->
                                     <form th:action="@{/admin/deleteUser}" method="POST" style="display:inline;">
@@ -139,7 +139,7 @@
                                     <form th:action="@{/admin/banUser}" method="POST" style="display:inline;">
                                         <input type="hidden" name="username" th:value="${user.username}">
                                         <input type="hidden" name="banStatus" value="true">
-                                        <button type="submit" class="btn btn-sm btn-warning" th:disabled="${user.isBanned}" title="Banear usuario">
+                                        <button type="submit" class="btn btn-sm btn-warning" th:disabled="${user.banned}" title="Banear usuario">
                                             <i class="fas fa-ban"></i> Ban
                                         </button>
                                     </form>
@@ -148,7 +148,7 @@
                                     <form th:action="@{/admin/banUser}" method="POST" style="display:inline;">
                                         <input type="hidden" name="username" th:value="${user.username}">
                                         <input type="hidden" name="banStatus" value="false">
-                                        <button type="submit" class="btn btn-sm btn-success" th:disabled="${!user.isBanned}" title="Desbanear usuario">
+                                        <button type="submit" class="btn btn-sm btn-success" th:disabled="${!user.banned}" title="Desbanear usuario">
                                             <i class="fas fa-check"></i> Unban
                                         </button>
                                     </form>
