@@ -360,6 +360,13 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
                 null,
                 new ParameterizedTypeReference<List<User>>() {}
             );
+
+            System.out.println("Response body: " + response.getBody());
+            System.out.println("Response: " + response); // Debug log
+            for (User user : response.getBody()) {
+                System.out.println("User: " +user.username() + "Banned: "+ user.banned()); // Debug log
+            }
+
             return response.getBody();
         } catch (HttpStatusCodeException e) {
             // Manejar errores HTTP específicos

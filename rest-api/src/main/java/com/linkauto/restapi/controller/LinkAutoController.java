@@ -138,11 +138,15 @@ public class LinkAutoController {
     public ResponseEntity<List<UserReturnerDTO>> getAllUsers() {
         // Obtener todos los usuarios
         List<User> users = linkAutoService.getAllUsers();
-    
+
         // Convertir la lista de usuarios a UserReturnerDTO
         List<UserReturnerDTO> userReturnerDTOs = new ArrayList<>();
         for (User user : users) {
             userReturnerDTOs.add(parseUserToUserReturnerDTO(user));
+        }
+
+        for (UserReturnerDTO userReturnerDTO : userReturnerDTOs) {
+            System.out.println(userReturnerDTO.isBanned());
         }
     
         return ResponseEntity.ok(userReturnerDTOs);
