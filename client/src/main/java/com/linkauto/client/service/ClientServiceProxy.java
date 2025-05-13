@@ -401,6 +401,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
         try {
             restTemplate.put(url, null);
             System.out.println("User ban status updated successfully: " + username); // Debug log
+            System.out.println("Ban status: " + banStatus); // Debug log
         } catch (HttpStatusCodeException e) {
             System.err.println("Error response from server: " + e.getStatusCode() + " - " + e.getResponseBodyAsString()); // Debug log
             switch (e.getStatusCode().value()) {

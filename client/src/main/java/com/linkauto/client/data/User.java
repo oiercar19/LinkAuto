@@ -5,6 +5,7 @@ import java.util.List;
 public record User(
     String username,
     String role,
+    boolean isBanned,
     String name,
     String profilePicture,
     String email,
@@ -13,8 +14,7 @@ public record User(
     String gender,
     String location,
     String password,
-    String description,
-    boolean isBanned
+    String description
 ) {}
 
 

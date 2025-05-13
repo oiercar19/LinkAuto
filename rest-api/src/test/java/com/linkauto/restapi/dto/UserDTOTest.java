@@ -21,8 +21,9 @@ public class UserDTOTest {
         String location = "New York";
         String password = "securePassword";
         String description = "Enthusiast car lover";
+        boolean isBanned = false;
 
-        UserDTO user = new UserDTO(name, role, profilePicture, email, cars, birthDate, gender, location, password, description);
+        UserDTO user = new UserDTO(name, role, isBanned , profilePicture, email, cars, birthDate, gender, location, password, description);
 
         assertEquals(name, user.getName());
         assertEquals(role, user.getRole());
@@ -38,7 +39,7 @@ public class UserDTOTest {
 
     @Test
     public void testSettersAndGetters() {
-        UserDTO user = new UserDTO("", "",  "", "", null, 0L, "", "", "", "");
+        UserDTO user = new UserDTO("", "", false ,"", "", null, 0L, "", "", "", "");
 
         String name = "Jane Doe";
         String role = "USER";

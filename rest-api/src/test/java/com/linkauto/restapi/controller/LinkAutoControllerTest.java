@@ -393,7 +393,7 @@ public class LinkAutoControllerTest {
     @Test
     public void testUpdateUser() {
         String userToken = "validToken";
-        UserDTO userDto = new UserDTO("updatedName", "USER", "avatar.jpg" ,"updatedEmail", 
+        UserDTO userDto = new UserDTO("updatedName", "USER", false , "avatar.jpg" ,"updatedEmail", 
                                     new ArrayList<>(), 123456L, "male", "updatedLocation",
                                     "updatedPassword", "updatedDescription");
         
@@ -413,7 +413,7 @@ public class LinkAutoControllerTest {
         assertEquals("updatedName", validResponse.getBody().getName());
         
         // Case 3: Regular user trying to update role
-        UserDTO roleSwitchDto = new UserDTO("name", "ADMIN", "pic", "email", 
+        UserDTO roleSwitchDto = new UserDTO("name", "ADMIN", false , "pic", "email", 
                                         new ArrayList<>(), 123456L, "male", "location",
                                         "password", "description");
         

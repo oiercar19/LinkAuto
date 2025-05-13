@@ -26,6 +26,7 @@ public class User {
     @Id
     private String username;
     private Role role;
+    private boolean isBanned;
     private String name;
     private String profilePicture;
     private String email;
@@ -35,7 +36,6 @@ public class User {
     private String location;
     private String password;
     private String description;
-    private boolean isBanned = false;
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts;
 
@@ -58,6 +58,7 @@ public class User {
             String password, String description,List<Post> posts, List<User> followers, List<User> following) {
         this.username = username;
         this.role = Role.USER;
+        this.isBanned = false;
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;

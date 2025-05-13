@@ -20,6 +20,7 @@ public class UserReturnerDTOTest {
         UserReturnerDTO user = new UserReturnerDTO(
             "username123",
             "USER",
+            false,
             "John Doe",
             "profilePic.jpg",
             "john.doe@example.com",
@@ -34,6 +35,7 @@ public class UserReturnerDTOTest {
 
         assertEquals("username123", user.getUsername());
         assertEquals("USER", user.getRole());
+        assertEquals(false, user.isBanned());
         assertEquals("John Doe", user.getName());
         assertEquals("profilePic.jpg", user.getProfilePicture());
         assertEquals("john.doe@example.com", user.getEmail());
@@ -51,6 +53,7 @@ public class UserReturnerDTOTest {
         UserReturnerDTO user = new UserReturnerDTO(
             "username123",
             "USER",
+            false,
             "John Doe",
             "profilePic.jpg",
             "john.doe@example.com",
@@ -65,6 +68,7 @@ public class UserReturnerDTOTest {
 
         user.setUsername("newUsername");
         user.setRole("ADMIN");
+        user.setBanned(true);
         user.setName("Jane Doe");
         user.setProfilePicture("newProfilePic.jpg");
         user.setEmail("jane.doe@example.com");
@@ -77,6 +81,7 @@ public class UserReturnerDTOTest {
 
         assertEquals("newUsername", user.getUsername());
         assertEquals("ADMIN", user.getRole());
+        assertEquals(true, user.isBanned());
         assertEquals("Jane Doe", user.getName());
         assertEquals("newProfilePic.jpg", user.getProfilePicture());
         assertEquals("jane.doe@example.com", user.getEmail());
@@ -93,6 +98,7 @@ public class UserReturnerDTOTest {
         UserReturnerDTO user = new UserReturnerDTO(
             "username123",
             "USER",
+            false,
             "John Doe",
             "profilePic.jpg",
             "john.doe@example.com",

@@ -121,11 +121,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr th:each="user : ${users}" th:classappend="${user.banned} ? 'table-danger' : ''">
+                            <tr th:each="user : ${users}" th:classappend="${user.isBanned} ? 'table-danger' : ''">
                                 <td th:text="${user.username}">Username</td>
                                 <td th:text="${user.email}">Email</td>
                                 <td th:text="${user.role}">Role</td>
-                                <td th:text="${user.banned} ? 'Sí' : 'No'">Banned</td>
+                                <td th:text="${user.isBanned} ? 'Sí' : 'No'">Banned</td>
                                 <td>
                                     <!-- Botón para eliminar usuario -->
                                     <form th:action="@{/admin/deleteUser}" method="POST" style="display:inline;">

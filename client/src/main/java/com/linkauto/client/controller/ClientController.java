@@ -417,11 +417,13 @@ public class ClientController {
 
   @PostMapping("/admin/banUser")
     public String banUser(
-    @RequestParam("username") String usernameToBan,
-    @RequestParam("banStatus") boolean banStatus,
-    RedirectAttributes redirectAttributes) {
+        @RequestParam("username") String usernameToBan,
+        @RequestParam("banStatus") boolean banStatus,
+        RedirectAttributes redirectAttributes,
+        Model model) {
     try {
         System.out.println("Attempting to update ban status for user: " + usernameToBan); // Debug log
+        System.out.println("\n\n\n\n\nBAN STATUS: " + banStatus + "\n\n\n\n\n"); // Debug log
         linkAutoServiceProxy.banUser(token, usernameToBan, banStatus);
         String action = banStatus ? "baneado" : "desbaneado";
         redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToBan + " " + action + " con éxito.");
@@ -429,6 +431,9 @@ public class ClientController {
         System.err.println("Error updating ban status for user: " + e.getMessage()); // Debug log
         redirectAttributes.addFlashAttribute("error", "Error al actualizar el estado de baneo del usuario: " + e.getMessage());
     }
+    // Actualizar la lista de usuarios
+    List<User> users = linkAutoServiceProxy.getAllUsers();
+    model.addAttribute("users", users);
     return "redirect:/adminPanel"; // Redirect back to the admin panel
 }
   
