@@ -41,6 +41,11 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
+    - name: Set up Maven 3.9.5
+      uses: s4u/setup-maven-action@v1
+      with:
+      maven-version: '3.9.5'
+
     - name: Wait for MySQL to be ready
       run: |
         for i in {1..10}; do
