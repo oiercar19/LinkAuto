@@ -34,6 +34,7 @@
         <mysql-connector.version>8.0.33</mysql-connector.version>
         <spring-boot.version>3.4.4</spring-boot.version>
         <spring.version>5.3.14</spring.version>
+        <doxygen.config.file>${basedir}/Doxyfile</doxygen.config.file>
     </properties>
 
     <!-- Definición de versiones de dependencias para los módulos hijos -->
@@ -59,6 +60,11 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>2.2.0</version> <!-- Define the version here -->
+            </dependency>
+            <dependency>
+                <groupId>com.soebes.maven.plugins</groupId>
+                <artifactId>doxygen-maven-plugin</artifactId>
+                <version>1.1.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -133,7 +139,23 @@
 					</excludes>
 				</configuration>
 			</plugin>
-
+            <plugin>
+				<groupId>com.soebes.maven.plugins</groupId>
+				<artifactId>doxygen-maven-plugin</artifactId>
+				<version>1.1.0</version>
+				<executions>
+					<execution>
+						<id>generate-doxygen-site</id>
+						<phase>site</phase> <!-- important: run during site phase -->
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<configurationFile>${doxygen.config.file}</configurationFile>
+				</configuration>
+			</plugin>
         </plugins>
     </build>
     <profiles>
@@ -206,6 +228,23 @@
 									</resources>
 								</configuration>
 							</execution>
+                            <!-- Copy Doxygen content into docs/doxygen/ -->
+                            <execution>
+                                <id>copy-doxygen-site-to-docs</id>
+                                <phase>post-site</phase> <!-- After doxygen generation too -->
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/doxygen</outputDirectory> <!-- 🔥 target doxygen folder -->
+                                    <resources>
+                                        <resource>
+                                            <directory>${project.build.directory}/doxygen/html</directory> <!-- source -->
+                                            <filtering>false</filtering>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
 						</executions>
 					</plugin>
 				</plugins>
