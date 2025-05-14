@@ -51,18 +51,30 @@ public class ClientController {
     }
 
     @PostMapping("/login")
-    public String login (@RequestParam String username, @RequestParam String password, RedirectAttributes redirectAttributes, Model model) {
-        try {
-            Credentials credentials = new Credentials(username, password);
-            token = linkAutoServiceProxy.login(credentials);
-            this.username = linkAutoServiceProxy.getUserProfile(token).username();
-            return "redirect:/feed";
-            
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Credenciales incorrectas");
-            return "redirect:/";
+public String login(@RequestParam String username, @RequestParam String password, RedirectAttributes redirectAttributes, Model model) {
+    try {
+        // Crear credenciales y obtener el token
+        Credentials credentials = new Credentials(username, password);
+        token = linkAutoServiceProxy.login(credentials);
+
+        // Obtener el perfil del usuario
+        User user = linkAutoServiceProxy.getUserProfile(token);
+
+        // Verificar si el usuario está baneado
+        if (user.banned()) {
+            redirectAttributes.addFlashAttribute("error", "Tu cuenta está baneada. No puedes acceder a la plataforma.");
+            return "banned"; // Redirigir a la página de usuario baneado
         }
+
+        // Si no está baneado, guardar el username y redirigir al feed
+        this.username = user.username();
+        return "redirect:/feed";
+
+    } catch (Exception e) {
+        redirectAttributes.addFlashAttribute("error", "Credenciales incorrectas o error al iniciar sesión.");
+        return "redirect:/";
     }
+}
     
     @GetMapping("/logout")
     public String logout(RedirectAttributes redirectAttributes) {
