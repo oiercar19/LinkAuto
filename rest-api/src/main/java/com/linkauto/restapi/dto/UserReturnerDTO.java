@@ -1,7 +1,9 @@
 package com.linkauto.restapi.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserReturnerDTO {
     private String username;
@@ -16,6 +18,7 @@ public class UserReturnerDTO {
     private String password;
     private String description;
     private List<PostReturnerDTO> posts;
+    private Set<UserReturnerDTO> reporters;
 
     // Constructor
     public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts) {
@@ -33,6 +36,10 @@ public class UserReturnerDTO {
         this.posts = new ArrayList<>();
         for (PostReturnerDTO post : posts){
             this.posts.add(post);
+        }
+        this.reporters = new HashSet<>();
+        for (UserReturnerDTO reporter : reporters) {
+            this.reporters.add(reporter);
         }
     }
 
@@ -132,5 +139,13 @@ public class UserReturnerDTO {
 
     public void addPost(PostReturnerDTO post){
         this.posts.add(post);
+    }
+
+    public Set<UserReturnerDTO> getReporters() {
+        return reporters;
+    }
+
+    public void setReporters(Set<UserReturnerDTO> reporters) {
+        this.reporters = reporters;
     }
 }
