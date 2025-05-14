@@ -84,8 +84,11 @@ jobs:
         rm -rf docs/site
         mkdir -p docs/site
         cp -r target/site/* docs/site/
+        mkdir -p docs/site/client
         cp -r client/target/site/* docs/site/client/
+        mkdir -p docs/site/rest-api
         cp -r rest-api/target/site/* docs/site/rest-api/
+        mkdir -p docs/site/reports
         cp -r rest-api/target/reports/* docs/site/reports/
         rm -rf docs/doxygen
         mkdir -p docs/doxygen
