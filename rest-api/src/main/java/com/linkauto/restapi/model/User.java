@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -37,6 +40,9 @@ public class User {
     private String location;
     private String password;
     private String description;
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_reports", joinColumns = @JoinColumn(name = "username"))
+    @Column(name = "reports")
     private Set <User> reporters = new HashSet<>();
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts;
@@ -81,6 +87,7 @@ public class User {
         for (User follow : following) {
             this.following.add(follow);
         }
+        this.reporters = new HashSet<>();
     }
 
     public String getUsername() {
@@ -178,8 +185,9 @@ public class User {
     public Set<User> getReporters() {
         return reporters;
     }
-    public void setReporters(Set<User> reporters) {
-        this.reporters = reporters;
+
+    public void setReporters(User reporter) {
+        this.reporters.add(reporter);
     }
 
     public void addPost(Post post) {
