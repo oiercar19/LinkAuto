@@ -24,12 +24,57 @@
 */
 var NAVTREE =
 [
-  [ "LinkAuto", "index.html", ]
+  [ "LinkAuto", "index.html", [
+    [ "README", "md_README.html", [
+      [ "LinkAuto", "md_README.html#autotoc_md0", [
+        [ "Requisitos previos", "md_README.html#autotoc_md1", null ],
+        [ "Estructura del proyecto", "md_README.html#autotoc_md2", null ],
+        [ "Instalación y configuración", "md_README.html#autotoc_md3", [
+          [ "1. Configuración de la base de datos", "md_README.html#autotoc_md4", null ],
+          [ "2. Configuración alternativa de base de datos (opcional)", "md_README.html#autotoc_md5", null ]
+        ] ],
+        [ "Ejecución del proyecto", "md_README.html#autotoc_md6", [
+          [ "1. Limpiar compilaciones anteriores", "md_README.html#autotoc_md7", null ],
+          [ "2. Iniciar el servidor backend (rest-api)", "md_README.html#autotoc_md8", null ],
+          [ "3. Iniciar el cliente frontend", "md_README.html#autotoc_md9", null ]
+        ] ],
+        [ "Acceso a la aplicación", "md_README.html#autotoc_md10", null ],
+        [ "Ejecución de tests", "md_README.html#autotoc_md11", null ],
+        [ "Configuración personalizada", "md_README.html#autotoc_md12", null ],
+        [ "Solución de problemas comunes", "md_README.html#autotoc_md13", null ],
+        [ "Contacto y soporte", "md_README.html#autotoc_md14", null ],
+        [ "Licencia", "md_README.html#autotoc_md15", null ]
+      ] ]
+    ] ],
+    [ "Namespaces", "namespaces.html", [
+      [ "Namespace List", "namespaces.html", null ],
+      [ "Namespace Members", "namespacemembers.html", [
+        [ "All", "namespacemembers.html", null ],
+        [ "Functions", "namespacemembers_func.html", null ]
+      ] ]
+    ] ],
+    [ "Classes", "annotated.html", [
+      [ "Class List", "annotated.html", "annotated_dup" ],
+      [ "Class Index", "classes.html", null ],
+      [ "Class Hierarchy", "hierarchy.html", "hierarchy" ],
+      [ "Class Members", "functions.html", [
+        [ "All", "functions.html", "functions_dup" ],
+        [ "Functions", "functions_func.html", "functions_func" ],
+        [ "Variables", "functions_vars.html", null ]
+      ] ]
+    ] ],
+    [ "Files", "files.html", [
+      [ "File List", "files.html", "files_dup" ]
+    ] ]
+  ] ]
 ];
 
 var NAVTREEINDEX =
 [
-"index.html"
+"AuthControllerTest_8java.html",
+"classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ac9a64be8c7d1f00065b8a3f9a9fe8311",
+"classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a0955e559954d61fddbb3778863450a5a",
+"md_README.html#autotoc_md10"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

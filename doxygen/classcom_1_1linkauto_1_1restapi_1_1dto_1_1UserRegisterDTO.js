@@ -1,0 +1,26 @@
+var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO =
+[
+    [ "UserRegisterDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a0205feefbeafcab8a8956f7ee774f122", null ],
+    [ "getBirthDate", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a88a8632439680df3d73d05e5a5010ad5", null ],
+    [ "getCars", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a5e73a8f230aa1171066030425fa77dc2", null ],
+    [ "getDescription", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#aab507b0e9be432489ea4ed7da42d2a97", null ],
+    [ "getEmail", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a04b0a642dcc252688d2d8c4bfc4c98e0", null ],
+    [ "getGender", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a2d7486445bd00e6464b74f2e9b7cca74", null ],
+    [ "getLocation", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a6f1385569336c9aae59c06e7881c1efd", null ],
+    [ "getName", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a6ab525ace9583269e3c289a90b4763ac", null ],
+    [ "getPassword", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a64a1fd5c632c65a05391a9e0a291ef05", null ],
+    [ "getProfilePicture", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#ad8d138fd2d3c83177157e34fae92183c", null ],
+    [ "getRole", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#aae4fa74c4542ba4395c1bd30f981452a", null ],
+    [ "getUsername", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a586f6208fec643ef11cc3d967e5b3d69", null ],
+    [ "setBirthDate", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#ad0ef342ee54af70ee87a72ac830ba7ad", null ],
+    [ "setCars", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a286ff67161890a6a543c4c33645fb517", null ],
+    [ "setDescription", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a606c87f9666177335d215617684f8fe2", null ],
+    [ "setEmail", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a4ddf5fe536b327874f46b781fe6276c0", null ],
+    [ "setGender", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a57582200ce772330d451364a33b56f30", null ],
+    [ "setLocation", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a2309b9d0ca522f7d6c9a4f786503945e", null ],
+    [ "setName", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#adccc58ded74c34f0303a42c0320d48b4", null ],
+    [ "setPassword", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a2f88de7f22421a3bb93725ad9d1d27ca", null ],
+    [ "setProfilePicture", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a91c13afc5b5b91aa08732048927edd14", null ],
+    [ "setRole", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a863a0a947a53102e4b2d375f39bb0768", null ],
+    [ "setUsername", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a546e6c9debf83cc4c2e39d72f9850969", null ]
+];

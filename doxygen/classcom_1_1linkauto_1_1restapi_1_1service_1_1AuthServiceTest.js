@@ -1,0 +1,22 @@
+var classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest =
+[
+    [ "setUp", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a68e4315cb317221aeef1fdc756a499ce", null ],
+    [ "setUpUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a171fe1e0ebf47b5055dd12eb161eb902", null ],
+    [ "testChangeRole", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a40502753a515dcf5b2ff4453bee7579d", null ],
+    [ "testDeleteUser_AdminCanDeleteOtherUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a8d66aac9f993b9920320023c423dc4ee", null ],
+    [ "testDeleteUser_CatchException", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#aa90ad9c5f50ad176d66c7efade4cec3c", null ],
+    [ "testDeleteUser_Exception", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a71d91528d658c3a77f3fb940c2bf62b0", null ],
+    [ "testDeleteUser_Success", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#ab6d3f8bce6ead4667b1e474a3ed83e0d", null ],
+    [ "testGetUserByToken_Null", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#af36b72b0109f95406a0229dac1f57d3f", null ],
+    [ "testGetUserByUsername_UserExists", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#aefa247d1d43adab72a67388e5d6304c6", null ],
+    [ "testGetUserByUsername_UserNotFound", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a8ebd3446fb1f650a7dacc7fc09bb1ab7", null ],
+    [ "testIsTokenValid_False", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#afbb60e153e599231ac06e502d6d2a8c6", null ],
+    [ "testLogin_InvalidPassword", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a176427f01ba51b5a435a5669e166f37d", null ],
+    [ "testLogin_Success", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a2c9f294323499f682437b020c9033966", null ],
+    [ "testLogin_UserNotFound", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a5bf25bd5ac26c0c5c41dc31dec902157", null ],
+    [ "testLogout", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a506dff0c02929d80ae34e185a229dd69", null ],
+    [ "testLogout_TokenNotFound", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#ae78e6d87c393b620a330465ca9dfd7a5", null ],
+    [ "testRegister_NewUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a7c8ab0a73a2e7b8194b259eb32875f5f", null ],
+    [ "testRegister_UserAlreadyExists", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a01e24080afb4499c9f9dc07ba6351982", null ],
+    [ "testUpdateUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a106315736479c755d75fb84cd8b77322", null ]
+];

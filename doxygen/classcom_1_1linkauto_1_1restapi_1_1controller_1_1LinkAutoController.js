@@ -1,0 +1,25 @@
+var classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController =
+[
+    [ "LinkAutoController", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a03a66262fffc687a333ae9a0f1a7cac2", null ],
+    [ "commentPost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a68daaf9643279a85296afe99217c4d8e", null ],
+    [ "createPost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a582ff26cc8e25511a2be71623f91b3de", null ],
+    [ "deletePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a699f2fce10faa438ed75639f77aacee4", null ],
+    [ "deleteUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#aba67b586b3cd855aaa455724f4eb1d49", null ],
+    [ "demoteToUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a68a2273a1235dd1897d1bb412d44db9e", null ],
+    [ "followUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a4ffe8b96fa93ce1cf9e966638234329f", null ],
+    [ "getAllComments", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a1a1678f070379c7bb993458bfc4b3d53", null ],
+    [ "getAllPosts", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a48fa7914410417c132d4264384c90f4b", null ],
+    [ "getAllUsers", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a2f0780421743fae19affedd8be89a084", null ],
+    [ "getCommentsByPostId", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a17929078e5aec498a1bac004bdf189c0", null ],
+    [ "getPostById", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ab98d5b4edd9198cb43eb64a8d5a043b5", null ],
+    [ "getUserByUsername", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#af101ead3e6831f99e2060048f811a846", null ],
+    [ "getUserDetails", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a3b48008acb7ab4b030ba5f791502987e", null ],
+    [ "getUserFollowers", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ae24d8c1eff51ab801b34e96f4a47fdb6", null ],
+    [ "getUserFollowing", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a9a99e64fb4c9b45473e332edfcce0f01", null ],
+    [ "getUserPosts", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a4709d6d858e0a22eec91e9144039086f", null ],
+    [ "likePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#af6df5a8fb5408f5f0fba5659fffc4b0d", null ],
+    [ "promoteToAdmin", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a9c3a62ad52f6851265593abd99bf8311", null ],
+    [ "unfollowUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ac9a64be8c7d1f00065b8a3f9a9fe8311", null ],
+    [ "unlikePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ae010509eac5f28e49448a042db25ef82", null ],
+    [ "updateUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a66e48623abca43018c73054558bc0549", null ]
+];

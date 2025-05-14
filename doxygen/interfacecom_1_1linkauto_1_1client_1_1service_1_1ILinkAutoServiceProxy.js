@@ -1,0 +1,27 @@
+var interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy =
+[
+    [ "commentPost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#aab9f3855d3dbaa0b0fbd3ec34dce7813", null ],
+    [ "createPost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a9ee4724361e3b80782335e3dc4583cce", null ],
+    [ "deletePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a6a0b74fe7de9a3490a56ae5dc0e7bf36", null ],
+    [ "deleteUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#aa15f293d8ed41df250a93e97b0ab62d6", null ],
+    [ "demoteToUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a231906fa920ebbf08995ddf2044d14a4", null ],
+    [ "followUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#aa89ea31d8f45cb43e5eb0e4ad30bf5bf", null ],
+    [ "getAllUsers", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#aa233f35c41ffb879850940205affe6f4", null ],
+    [ "getCommentsByPostId", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#aaac99ca0aa0fbe94f59b225553b75393", null ],
+    [ "getFeed", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#adda029ab1b8de1d35b994b3290eba79a", null ],
+    [ "getPostById", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ac401d7eda6cce683224ee5769dcbae96", null ],
+    [ "getUserByUsername", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a48ae7289649a7161b58df2209a5e0419", null ],
+    [ "getUserFollowers", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ac99147ed079db5eda43d43ba72d92272", null ],
+    [ "getUserFollowing", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a57472f77a248a8b185635e0f1e5586f5", null ],
+    [ "getUserPosts", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a42fccfe47618feb575f105e20b6dbda9", null ],
+    [ "getUserProfile", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a47847f890f800d652b4682e84128388e", null ],
+    [ "likePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a69066c9ac46397b3de8cc6c137f8e3ec", null ],
+    [ "login", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a9df0d501cc28a1ff027a4643f1950a69", null ],
+    [ "logout", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a557e2534282b2e4f13325eaf037bd3c4", null ],
+    [ "promoteToAdmin", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a15f6f51ded899990515f9a9d89997ac5", null ],
+    [ "register", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a9b7fdcdaf0cc55d8779c00961dfb16bb", null ],
+    [ "sharePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a09725dbd715207d01e3f24eb31cc5be8", null ],
+    [ "unfollowUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ad5ac0fb5f530db06cc00e5c3c903d2e8", null ],
+    [ "unlikePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ad38413e4cec0ab17abef553f47076535", null ],
+    [ "updateProfile", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a1e7ead83e6afd0040cb13dacfc21dbfa", null ]
+];
