@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.MockedStatic;
@@ -465,6 +466,50 @@ public class ClientControllerTest {
 
         verify(linkAutoServiceProxy).deleteUser(clientController.token, usernameToDelete);
         verify(redirectAttributes).addFlashAttribute("error", "Error al eliminar el usuario: Error al eliminar el usuario");
+        assertEquals("redirect:/adminPanel", result);
+    }
+
+    @Test
+    public void testBanUser_Success() {
+        // Datos de prueba
+        String usernameToBan = "user1";
+        boolean banStatus = true; // Baneando al usuario
+        clientController.token = "validToken";
+
+        // Mock del servicio
+        doNothing().when(linkAutoServiceProxy).banUser(clientController.token, usernameToBan, banStatus);
+        when(linkAutoServiceProxy.getAllUsers()).thenReturn(List.of(
+            new User("user1", "USER", true, "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc"),
+            new User("user2", "USER", false, "User Two", "pic2.jpg", "user2@example.com", null, 0, "Female", "Location2", "password", "desc")
+        ));
+
+        // Ejecutar el método
+        String result = clientController.banUser(usernameToBan, banStatus, redirectAttributes, model);
+
+        // Verificaciones
+        verify(linkAutoServiceProxy).banUser(clientController.token, usernameToBan, banStatus);
+        verify(linkAutoServiceProxy).getAllUsers();
+        verify(redirectAttributes).addFlashAttribute("success", "Usuario " + usernameToBan + " baneado con éxito.");
+        verify(model).addAttribute(eq("users"), anyList());
+        assertEquals("redirect:/adminPanel", result);
+    }
+
+    @Test
+    public void testBanUser_Error() {
+        // Datos de prueba
+        String usernameToBan = "user1";
+        boolean banStatus = true; // Baneando al usuario
+        clientController.token = "validToken";
+
+        // Mock del servicio para lanzar una excepción
+        doThrow(new RuntimeException("Error al banear el usuario")).when(linkAutoServiceProxy).banUser(clientController.token, usernameToBan, banStatus);
+
+        // Ejecutar el método
+        String result = clientController.banUser(usernameToBan, banStatus, redirectAttributes, model);
+
+        // Verificaciones
+        verify(linkAutoServiceProxy).banUser(clientController.token, usernameToBan, banStatus);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al actualizar el estado de baneo del usuario: Error al banear el usuario");
         assertEquals("redirect:/adminPanel", result);
     }
 
