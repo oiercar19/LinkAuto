@@ -1,0 +1,76 @@
+\hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller}{}\doxysection{com.\+linkauto.\+restapi.\+controller.\+Link\+Auto\+Controller Class Reference}
+\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller}\index{com.linkauto.restapi.controller.LinkAutoController@{com.linkauto.restapi.controller.LinkAutoController}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a03a66262fffc687a333ae9a0f1a7cac2}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a03a66262fffc687a333ae9a0f1a7cac2}} 
+{\bfseries Link\+Auto\+Controller} (\mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1service_1_1_link_auto_service}{Link\+Auto\+Service}} link\+Auto\+Service, \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1service_1_1_auth_service}{Auth\+Service}} auth\+Service)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a55f9a93844456082e2325da2d4d85cae}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a55f9a93844456082e2325da2d4d85cae}} 
+Response\+Entity$<$ List$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_post_returner_d_t_o}{Post\+Returner\+DTO}} $>$ $>$ {\bfseries get\+All\+Posts} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a4ffc9edfe263ab0c9346cc6ae7f80d25}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a4ffc9edfe263ab0c9346cc6ae7f80d25}} 
+Response\+Entity$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_post_returner_d_t_o}{Post\+Returner\+DTO}} $>$ {\bfseries get\+Post\+By\+Id} (@Path\+Variable Long id)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_afac99807dbb151749dcad9fcca7ba1a7}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_afac99807dbb151749dcad9fcca7ba1a7}} 
+Response\+Entity$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_post_returner_d_t_o}{Post\+Returner\+DTO}} $>$ {\bfseries create\+Post} ( @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token, @Parameter(name=\char`\"{}post\+DTO\char`\"{}, description=\char`\"{}Post data\char`\"{}, required=true) @Request\+Body \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_post_d_t_o}{Post\+DTO}} post\+DTO)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a4d8bc982caf5aeda2223b7596409fba2}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a4d8bc982caf5aeda2223b7596409fba2}} 
+Response\+Entity$<$ Void $>$ {\bfseries delete\+Post} ( @Parameter(name=\char`\"{}id\char`\"{}, description=\char`\"{}Post ID\char`\"{}, required=true, example=\char`\"{}1\char`\"{}) @Path\+Variable Long id, @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_af85d73d4096b7d968c70732ddf4bd9c0}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_af85d73d4096b7d968c70732ddf4bd9c0}} 
+Response\+Entity$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_user_returner_d_t_o}{User\+Returner\+DTO}} $>$ {\bfseries get\+User\+Details} ( @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a33ec07dd5d2181b5dafc3710eecd2f08}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a33ec07dd5d2181b5dafc3710eecd2f08}} 
+Response\+Entity$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1model_1_1_user}{User}} $>$ {\bfseries update\+User} ( @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token, @Request\+Body \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_user_d_t_o}{User\+DTO}} user\+Details)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_aefceb2e042528c2031567f831e71e7f0}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_aefceb2e042528c2031567f831e71e7f0}} 
+Response\+Entity$<$ List$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_user_returner_d_t_o}{User\+Returner\+DTO}} $>$ $>$ {\bfseries get\+All\+Users} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a5e0bf8aa35a2767a5ca5ea89e8f83e38}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a5e0bf8aa35a2767a5ca5ea89e8f83e38}} 
+Response\+Entity$<$ Void $>$ {\bfseries delete\+User} ( @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token, @Parameter(name=\char`\"{}username\char`\"{}, description=\char`\"{}Username of the user to delete\char`\"{}, required=true, example=\char`\"{}johndoe\char`\"{}) @Path\+Variable(\char`\"{}username\char`\"{}) String username)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_affb0190774fb679427ab2cc2a1bdcebe}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_affb0190774fb679427ab2cc2a1bdcebe}} 
+Response\+Entity$<$ Void $>$ {\bfseries promote\+To\+Admin} ( @Parameter(name=\char`\"{}username\char`\"{}, description=\char`\"{}Username of the user to promote\char`\"{}, required=true, example=\char`\"{}johndoe\char`\"{}) @Path\+Variable String username, @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user making the request\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a18463d21c5c7542e265cb51110a02692}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a18463d21c5c7542e265cb51110a02692}} 
+Response\+Entity$<$ Void $>$ {\bfseries demote\+To\+User} ( @Parameter(name=\char`\"{}username\char`\"{}, description=\char`\"{}Username of the user to promote\char`\"{}, required=true, example=\char`\"{}johndoe\char`\"{}) @Path\+Variable String username, @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user making the request\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a656d1cb8a753c5a072988333583780ae}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a656d1cb8a753c5a072988333583780ae}} 
+Response\+Entity$<$ List$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_post_returner_d_t_o}{Post\+Returner\+DTO}} $>$ $>$ {\bfseries get\+User\+Posts} ( @Parameter(name=\char`\"{}username\char`\"{}, description=\char`\"{}Username of the user\char`\"{}, required=true, example=\char`\"{}johndoe\char`\"{}) @Path\+Variable String username)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_af101ead3e6831f99e2060048f811a846}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_af101ead3e6831f99e2060048f811a846}} 
+\mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_user_returner_d_t_o}{User\+Returner\+DTO}} {\bfseries get\+User\+By\+Username} ( @Parameter(name=\char`\"{}username\char`\"{}, description=\char`\"{}Username of the user\char`\"{}, required=true, example=\char`\"{}johndoe\char`\"{}) @Path\+Variable String username)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a32260aafd9eb35b61ed553ed63fadc85}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a32260aafd9eb35b61ed553ed63fadc85}} 
+Response\+Entity$<$ List$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_user_returner_d_t_o}{User\+Returner\+DTO}} $>$ $>$ {\bfseries get\+User\+Followers} ( @Parameter(name=\char`\"{}username\char`\"{}, description=\char`\"{}Username of the user\char`\"{}, required=true, example=\char`\"{}johndoe\char`\"{}) @Path\+Variable String username)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_afd2c6ffc9ea409188d20d9d81ccfafd4}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_afd2c6ffc9ea409188d20d9d81ccfafd4}} 
+Response\+Entity$<$ List$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_user_returner_d_t_o}{User\+Returner\+DTO}} $>$ $>$ {\bfseries get\+User\+Following} ( @Parameter(name=\char`\"{}username\char`\"{}, description=\char`\"{}Username of the user\char`\"{}, required=true, example=\char`\"{}johndoe\char`\"{}) @Path\+Variable String username)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_ad5c8aa03f2dcfc3cbdfb572fbd650ad5}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_ad5c8aa03f2dcfc3cbdfb572fbd650ad5}} 
+Response\+Entity$<$ Void $>$ {\bfseries follow\+User} ( @Parameter(name=\char`\"{}username\char`\"{}, description=\char`\"{}Username of the user to follow\char`\"{}, required=true, example=\char`\"{}johndoe\char`\"{}) @Path\+Variable String username, @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a23223977f5b976b3e407350f26055b55}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_a23223977f5b976b3e407350f26055b55}} 
+Response\+Entity$<$ Void $>$ {\bfseries unfollow\+User} ( @Parameter(name=\char`\"{}username\char`\"{}, description=\char`\"{}Username of the user to unfollow\char`\"{}, required=true, example=\char`\"{}johndoe\char`\"{}) @Path\+Variable String username, @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_af5b458abb141a7d17421a44e3c7601ca}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_af5b458abb141a7d17421a44e3c7601ca}} 
+Response\+Entity$<$ Void $>$ {\bfseries like\+Post} ( @Parameter(name=\char`\"{}post\+\_\+id\char`\"{}, description=\char`\"{}ID of the post to like\char`\"{}, required=true, example=\char`\"{}1\char`\"{}) @Path\+Variable Long post\+\_\+id, @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_ae046c4e0a24e5e1b47ca600bd7a2a045}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_ae046c4e0a24e5e1b47ca600bd7a2a045}} 
+Response\+Entity$<$ Void $>$ {\bfseries unlike\+Post} ( @Parameter(name=\char`\"{}post\+\_\+id\char`\"{}, description=\char`\"{}ID of the post to unlike\char`\"{}, required=true, example=\char`\"{}1\char`\"{}) @Path\+Variable Long post\+\_\+id, @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_ad5b97e55d5c330e27a92b45eb8a3917a}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_ad5b97e55d5c330e27a92b45eb8a3917a}} 
+Response\+Entity$<$ Void $>$ {\bfseries comment\+Post} ( @Parameter(name=\char`\"{}post\+\_\+id\char`\"{}, description=\char`\"{}ID of the post to comment\char`\"{}, required=true, example=\char`\"{}1\char`\"{}) @Path\+Variable Long post\+\_\+id, @Parameter(name=\char`\"{}user\+Token\char`\"{}, description=\char`\"{}Token of the user\char`\"{}, required=true, example=\char`\"{}1234567890\char`\"{}) @Request\+Param(\char`\"{}user\+Token\char`\"{}) String user\+Token, @Request\+Body \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_comment_d_t_o}{Comment\+DTO}} comment)
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_ad0957365f3e91fd4661dd0281941e49f}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_ad0957365f3e91fd4661dd0281941e49f}} 
+Response\+Entity$<$ List$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_comment_returner_d_t_o}{Comment\+Returner\+DTO}} $>$ $>$ {\bfseries get\+All\+Comments} ()
+\item 
+\mbox{\Hypertarget{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_adf9fe8d173e707a02c5e4e683ea80ff5}\label{classcom_1_1linkauto_1_1restapi_1_1controller_1_1_link_auto_controller_adf9fe8d173e707a02c5e4e683ea80ff5}} 
+Response\+Entity$<$ List$<$ \mbox{\hyperlink{classcom_1_1linkauto_1_1restapi_1_1dto_1_1_comment_returner_d_t_o}{Comment\+Returner\+DTO}} $>$ $>$ {\bfseries get\+Comments\+By\+Post\+Id} ( @Parameter(name=\char`\"{}post\+\_\+id\char`\"{}, description=\char`\"{}ID of the post\char`\"{}, required=true, example=\char`\"{}1\char`\"{}) @Path\+Variable Long post\+\_\+id)
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+rest-\/api/src/main/java/com/linkauto/restapi/controller/Link\+Auto\+Controller.\+java\end{DoxyCompactItemize}
