@@ -1,8 +1,0 @@
-DROP USER IF EXISTS 'la'@'%';
-CREATE USER IF NOT EXISTS 'la'@'%' IDENTIFIED BY 'la';
-
-DROP SCHEMA IF EXISTS linkautodb;
-CREATE SCHEMA linkautodb;
-
-GRANT ALL ON linkautodb.* TO 'la'@'%';
-FLUSH PRIVILEGES;

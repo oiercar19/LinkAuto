@@ -1,0 +1,1059 @@
+<!doctype html>
+<html>
+<head>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <meta charset="utf-8">
+    <title>JUnit Performance Report</title>
+
+</head>
+<body style='font-family:Verdana;'>
+<center>
+    <h1 style='color:#044e9b'>JUnit Performance Report</h1>
+        <hr/>
+        <br/>
+        <table border='1' cellspacing='0' cellpadding='3px' style='border-color:#eee'>
+            <tr>
+                <th style='background-color:#ffffdd; color:#044e9b'>&nbsp;&nbsp;&nbsp;</th>
+                <th style='background-color:#ffffdd; color:#044e9b'>Test</th>
+            <tr>
+
+             
+                        <tr>
+                    <!-- Success: #2b67a4 failure: #d9534f -->
+                    <td style='background-color:#2b67a4;'>&nbsp;</td>
+                    <td><a href='#testGetAllPostsPerformance()_254299982955'>com.linkauto.restapi.performance.LinkAutoServicePerformanceTest : testGetAllPostsPerformance()</td>
+                <tr>
+             
+
+                <tr>
+                    <!-- Success: #2b67a4 failure: #d9534f -->
+                    <td style='background-color:#2b67a4;'>&nbsp;</td>
+                    <td><a href='#testGetAllCommentsPerformance()_259343236128'>com.linkauto.restapi.performance.LinkAutoServicePerformanceTest : testGetAllCommentsPerformance()</td>
+                <tr>
+             
+
+                <tr>
+                    <!-- Success: #2b67a4 failure: #d9534f -->
+                    <td style='background-color:#2b67a4;'>&nbsp;</td>
+                    <td><a href='#testGetAllUsersPerformance()_264385995181'>com.linkauto.restapi.performance.LinkAutoServicePerformanceTest : testGetAllUsersPerformance()</td>
+                <tr>
+             
+
+
+        </table>
+        <br/>
+        <hr/>
+
+
+        
+                <a name='testGetAllPostsPerformance()_254299982955'><h2 style='color:#2b67a4'>com.linkauto.restapi.performance.LinkAutoServicePerformanceTest : testGetAllPostsPerformance()</h2></a>
+        <table width='970'>
+            <tr>
+                <td>
+                    <!-- ADD scatter Chart here!! -->
+                    <script type="text/javascript">
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+                        google.charts.setOnLoadCallback(setCsvExportLink);
+
+                        function drawChart() {
+
+                            var data = google.visualization.arrayToDataTable([
+                                ['Percentile', 'Latency', { role: "tooltip"} ],
+                                [ 1, 2.3775663, "1% of executions ≤ 2.38ms"],
+[ 2, 2.6483746, "2% of executions ≤ 2.65ms"],
+[ 3, 2.847825, "3% of executions ≤ 2.85ms"],
+[ 4, 2.9886146, "4% of executions ≤ 2.99ms"],
+[ 5, 3.0909536, "5% of executions ≤ 3.09ms"],
+[ 6, 3.197958, "6% of executions ≤ 3.20ms"],
+[ 7, 3.301676, "7% of executions ≤ 3.30ms"],
+[ 8, 3.3886824, "8% of executions ≤ 3.39ms"],
+[ 9, 3.481981, "9% of executions ≤ 3.48ms"],
+[ 10, 3.5531592, "10% of executions ≤ 3.55ms"],
+[ 11, 3.610519, "11% of executions ≤ 3.61ms"],
+[ 12, 3.678575, "12% of executions ≤ 3.68ms"],
+[ 13, 3.7521918, "13% of executions ≤ 3.75ms"],
+[ 14, 3.824525, "14% of executions ≤ 3.82ms"],
+[ 15, 3.894248, "15% of executions ≤ 3.89ms"],
+[ 16, 3.9655888, "16% of executions ≤ 3.97ms"],
+[ 17, 4.0196533, "17% of executions ≤ 4.02ms"],
+[ 18, 4.081879, "18% of executions ≤ 4.08ms"],
+[ 19, 4.13935, "19% of executions ≤ 4.14ms"],
+[ 20, 4.181571, "20% of executions ≤ 4.18ms"],
+[ 21, 4.236032, "21% of executions ≤ 4.24ms"],
+[ 22, 4.275159, "22% of executions ≤ 4.28ms"],
+[ 23, 4.3154564, "23% of executions ≤ 4.32ms"],
+[ 24, 4.366651, "24% of executions ≤ 4.37ms"],
+[ 25, 4.4128256, "25% of executions ≤ 4.41ms"],
+[ 26, 4.4520507, "26% of executions ≤ 4.45ms"],
+[ 27, 4.4903407, "27% of executions ≤ 4.49ms"],
+[ 28, 4.540243, "28% of executions ≤ 4.54ms"],
+[ 29, 4.5854115, "29% of executions ≤ 4.59ms"],
+[ 30, 4.6308923, "30% of executions ≤ 4.63ms"],
+[ 31, 4.665616, "31% of executions ≤ 4.67ms"],
+[ 32, 4.70306, "32% of executions ≤ 4.70ms"],
+[ 33, 4.74306, "33% of executions ≤ 4.74ms"],
+[ 34, 4.7948813, "34% of executions ≤ 4.79ms"],
+[ 35, 4.831938, "35% of executions ≤ 4.83ms"],
+[ 36, 4.883363, "36% of executions ≤ 4.88ms"],
+[ 37, 4.926997, "37% of executions ≤ 4.93ms"],
+[ 38, 4.9835563, "38% of executions ≤ 4.98ms"],
+[ 39, 5.0237947, "39% of executions ≤ 5.02ms"],
+[ 40, 5.061981, "40% of executions ≤ 5.06ms"],
+[ 41, 5.1009026, "41% of executions ≤ 5.10ms"],
+[ 42, 5.136779, "42% of executions ≤ 5.14ms"],
+[ 43, 5.17518, "43% of executions ≤ 5.18ms"],
+[ 44, 5.215355, "44% of executions ≤ 5.22ms"],
+[ 45, 5.270477, "45% of executions ≤ 5.27ms"],
+[ 46, 5.3109274, "46% of executions ≤ 5.31ms"],
+[ 47, 5.3471856, "47% of executions ≤ 5.35ms"],
+[ 48, 5.385239, "48% of executions ≤ 5.39ms"],
+[ 49, 5.4172015, "49% of executions ≤ 5.42ms"],
+[ 50, 5.4520373, "50% of executions ≤ 5.45ms"],
+[ 51, 5.4862566, "51% of executions ≤ 5.49ms"],
+[ 52, 5.5226383, "52% of executions ≤ 5.52ms"],
+[ 53, 5.571099, "53% of executions ≤ 5.57ms"],
+[ 54, 5.6100707, "54% of executions ≤ 5.61ms"],
+[ 55, 5.6452904, "55% of executions ≤ 5.65ms"],
+[ 56, 5.6862044, "56% of executions ≤ 5.69ms"],
+[ 57, 5.72328, "57% of executions ≤ 5.72ms"],
+[ 58, 5.7651434, "58% of executions ≤ 5.77ms"],
+[ 59, 5.8060994, "59% of executions ≤ 5.81ms"],
+[ 60, 5.849629, "60% of executions ≤ 5.85ms"],
+[ 61, 5.8891625, "61% of executions ≤ 5.89ms"],
+[ 62, 5.932705, "62% of executions ≤ 5.93ms"],
+[ 63, 5.9705324, "63% of executions ≤ 5.97ms"],
+[ 64, 6.0170784, "64% of executions ≤ 6.02ms"],
+[ 65, 6.0597134, "65% of executions ≤ 6.06ms"],
+[ 66, 6.114612, "66% of executions ≤ 6.11ms"],
+[ 67, 6.1555777, "67% of executions ≤ 6.16ms"],
+[ 68, 6.201107, "68% of executions ≤ 6.20ms"],
+[ 69, 6.2404876, "69% of executions ≤ 6.24ms"],
+[ 70, 6.282576, "70% of executions ≤ 6.28ms"],
+[ 71, 6.325793, "71% of executions ≤ 6.33ms"],
+[ 72, 6.372059, "72% of executions ≤ 6.37ms"],
+[ 73, 6.415314, "73% of executions ≤ 6.42ms"],
+[ 74, 6.48177, "74% of executions ≤ 6.48ms"],
+[ 75, 6.523209, "75% of executions ≤ 6.52ms"],
+[ 76, 6.5859, "76% of executions ≤ 6.59ms"],
+[ 77, 6.658384, "77% of executions ≤ 6.66ms"],
+[ 78, 6.7229743, "78% of executions ≤ 6.72ms"],
+[ 79, 6.8037286, "79% of executions ≤ 6.80ms"],
+[ 80, 6.891309, "80% of executions ≤ 6.89ms"],
+[ 81, 6.965368, "81% of executions ≤ 6.97ms"],
+[ 82, 7.036352, "82% of executions ≤ 7.04ms"],
+[ 83, 7.114362, "83% of executions ≤ 7.11ms"],
+[ 84, 7.205212, "84% of executions ≤ 7.21ms"],
+[ 85, 7.303192, "85% of executions ≤ 7.30ms"],
+[ 86, 7.380863, "86% of executions ≤ 7.38ms"],
+[ 87, 7.484394, "87% of executions ≤ 7.48ms"],
+[ 88, 7.611413, "88% of executions ≤ 7.61ms"],
+[ 89, 7.708597, "89% of executions ≤ 7.71ms"],
+[ 90, 7.8313627, "90% of executions ≤ 7.83ms"],
+[ 91, 7.9667797, "91% of executions ≤ 7.97ms"],
+[ 92, 8.108821, "92% of executions ≤ 8.11ms"],
+[ 93, 8.274443, "93% of executions ≤ 8.27ms"],
+[ 94, 8.461603, "94% of executions ≤ 8.46ms"],
+[ 95, 8.789961, "95% of executions ≤ 8.79ms"],
+[ 96, 9.088453, "96% of executions ≤ 9.09ms"],
+[ 97, 9.407686, "97% of executions ≤ 9.41ms"],
+[ 98, 10.140266, "98% of executions ≤ 10.14ms"],
+[ 99, 10.960004, "99% of executions ≤ 10.96ms"],
+                            ]);
+
+                            var options = {
+                                title: 'Latency percentile Distribution',
+                                hAxis: {
+                                    title: 'Percentile',
+                                    minValue: 0,
+                                    maxValue: 100,
+                                    viewWindow: {
+                                        min: 0,
+                                        max: 100
+                                    }
+                                },
+                                vAxis: {title: 'Latency', minValue: 0, maxValue: 15},
+                                legend: 'none',
+                                lineWidth: 1,
+                                pointSize: 7,
+                                dataOpacity: 0.5
+                            };
+
+                            var chart = new google.visualization.ScatterChart(document.getElementById('testGetAllPostsPerformance()_254299982955'));
+
+                            chart.draw(data, options);
+                        }
+
+                        function setCsvExportLink() {
+                            var csvData = google.visualization.arrayToDataTable([
+                                ['Percentile', 'Latency'],
+                                [ 1, 2.3775663 ],
+[ 2, 2.6483746 ],
+[ 3, 2.847825 ],
+[ 4, 2.9886146 ],
+[ 5, 3.0909536 ],
+[ 6, 3.197958 ],
+[ 7, 3.301676 ],
+[ 8, 3.3886824 ],
+[ 9, 3.481981 ],
+[ 10, 3.5531592 ],
+[ 11, 3.610519 ],
+[ 12, 3.678575 ],
+[ 13, 3.7521918 ],
+[ 14, 3.824525 ],
+[ 15, 3.894248 ],
+[ 16, 3.9655888 ],
+[ 17, 4.0196533 ],
+[ 18, 4.081879 ],
+[ 19, 4.13935 ],
+[ 20, 4.181571 ],
+[ 21, 4.236032 ],
+[ 22, 4.275159 ],
+[ 23, 4.3154564 ],
+[ 24, 4.366651 ],
+[ 25, 4.4128256 ],
+[ 26, 4.4520507 ],
+[ 27, 4.4903407 ],
+[ 28, 4.540243 ],
+[ 29, 4.5854115 ],
+[ 30, 4.6308923 ],
+[ 31, 4.665616 ],
+[ 32, 4.70306 ],
+[ 33, 4.74306 ],
+[ 34, 4.7948813 ],
+[ 35, 4.831938 ],
+[ 36, 4.883363 ],
+[ 37, 4.926997 ],
+[ 38, 4.9835563 ],
+[ 39, 5.0237947 ],
+[ 40, 5.061981 ],
+[ 41, 5.1009026 ],
+[ 42, 5.136779 ],
+[ 43, 5.17518 ],
+[ 44, 5.215355 ],
+[ 45, 5.270477 ],
+[ 46, 5.3109274 ],
+[ 47, 5.3471856 ],
+[ 48, 5.385239 ],
+[ 49, 5.4172015 ],
+[ 50, 5.4520373 ],
+[ 51, 5.4862566 ],
+[ 52, 5.5226383 ],
+[ 53, 5.571099 ],
+[ 54, 5.6100707 ],
+[ 55, 5.6452904 ],
+[ 56, 5.6862044 ],
+[ 57, 5.72328 ],
+[ 58, 5.7651434 ],
+[ 59, 5.8060994 ],
+[ 60, 5.849629 ],
+[ 61, 5.8891625 ],
+[ 62, 5.932705 ],
+[ 63, 5.9705324 ],
+[ 64, 6.0170784 ],
+[ 65, 6.0597134 ],
+[ 66, 6.114612 ],
+[ 67, 6.1555777 ],
+[ 68, 6.201107 ],
+[ 69, 6.2404876 ],
+[ 70, 6.282576 ],
+[ 71, 6.325793 ],
+[ 72, 6.372059 ],
+[ 73, 6.415314 ],
+[ 74, 6.48177 ],
+[ 75, 6.523209 ],
+[ 76, 6.5859 ],
+[ 77, 6.658384 ],
+[ 78, 6.7229743 ],
+[ 79, 6.8037286 ],
+[ 80, 6.891309 ],
+[ 81, 6.965368 ],
+[ 82, 7.036352 ],
+[ 83, 7.114362 ],
+[ 84, 7.205212 ],
+[ 85, 7.303192 ],
+[ 86, 7.380863 ],
+[ 87, 7.484394 ],
+[ 88, 7.611413 ],
+[ 89, 7.708597 ],
+[ 90, 7.8313627 ],
+[ 91, 7.9667797 ],
+[ 92, 8.108821 ],
+[ 93, 8.274443 ],
+[ 94, 8.461603 ],
+[ 95, 8.789961 ],
+[ 96, 9.088453 ],
+[ 97, 9.407686 ],
+[ 98, 10.140266 ],
+[ 99, 10.960004 ],
+[ 100, 18.570953 ],
+                            ]);
+                            var csvFormattedDataTable = google.visualization.dataTableToCsv(csvData);
+                            var encodedUri = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csvFormattedDataTable);
+                            var link = document.getElementById('Export-testGetAllPostsPerformance()_254299982955');
+                            link.href=encodedUri;
+                            link.download = 'testGetAllPostsPerformance()_254299982955.csv';
+                            link.target = '_blank';
+                        }
+
+                    </script>
+                    <div id="testGetAllPostsPerformance()_254299982955" style="width: 600px; height: 400px;"></div>
+                    <a id="Export-testGetAllPostsPerformance()_254299982955" href="#" style="margin-left: 230px;">Download as csv</a>
+                </td>
+                <td>
+                    <table style='font-family:sans-serif;'>
+                        <tr><th>Started at:</th><td colspan='2'><b>2025-05-14 16:26:22</b></td></tr>
+                        <tr>
+                            <th align='right' valign='top'>Invocations:</th>
+                            <td align='right'>5,354</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>- Success:</th>
+                            <td align='right'>5,354</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>- Errors:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>0</b></td>
+                            <td align='right'><b style='color:#2b67a4;'>0.00%</b></td>
+                        </tr>
+                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr>
+                            <th align='right' valign='top'>Thread Count:</th>
+                            <td align='right'>10</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>Warm up:</th>
+                            <td align='right'>2,000 ms</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>Ramp up:</th>
+                            <td align='right'>0 ms</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr valign='top'>
+                            <th>&nbsp;</th>
+                            <th>Measured<br/>(system)</th>
+                            <th>Required</th>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>Execution time:</th>
+                            <td align='right'>5s</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Throughput:</b></th>
+                            <td align='right'><b style='color:#2b67a4;'>1,784 / s</b></td>
+                            <td align='right'><b style='color:#2b67a4;'>100 / s</b></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Min latency:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>1.19 ms</b></td>
+                            <td align='right'><b style='color:#2b67a4'>N/A ms</b></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Average latency:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>5.62 ms</b></td>
+                            <td align='right'><b style='color:#2b67a4'>50.00 ms</b></td>
+                        </tr>
+
+                        
+                        
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Max latency:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>18.57 ms</b></td>
+                            <td align='right'><b style='color:#2b67a4'>N/A ms</b></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <br/><br/><br/>
+        
+
+        <a name='testGetAllCommentsPerformance()_259343236128'><h2 style='color:#2b67a4'>com.linkauto.restapi.performance.LinkAutoServicePerformanceTest : testGetAllCommentsPerformance()</h2></a>
+        <table width='970'>
+            <tr>
+                <td>
+                    <!-- ADD scatter Chart here!! -->
+                    <script type="text/javascript">
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+                        google.charts.setOnLoadCallback(setCsvExportLink);
+
+                        function drawChart() {
+
+                            var data = google.visualization.arrayToDataTable([
+                                ['Percentile', 'Latency', { role: "tooltip"} ],
+                                [ 1, 2.0387127, "1% of executions ≤ 2.04ms"],
+[ 2, 2.2575066, "2% of executions ≤ 2.26ms"],
+[ 3, 2.4470587, "3% of executions ≤ 2.45ms"],
+[ 4, 2.597794, "4% of executions ≤ 2.60ms"],
+[ 5, 2.7130513, "5% of executions ≤ 2.71ms"],
+[ 6, 2.8202107, "6% of executions ≤ 2.82ms"],
+[ 7, 2.8924873, "7% of executions ≤ 2.89ms"],
+[ 8, 2.98884, "8% of executions ≤ 2.99ms"],
+[ 9, 3.0638387, "9% of executions ≤ 3.06ms"],
+[ 10, 3.1301465, "10% of executions ≤ 3.13ms"],
+[ 11, 3.1931384, "11% of executions ≤ 3.19ms"],
+[ 12, 3.2583816, "12% of executions ≤ 3.26ms"],
+[ 13, 3.3122644, "13% of executions ≤ 3.31ms"],
+[ 14, 3.3800466, "14% of executions ≤ 3.38ms"],
+[ 15, 3.4311707, "15% of executions ≤ 3.43ms"],
+[ 16, 3.4866838, "16% of executions ≤ 3.49ms"],
+[ 17, 3.5375843, "17% of executions ≤ 3.54ms"],
+[ 18, 3.5768454, "18% of executions ≤ 3.58ms"],
+[ 19, 3.6321912, "19% of executions ≤ 3.63ms"],
+[ 20, 3.6819353, "20% of executions ≤ 3.68ms"],
+[ 21, 3.7256048, "21% of executions ≤ 3.73ms"],
+[ 22, 3.7674253, "22% of executions ≤ 3.77ms"],
+[ 23, 3.8126338, "23% of executions ≤ 3.81ms"],
+[ 24, 3.8497612, "24% of executions ≤ 3.85ms"],
+[ 25, 3.8927665, "25% of executions ≤ 3.89ms"],
+[ 26, 3.9313436, "26% of executions ≤ 3.93ms"],
+[ 27, 3.9654942, "27% of executions ≤ 3.97ms"],
+[ 28, 4.000131, "28% of executions ≤ 4.00ms"],
+[ 29, 4.04874, "29% of executions ≤ 4.05ms"],
+[ 30, 4.091735, "30% of executions ≤ 4.09ms"],
+[ 31, 4.12303, "31% of executions ≤ 4.12ms"],
+[ 32, 4.156994, "32% of executions ≤ 4.16ms"],
+[ 33, 4.195101, "33% of executions ≤ 4.20ms"],
+[ 34, 4.2282, "34% of executions ≤ 4.23ms"],
+[ 35, 4.2651267, "35% of executions ≤ 4.27ms"],
+[ 36, 4.300154, "36% of executions ≤ 4.30ms"],
+[ 37, 4.3346295, "37% of executions ≤ 4.33ms"],
+[ 38, 4.370608, "38% of executions ≤ 4.37ms"],
+[ 39, 4.409445, "39% of executions ≤ 4.41ms"],
+[ 40, 4.439799, "40% of executions ≤ 4.44ms"],
+[ 41, 4.475173, "41% of executions ≤ 4.48ms"],
+[ 42, 4.5085397, "42% of executions ≤ 4.51ms"],
+[ 43, 4.5465236, "43% of executions ≤ 4.55ms"],
+[ 44, 4.583326, "44% of executions ≤ 4.58ms"],
+[ 45, 4.623761, "45% of executions ≤ 4.62ms"],
+[ 46, 4.659695, "46% of executions ≤ 4.66ms"],
+[ 47, 4.691423, "47% of executions ≤ 4.69ms"],
+[ 48, 4.733681, "48% of executions ≤ 4.73ms"],
+[ 49, 4.7695494, "49% of executions ≤ 4.77ms"],
+[ 50, 4.8086624, "50% of executions ≤ 4.81ms"],
+[ 51, 4.84725, "51% of executions ≤ 4.85ms"],
+[ 52, 4.892509, "52% of executions ≤ 4.89ms"],
+[ 53, 4.935701, "53% of executions ≤ 4.94ms"],
+[ 54, 4.966987, "54% of executions ≤ 4.97ms"],
+[ 55, 5.002305, "55% of executions ≤ 5.00ms"],
+[ 56, 5.031439, "56% of executions ≤ 5.03ms"],
+[ 57, 5.0691776, "57% of executions ≤ 5.07ms"],
+[ 58, 5.1043086, "58% of executions ≤ 5.10ms"],
+[ 59, 5.135014, "59% of executions ≤ 5.14ms"],
+[ 60, 5.176175, "60% of executions ≤ 5.18ms"],
+[ 61, 5.2077303, "61% of executions ≤ 5.21ms"],
+[ 62, 5.248177, "62% of executions ≤ 5.25ms"],
+[ 63, 5.290709, "63% of executions ≤ 5.29ms"],
+[ 64, 5.333971, "64% of executions ≤ 5.33ms"],
+[ 65, 5.3740206, "65% of executions ≤ 5.37ms"],
+[ 66, 5.4188185, "66% of executions ≤ 5.42ms"],
+[ 67, 5.462221, "67% of executions ≤ 5.46ms"],
+[ 68, 5.50351, "68% of executions ≤ 5.50ms"],
+[ 69, 5.5455084, "69% of executions ≤ 5.55ms"],
+[ 70, 5.5906744, "70% of executions ≤ 5.59ms"],
+[ 71, 5.6413903, "71% of executions ≤ 5.64ms"],
+[ 72, 5.6874566, "72% of executions ≤ 5.69ms"],
+[ 73, 5.7293444, "73% of executions ≤ 5.73ms"],
+[ 74, 5.783298, "74% of executions ≤ 5.78ms"],
+[ 75, 5.835098, "75% of executions ≤ 5.84ms"],
+[ 76, 5.8867106, "76% of executions ≤ 5.89ms"],
+[ 77, 5.941587, "77% of executions ≤ 5.94ms"],
+[ 78, 6.008286, "78% of executions ≤ 6.01ms"],
+[ 79, 6.0775046, "79% of executions ≤ 6.08ms"],
+[ 80, 6.1342835, "80% of executions ≤ 6.13ms"],
+[ 81, 6.196519, "81% of executions ≤ 6.20ms"],
+[ 82, 6.2571206, "82% of executions ≤ 6.26ms"],
+[ 83, 6.321145, "83% of executions ≤ 6.32ms"],
+[ 84, 6.377799, "84% of executions ≤ 6.38ms"],
+[ 85, 6.470922, "85% of executions ≤ 6.47ms"],
+[ 86, 6.5368104, "86% of executions ≤ 6.54ms"],
+[ 87, 6.612738, "87% of executions ≤ 6.61ms"],
+[ 88, 6.698303, "88% of executions ≤ 6.70ms"],
+[ 89, 6.781641, "89% of executions ≤ 6.78ms"],
+[ 90, 6.880267, "90% of executions ≤ 6.88ms"],
+[ 91, 7.005788, "91% of executions ≤ 7.01ms"],
+[ 92, 7.1716065, "92% of executions ≤ 7.17ms"],
+[ 93, 7.3271375, "93% of executions ≤ 7.33ms"],
+[ 94, 7.4886646, "94% of executions ≤ 7.49ms"],
+[ 95, 7.705809, "95% of executions ≤ 7.71ms"],
+[ 96, 7.961249, "96% of executions ≤ 7.96ms"],
+[ 97, 8.284048, "97% of executions ≤ 8.28ms"],
+[ 98, 8.750111, "98% of executions ≤ 8.75ms"],
+[ 99, 9.69915, "99% of executions ≤ 9.70ms"],
+                            ]);
+
+                            var options = {
+                                title: 'Latency percentile Distribution',
+                                hAxis: {
+                                    title: 'Percentile',
+                                    minValue: 0,
+                                    maxValue: 100,
+                                    viewWindow: {
+                                        min: 0,
+                                        max: 100
+                                    }
+                                },
+                                vAxis: {title: 'Latency', minValue: 0, maxValue: 15},
+                                legend: 'none',
+                                lineWidth: 1,
+                                pointSize: 7,
+                                dataOpacity: 0.5
+                            };
+
+                            var chart = new google.visualization.ScatterChart(document.getElementById('testGetAllCommentsPerformance()_259343236128'));
+
+                            chart.draw(data, options);
+                        }
+
+                        function setCsvExportLink() {
+                            var csvData = google.visualization.arrayToDataTable([
+                                ['Percentile', 'Latency'],
+                                [ 1, 2.0387127 ],
+[ 2, 2.2575066 ],
+[ 3, 2.4470587 ],
+[ 4, 2.597794 ],
+[ 5, 2.7130513 ],
+[ 6, 2.8202107 ],
+[ 7, 2.8924873 ],
+[ 8, 2.98884 ],
+[ 9, 3.0638387 ],
+[ 10, 3.1301465 ],
+[ 11, 3.1931384 ],
+[ 12, 3.2583816 ],
+[ 13, 3.3122644 ],
+[ 14, 3.3800466 ],
+[ 15, 3.4311707 ],
+[ 16, 3.4866838 ],
+[ 17, 3.5375843 ],
+[ 18, 3.5768454 ],
+[ 19, 3.6321912 ],
+[ 20, 3.6819353 ],
+[ 21, 3.7256048 ],
+[ 22, 3.7674253 ],
+[ 23, 3.8126338 ],
+[ 24, 3.8497612 ],
+[ 25, 3.8927665 ],
+[ 26, 3.9313436 ],
+[ 27, 3.9654942 ],
+[ 28, 4.000131 ],
+[ 29, 4.04874 ],
+[ 30, 4.091735 ],
+[ 31, 4.12303 ],
+[ 32, 4.156994 ],
+[ 33, 4.195101 ],
+[ 34, 4.2282 ],
+[ 35, 4.2651267 ],
+[ 36, 4.300154 ],
+[ 37, 4.3346295 ],
+[ 38, 4.370608 ],
+[ 39, 4.409445 ],
+[ 40, 4.439799 ],
+[ 41, 4.475173 ],
+[ 42, 4.5085397 ],
+[ 43, 4.5465236 ],
+[ 44, 4.583326 ],
+[ 45, 4.623761 ],
+[ 46, 4.659695 ],
+[ 47, 4.691423 ],
+[ 48, 4.733681 ],
+[ 49, 4.7695494 ],
+[ 50, 4.8086624 ],
+[ 51, 4.84725 ],
+[ 52, 4.892509 ],
+[ 53, 4.935701 ],
+[ 54, 4.966987 ],
+[ 55, 5.002305 ],
+[ 56, 5.031439 ],
+[ 57, 5.0691776 ],
+[ 58, 5.1043086 ],
+[ 59, 5.135014 ],
+[ 60, 5.176175 ],
+[ 61, 5.2077303 ],
+[ 62, 5.248177 ],
+[ 63, 5.290709 ],
+[ 64, 5.333971 ],
+[ 65, 5.3740206 ],
+[ 66, 5.4188185 ],
+[ 67, 5.462221 ],
+[ 68, 5.50351 ],
+[ 69, 5.5455084 ],
+[ 70, 5.5906744 ],
+[ 71, 5.6413903 ],
+[ 72, 5.6874566 ],
+[ 73, 5.7293444 ],
+[ 74, 5.783298 ],
+[ 75, 5.835098 ],
+[ 76, 5.8867106 ],
+[ 77, 5.941587 ],
+[ 78, 6.008286 ],
+[ 79, 6.0775046 ],
+[ 80, 6.1342835 ],
+[ 81, 6.196519 ],
+[ 82, 6.2571206 ],
+[ 83, 6.321145 ],
+[ 84, 6.377799 ],
+[ 85, 6.470922 ],
+[ 86, 6.5368104 ],
+[ 87, 6.612738 ],
+[ 88, 6.698303 ],
+[ 89, 6.781641 ],
+[ 90, 6.880267 ],
+[ 91, 7.005788 ],
+[ 92, 7.1716065 ],
+[ 93, 7.3271375 ],
+[ 94, 7.4886646 ],
+[ 95, 7.705809 ],
+[ 96, 7.961249 ],
+[ 97, 8.284048 ],
+[ 98, 8.750111 ],
+[ 99, 9.69915 ],
+[ 100, 19.33434 ],
+                            ]);
+                            var csvFormattedDataTable = google.visualization.dataTableToCsv(csvData);
+                            var encodedUri = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csvFormattedDataTable);
+                            var link = document.getElementById('Export-testGetAllCommentsPerformance()_259343236128');
+                            link.href=encodedUri;
+                            link.download = 'testGetAllCommentsPerformance()_259343236128.csv';
+                            link.target = '_blank';
+                        }
+
+                    </script>
+                    <div id="testGetAllCommentsPerformance()_259343236128" style="width: 600px; height: 400px;"></div>
+                    <a id="Export-testGetAllCommentsPerformance()_259343236128" href="#" style="margin-left: 230px;">Download as csv</a>
+                </td>
+                <td>
+                    <table style='font-family:sans-serif;'>
+                        <tr><th>Started at:</th><td colspan='2'><b>2025-05-14 16:26:27</b></td></tr>
+                        <tr>
+                            <th align='right' valign='top'>Invocations:</th>
+                            <td align='right'>6,050</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>- Success:</th>
+                            <td align='right'>6,050</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>- Errors:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>0</b></td>
+                            <td align='right'><b style='color:#2b67a4;'>0.00%</b></td>
+                        </tr>
+                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr>
+                            <th align='right' valign='top'>Thread Count:</th>
+                            <td align='right'>10</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>Warm up:</th>
+                            <td align='right'>2,000 ms</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>Ramp up:</th>
+                            <td align='right'>0 ms</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr valign='top'>
+                            <th>&nbsp;</th>
+                            <th>Measured<br/>(system)</th>
+                            <th>Required</th>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>Execution time:</th>
+                            <td align='right'>5s</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Throughput:</b></th>
+                            <td align='right'><b style='color:#2b67a4;'>2,016 / s</b></td>
+                            <td align='right'><b style='color:#2b67a4;'>100 / s</b></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Min latency:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>1.17 ms</b></td>
+                            <td align='right'><b style='color:#2b67a4'>10.00 ms</b></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Average latency:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>4.96 ms</b></td>
+                            <td align='right'><b style='color:#2b67a4'>40.00 ms</b></td>
+                        </tr>
+
+                        
+                        
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Max latency:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>19.33 ms</b></td>
+                            <td align='right'><b style='color:#2b67a4'>2000.00 ms</b></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <br/><br/><br/>
+        
+
+        <a name='testGetAllUsersPerformance()_264385995181'><h2 style='color:#2b67a4'>com.linkauto.restapi.performance.LinkAutoServicePerformanceTest : testGetAllUsersPerformance()</h2></a>
+        <table width='970'>
+            <tr>
+                <td>
+                    <!-- ADD scatter Chart here!! -->
+                    <script type="text/javascript">
+                        google.charts.load('current', {'packages':['corechart']});
+                        google.charts.setOnLoadCallback(drawChart);
+                        google.charts.setOnLoadCallback(setCsvExportLink);
+
+                        function drawChart() {
+
+                            var data = google.visualization.arrayToDataTable([
+                                ['Percentile', 'Latency', { role: "tooltip"} ],
+                                [ 1, 4.4051, "1% of executions ≤ 4.41ms"],
+[ 2, 4.789717, "2% of executions ≤ 4.79ms"],
+[ 3, 5.165715, "3% of executions ≤ 5.17ms"],
+[ 4, 5.4362626, "4% of executions ≤ 5.44ms"],
+[ 5, 5.664985, "5% of executions ≤ 5.66ms"],
+[ 6, 5.9535785, "6% of executions ≤ 5.95ms"],
+[ 7, 6.1519747, "7% of executions ≤ 6.15ms"],
+[ 8, 6.355982, "8% of executions ≤ 6.36ms"],
+[ 9, 6.524211, "9% of executions ≤ 6.52ms"],
+[ 10, 6.64298, "10% of executions ≤ 6.64ms"],
+[ 11, 6.76203, "11% of executions ≤ 6.76ms"],
+[ 12, 6.8441677, "12% of executions ≤ 6.84ms"],
+[ 13, 6.942531, "13% of executions ≤ 6.94ms"],
+[ 14, 7.0350904, "14% of executions ≤ 7.04ms"],
+[ 15, 7.1169076, "15% of executions ≤ 7.12ms"],
+[ 16, 7.209492, "16% of executions ≤ 7.21ms"],
+[ 17, 7.3160377, "17% of executions ≤ 7.32ms"],
+[ 18, 7.415521, "18% of executions ≤ 7.42ms"],
+[ 19, 7.5008836, "19% of executions ≤ 7.50ms"],
+[ 20, 7.569089, "20% of executions ≤ 7.57ms"],
+[ 21, 7.6739936, "21% of executions ≤ 7.67ms"],
+[ 22, 7.746328, "22% of executions ≤ 7.75ms"],
+[ 23, 7.844049, "23% of executions ≤ 7.84ms"],
+[ 24, 7.929346, "24% of executions ≤ 7.93ms"],
+[ 25, 8.015142, "25% of executions ≤ 8.02ms"],
+[ 26, 8.095596, "26% of executions ≤ 8.10ms"],
+[ 27, 8.151464, "27% of executions ≤ 8.15ms"],
+[ 28, 8.232948, "28% of executions ≤ 8.23ms"],
+[ 29, 8.297996, "29% of executions ≤ 8.30ms"],
+[ 30, 8.368586, "30% of executions ≤ 8.37ms"],
+[ 31, 8.452037, "31% of executions ≤ 8.45ms"],
+[ 32, 8.513162, "32% of executions ≤ 8.51ms"],
+[ 33, 8.604955, "33% of executions ≤ 8.60ms"],
+[ 34, 8.660814, "34% of executions ≤ 8.66ms"],
+[ 35, 8.75958, "35% of executions ≤ 8.76ms"],
+[ 36, 8.823586, "36% of executions ≤ 8.82ms"],
+[ 37, 8.894905, "37% of executions ≤ 8.89ms"],
+[ 38, 8.978455, "38% of executions ≤ 8.98ms"],
+[ 39, 9.06384, "39% of executions ≤ 9.06ms"],
+[ 40, 9.14494, "40% of executions ≤ 9.14ms"],
+[ 41, 9.205978, "41% of executions ≤ 9.21ms"],
+[ 42, 9.25957, "42% of executions ≤ 9.26ms"],
+[ 43, 9.330405, "43% of executions ≤ 9.33ms"],
+[ 44, 9.368336, "44% of executions ≤ 9.37ms"],
+[ 45, 9.45412, "45% of executions ≤ 9.45ms"],
+[ 46, 9.520082, "46% of executions ≤ 9.52ms"],
+[ 47, 9.596045, "47% of executions ≤ 9.60ms"],
+[ 48, 9.645941, "48% of executions ≤ 9.65ms"],
+[ 49, 9.72918, "49% of executions ≤ 9.73ms"],
+[ 50, 9.795514, "50% of executions ≤ 9.80ms"],
+[ 51, 9.852125, "51% of executions ≤ 9.85ms"],
+[ 52, 9.946811, "52% of executions ≤ 9.95ms"],
+[ 53, 10.018647, "53% of executions ≤ 10.02ms"],
+[ 54, 10.102104, "54% of executions ≤ 10.10ms"],
+[ 55, 10.174379, "55% of executions ≤ 10.17ms"],
+[ 56, 10.268821, "56% of executions ≤ 10.27ms"],
+[ 57, 10.365598, "57% of executions ≤ 10.37ms"],
+[ 58, 10.440695, "58% of executions ≤ 10.44ms"],
+[ 59, 10.52984, "59% of executions ≤ 10.53ms"],
+[ 60, 10.57886, "60% of executions ≤ 10.58ms"],
+[ 61, 10.661711, "61% of executions ≤ 10.66ms"],
+[ 62, 10.730431, "62% of executions ≤ 10.73ms"],
+[ 63, 10.79267, "63% of executions ≤ 10.79ms"],
+[ 64, 10.867172, "64% of executions ≤ 10.87ms"],
+[ 65, 10.952709, "65% of executions ≤ 10.95ms"],
+[ 66, 11.050238, "66% of executions ≤ 11.05ms"],
+[ 67, 11.131875, "67% of executions ≤ 11.13ms"],
+[ 68, 11.216524, "68% of executions ≤ 11.22ms"],
+[ 69, 11.297732, "69% of executions ≤ 11.30ms"],
+[ 70, 11.395772, "70% of executions ≤ 11.40ms"],
+[ 71, 11.5109, "71% of executions ≤ 11.51ms"],
+[ 72, 11.640724, "72% of executions ≤ 11.64ms"],
+[ 73, 11.741618, "73% of executions ≤ 11.74ms"],
+[ 74, 11.865214, "74% of executions ≤ 11.87ms"],
+[ 75, 11.994392, "75% of executions ≤ 11.99ms"],
+[ 76, 12.076653, "76% of executions ≤ 12.08ms"],
+[ 77, 12.172003, "77% of executions ≤ 12.17ms"],
+[ 78, 12.275805, "78% of executions ≤ 12.28ms"],
+[ 79, 12.377397, "79% of executions ≤ 12.38ms"],
+[ 80, 12.49768, "80% of executions ≤ 12.50ms"],
+[ 81, 12.655697, "81% of executions ≤ 12.66ms"],
+[ 82, 12.801523, "82% of executions ≤ 12.80ms"],
+[ 83, 12.960206, "83% of executions ≤ 12.96ms"],
+[ 84, 13.078528, "84% of executions ≤ 13.08ms"],
+[ 85, 13.259897, "85% of executions ≤ 13.26ms"],
+[ 86, 13.49289, "86% of executions ≤ 13.49ms"],
+[ 87, 13.634313, "87% of executions ≤ 13.63ms"],
+[ 88, 13.803461, "88% of executions ≤ 13.80ms"],
+[ 89, 13.949091, "89% of executions ≤ 13.95ms"],
+[ 90, 14.172325, "90% of executions ≤ 14.17ms"],
+[ 91, 14.415916, "91% of executions ≤ 14.42ms"],
+[ 92, 14.719129, "92% of executions ≤ 14.72ms"],
+[ 93, 15.112831, "93% of executions ≤ 15.11ms"],
+[ 94, 15.445141, "94% of executions ≤ 15.45ms"],
+[ 95, 15.823413, "95% of executions ≤ 15.82ms"],
+[ 96, 16.291943, "96% of executions ≤ 16.29ms"],
+[ 97, 17.451887, "97% of executions ≤ 17.45ms"],
+[ 98, 18.426323, "98% of executions ≤ 18.43ms"],
+[ 99, 19.965096, "99% of executions ≤ 19.97ms"],
+                            ]);
+
+                            var options = {
+                                title: 'Latency percentile Distribution',
+                                hAxis: {
+                                    title: 'Percentile',
+                                    minValue: 0,
+                                    maxValue: 100,
+                                    viewWindow: {
+                                        min: 0,
+                                        max: 100
+                                    }
+                                },
+                                vAxis: {title: 'Latency', minValue: 0, maxValue: 15},
+                                legend: 'none',
+                                lineWidth: 1,
+                                pointSize: 7,
+                                dataOpacity: 0.5
+                            };
+
+                            var chart = new google.visualization.ScatterChart(document.getElementById('testGetAllUsersPerformance()_264385995181'));
+
+                            chart.draw(data, options);
+                        }
+
+                        function setCsvExportLink() {
+                            var csvData = google.visualization.arrayToDataTable([
+                                ['Percentile', 'Latency'],
+                                [ 1, 4.4051 ],
+[ 2, 4.789717 ],
+[ 3, 5.165715 ],
+[ 4, 5.4362626 ],
+[ 5, 5.664985 ],
+[ 6, 5.9535785 ],
+[ 7, 6.1519747 ],
+[ 8, 6.355982 ],
+[ 9, 6.524211 ],
+[ 10, 6.64298 ],
+[ 11, 6.76203 ],
+[ 12, 6.8441677 ],
+[ 13, 6.942531 ],
+[ 14, 7.0350904 ],
+[ 15, 7.1169076 ],
+[ 16, 7.209492 ],
+[ 17, 7.3160377 ],
+[ 18, 7.415521 ],
+[ 19, 7.5008836 ],
+[ 20, 7.569089 ],
+[ 21, 7.6739936 ],
+[ 22, 7.746328 ],
+[ 23, 7.844049 ],
+[ 24, 7.929346 ],
+[ 25, 8.015142 ],
+[ 26, 8.095596 ],
+[ 27, 8.151464 ],
+[ 28, 8.232948 ],
+[ 29, 8.297996 ],
+[ 30, 8.368586 ],
+[ 31, 8.452037 ],
+[ 32, 8.513162 ],
+[ 33, 8.604955 ],
+[ 34, 8.660814 ],
+[ 35, 8.75958 ],
+[ 36, 8.823586 ],
+[ 37, 8.894905 ],
+[ 38, 8.978455 ],
+[ 39, 9.06384 ],
+[ 40, 9.14494 ],
+[ 41, 9.205978 ],
+[ 42, 9.25957 ],
+[ 43, 9.330405 ],
+[ 44, 9.368336 ],
+[ 45, 9.45412 ],
+[ 46, 9.520082 ],
+[ 47, 9.596045 ],
+[ 48, 9.645941 ],
+[ 49, 9.72918 ],
+[ 50, 9.795514 ],
+[ 51, 9.852125 ],
+[ 52, 9.946811 ],
+[ 53, 10.018647 ],
+[ 54, 10.102104 ],
+[ 55, 10.174379 ],
+[ 56, 10.268821 ],
+[ 57, 10.365598 ],
+[ 58, 10.440695 ],
+[ 59, 10.52984 ],
+[ 60, 10.57886 ],
+[ 61, 10.661711 ],
+[ 62, 10.730431 ],
+[ 63, 10.79267 ],
+[ 64, 10.867172 ],
+[ 65, 10.952709 ],
+[ 66, 11.050238 ],
+[ 67, 11.131875 ],
+[ 68, 11.216524 ],
+[ 69, 11.297732 ],
+[ 70, 11.395772 ],
+[ 71, 11.5109 ],
+[ 72, 11.640724 ],
+[ 73, 11.741618 ],
+[ 74, 11.865214 ],
+[ 75, 11.994392 ],
+[ 76, 12.076653 ],
+[ 77, 12.172003 ],
+[ 78, 12.275805 ],
+[ 79, 12.377397 ],
+[ 80, 12.49768 ],
+[ 81, 12.655697 ],
+[ 82, 12.801523 ],
+[ 83, 12.960206 ],
+[ 84, 13.078528 ],
+[ 85, 13.259897 ],
+[ 86, 13.49289 ],
+[ 87, 13.634313 ],
+[ 88, 13.803461 ],
+[ 89, 13.949091 ],
+[ 90, 14.172325 ],
+[ 91, 14.415916 ],
+[ 92, 14.719129 ],
+[ 93, 15.112831 ],
+[ 94, 15.445141 ],
+[ 95, 15.823413 ],
+[ 96, 16.291943 ],
+[ 97, 17.451887 ],
+[ 98, 18.426323 ],
+[ 99, 19.965096 ],
+[ 100, 31.352232 ],
+                            ]);
+                            var csvFormattedDataTable = google.visualization.dataTableToCsv(csvData);
+                            var encodedUri = 'data:application/csv;charset=utf-8,' + encodeURIComponent(csvFormattedDataTable);
+                            var link = document.getElementById('Export-testGetAllUsersPerformance()_264385995181');
+                            link.href=encodedUri;
+                            link.download = 'testGetAllUsersPerformance()_264385995181.csv';
+                            link.target = '_blank';
+                        }
+
+                    </script>
+                    <div id="testGetAllUsersPerformance()_264385995181" style="width: 600px; height: 400px;"></div>
+                    <a id="Export-testGetAllUsersPerformance()_264385995181" href="#" style="margin-left: 230px;">Download as csv</a>
+                </td>
+                <td>
+                    <table style='font-family:sans-serif;'>
+                        <tr><th>Started at:</th><td colspan='2'><b>2025-05-14 16:26:32</b></td></tr>
+                        <tr>
+                            <th align='right' valign='top'>Invocations:</th>
+                            <td align='right'>2,937</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>- Success:</th>
+                            <td align='right'>2,937</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>- Errors:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>0</b></td>
+                            <td align='right'><b style='color:#2b67a4;'>0.00%</b></td>
+                        </tr>
+                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr>
+                            <th align='right' valign='top'>Thread Count:</th>
+                            <td align='right'>10</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>Warm up:</th>
+                            <td align='right'>2,000 ms</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>Ramp up:</th>
+                            <td align='right'>0 ms</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr><td>&nbsp;</td><td>&nbsp;</td><td>&nbsp;</td></tr>
+                        <tr valign='top'>
+                            <th>&nbsp;</th>
+                            <th>Measured<br/>(system)</th>
+                            <th>Required</th>
+                        </tr>
+                        <tr>
+                            <th align='right' valign='top'>Execution time:</th>
+                            <td align='right'>5s</td>
+                            <td align='right'></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Throughput:</b></th>
+                            <td align='right'><b style='color:#2b67a4;'>979 / s</b></td>
+                            <td align='right'><b style='color:#2b67a4;'>100 / s</b></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Min latency:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>3.02 ms</b></td>
+                            <td align='right'><b style='color:#2b67a4'>10.00 ms</b></td>
+                        </tr>
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Average latency:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>10.20 ms</b></td>
+                            <td align='right'><b style='color:#2b67a4'>40.00 ms</b></td>
+                        </tr>
+
+                        
+                        
+                        <tr>
+                            
+                            <th align='right' valign='top'><b style='color:#2b67a4'>Max latency:</b></th>
+                            <td align='right'><b style='color:#2b67a4'>31.35 ms</b></td>
+                            <td align='right'><b style='color:#2b67a4'>2000.00 ms</b></td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+        <br/>
+        <br/><br/><br/>
+        
+
+
+        <hr/>
+        <div style='color:#044e9b;'>Report created by <a href='https://github.com/noconnor/JUnitPerf'>JunitPerf</a> </div>
+</center>
+</body>
+</html>
