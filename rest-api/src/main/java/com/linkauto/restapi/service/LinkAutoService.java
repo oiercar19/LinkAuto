@@ -170,9 +170,20 @@ public class LinkAutoService {
         return true;
     }
 
-    public Boolean reportUser (User user, User userToReport) {
+    public Boolean reportUser (User user, User userReport) {
+        User userReporter = userRepository.findByUsername(user.getUsername()).orElse(null);
+        User userToReport = userRepository.findByUsername(userReport.getUsername()).orElse(null);
+        
+        if (userReporter == null || userToReport == null) {
+            return false;
+        }
+        
+        userToReport.setReporters(userReporter);
+        userRepository.save(userToReport);
+
         return true;
     }
+
 
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
