@@ -65,6 +65,20 @@ public class ClientControllerTest {
     }
 
     @Test
+    public void testLogin_BannedUser() {
+        String token = "validToken";
+        User user = new User("user1", "USER", true, "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
+
+        when(linkAutoServiceProxy.login(new Credentials(user.username(), user.password()))).thenReturn(token);
+        when(linkAutoServiceProxy.getUserProfile(token)).thenReturn(user);
+
+        String result = clientController.login(user.username(), user.password(), redirectAttributes, model);
+
+        verify(redirectAttributes).addFlashAttribute("error", "Tu cuenta está baneada. No puedes acceder a la plataforma.");
+        assertEquals("banned", result);
+    }
+
+    @Test
     public void testLogin_Failure() {
         String username = "testUser";
         String password = "wrongPassword";
@@ -73,7 +87,7 @@ public class ClientControllerTest {
 
         String result = clientController.login(username, password, redirectAttributes, model);
 
-        verify(redirectAttributes).addFlashAttribute("error", "Credenciales incorrectas");
+        verify(redirectAttributes).addFlashAttribute("error", "Credenciales incorrectas o error al iniciar sesión.");
         assertEquals("redirect:/", result);
     }
 
