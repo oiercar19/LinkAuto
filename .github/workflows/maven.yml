@@ -69,38 +69,3 @@ jobs:
       run: |
         mvn -Pperformance integration-test
         mvn failsafe:verify
-
-    - name: Install Doxygen
-      run: |
-          sudo apt-get update
-          sudo apt-get install -y doxygen graphviz
-
-    - name: Generate Maven Site
-      run: mvn site
-    
-    - name: Copy all documentation artifacts to docs folder
-      run: |
-        rm -rf docs
-        mkdir -p docs/doxygen
-        cp -r target/doxygen/html/* docs/doxygen/ || true
-        cp -r target/doxygen/latex docs/doxygen/ || true
-    
-        # Procesar cada submódulo
-        for module in rest-api client; do
-          if [ -d "$module/target/site" ]; then
-            mkdir -p "docs/site/$module"
-            cp -r "$module/target/site/"* "docs/site/$module/"
-          fi
-    
-          if [ -d "$module/target/reports" ]; then
-            mkdir -p "docs/site/$module/reports"
-            cp -r "$module/target/reports/"* "docs/site/$module/reports/"
-          fi
-        done
-        
-    - name: Deploy 🚀
-      uses: JamesIves/github-pages-deploy-action@v4
-      with:
-        folder: docs
-        branch: gh-pages
-        token: ${{ secrets.GITHUB_TOKEN }}
