@@ -21,7 +21,7 @@ public class UserReturnerDTO {
     private Set<UserReturnerDTO> reporters;
 
     // Constructor
-    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts) {
+    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts, Set<UserReturnerDTO> reporters) {
         this.username = username;
         this.role = role;
         this.name = name;
