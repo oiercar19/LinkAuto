@@ -21,6 +21,10 @@ import com.linkauto.restapi.service.AuthService;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
+/**
+ * This class serves as the controller for authentication-related operations.
+ * It provides endpoints for user registration, login, and logout.
+ */
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "LinkAuto authentication controller", description = "Register, login and logout operations")
