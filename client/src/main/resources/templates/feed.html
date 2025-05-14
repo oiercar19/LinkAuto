@@ -320,7 +320,7 @@
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
                             </form>             
                             <form th:if="${not #strings.equals(username, post.username)}" 
-                                th:action="@{'/report/' + ${post.username}}" 
+                                th:action="@{'/user/' + ${post.username} + '/report?redirectUrl=/feed'}" 
                                 method="post" 
                                 style="display:inline;">
                                 <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill">
