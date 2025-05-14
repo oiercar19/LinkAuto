@@ -76,7 +76,7 @@ jobs:
           sudo apt-get install -y doxygen graphviz
 
     - name: Generate Maven Site
-      run: sudo ./mvnw site
+      run: mvn site
     
     - name: Copy all documentation artifacts to docs folder
       run: |
