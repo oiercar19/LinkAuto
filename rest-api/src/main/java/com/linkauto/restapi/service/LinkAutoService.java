@@ -184,6 +184,20 @@ public class LinkAutoService {
         return true;
     }
 
+    public Boolean deleteReport (User user, String username) {
+        User userReported = userRepository.findByUsername(user.getUsername()).orElse(null);
+        User userReporter = userRepository.findByUsername(username).orElse(null);
+
+        if (userReported == null || username == null) {
+            return false;
+        }
+        
+        userReported.removeReporters(userReporter);
+        userRepository.save(userReported);
+
+        return true;
+    }
+
 
     public List<Comment> getAllComments() {
         return commentRepository.findAll();
