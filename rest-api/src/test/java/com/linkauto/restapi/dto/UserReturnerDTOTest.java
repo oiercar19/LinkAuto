@@ -2,6 +2,7 @@ package com.linkauto.restapi.dto;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -29,7 +30,8 @@ public class UserReturnerDTOTest {
             "New York",
             "password123",
             "This is a description.",
-            posts
+            posts,
+            new HashSet<>()
         );
 
         assertEquals("username123", user.getUsername());
@@ -60,7 +62,8 @@ public class UserReturnerDTOTest {
             "New York",
             "password123",
             "This is a description.",
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
 
         user.setUsername("newUsername");
@@ -74,6 +77,7 @@ public class UserReturnerDTOTest {
         user.setLocation("Los Angeles");
         user.setPassword("newPassword123");
         user.setDescription("Updated description.");
+        user.setReporters(new HashSet<>());
 
         assertEquals("newUsername", user.getUsername());
         assertEquals("ADMIN", user.getRole());
@@ -102,7 +106,8 @@ public class UserReturnerDTOTest {
             "New York",
             "password123",
             "This is a description.",
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
 
         PostReturnerDTO post = new PostReturnerDTO();
@@ -111,4 +116,5 @@ public class UserReturnerDTOTest {
         assertEquals(1, user.getPosts().size());
         assertTrue(user.getPosts().contains(post));
     }
+    
 }
