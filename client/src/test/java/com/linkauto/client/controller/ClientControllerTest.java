@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.MockedStatic;
@@ -52,7 +53,7 @@ public class ClientControllerTest {
     @Test
     public void testLogin_Success() {
         String token = "validToken";
-        User user = new User("user1", "USER", "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
+        User user = new User("user1", "USER", false , "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
 
         when(linkAutoServiceProxy.login(new Credentials(user.username(), user.password()))).thenReturn(token);
         when(linkAutoServiceProxy.getUserProfile(token)).thenReturn(user);
@@ -65,6 +66,20 @@ public class ClientControllerTest {
     }
 
     @Test
+    public void testLogin_BannedUser() {
+        String token = "validToken";
+        User user = new User("user1", "USER", true, "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
+
+        when(linkAutoServiceProxy.login(new Credentials(user.username(), user.password()))).thenReturn(token);
+        when(linkAutoServiceProxy.getUserProfile(token)).thenReturn(user);
+
+        String result = clientController.login(user.username(), user.password(), redirectAttributes, model);
+
+        verify(redirectAttributes).addFlashAttribute("error", "Tu cuenta está baneada. No puedes acceder a la plataforma.");
+        assertEquals("banned", result);
+    }
+
+    @Test
     public void testLogin_Failure() {
         String username = "testUser";
         String password = "wrongPassword";
@@ -73,7 +88,7 @@ public class ClientControllerTest {
 
         String result = clientController.login(username, password, redirectAttributes, model);
 
-        verify(redirectAttributes).addFlashAttribute("error", "Credenciales incorrectas");
+        verify(redirectAttributes).addFlashAttribute("error", "Credenciales incorrectas o error al iniciar sesión.");
         assertEquals("redirect:/", result);
     }
 
@@ -111,7 +126,7 @@ public class ClientControllerTest {
 
     @Test
     public void testPerformRegister_Success() {
-        User user = new User("user1", "USER", "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
+        User user = new User("user1", "USER", false , "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
 
         doNothing().when(linkAutoServiceProxy).register(user);
         String result = clientController.performRegister(user, redirectAttributes);
@@ -123,7 +138,7 @@ public class ClientControllerTest {
 
     @Test
     public void testPerformRegister_Error() {
-        User user = new User("user1", "USER", "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
+        User user = new User("user1", "USER", false , "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
 
         doThrow(new RuntimeException("Error al registrar el usuario")).when(linkAutoServiceProxy).register(user);
         String result = clientController.performRegister(user, redirectAttributes);
@@ -145,16 +160,16 @@ public class ClientControllerTest {
         posts.add(post1);
         posts.add(post2);
 
-        User user = new User("user1", "USER", "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
+        User user = new User("user1", "USER", false , "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
     
         when(linkAutoServiceProxy.getFeed()).thenReturn(posts);
         when(linkAutoServiceProxy.getUserProfile(clientController.token)).thenReturn(user);
 
-        when(linkAutoServiceProxy.getUserByUsername("user1")).thenReturn(new User("user1", "USER", "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc"));
-        when(linkAutoServiceProxy.getUserByUsername("user2")).thenReturn(new User("user2", "USER", "User Two", "pic2.jpg", "user2@example.com", null, 0, "Female", "Location2", "password", "desc"));
+        when(linkAutoServiceProxy.getUserByUsername("user1")).thenReturn(new User("user1", "USER", false , "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc"));
+        when(linkAutoServiceProxy.getUserByUsername("user2")).thenReturn(new User("user2", "USER", false , "User Two", "pic2.jpg", "user2@example.com", null, 0, "Female", "Location2", "password", "desc"));
 
         List<User> followings = new ArrayList<>();
-        followings.add(new User("user3", "USER", "User Three", "pic3.jpg", "user3@example.com", null, 0, "Male", "Location3", "password", "desc"));
+        followings.add(new User("user3", "USER", false , "User Three", "pic3.jpg", "user3@example.com", null, 0, "Male", "Location3", "password", "desc"));
         when(linkAutoServiceProxy.getUserFollowing("testUser")).thenReturn(followings);
 
         List<Comment> comments = new ArrayList<>();
@@ -194,7 +209,7 @@ public class ClientControllerTest {
     @Test
     public void testShowUpdateProfile_WithValidToken() {
         clientController.token = "validToken";
-        User user = new User("user1", "USER", "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
+        User user = new User("user1", "USER", false , "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
 
         when(linkAutoServiceProxy.getUserProfile(clientController.token)).thenReturn(user);
 
@@ -217,7 +232,7 @@ public class ClientControllerTest {
     @Test
     public void testUpdateProfile_Success() {
         clientController.token = "validToken";
-        User user = new User("user1", "USER", "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
+        User user = new User("user1", "USER", false , "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
 
         doNothing().when(linkAutoServiceProxy).updateProfile("validToken", user);
         String result = clientController.updateProfile(user, redirectAttributes);
@@ -230,7 +245,7 @@ public class ClientControllerTest {
     @Test
     public void testUpdateProfile_Error() {
         clientController.token = "validToken";
-        User user = new User("user1", "USER", "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
+        User user = new User("user1", "USER", false , "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
 
         doThrow(new RuntimeException("Error al actualizar el perfil")).when(linkAutoServiceProxy).updateProfile(clientController.token, user);
 
@@ -402,7 +417,7 @@ public class ClientControllerTest {
     public void testAdminPanel_UserNotAdmin() {
         clientController.token = "validToken";
         clientController.username = "commonUser";
-        User user = new User("commonUser", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc");
+        User user = new User("commonUser", "USER", false , "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc");
         
         when(linkAutoServiceProxy.getUserByUsername("commonUser")).thenReturn(user);
         when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(user);
@@ -417,7 +432,7 @@ public class ClientControllerTest {
     public void testAdminPanel_UserAdmin() {
         clientController.token = "validToken";
         clientController.username = "adminUser";
-        User user = new User("adminUser", "ADMIN", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc");
+        User user = new User("adminUser", "ADMIN", false , "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc");
         List<User> users = new ArrayList<>();
         when(linkAutoServiceProxy.getUserByUsername("adminUser")).thenReturn(user);
         when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(user);
@@ -451,6 +466,50 @@ public class ClientControllerTest {
 
         verify(linkAutoServiceProxy).deleteUser(clientController.token, usernameToDelete);
         verify(redirectAttributes).addFlashAttribute("error", "Error al eliminar el usuario: Error al eliminar el usuario");
+        assertEquals("redirect:/adminPanel", result);
+    }
+
+    @Test
+    public void testBanUser_Success() {
+        // Datos de prueba
+        String usernameToBan = "user1";
+        boolean banStatus = true; // Baneando al usuario
+        clientController.token = "validToken";
+
+        // Mock del servicio
+        doNothing().when(linkAutoServiceProxy).banUser(clientController.token, usernameToBan, banStatus);
+        when(linkAutoServiceProxy.getAllUsers()).thenReturn(List.of(
+            new User("user1", "USER", true, "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc"),
+            new User("user2", "USER", false, "User Two", "pic2.jpg", "user2@example.com", null, 0, "Female", "Location2", "password", "desc")
+        ));
+
+        // Ejecutar el método
+        String result = clientController.banUser(usernameToBan, banStatus, redirectAttributes, model);
+
+        // Verificaciones
+        verify(linkAutoServiceProxy).banUser(clientController.token, usernameToBan, banStatus);
+        verify(linkAutoServiceProxy).getAllUsers();
+        verify(redirectAttributes).addFlashAttribute("success", "Usuario " + usernameToBan + " baneado con éxito.");
+        verify(model).addAttribute(eq("users"), anyList());
+        assertEquals("redirect:/adminPanel", result);
+    }
+
+    @Test
+    public void testBanUser_Error() {
+        // Datos de prueba
+        String usernameToBan = "user1";
+        boolean banStatus = true; // Baneando al usuario
+        clientController.token = "validToken";
+
+        // Mock del servicio para lanzar una excepción
+        doThrow(new RuntimeException("Error al banear el usuario")).when(linkAutoServiceProxy).banUser(clientController.token, usernameToBan, banStatus);
+
+        // Ejecutar el método
+        String result = clientController.banUser(usernameToBan, banStatus, redirectAttributes, model);
+
+        // Verificaciones
+        verify(linkAutoServiceProxy).banUser(clientController.token, usernameToBan, banStatus);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al actualizar el estado de baneo del usuario: Error al banear el usuario");
         assertEquals("redirect:/adminPanel", result);
     }
 
@@ -533,8 +592,8 @@ public class ClientControllerTest {
         clientController.token = "validToken";
         clientController.username = "currentUser";
         
-        User profileUser = new User("testUser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User currentUser = new User("currentUser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User profileUser = new User("testUser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User currentUser = new User("currentUser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         
         List<Post> userPosts = new ArrayList<>();
         Post post1 = new Post(1L, "testUser", "content1", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
@@ -545,18 +604,18 @@ public class ClientControllerTest {
         comments.add(comment);
         
         List<User> followings = new ArrayList<>();
-        User following = new User("followedUser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User following = new User("followedUser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         followings.add(following);
         
         List<User> followers = new ArrayList<>();
-        followers.add(new User("followingUser", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description"));
+        followers.add(new User("followingUser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description"));
         
         // Mock service calls
         when(linkAutoServiceProxy.getUserByUsername(profileUser.username())).thenReturn(profileUser);
         when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(currentUser);
         when(linkAutoServiceProxy.getUserPosts(profileUser.username())).thenReturn(userPosts);
         when(linkAutoServiceProxy.getCommentsByPostId(anyLong())).thenReturn(comments);
-        when(linkAutoServiceProxy.getUserByUsername("commenter")).thenReturn(new User("commenter", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
+        when(linkAutoServiceProxy.getUserByUsername("commenter")).thenReturn(new User("commenter", "USER", false , "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
         when(linkAutoServiceProxy.getUserFollowing("currentUser")).thenReturn(followings);
         when(linkAutoServiceProxy.getUserFollowers(profileUser.username())).thenReturn(followers);
         when(linkAutoServiceProxy.getUserFollowing(profileUser.username())).thenReturn(followings);
@@ -595,8 +654,8 @@ public class ClientControllerTest {
         
         when(linkAutoServiceProxy.sharePost(1L)).thenReturn(post);
         when(linkAutoServiceProxy.getCommentsByPostId(1L)).thenReturn(comments);
-        when(linkAutoServiceProxy.getUserByUsername("commenter")).thenReturn(new User("commenter", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
-        when(linkAutoServiceProxy.getUserByUsername("postOwner")).thenReturn(new User("postOwner", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
+        when(linkAutoServiceProxy.getUserByUsername("commenter")).thenReturn(new User("commenter", "USER", false , "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
+        when(linkAutoServiceProxy.getUserByUsername("postOwner")).thenReturn(new User("postOwner", "USER", false , "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
         
         String result = clientController.sharePost(model, 1L);
         
@@ -723,18 +782,18 @@ public class ClientControllerTest {
         
         // Mock the service responses
         List<User> allUsers = new ArrayList<>();
-        User user1 = new User("testuser1", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user2 = new User("testuser2", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user3 = new User("testuser3", "USER", "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user1 = new User("testuser1", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user2 = new User("testuser2", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user3 = new User("testuser3", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
 
         allUsers.add(user1);
         allUsers.add(user2);
         allUsers.add(user3);
         
-        User currentUser = new User("currentUser", "USER", "test", "currentUser.jpg", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User currentUser = new User("currentUser", "USER", false , "test", "currentUser.jpg", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         
         List<User> followings = new ArrayList<>();
-        User following = new User("testUser1", "USER", "test", "currentUser.jpg", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User following = new User("testUser1", "USER", false , "test", "currentUser.jpg", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
         followings.add(following);
         
         when(linkAutoServiceProxy.getAllUsers()).thenReturn(allUsers);
@@ -895,13 +954,13 @@ public class ClientControllerTest {
         when(linkAutoServiceProxy.sharePost(1L)).thenReturn(post);
         when(linkAutoServiceProxy.getCommentsByPostId(1L)).thenReturn(comments);
         when(linkAutoServiceProxy.getUserByUsername("commenter1")).thenReturn(
-            new User("commenter1", "USER", "Commenter One", "commenter1.jpg", "email1", null, 0, "gender", "location", "password", "desc")
+            new User("commenter1", "USER", false , "Commenter One", "commenter1.jpg", "email1", null, 0, "gender", "location", "password", "desc")
         );
         when(linkAutoServiceProxy.getUserByUsername("commenter2")).thenReturn(
-            new User("commenter2", "USER", "Commenter Two", "commenter2.jpg", "email2", null, 0, "gender", "location", "password", "desc")
+            new User("commenter2", "USER", false , "Commenter Two", "commenter2.jpg", "email2", null, 0, "gender", "location", "password", "desc")
         );
         
-        when(linkAutoServiceProxy.getUserByUsername("postOwner")).thenReturn(new User("postOwner", "USER", "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
+        when(linkAutoServiceProxy.getUserByUsername("postOwner")).thenReturn(new User("postOwner", "USER", false , "Commenter Name", "commenter.jpg", "email", null, 0, "gender", "location", "password", "desc"));
 
         // Call the method
         String result = clientController.sharePost(model, 1L);
@@ -917,7 +976,7 @@ public class ClientControllerTest {
     @Test
     public void testSharePost_WithNoComments() {
         Post post = new Post(1L, "postOwner", "content1", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
-        User user = new User("postOwner", "USER", "Post owner", "commenter1.jpg", "email1", null, 0, "gender", "location", "password", "desc");
+        User user = new User("postOwner", "USER", false , "Post owner", "commenter1.jpg", "email1", null, 0, "gender", "location", "password", "desc");
         // Empty comments list
         List<Comment> comments = new ArrayList<>();
         

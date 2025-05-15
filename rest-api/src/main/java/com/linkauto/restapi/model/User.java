@@ -26,6 +26,7 @@ public class User {
     @Id
     private String username;
     private Role role;
+    private boolean banned;
     private String name;
     private String profilePicture;
     private String email;
@@ -54,9 +55,10 @@ public class User {
             String profilePicture, String email,
             List<String> cars, long birthDate,
             Gender gender, String location,
-            String password, String description, List<Post> posts, List<User> followers, List<User> following) {
+            String password, String description,List<Post> posts, List<User> followers, List<User> following) {
         this.username = username;
         this.role = Role.USER;
+        this.banned = false;
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
@@ -168,6 +170,14 @@ public class User {
         this.description = description;
     }
 
+    public boolean isBanned() {
+        return banned;
+    }
+
+    public void setBanned(boolean isBanned) {
+        this.banned = isBanned;
+    }
+
     public List<Post> getPosts() {
         return posts;
     }
@@ -227,7 +237,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [username=" + username + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
+        return "User [username=" + username + ", banned="+ banned + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
                 + ", email=" + email + ", cars=" + cars + ", birthDate=" + birthDate + ", gender=" + gender
                 + ", location=" + location + ", password=" + password + ", description=" + description + ", posts="
                 + posts + "]";

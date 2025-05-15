@@ -8,6 +8,7 @@ public class UserRegisterDTO {
     private String username;
     @JsonIgnore
     private String role;
+    private boolean isBanned;
     private String name;
     private String profilePicture;
     private String email;
@@ -18,10 +19,12 @@ public class UserRegisterDTO {
     private String password;
     private String description;
 
+
     // Constructor
     public UserRegisterDTO(String username, String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description) {
         this.username = username;
         this.role = "USER";
+        this.isBanned = false;
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
@@ -121,5 +124,13 @@ public class UserRegisterDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean isBanned) {
+        this.isBanned = isBanned;
     }
 }
