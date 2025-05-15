@@ -1,6 +1,6 @@
 var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO =
 [
-    [ "UserReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a585be4816d8653b96936ab28a3a6aea4", null ],
+    [ "UserReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ad34798bffad370b926af0816c1127336", null ],
     [ "addPost", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a96683c6c6b8138357ec515d8a6aa121d", null ],
     [ "getBirthDate", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae49330508c8b4bf083a6f955ac29717d", null ],
     [ "getCars", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a2bfe029b299de947b82282b72ea9d943", null ],
@@ -12,6 +12,7 @@ var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO =
     [ "getPassword", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaf473ea24890ed553b5c2fe3d9ab4704", null ],
     [ "getPosts", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab035b95c71383e07d9a79665e3855718", null ],
     [ "getProfilePicture", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab9f2757220eecfe027ed3bb8f29725d5", null ],
+    [ "getReporters", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab928c4142bbd6909f02f85e0780f9788", null ],
     [ "getRole", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae60e6a21cc64950c6fb13b24cda12101", null ],
     [ "getUsername", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a81f828e2438242c963ad23cc5de39e36", null ],
     [ "setBirthDate", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#adeb9b77dd9030e4a77134d17cd79116d", null ],
@@ -23,6 +24,7 @@ var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO =
     [ "setName", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0d7f87baca680ba019d31f42cb53c1f5", null ],
     [ "setPassword", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5cce60b1db40a8126337f337288b9c36", null ],
     [ "setProfilePicture", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6dfa967dd319bf97eb5ce1bfb1ac3a0a", null ],
+    [ "setReporters", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aacd361dc8af8e5bd64c6ee7abb8d034e", null ],
     [ "setRole", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a18b835e38146ccbaf72fbfe070939238", null ],
     [ "setUsername", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef64f54e3a091e2b6c407716459a7ae", null ]
 ];

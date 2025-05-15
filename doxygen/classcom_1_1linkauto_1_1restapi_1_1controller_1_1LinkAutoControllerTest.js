@@ -4,6 +4,7 @@ var classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest =
     [ "setUp", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a556db608559638fb5f41f58db126d275", null ],
     [ "testCommentPost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a9eba75727814364cf7032db1778d27dd", null ],
     [ "testDeletePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#af7ab2c6ff71eca41361281f0c3ecf12d", null ],
+    [ "testDeleteReport", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a220477844b81b4737f6fedff7d586b71", null ],
     [ "testDeleteUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#ae7fccdd95e9ce5bad2ff7a372bae16d2", null ],
     [ "testFollowUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a20d7d4d11d0ed57b93d9cccdda2cf200", null ],
     [ "testGetAllComments", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#aae8adc53472b64651750552c7cdd88a5", null ],
@@ -17,6 +18,8 @@ var classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest =
     [ "testGetUserFollowing", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#af83c72e7bb9f0d055b11d1a8e6530d1c", null ],
     [ "testGetUserPosts", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#ada985da6554c57ee5d02877ca12cdae6", null ],
     [ "testLikePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a9478065d9caa139d396f1e100845ab8a", null ],
+    [ "testParseUserToUserReturnerDTO_WithReporters", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a1e16886d466aff65f52fbb4a2afd3eb4", null ],
+    [ "testReportUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a4860de9d56fe95f8acbf16abe733f6cb", null ],
     [ "testUnfollowUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#afeb15238a14be080f563bd909ec2d6bc", null ],
     [ "testUnlikePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#af1253c6bd54b090416d8d3f869a2bd51", null ],
     [ "testUpdateUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a8c4417fc7b2f23c30dcc8d33caedfdec", null ]

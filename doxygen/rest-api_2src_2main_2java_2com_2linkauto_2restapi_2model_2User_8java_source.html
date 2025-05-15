@@ -101,354 +101,385 @@ $(document).ready(function(){initNavTree('rest-api_2src_2main_2java_2com_2linkau
 <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="keyword">package </span>com.linkauto.restapi.model;</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> java.util.ArrayList;</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> java.util.List;</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">import</span> jakarta.persistence.CascadeType;</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">import</span> jakarta.persistence.Entity;</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">import</span> jakarta.persistence.FetchType;</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">import</span> jakarta.persistence.Id;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">import</span> jakarta.persistence.JoinColumn;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">import</span> jakarta.persistence.JoinTable;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">import</span> jakarta.persistence.ManyToMany;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">import</span> jakarta.persistence.OneToMany;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">import</span> jakarta.persistence.Table;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>@Entity</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>@Table(name = <span class="stringliteral">&quot;user&quot;</span>)</div>
-<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">   18</a></span>public class <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">   20</a></span>    <span class="keyword">public</span> <span class="keyword">enum</span> <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">Gender</a> {</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a55edc27c574f30f240e27ad215f4cae3">   21</a></span>        <a class="code hl_variable" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a55edc27c574f30f240e27ad215f4cae3">MALE</a>,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a89e1b73d87691d8e7f56a07de27b9dc2">   22</a></span>        <a class="code hl_variable" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a89e1b73d87691d8e7f56a07de27b9dc2">FEMALE</a>,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>        OTHER</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#aaa050c3c3f4b2131f38523874ee0ca39">   24</a></span>    }</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> java.util.HashSet;</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> java.util.List;</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">import</span> java.util.Set;</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">import</span> jakarta.persistence.CascadeType;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">import</span> jakarta.persistence.CollectionTable;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">import</span> jakarta.persistence.Column;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">import</span> jakarta.persistence.ElementCollection;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">import</span> jakarta.persistence.Entity;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">import</span> jakarta.persistence.FetchType;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">import</span> jakarta.persistence.Id;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">import</span> jakarta.persistence.JoinColumn;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">import</span> jakarta.persistence.JoinTable;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">import</span> jakarta.persistence.ManyToMany;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">import</span> jakarta.persistence.OneToMany;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">import</span> jakarta.persistence.Table;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>@Entity</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>@Table(name = <span class="stringliteral">&quot;user&quot;</span>)</div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">   23</a></span>public class <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">   25</a></span>    <span class="keyword">public</span> <span class="keyword">enum</span> <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">Gender</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a55edc27c574f30f240e27ad215f4cae3">   26</a></span>        <a class="code hl_variable" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a55edc27c574f30f240e27ad215f4cae3">MALE</a>,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a89e1b73d87691d8e7f56a07de27b9dc2">   27</a></span>        <a class="code hl_variable" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a89e1b73d87691d8e7f56a07de27b9dc2">FEMALE</a>,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        OTHER</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#aaa050c3c3f4b2131f38523874ee0ca39">   29</a></span>    }</div>
 </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    @Id</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keyword">private</span> String username;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">private</span> <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html">Role</a> role;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">private</span> String name;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">private</span> String profilePicture;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">private</span> String email;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">private</span> List&lt;String&gt; cars;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">private</span> <span class="keywordtype">long</span> birthDate;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">private</span> <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">Gender</a> gender;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">private</span> String location;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">private</span> String password;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">private</span> String description;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    @OneToMany(mappedBy = <span class="stringliteral">&quot;usuario&quot;</span>, cascade = CascadeType.ALL, orphanRemoval = <span class="keyword">true</span>, fetch = FetchType.EAGER)</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    private List&lt;<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html">Post</a>&gt; posts;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    @ManyToMany(fetch = FetchType.EAGER)</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    @JoinTable(name = &quot;user_followers&quot;, joinColumns = @JoinColumn(name = &quot;key_user_username&quot;), inverseJoinColumns = @JoinColumn(name = &quot;follower_username&quot;))</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    private List&lt;<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a>&gt; followers;</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    @ManyToMany(mappedBy = &quot;followers&quot;, fetch = FetchType.EAGER, cascade = CascadeType.ALL)</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    private List&lt;<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a>&gt; following;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="comment">// No-argument constructor</span></div>
-<div class="foldopen" id="foldopen00049" data-start="{" data-end="}">
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a49bea42e8a70222eb2b0b2f68649938b">   49</a></span>    public <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a>() {</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    @Id</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">private</span> String username;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">private</span> <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html">Role</a> role;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">private</span> String name;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">private</span> String profilePicture;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">private</span> String email;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">private</span> List&lt;String&gt; cars;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">private</span> <span class="keywordtype">long</span> birthDate;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">private</span> <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">Gender</a> gender;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="keyword">private</span> String location;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keyword">private</span> String password;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">private</span> String description;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    @ElementCollection(fetch = FetchType.EAGER)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    @CollectionTable(name = <span class="stringliteral">&quot;user_reports&quot;</span>, joinColumns = @JoinColumn(name = <span class="stringliteral">&quot;username&quot;</span>))</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    @Column(name = <span class="stringliteral">&quot;reports&quot;</span>)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    private Set &lt;<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a>&gt; reporters = new HashSet&lt;&gt;();</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    @OneToMany(mappedBy = &quot;usuario&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    private List&lt;<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html">Post</a>&gt; posts;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    @ManyToMany(fetch = FetchType.EAGER)</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    @JoinTable(name = &quot;user_followers&quot;, joinColumns = @JoinColumn(name = &quot;key_user_username&quot;), inverseJoinColumns = @JoinColumn(name = &quot;follower_username&quot;))</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    private List&lt;<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a>&gt; followers;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    @ManyToMany(mappedBy = &quot;followers&quot;, fetch = FetchType.EAGER, cascade = CascadeType.ALL)</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    private List&lt;<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a>&gt; following;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    <span class="comment">// No-argument constructor</span></div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a49bea42e8a70222eb2b0b2f68649938b">   58</a></span>    public <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a>() {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    }</div>
 </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="comment">// Constructor with arguments</span></div>
-<div class="foldopen" id="foldopen00053" data-start="{" data-end="}">
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ad5ac164dfc4d622b58eeb67fbf177ada">   53</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ad5ac164dfc4d622b58eeb67fbf177ada">User</a>(String username, String name,</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>            String profilePicture, String email,</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            List&lt;String&gt; cars, <span class="keywordtype">long</span> birthDate,</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>            <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">Gender</a> gender, String location,</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>            String password, String description, List&lt;Post&gt; posts, List&lt;User&gt; followers, List&lt;User&gt; following) {</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        this.username = username;</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        this.role = <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html">Role</a>.<a class="code hl_variable" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html#af58052952aa54a83a201637e14234e49">USER</a>;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        this.name = name;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        this.profilePicture = profilePicture;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        this.email = email;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        this.cars = cars;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        this.birthDate = birthDate;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        this.gender = gender;</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        this.location = location;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        this.password = password;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        this.description = description;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        this.posts = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html">Post</a> post : posts) {</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>            this.posts.add(post);</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        }</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        this.followers = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> follower : followers) {</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>            this.followers.add(follower);</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        }</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        this.following = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> follow : following) {</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>            this.following.add(follow);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        }</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    }</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span> </div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">// Constructor with arguments</span></div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ad5ac164dfc4d622b58eeb67fbf177ada">   62</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ad5ac164dfc4d622b58eeb67fbf177ada">User</a>(String username, String name,</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>            String profilePicture, String email,</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>            List&lt;String&gt; cars, <span class="keywordtype">long</span> birthDate,</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>            <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">Gender</a> gender, String location,</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            String password, String description, List&lt;Post&gt; posts, List&lt;User&gt; followers, List&lt;User&gt; following) {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        this.username = username;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        this.role = <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html">Role</a>.<a class="code hl_variable" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html#af58052952aa54a83a201637e14234e49">USER</a>;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        this.name = name;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        this.profilePicture = profilePicture;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        this.email = email;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        this.cars = cars;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        this.birthDate = birthDate;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        this.gender = gender;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        this.location = location;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        this.password = password;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        this.description = description;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        this.posts = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html">Post</a> post : posts) {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>            this.posts.add(post);</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        }</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        this.followers = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> follower : followers) {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            this.followers.add(follower);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        this.following = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> follow : following) {</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            this.following.add(follow);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        this.reporters = <span class="keyword">new</span> HashSet&lt;&gt;();</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
 </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2e45aaa4f7ee2aff0c19312f1b4b49ca">   83</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2e45aaa4f7ee2aff0c19312f1b4b49ca">getUsername</a>() {</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="keywordflow">return</span> username;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
+<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2e45aaa4f7ee2aff0c19312f1b4b49ca">   93</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2e45aaa4f7ee2aff0c19312f1b4b49ca">getUsername</a>() {</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="keywordflow">return</span> username;</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    }</div>
 </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="foldopen" id="foldopen00087" data-start="{" data-end="}">
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5e2994568207efed6c3ccf8df98410f">   87</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5e2994568207efed6c3ccf8df98410f">setUsername</a>(String username) {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        this.username = username;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5e2994568207efed6c3ccf8df98410f">   97</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5e2994568207efed6c3ccf8df98410f">setUsername</a>(String username) {</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        this.username = username;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
 </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a639bbeedf1508446960cdbbb9f70f63e">   91</a></span>    <span class="keyword">public</span> <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html">Role</a> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a639bbeedf1508446960cdbbb9f70f63e">getRole</a>() {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="keywordflow">return</span> role;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
+<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a639bbeedf1508446960cdbbb9f70f63e">  101</a></span>    <span class="keyword">public</span> <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html">Role</a> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a639bbeedf1508446960cdbbb9f70f63e">getRole</a>() {</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">return</span> role;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
 </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a3a3d24075af05b445bffde32cde24e2e">   95</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a3a3d24075af05b445bffde32cde24e2e">setRole</a>(<a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html">Role</a> role) {</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        this.role = role;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a3a3d24075af05b445bffde32cde24e2e">  105</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a3a3d24075af05b445bffde32cde24e2e">setRole</a>(<a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html">Role</a> role) {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        this.role = role;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
 </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="foldopen" id="foldopen00099" data-start="{" data-end="}">
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a75a24845d464ab10f36a573cc2aeebce">   99</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a75a24845d464ab10f36a573cc2aeebce">getName</a>() {</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        <span class="keywordflow">return</span> name;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    }</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
+<div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a75a24845d464ab10f36a573cc2aeebce">  109</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a75a24845d464ab10f36a573cc2aeebce">getName</a>() {</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keywordflow">return</span> name;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    }</div>
 </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a749f67b40f8d3e3d488b4d0730c66532">  103</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a749f67b40f8d3e3d488b4d0730c66532">setName</a>(String name) {</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        this.name = name;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a749f67b40f8d3e3d488b4d0730c66532">  113</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a749f67b40f8d3e3d488b4d0730c66532">setName</a>(String name) {</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        this.name = name;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    }</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac7466d36e6748f628dadf84772ebe422">  107</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac7466d36e6748f628dadf84772ebe422">getProfilePicture</a>() {</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        <span class="keywordflow">return</span> profilePicture;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    }</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
+<div class="foldopen" id="foldopen00117" data-start="{" data-end="}">
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac7466d36e6748f628dadf84772ebe422">  117</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac7466d36e6748f628dadf84772ebe422">getProfilePicture</a>() {</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">return</span> profilePicture;</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    }</div>
 </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2aaf4596d106065abb6c2a97967c8b76">  111</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2aaf4596d106065abb6c2a97967c8b76">setProfilePicture</a>(String profilePicture) {</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        this.profilePicture = profilePicture;</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    }</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
+<div class="foldopen" id="foldopen00121" data-start="{" data-end="}">
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2aaf4596d106065abb6c2a97967c8b76">  121</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2aaf4596d106065abb6c2a97967c8b76">setProfilePicture</a>(String profilePicture) {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        this.profilePicture = profilePicture;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    }</div>
 </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5938e21bf7cb3a8722739047d19977b6">  115</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5938e21bf7cb3a8722739047d19977b6">getEmail</a>() {</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordflow">return</span> email;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    }</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="foldopen" id="foldopen00125" data-start="{" data-end="}">
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5938e21bf7cb3a8722739047d19977b6">  125</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5938e21bf7cb3a8722739047d19977b6">getEmail</a>() {</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordflow">return</span> email;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
 </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="foldopen" id="foldopen00119" data-start="{" data-end="}">
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4fa3cfba59cd65a850003991412b34ba">  119</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4fa3cfba59cd65a850003991412b34ba">setEmail</a>(String email) {</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        this.email = email;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    }</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
+<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4fa3cfba59cd65a850003991412b34ba">  129</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4fa3cfba59cd65a850003991412b34ba">setEmail</a>(String email) {</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        this.email = email;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }</div>
 </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="foldopen" id="foldopen00123" data-start="{" data-end="}">
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d938f25d29a677690584f660b44f1c3">  123</a></span>    <span class="keyword">public</span> List&lt;String&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d938f25d29a677690584f660b44f1c3">getCars</a>() {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        <span class="keywordflow">return</span> cars;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    }</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="foldopen" id="foldopen00133" data-start="{" data-end="}">
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d938f25d29a677690584f660b44f1c3">  133</a></span>    <span class="keyword">public</span> List&lt;String&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d938f25d29a677690584f660b44f1c3">getCars</a>() {</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>        <span class="keywordflow">return</span> cars;</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>    }</div>
 </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="foldopen" id="foldopen00127" data-start="{" data-end="}">
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5b494904d09a2402f979bc376d422853">  127</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5b494904d09a2402f979bc376d422853">setCars</a>(List&lt;String&gt; cars) {</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        this.cars = cars;</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span> </div>
+<div class="foldopen" id="foldopen00137" data-start="{" data-end="}">
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5b494904d09a2402f979bc376d422853">  137</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5b494904d09a2402f979bc376d422853">setCars</a>(List&lt;String&gt; cars) {</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>        this.cars = cars;</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    }</div>
 </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="foldopen" id="foldopen00131" data-start="{" data-end="}">
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a14da3d0e2dcc39589914593a5bff631b">  131</a></span>    <span class="keyword">public</span> <span class="keywordtype">long</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a14da3d0e2dcc39589914593a5bff631b">getBirthDate</a>() {</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        <span class="keywordflow">return</span> birthDate;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span> </div>
+<div class="foldopen" id="foldopen00141" data-start="{" data-end="}">
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a14da3d0e2dcc39589914593a5bff631b">  141</a></span>    <span class="keyword">public</span> <span class="keywordtype">long</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a14da3d0e2dcc39589914593a5bff631b">getBirthDate</a>() {</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <span class="keywordflow">return</span> birthDate;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    }</div>
 </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="foldopen" id="foldopen00135" data-start="{" data-end="}">
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5e0c8616dcd1985b77631fd5aa8a4301">  135</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5e0c8616dcd1985b77631fd5aa8a4301">setBirthDate</a>(<span class="keywordtype">long</span> birthDate) {</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        this.birthDate = birthDate;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    }</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="foldopen" id="foldopen00145" data-start="{" data-end="}">
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5e0c8616dcd1985b77631fd5aa8a4301">  145</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5e0c8616dcd1985b77631fd5aa8a4301">setBirthDate</a>(<span class="keywordtype">long</span> birthDate) {</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>        this.birthDate = birthDate;</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    }</div>
 </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="foldopen" id="foldopen00139" data-start="{" data-end="}">
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a53d262b05597b08f7e037d2c324012ba">  139</a></span>    <span class="keyword">public</span> <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">Gender</a> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a53d262b05597b08f7e037d2c324012ba">getGender</a>() {</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        <span class="keywordflow">return</span> gender;</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    }</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span> </div>
+<div class="foldopen" id="foldopen00149" data-start="{" data-end="}">
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a53d262b05597b08f7e037d2c324012ba">  149</a></span>    <span class="keyword">public</span> <a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">Gender</a> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a53d262b05597b08f7e037d2c324012ba">getGender</a>() {</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        <span class="keywordflow">return</span> gender;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>    }</div>
 </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac0ff9a3ac13a2255f7d222ce7cc7a944">  143</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac0ff9a3ac13a2255f7d222ce7cc7a944">setGender</a>(<a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">Gender</a> gender) {</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        this.gender = gender;</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    }</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span> </div>
+<div class="foldopen" id="foldopen00153" data-start="{" data-end="}">
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac0ff9a3ac13a2255f7d222ce7cc7a944">  153</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac0ff9a3ac13a2255f7d222ce7cc7a944">setGender</a>(<a class="code hl_class" href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">Gender</a> gender) {</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        this.gender = gender;</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>    }</div>
 </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="foldopen" id="foldopen00147" data-start="{" data-end="}">
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a571c97b676cace1c32a0d6e8c4d2f68f">  147</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a571c97b676cace1c32a0d6e8c4d2f68f">getLocation</a>() {</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        <span class="keywordflow">return</span> location;</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    }</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span> </div>
+<div class="foldopen" id="foldopen00157" data-start="{" data-end="}">
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a571c97b676cace1c32a0d6e8c4d2f68f">  157</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a571c97b676cace1c32a0d6e8c4d2f68f">getLocation</a>() {</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>        <span class="keywordflow">return</span> location;</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>    }</div>
 </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
-<div class="foldopen" id="foldopen00151" data-start="{" data-end="}">
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a360aec6d16f88ce3ae0c60cc69a88c86">  151</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a360aec6d16f88ce3ae0c60cc69a88c86">setLocation</a>(String location) {</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        this.location = location;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    }</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
+<div class="foldopen" id="foldopen00161" data-start="{" data-end="}">
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a360aec6d16f88ce3ae0c60cc69a88c86">  161</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a360aec6d16f88ce3ae0c60cc69a88c86">setLocation</a>(String location) {</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        this.location = location;</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    }</div>
 </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="foldopen" id="foldopen00155" data-start="{" data-end="}">
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5cb9a69829bb33e29c9287bd4c9b02c">  155</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5cb9a69829bb33e29c9287bd4c9b02c">getPassword</a>() {</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        <span class="keywordflow">return</span> password;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    }</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
+<div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5cb9a69829bb33e29c9287bd4c9b02c">  165</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5cb9a69829bb33e29c9287bd4c9b02c">getPassword</a>() {</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        <span class="keywordflow">return</span> password;</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    }</div>
 </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
-<div class="foldopen" id="foldopen00159" data-start="{" data-end="}">
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a456cc4374da23b76b82a98e159862612">  159</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a456cc4374da23b76b82a98e159862612">setPassword</a>(String password) {</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        this.password = password;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    }</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span> </div>
+<div class="foldopen" id="foldopen00169" data-start="{" data-end="}">
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a456cc4374da23b76b82a98e159862612">  169</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a456cc4374da23b76b82a98e159862612">setPassword</a>(String password) {</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        this.password = password;</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    }</div>
 </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="foldopen" id="foldopen00163" data-start="{" data-end="}">
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab881eb87d42392d02c2c63649322542e">  163</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab881eb87d42392d02c2c63649322542e">getDescription</a>() {</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        <span class="keywordflow">return</span> description;</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    }</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span> </div>
+<div class="foldopen" id="foldopen00173" data-start="{" data-end="}">
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab881eb87d42392d02c2c63649322542e">  173</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab881eb87d42392d02c2c63649322542e">getDescription</a>() {</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        <span class="keywordflow">return</span> description;</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    }</div>
 </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="foldopen" id="foldopen00167" data-start="{" data-end="}">
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a51f3e4ff8ee84acdc3ed38b2792275e7">  167</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a51f3e4ff8ee84acdc3ed38b2792275e7">setDescription</a>(String description) {</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        this.description = description;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    }</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
+<div class="foldopen" id="foldopen00177" data-start="{" data-end="}">
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a51f3e4ff8ee84acdc3ed38b2792275e7">  177</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a51f3e4ff8ee84acdc3ed38b2792275e7">setDescription</a>(String description) {</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        this.description = description;</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    }</div>
 </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="foldopen" id="foldopen00171" data-start="{" data-end="}">
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aaf7bbfc5e15a2477c299c11ced5ee278">  171</a></span>    <span class="keyword">public</span> List&lt;Post&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aaf7bbfc5e15a2477c299c11ced5ee278">getPosts</a>() {</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        <span class="keywordflow">return</span> posts;</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    }</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
+<div class="foldopen" id="foldopen00181" data-start="{" data-end="}">
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aaf7bbfc5e15a2477c299c11ced5ee278">  181</a></span>    <span class="keyword">public</span> List&lt;Post&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aaf7bbfc5e15a2477c299c11ced5ee278">getPosts</a>() {</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        <span class="keywordflow">return</span> posts;</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    }</div>
 </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="foldopen" id="foldopen00175" data-start="{" data-end="}">
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab42feac4b6fa03fe9738f987a452a46d">  175</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab42feac4b6fa03fe9738f987a452a46d">addPost</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html">Post</a> post) {</div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>        this.posts.add(post);</div>
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>    }</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    </div>
+<div class="foldopen" id="foldopen00185" data-start="{" data-end="}">
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a243a8364f72a8e73a6af224efef85bc8">  185</a></span>    <span class="keyword">public</span> Set&lt;User&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a243a8364f72a8e73a6af224efef85bc8">getReporters</a>() {</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        <span class="keywordflow">return</span> reporters;</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    }</div>
 </div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
-<div class="foldopen" id="foldopen00179" data-start="{" data-end="}">
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a482bca0d28c4417af1cf577264beef9b">  179</a></span>    <span class="keyword">public</span> List&lt;User&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a482bca0d28c4417af1cf577264beef9b">getFollowers</a>() {</div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>        <span class="keywordflow">return</span> this.followers;</div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    }</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
+<div class="foldopen" id="foldopen00189" data-start="{" data-end="}">
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a6b71a0080142c030b0d4da8c83a58b88">  189</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a6b71a0080142c030b0d4da8c83a58b88">setReporters</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> reporter) {</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        this.reporters.add(reporter);</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    }</div>
 </div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span> </div>
-<div class="foldopen" id="foldopen00183" data-start="{" data-end="}">
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4ede129d56c127ef71479acb89582337">  183</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4ede129d56c127ef71479acb89582337">addFollower</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> follower) {</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>        this.followers.add(follower);</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>    }</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span> </div>
+<div class="foldopen" id="foldopen00193" data-start="{" data-end="}">
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab42feac4b6fa03fe9738f987a452a46d">  193</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab42feac4b6fa03fe9738f987a452a46d">addPost</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html">Post</a> post) {</div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>        this.posts.add(post);</div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    }</div>
 </div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span> </div>
-<div class="foldopen" id="foldopen00187" data-start="{" data-end="}">
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab24ca9963668f03ca9b199f04219cf32">  187</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab24ca9963668f03ca9b199f04219cf32">removeFollower</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> follower) {</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        this.followers.remove(follower);</div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    }</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span> </div>
+<div class="foldopen" id="foldopen00197" data-start="{" data-end="}">
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a482bca0d28c4417af1cf577264beef9b">  197</a></span>    <span class="keyword">public</span> List&lt;User&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a482bca0d28c4417af1cf577264beef9b">getFollowers</a>() {</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        <span class="keywordflow">return</span> this.followers;</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>    }</div>
 </div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="foldopen" id="foldopen00191" data-start="{" data-end="}">
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a0955e559954d61fddbb3778863450a5a">  191</a></span>    <span class="keyword">public</span> List&lt;User&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a0955e559954d61fddbb3778863450a5a">getFollowing</a>() {</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>        <span class="keywordflow">return</span> this.following;</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    }</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span> </div>
+<div class="foldopen" id="foldopen00201" data-start="{" data-end="}">
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4ede129d56c127ef71479acb89582337">  201</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4ede129d56c127ef71479acb89582337">addFollower</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> follower) {</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        this.followers.add(follower);</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    }</div>
 </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="foldopen" id="foldopen00195" data-start="{" data-end="}">
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#abe3770fa901501719a78770d7011a217">  195</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#abe3770fa901501719a78770d7011a217">addFollowing</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> following) {</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        this.following.add(following);</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>    }</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span> </div>
+<div class="foldopen" id="foldopen00205" data-start="{" data-end="}">
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab24ca9963668f03ca9b199f04219cf32">  205</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab24ca9963668f03ca9b199f04219cf32">removeFollower</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> follower) {</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        this.followers.remove(follower);</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>    }</div>
 </div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span> </div>
-<div class="foldopen" id="foldopen00199" data-start="{" data-end="}">
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac714a9f1ce5371e94dc1b0f1d2ec1c2d">  199</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac714a9f1ce5371e94dc1b0f1d2ec1c2d">removeFollowing</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> following) {</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        this.following.remove(following);</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>    }</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="foldopen" id="foldopen00209" data-start="{" data-end="}">
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a0955e559954d61fddbb3778863450a5a">  209</a></span>    <span class="keyword">public</span> List&lt;User&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a0955e559954d61fddbb3778863450a5a">getFollowing</a>() {</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        <span class="keywordflow">return</span> this.following;</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    }</div>
 </div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span> </div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    @Override</div>
-<div class="foldopen" id="foldopen00204" data-start="{" data-end="}">
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d08c7dce739185aca6e308a4f030258">  204</a></span>    <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d08c7dce739185aca6e308a4f030258">hashCode</a>() {</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>        <span class="keyword">final</span> <span class="keywordtype">int</span> prime = 31;</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>        <span class="keywordtype">int</span> result = 1;</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>        result = prime * result + ((username == <span class="keyword">null</span>) ? 0 : username.hashCode());</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        <span class="keywordflow">return</span> result;</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>    }</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
+<div class="foldopen" id="foldopen00213" data-start="{" data-end="}">
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#abe3770fa901501719a78770d7011a217">  213</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#abe3770fa901501719a78770d7011a217">addFollowing</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> following) {</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>        this.following.add(following);</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    }</div>
 </div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span> </div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>    @Override</div>
-<div class="foldopen" id="foldopen00212" data-start="{" data-end="}">
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a7f65c5d546bbbcc7de67a146fbee8d48">  212</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a7f65c5d546bbbcc7de67a146fbee8d48">equals</a>(Object obj) {</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        <span class="keywordflow">if</span> (<span class="keyword">this</span> == obj)</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        <span class="keywordflow">if</span> (obj == <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        <span class="keywordflow">if</span> (getClass() != obj.getClass())</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>        <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> other = (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a>) obj;</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="keywordflow">if</span> (username == <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>            <span class="keywordflow">if</span> (other.username != <span class="keyword">null</span>)</div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!username.equals(other.username))</div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    }</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="foldopen" id="foldopen00217" data-start="{" data-end="}">
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac714a9f1ce5371e94dc1b0f1d2ec1c2d">  217</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac714a9f1ce5371e94dc1b0f1d2ec1c2d">removeFollowing</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> following) {</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        this.following.remove(following);</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>    }</div>
 </div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span> </div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    @Override</div>
-<div class="foldopen" id="foldopen00229" data-start="{" data-end="}">
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aba5d8675d4abfa582177f792918a21cb">  229</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aba5d8675d4abfa582177f792918a21cb">toString</a>() {</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;User [username=&quot;</span> + username + <span class="stringliteral">&quot;, role=&quot;</span> + role + <span class="stringliteral">&quot;, name=&quot;</span> + name + <span class="stringliteral">&quot;, profilePicture=&quot;</span> + profilePicture</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>                + <span class="stringliteral">&quot;, email=&quot;</span> + email + <span class="stringliteral">&quot;, cars=&quot;</span> + cars + <span class="stringliteral">&quot;, birthDate=&quot;</span> + birthDate + <span class="stringliteral">&quot;, gender=&quot;</span> + gender</div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>                + <span class="stringliteral">&quot;, location=&quot;</span> + location + <span class="stringliteral">&quot;, password=&quot;</span> + password + <span class="stringliteral">&quot;, description=&quot;</span> + description + <span class="stringliteral">&quot;, posts=&quot;</span></div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>                + posts + <span class="stringliteral">&quot;]&quot;</span>;</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    }</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span> </div>
+<div class="foldopen" id="foldopen00221" data-start="{" data-end="}">
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab0ac425ad16e82b0c5437d04563428da">  221</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab0ac425ad16e82b0c5437d04563428da">removeReporters</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> reporter) {</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>        this.reporters.remove(reporter);</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    }</div>
 </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>    </div>
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>}</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>    @Override</div>
+<div class="foldopen" id="foldopen00226" data-start="{" data-end="}">
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d08c7dce739185aca6e308a4f030258">  226</a></span>    <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d08c7dce739185aca6e308a4f030258">hashCode</a>() {</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>        <span class="keyword">final</span> <span class="keywordtype">int</span> prime = 31;</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>        <span class="keywordtype">int</span> result = 1;</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        result = prime * result + ((username == <span class="keyword">null</span>) ? 0 : username.hashCode());</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>        <span class="keywordflow">return</span> result;</div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>    }</div>
+</div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span> </div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>    @Override</div>
+<div class="foldopen" id="foldopen00234" data-start="{" data-end="}">
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a7f65c5d546bbbcc7de67a146fbee8d48">  234</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a7f65c5d546bbbcc7de67a146fbee8d48">equals</a>(Object obj) {</div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        <span class="keywordflow">if</span> (<span class="keyword">this</span> == obj)</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        <span class="keywordflow">if</span> (obj == <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>        <span class="keywordflow">if</span> (getClass() != obj.getClass())</div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> other = (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a>) obj;</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>        <span class="keywordflow">if</span> (username == <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            <span class="keywordflow">if</span> (other.username != <span class="keyword">null</span>)</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (!username.equals(other.username))</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    }</div>
+</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>    @Override</div>
+<div class="foldopen" id="foldopen00251" data-start="{" data-end="}">
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aba5d8675d4abfa582177f792918a21cb">  251</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aba5d8675d4abfa582177f792918a21cb">toString</a>() {</div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;User [username=&quot;</span> + username + <span class="stringliteral">&quot;, role=&quot;</span> + role + <span class="stringliteral">&quot;, name=&quot;</span> + name + <span class="stringliteral">&quot;, profilePicture=&quot;</span> + profilePicture</div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>                + <span class="stringliteral">&quot;, email=&quot;</span> + email + <span class="stringliteral">&quot;, cars=&quot;</span> + cars + <span class="stringliteral">&quot;, birthDate=&quot;</span> + birthDate + <span class="stringliteral">&quot;, gender=&quot;</span> + gender</div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>                + <span class="stringliteral">&quot;, location=&quot;</span> + location + <span class="stringliteral">&quot;, password=&quot;</span> + password + <span class="stringliteral">&quot;, description=&quot;</span> + description + <span class="stringliteral">&quot;, posts=&quot;</span></div>
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>                + posts + <span class="stringliteral">&quot;]&quot;</span>;</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>    }</div>
+</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    </div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>}</div>
 </div>
 <div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Post_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html">com.linkauto.restapi.model.Post</a></div><div class="ttdoc">Representa una publicación en la red social.</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html#l00031">Post.java:31</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">com.linkauto.restapi.model.User</a></div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00018">User.java:18</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a0955e559954d61fddbb3778863450a5a"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a0955e559954d61fddbb3778863450a5a">com.linkauto.restapi.model.User.getFollowing</a></div><div class="ttdeci">List&lt; User &gt; getFollowing()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00191">User.java:191</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a14da3d0e2dcc39589914593a5bff631b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a14da3d0e2dcc39589914593a5bff631b">com.linkauto.restapi.model.User.getBirthDate</a></div><div class="ttdeci">long getBirthDate()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00131">User.java:131</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a2aaf4596d106065abb6c2a97967c8b76"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2aaf4596d106065abb6c2a97967c8b76">com.linkauto.restapi.model.User.setProfilePicture</a></div><div class="ttdeci">void setProfilePicture(String profilePicture)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00111">User.java:111</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a2e45aaa4f7ee2aff0c19312f1b4b49ca"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2e45aaa4f7ee2aff0c19312f1b4b49ca">com.linkauto.restapi.model.User.getUsername</a></div><div class="ttdeci">String getUsername()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00083">User.java:83</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a360aec6d16f88ce3ae0c60cc69a88c86"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a360aec6d16f88ce3ae0c60cc69a88c86">com.linkauto.restapi.model.User.setLocation</a></div><div class="ttdeci">void setLocation(String location)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00151">User.java:151</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a3a3d24075af05b445bffde32cde24e2e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a3a3d24075af05b445bffde32cde24e2e">com.linkauto.restapi.model.User.setRole</a></div><div class="ttdeci">void setRole(Role role)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00095">User.java:95</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a456cc4374da23b76b82a98e159862612"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a456cc4374da23b76b82a98e159862612">com.linkauto.restapi.model.User.setPassword</a></div><div class="ttdeci">void setPassword(String password)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00159">User.java:159</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a482bca0d28c4417af1cf577264beef9b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a482bca0d28c4417af1cf577264beef9b">com.linkauto.restapi.model.User.getFollowers</a></div><div class="ttdeci">List&lt; User &gt; getFollowers()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00179">User.java:179</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a4ede129d56c127ef71479acb89582337"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4ede129d56c127ef71479acb89582337">com.linkauto.restapi.model.User.addFollower</a></div><div class="ttdeci">void addFollower(User follower)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00183">User.java:183</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a4fa3cfba59cd65a850003991412b34ba"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4fa3cfba59cd65a850003991412b34ba">com.linkauto.restapi.model.User.setEmail</a></div><div class="ttdeci">void setEmail(String email)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00119">User.java:119</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a51f3e4ff8ee84acdc3ed38b2792275e7"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a51f3e4ff8ee84acdc3ed38b2792275e7">com.linkauto.restapi.model.User.setDescription</a></div><div class="ttdeci">void setDescription(String description)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00167">User.java:167</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a53d262b05597b08f7e037d2c324012ba"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a53d262b05597b08f7e037d2c324012ba">com.linkauto.restapi.model.User.getGender</a></div><div class="ttdeci">Gender getGender()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00139">User.java:139</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a571c97b676cace1c32a0d6e8c4d2f68f"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a571c97b676cace1c32a0d6e8c4d2f68f">com.linkauto.restapi.model.User.getLocation</a></div><div class="ttdeci">String getLocation()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00147">User.java:147</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a5938e21bf7cb3a8722739047d19977b6"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5938e21bf7cb3a8722739047d19977b6">com.linkauto.restapi.model.User.getEmail</a></div><div class="ttdeci">String getEmail()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00115">User.java:115</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a5b494904d09a2402f979bc376d422853"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5b494904d09a2402f979bc376d422853">com.linkauto.restapi.model.User.setCars</a></div><div class="ttdeci">void setCars(List&lt; String &gt; cars)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00127">User.java:127</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a5e0c8616dcd1985b77631fd5aa8a4301"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5e0c8616dcd1985b77631fd5aa8a4301">com.linkauto.restapi.model.User.setBirthDate</a></div><div class="ttdeci">void setBirthDate(long birthDate)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00135">User.java:135</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a639bbeedf1508446960cdbbb9f70f63e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a639bbeedf1508446960cdbbb9f70f63e">com.linkauto.restapi.model.User.getRole</a></div><div class="ttdeci">Role getRole()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00091">User.java:91</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a749f67b40f8d3e3d488b4d0730c66532"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a749f67b40f8d3e3d488b4d0730c66532">com.linkauto.restapi.model.User.setName</a></div><div class="ttdeci">void setName(String name)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00103">User.java:103</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a75a24845d464ab10f36a573cc2aeebce"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a75a24845d464ab10f36a573cc2aeebce">com.linkauto.restapi.model.User.getName</a></div><div class="ttdeci">String getName()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00099">User.java:99</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a7f65c5d546bbbcc7de67a146fbee8d48"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a7f65c5d546bbbcc7de67a146fbee8d48">com.linkauto.restapi.model.User.equals</a></div><div class="ttdeci">boolean equals(Object obj)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00212">User.java:212</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a9d08c7dce739185aca6e308a4f030258"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d08c7dce739185aca6e308a4f030258">com.linkauto.restapi.model.User.hashCode</a></div><div class="ttdeci">int hashCode()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00204">User.java:204</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a9d938f25d29a677690584f660b44f1c3"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d938f25d29a677690584f660b44f1c3">com.linkauto.restapi.model.User.getCars</a></div><div class="ttdeci">List&lt; String &gt; getCars()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00123">User.java:123</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_aaf7bbfc5e15a2477c299c11ced5ee278"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aaf7bbfc5e15a2477c299c11ced5ee278">com.linkauto.restapi.model.User.getPosts</a></div><div class="ttdeci">List&lt; Post &gt; getPosts()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00171">User.java:171</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ab24ca9963668f03ca9b199f04219cf32"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab24ca9963668f03ca9b199f04219cf32">com.linkauto.restapi.model.User.removeFollower</a></div><div class="ttdeci">void removeFollower(User follower)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00187">User.java:187</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ab42feac4b6fa03fe9738f987a452a46d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab42feac4b6fa03fe9738f987a452a46d">com.linkauto.restapi.model.User.addPost</a></div><div class="ttdeci">void addPost(Post post)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00175">User.java:175</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ab881eb87d42392d02c2c63649322542e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab881eb87d42392d02c2c63649322542e">com.linkauto.restapi.model.User.getDescription</a></div><div class="ttdeci">String getDescription()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00163">User.java:163</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_aba5d8675d4abfa582177f792918a21cb"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aba5d8675d4abfa582177f792918a21cb">com.linkauto.restapi.model.User.toString</a></div><div class="ttdeci">String toString()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00229">User.java:229</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_abe3770fa901501719a78770d7011a217"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#abe3770fa901501719a78770d7011a217">com.linkauto.restapi.model.User.addFollowing</a></div><div class="ttdeci">void addFollowing(User following)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00195">User.java:195</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ac0ff9a3ac13a2255f7d222ce7cc7a944"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac0ff9a3ac13a2255f7d222ce7cc7a944">com.linkauto.restapi.model.User.setGender</a></div><div class="ttdeci">void setGender(Gender gender)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00143">User.java:143</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ac714a9f1ce5371e94dc1b0f1d2ec1c2d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac714a9f1ce5371e94dc1b0f1d2ec1c2d">com.linkauto.restapi.model.User.removeFollowing</a></div><div class="ttdeci">void removeFollowing(User following)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00199">User.java:199</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ac7466d36e6748f628dadf84772ebe422"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac7466d36e6748f628dadf84772ebe422">com.linkauto.restapi.model.User.getProfilePicture</a></div><div class="ttdeci">String getProfilePicture()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00107">User.java:107</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ad5ac164dfc4d622b58eeb67fbf177ada"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ad5ac164dfc4d622b58eeb67fbf177ada">com.linkauto.restapi.model.User.User</a></div><div class="ttdeci">User(String username, String name, String profilePicture, String email, List&lt; String &gt; cars, long birthDate, Gender gender, String location, String password, String description, List&lt; Post &gt; posts, List&lt; User &gt; followers, List&lt; User &gt; following)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00053">User.java:53</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_af5cb9a69829bb33e29c9287bd4c9b02c"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5cb9a69829bb33e29c9287bd4c9b02c">com.linkauto.restapi.model.User.getPassword</a></div><div class="ttdeci">String getPassword()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00155">User.java:155</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_af5e2994568207efed6c3ccf8df98410f"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5e2994568207efed6c3ccf8df98410f">com.linkauto.restapi.model.User.setUsername</a></div><div class="ttdeci">void setUsername(String username)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00087">User.java:87</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">com.linkauto.restapi.model.User</a></div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00023">User.java:23</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a0955e559954d61fddbb3778863450a5a"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a0955e559954d61fddbb3778863450a5a">com.linkauto.restapi.model.User.getFollowing</a></div><div class="ttdeci">List&lt; User &gt; getFollowing()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00209">User.java:209</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a14da3d0e2dcc39589914593a5bff631b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a14da3d0e2dcc39589914593a5bff631b">com.linkauto.restapi.model.User.getBirthDate</a></div><div class="ttdeci">long getBirthDate()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00141">User.java:141</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a243a8364f72a8e73a6af224efef85bc8"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a243a8364f72a8e73a6af224efef85bc8">com.linkauto.restapi.model.User.getReporters</a></div><div class="ttdeci">Set&lt; User &gt; getReporters()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00185">User.java:185</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a2aaf4596d106065abb6c2a97967c8b76"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2aaf4596d106065abb6c2a97967c8b76">com.linkauto.restapi.model.User.setProfilePicture</a></div><div class="ttdeci">void setProfilePicture(String profilePicture)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00121">User.java:121</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a2e45aaa4f7ee2aff0c19312f1b4b49ca"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2e45aaa4f7ee2aff0c19312f1b4b49ca">com.linkauto.restapi.model.User.getUsername</a></div><div class="ttdeci">String getUsername()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00093">User.java:93</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a360aec6d16f88ce3ae0c60cc69a88c86"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a360aec6d16f88ce3ae0c60cc69a88c86">com.linkauto.restapi.model.User.setLocation</a></div><div class="ttdeci">void setLocation(String location)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00161">User.java:161</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a3a3d24075af05b445bffde32cde24e2e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a3a3d24075af05b445bffde32cde24e2e">com.linkauto.restapi.model.User.setRole</a></div><div class="ttdeci">void setRole(Role role)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00105">User.java:105</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a456cc4374da23b76b82a98e159862612"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a456cc4374da23b76b82a98e159862612">com.linkauto.restapi.model.User.setPassword</a></div><div class="ttdeci">void setPassword(String password)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00169">User.java:169</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a482bca0d28c4417af1cf577264beef9b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a482bca0d28c4417af1cf577264beef9b">com.linkauto.restapi.model.User.getFollowers</a></div><div class="ttdeci">List&lt; User &gt; getFollowers()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00197">User.java:197</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a4ede129d56c127ef71479acb89582337"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4ede129d56c127ef71479acb89582337">com.linkauto.restapi.model.User.addFollower</a></div><div class="ttdeci">void addFollower(User follower)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00201">User.java:201</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a4fa3cfba59cd65a850003991412b34ba"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a4fa3cfba59cd65a850003991412b34ba">com.linkauto.restapi.model.User.setEmail</a></div><div class="ttdeci">void setEmail(String email)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00129">User.java:129</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a51f3e4ff8ee84acdc3ed38b2792275e7"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a51f3e4ff8ee84acdc3ed38b2792275e7">com.linkauto.restapi.model.User.setDescription</a></div><div class="ttdeci">void setDescription(String description)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00177">User.java:177</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a53d262b05597b08f7e037d2c324012ba"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a53d262b05597b08f7e037d2c324012ba">com.linkauto.restapi.model.User.getGender</a></div><div class="ttdeci">Gender getGender()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00149">User.java:149</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a571c97b676cace1c32a0d6e8c4d2f68f"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a571c97b676cace1c32a0d6e8c4d2f68f">com.linkauto.restapi.model.User.getLocation</a></div><div class="ttdeci">String getLocation()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00157">User.java:157</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a5938e21bf7cb3a8722739047d19977b6"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5938e21bf7cb3a8722739047d19977b6">com.linkauto.restapi.model.User.getEmail</a></div><div class="ttdeci">String getEmail()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00125">User.java:125</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a5b494904d09a2402f979bc376d422853"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5b494904d09a2402f979bc376d422853">com.linkauto.restapi.model.User.setCars</a></div><div class="ttdeci">void setCars(List&lt; String &gt; cars)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00137">User.java:137</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a5e0c8616dcd1985b77631fd5aa8a4301"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a5e0c8616dcd1985b77631fd5aa8a4301">com.linkauto.restapi.model.User.setBirthDate</a></div><div class="ttdeci">void setBirthDate(long birthDate)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00145">User.java:145</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a639bbeedf1508446960cdbbb9f70f63e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a639bbeedf1508446960cdbbb9f70f63e">com.linkauto.restapi.model.User.getRole</a></div><div class="ttdeci">Role getRole()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00101">User.java:101</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a6b71a0080142c030b0d4da8c83a58b88"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a6b71a0080142c030b0d4da8c83a58b88">com.linkauto.restapi.model.User.setReporters</a></div><div class="ttdeci">void setReporters(User reporter)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00189">User.java:189</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a749f67b40f8d3e3d488b4d0730c66532"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a749f67b40f8d3e3d488b4d0730c66532">com.linkauto.restapi.model.User.setName</a></div><div class="ttdeci">void setName(String name)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00113">User.java:113</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a75a24845d464ab10f36a573cc2aeebce"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a75a24845d464ab10f36a573cc2aeebce">com.linkauto.restapi.model.User.getName</a></div><div class="ttdeci">String getName()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00109">User.java:109</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a7f65c5d546bbbcc7de67a146fbee8d48"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a7f65c5d546bbbcc7de67a146fbee8d48">com.linkauto.restapi.model.User.equals</a></div><div class="ttdeci">boolean equals(Object obj)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00234">User.java:234</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a9d08c7dce739185aca6e308a4f030258"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d08c7dce739185aca6e308a4f030258">com.linkauto.restapi.model.User.hashCode</a></div><div class="ttdeci">int hashCode()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00226">User.java:226</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a9d938f25d29a677690584f660b44f1c3"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a9d938f25d29a677690584f660b44f1c3">com.linkauto.restapi.model.User.getCars</a></div><div class="ttdeci">List&lt; String &gt; getCars()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00133">User.java:133</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_aaf7bbfc5e15a2477c299c11ced5ee278"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aaf7bbfc5e15a2477c299c11ced5ee278">com.linkauto.restapi.model.User.getPosts</a></div><div class="ttdeci">List&lt; Post &gt; getPosts()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00181">User.java:181</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ab0ac425ad16e82b0c5437d04563428da"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab0ac425ad16e82b0c5437d04563428da">com.linkauto.restapi.model.User.removeReporters</a></div><div class="ttdeci">void removeReporters(User reporter)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00221">User.java:221</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ab24ca9963668f03ca9b199f04219cf32"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab24ca9963668f03ca9b199f04219cf32">com.linkauto.restapi.model.User.removeFollower</a></div><div class="ttdeci">void removeFollower(User follower)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00205">User.java:205</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ab42feac4b6fa03fe9738f987a452a46d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab42feac4b6fa03fe9738f987a452a46d">com.linkauto.restapi.model.User.addPost</a></div><div class="ttdeci">void addPost(Post post)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00193">User.java:193</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ab881eb87d42392d02c2c63649322542e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab881eb87d42392d02c2c63649322542e">com.linkauto.restapi.model.User.getDescription</a></div><div class="ttdeci">String getDescription()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00173">User.java:173</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_aba5d8675d4abfa582177f792918a21cb"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aba5d8675d4abfa582177f792918a21cb">com.linkauto.restapi.model.User.toString</a></div><div class="ttdeci">String toString()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00251">User.java:251</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_abe3770fa901501719a78770d7011a217"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#abe3770fa901501719a78770d7011a217">com.linkauto.restapi.model.User.addFollowing</a></div><div class="ttdeci">void addFollowing(User following)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00213">User.java:213</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ac0ff9a3ac13a2255f7d222ce7cc7a944"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac0ff9a3ac13a2255f7d222ce7cc7a944">com.linkauto.restapi.model.User.setGender</a></div><div class="ttdeci">void setGender(Gender gender)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00153">User.java:153</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ac714a9f1ce5371e94dc1b0f1d2ec1c2d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac714a9f1ce5371e94dc1b0f1d2ec1c2d">com.linkauto.restapi.model.User.removeFollowing</a></div><div class="ttdeci">void removeFollowing(User following)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00217">User.java:217</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ac7466d36e6748f628dadf84772ebe422"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ac7466d36e6748f628dadf84772ebe422">com.linkauto.restapi.model.User.getProfilePicture</a></div><div class="ttdeci">String getProfilePicture()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00117">User.java:117</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_ad5ac164dfc4d622b58eeb67fbf177ada"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ad5ac164dfc4d622b58eeb67fbf177ada">com.linkauto.restapi.model.User.User</a></div><div class="ttdeci">User(String username, String name, String profilePicture, String email, List&lt; String &gt; cars, long birthDate, Gender gender, String location, String password, String description, List&lt; Post &gt; posts, List&lt; User &gt; followers, List&lt; User &gt; following)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00062">User.java:62</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_af5cb9a69829bb33e29c9287bd4c9b02c"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5cb9a69829bb33e29c9287bd4c9b02c">com.linkauto.restapi.model.User.getPassword</a></div><div class="ttdeci">String getPassword()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00165">User.java:165</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_af5e2994568207efed6c3ccf8df98410f"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#af5e2994568207efed6c3ccf8df98410f">com.linkauto.restapi.model.User.setUsername</a></div><div class="ttdeci">void setUsername(String username)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00097">User.java:97</a></div></div>
 <div class="ttc" id="aenumcom_1_1linkauto_1_1restapi_1_1model_1_1Role_html"><div class="ttname"><a href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html">com.linkauto.restapi.model.Role</a></div><div class="ttdef"><b>Definition</b> <a href="Role_8java_source.html#l00003">Role.java:3</a></div></div>
 <div class="ttc" id="aenumcom_1_1linkauto_1_1restapi_1_1model_1_1Role_html_af58052952aa54a83a201637e14234e49"><div class="ttname"><a href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html#af58052952aa54a83a201637e14234e49">com.linkauto.restapi.model.Role.USER</a></div><div class="ttdeci">USER</div><div class="ttdef"><b>Definition</b> <a href="Role_8java_source.html#l00006">Role.java:5</a></div></div>
-<div class="ttc" id="aenumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender_html"><div class="ttname"><a href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">com.linkauto.restapi.model.User.Gender</a></div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00020">User.java:20</a></div></div>
-<div class="ttc" id="aenumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender_html_a55edc27c574f30f240e27ad215f4cae3"><div class="ttname"><a href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a55edc27c574f30f240e27ad215f4cae3">com.linkauto.restapi.model.User.Gender.MALE</a></div><div class="ttdeci">MALE</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00021">User.java:21</a></div></div>
-<div class="ttc" id="aenumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender_html_a89e1b73d87691d8e7f56a07de27b9dc2"><div class="ttname"><a href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a89e1b73d87691d8e7f56a07de27b9dc2">com.linkauto.restapi.model.User.Gender.FEMALE</a></div><div class="ttdeci">FEMALE</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00022">User.java:22</a></div></div>
+<div class="ttc" id="aenumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender_html"><div class="ttname"><a href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html">com.linkauto.restapi.model.User.Gender</a></div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00025">User.java:25</a></div></div>
+<div class="ttc" id="aenumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender_html_a55edc27c574f30f240e27ad215f4cae3"><div class="ttname"><a href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a55edc27c574f30f240e27ad215f4cae3">com.linkauto.restapi.model.User.Gender.MALE</a></div><div class="ttdeci">MALE</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00026">User.java:26</a></div></div>
+<div class="ttc" id="aenumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender_html_a89e1b73d87691d8e7f56a07de27b9dc2"><div class="ttname"><a href="enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html#a89e1b73d87691d8e7f56a07de27b9dc2">com.linkauto.restapi.model.User.Gender.FEMALE</a></div><div class="ttdeci">FEMALE</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00027">User.java:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
