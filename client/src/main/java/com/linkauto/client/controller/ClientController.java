@@ -450,4 +450,16 @@ public class ClientController {
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
         }
     }
+
+    @PostMapping("/admin/{username}/deleteReport") 
+    public String deleteReport(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.deleteReport(token, username);
+            redirectAttributes.addFlashAttribute("success", "Reporte de usuario " + username + " eliminado con éxito.");
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/");   
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar el reporte del usuario: " + e.getMessage());
+            return "redirect:/feed";
+        }
+    }
 }

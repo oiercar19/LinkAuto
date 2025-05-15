@@ -53,4 +53,6 @@ public interface ILinkAutoServiceProxy {
     void promoteToAdmin(String token, String username);
     void demoteToUser(String token, String username);
     void reportUser(String token, String username);
+
+    void deleteReport(String token, String username);
 }
