@@ -63,6 +63,94 @@ public class ClientControllerTest {
         assertEquals(token, clientController.token);
         assertEquals(user.username(), clientController.username);
     }
+    @Test
+    public void testReportUser_Success() {
+        clientController.token = "validToken";
+        String usernameToReport = "testUser";
+        String redirectUrl = "/feed";
+
+        doNothing().when(linkAutoServiceProxy).reportUser(clientController.token, usernameToReport);
+        
+        String result = clientController.reportUser(usernameToReport, redirectUrl, redirectAttributes);
+
+        verify(linkAutoServiceProxy).reportUser(clientController.token, usernameToReport);
+        verify(redirectAttributes).addFlashAttribute("success", "Usuario " + usernameToReport + " reportado correctamente");
+        assertEquals("redirect:/feed", result);
+    }
+
+    @Test
+    public void testReportUser_Success_NullRedirect() {
+        clientController.token = "validToken";
+        String usernameToReport = "testUser";
+
+        doNothing().when(linkAutoServiceProxy).reportUser(clientController.token, usernameToReport);
+        
+        String result = clientController.reportUser(usernameToReport, null, redirectAttributes);
+
+        verify(linkAutoServiceProxy).reportUser(clientController.token, usernameToReport);
+        verify(redirectAttributes).addFlashAttribute("success", "Usuario " + usernameToReport + " reportado correctamente");
+        assertEquals("redirect:/", result);
+    }
+
+    
+    @Test
+    public void testDeleteReport_Success() {
+        clientController.token = "validToken";
+        String username = "testUser"; 
+        String redirectUrl = "/feed";
+
+        doNothing().when(linkAutoServiceProxy).deleteReport(clientController.token, username);
+        
+        String result = clientController.deleteReport(username, redirectUrl, redirectAttributes);
+
+        verify(linkAutoServiceProxy).deleteReport(clientController.token, username);
+        verify(redirectAttributes).addFlashAttribute("success", "Reporte del usuario " + username + " eliminado correctamente");
+        assertEquals("redirect:/feed", result);
+    }
+            @Test
+            public void testReportUser_Error() {
+                clientController.token = "validToken";
+            String usernameToReport = "testUser";
+            String redirectUrl = "/feed";
+
+            doThrow(new RuntimeException("Error al reportar usuario")).when(linkAutoServiceProxy).reportUser("validToken", usernameToReport);
+
+            String result = clientController.reportUser(usernameToReport, redirectUrl, redirectAttributes);
+
+            verify(linkAutoServiceProxy).reportUser(clientController.token, usernameToReport);
+            verify(redirectAttributes).addFlashAttribute("error", "Error al reportar usuario: Error al reportar usuario");
+            assertEquals("redirect:/feed", result);
+        }
+
+    @Test
+    public void testDeleteReport_Success_NullRedirect() {
+        clientController.token = "validToken";
+        String username = "testUser";
+
+        doNothing().when(linkAutoServiceProxy).deleteReport(clientController.token, username);
+        
+        String result = clientController.deleteReport(username, null, redirectAttributes);
+
+        verify(linkAutoServiceProxy).deleteReport(clientController.token, username);
+        verify(redirectAttributes).addFlashAttribute("success", "Reporte del usuario " + username + " eliminado correctamente");
+        assertEquals("redirect:/", result);
+    }
+
+    @Test
+    public void testDeleteReport_Error() {
+        clientController.token = "validToken";
+        String username = "testUser";
+        String redirectUrl = "/feed";
+
+        doThrow(new RuntimeException("Error al eliminar reporte"))
+            .when(linkAutoServiceProxy).deleteReport(clientController.token, username);
+
+        String result = clientController.deleteReport(username, redirectUrl, redirectAttributes);
+
+        verify(linkAutoServiceProxy).deleteReport(clientController.token, username);
+        verify(redirectAttributes).addFlashAttribute("error", "Error al eliminar reporte: Error al eliminar reporte");
+        assertEquals("redirect:/feed", result);
+    }
 
     @Test
     public void testLogin_Failure() {
