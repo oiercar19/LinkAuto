@@ -13,12 +13,12 @@ var classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest =
     [ "testGetFollowingByUsername", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a28fb0c874cd3e3bc50af0c6b04f5dcaf", null ],
     [ "testGetPostById", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ab5234265bb8edb45918b189d9c7b72bb", null ],
     [ "testGetPostsByUsername", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a58f7afe7e24077c79e9c4638d0f44594", null ],
+    [ "testGetSavedPostsByUsername", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ad03c845ad224aa8b67bdb41c07052a2e", null ],
     [ "testGetUserByUsername_Found", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a75bf65594fbeeb4144001a02e9a197b1", null ],
     [ "testGetUserByUsername_NotFound", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ab14d066248c500105b6a5912e7dd6d0d", null ],
     [ "testLikePost", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a34e6311ffd94564ceb401c298690f128", null ],
-    [ "testReportUserReportedNotFound", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a871785400043595b5ad6793f00a88b04", null ],
-    [ "testReportUserReporterNotFound", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a1a5d8d8761a5b038403b1daf019b0e6e", null ],
-    [ "testReportUserSuccess", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a93723ee4db9286fadb19f6bdcbda973c", null ],
+    [ "testSavePost", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#af8edbef79eb4944a0f295d800b86343f", null ],
     [ "testUnfollowUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a036120fcd921d54411043b4f30f89e69", null ],
-    [ "testUnlikePost", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ad975e7c64817bad02356fef6fdc4ec1a", null ]
+    [ "testUnlikePost", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ad975e7c64817bad02356fef6fdc4ec1a", null ],
+    [ "testUnsavePost", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ab2d99fadf319f7b8444d3af524a593cf", null ]
 ];
