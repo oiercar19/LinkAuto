@@ -218,6 +218,10 @@ public class User {
         this.following.remove(following);
     }
 
+    public void removeReporters(User reporter) {
+        this.reporters.remove(reporter);
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
