@@ -308,7 +308,14 @@
                             <!-- Cambio: Convertir el nombre de usuario en un enlace al perfil -->
                             <a th:href="@{'/user/' + ${post.username}}" class="user-link" th:text="${post.username}">Nombre de Usuario</a>
                         </div>
-                        <div class="ms-auto">
+                        <div class="ms-auto d-flex align-items-center gap-2">
+                            <form th:if="${not #strings.equals(username, post.username)}" 
+                                th:action="@{'/user/' + ${post.username} + '/report?redirectUrl=/feed'}" 
+                                method="post">
+                                <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill" onclick="alert('Usuario reportado')">
+                                     <i class="bi bi-flag"></i> Reportar Usuario
+                                </button>
+                            </form>
                             <form th:if="${not #lists.contains(followings, post.username) && not #strings.equals(username, post.username)}"
                                 th:action="@{'/user/' + ${post.username} + '/follow?redirectUrl=/feed'}"
                                 method="post">
@@ -362,16 +369,6 @@
                             th:onclick="'getSharePost(' + ${post.id} + ', event)'">
                             <i class="bi bi-share"></i> Compartir
                         </button>
-
-                        <form th:if="${not #strings.equals(username, post.username)}" 
-                                th:action="@{'/user/' + ${post.username} + '/report?redirectUrl=/feed'}" 
-                                method="post" 
-                                style="display:inline;">
-                                <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill ms-2">
-                                     <i class="bi bi-flag"></i> Reportar Usuario
-                                </button>
-                            </form>
-                    </div>
                     <small th:text="${#temporals.format(T(java.time.Instant).ofEpochMilli(post.creationDate), 'dd MMM yyyy, HH:mm')}">Tiempo</small>
                 </div>
                 <!-- Comments Section -->
