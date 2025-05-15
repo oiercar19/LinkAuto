@@ -152,6 +152,7 @@
                         <tr>
                             <th>Usuario</th>
                             <th>Reportado por</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
 
@@ -169,6 +170,15 @@
                             <td>
                                 <span th:each="reporter : ${user.reporters}">
                                     <span th:text="${reporter.username}">reporter</span>
+                                </span>
+                            </td>
+                            <td>
+                                <span th:each="reporter : ${user.reporters}" class="d-inline-block me-2">
+                                    <form th:action="@{'/admin/' + ${reporter.username} + '/deleteReport?redirectUrl=/adminPanel'}" method="POST" style="display:inline;">
+                                        <button type="submit" class="btn btn-sm btn-danger">
+                                            <i class="fas fa-times"></i>
+                                        </button>
+                                    </form>
                                 </span>
                             </td>
                         </tr>
