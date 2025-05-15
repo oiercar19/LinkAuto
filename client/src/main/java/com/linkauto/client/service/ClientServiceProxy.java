@@ -424,5 +424,34 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+    @Override
+    public void reportUser(String token, String username) {
+        String url = String.format("%s/api/user/%s/report?userToken=%s", apiBaseUrl, username, token);
+        
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to report user: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void deleteReport(String token, String username) {
+        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", apiBaseUrl, username, token);
+        
+        try {
+            restTemplate.delete(url);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to delete report: " + e.getStatusText());
+            }
+        }
+    }
     
 }
