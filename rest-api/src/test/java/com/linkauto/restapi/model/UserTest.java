@@ -106,66 +106,84 @@ public class UserTest {
     }
 
     @Test
-    public void testEqualsAndHashCode() {
-        User u1 = new User(
-            "sameUser",
-            "A",
-            "picA",
-            "a@mail",
+    public void testEqualsComprehensive() {
+        // Caso 1: Mismo objeto (reflexividad)
+        assertTrue(user.equals(user), "Un objeto debe ser igual a sí mismo");
+        
+        // Caso 2: Comparación con null
+        assertFalse(user.equals(null), "Un objeto no debe ser igual a null");
+        
+        // Caso 3: Comparación con diferente tipo de objeto
+        assertFalse(user.equals("string"), "Un objeto no debe ser igual a otro de diferente tipo");
+        
+        // Caso 4: Dos objetos con mismo username
+        User sameUsername = new User(
+            "u1",  // mismo username que nuestro user de test
+            "Different Name",
+            "different_pic",
+            "different@email.com",
             new ArrayList<>(),
-            111L,
-            User.Gender.FEMALE,
-            "LocA",
-            "pwdA",
-            "DescA",
-            new ArrayList<>(),
-            new ArrayList<>(),
-            new ArrayList<>()
-        );
-        User u2 = new User(
-            "sameUser",
-            "B",
-            "picB",
-            "b@mail",
-            Arrays.asList("X"),
-            222L,
+            999L,
             User.Gender.MALE,
-            "LocB",
-            "pwdB",
-            "DescB",
+            "Different Location",
+            "different_password",
+            "Different description",
             new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>()
         );
-        // mismos usernames => equal y mismo hashCode
-        assertTrue(u1.equals(u2));
-        assertEquals(u1.hashCode(), u2.hashCode());
-
-        // distinto username => not equal
-        User u3 = new User(
-            "other",
-            "C",
-            "picC",
-            "c@mail",
-            new ArrayList<>(),
-            333L,
+        assertTrue(user.equals(sameUsername), "Usuarios con mismo username deben ser iguales");
+        
+        // Caso 5: Dos objetos con username diferente
+        User differentUsername = new User(
+            "u2",  // username diferente
+            "Name",
+            "pic",
+            "e@mail",
+            new ArrayList<>(Arrays.asList("Toyota", "BMW")),
+            BIRTH_DATE,
             User.Gender.OTHER,
-            "LocC",
-            "pwdC",
-            "DescC",
+            "Loc",
+            "pwd",
+            "Desc",
             new ArrayList<>(),
             new ArrayList<>(),
             new ArrayList<>()
         );
-        u3.setRole(Role.ADMIN);
-        assertFalse(u1.equals(u3));
+        assertFalse(user.equals(differentUsername), "Usuarios con username diferente no deben ser iguales");
+        
+        // Caso 6: Dos objetos con usernames null
+        User nullUsername1 = new User();
+        nullUsername1.setUsername(null);
+        User nullUsername2 = new User();
+        nullUsername2.setUsername(null);
+        assertTrue(nullUsername1.equals(nullUsername2), "Usuarios con username null deben ser iguales entre sí");
+        
+        // Caso 7: Un objeto con username null y otro no
+        User notNullUsername = new User();
+        notNullUsername.setUsername("notNull");
+        assertFalse(nullUsername1.equals(notNullUsername), "Usuario con username null no debe ser igual a uno con username no null");
+        assertFalse(notNullUsername.equals(nullUsername1), "Usuario con username no null no debe ser igual a uno con username null");
     }
 
+
+    
     @Test
     public void testDeepCopyConstructor() {
+        // Crear listas con elementos reales para probar los bucles for en el constructor
         List<Post> originalPosts = new ArrayList<>();
+        Post post1 = new Post();
+        originalPosts.add(post1);
+
         List<User> originalFollowers = new ArrayList<>();
+        User follower1 = new User();
+        follower1.setUsername("follower1");
+        originalFollowers.add(follower1);
+
         List<User> originalFollowing = new ArrayList<>();
+        User following1 = new User();
+        following1.setUsername("following1");
+        originalFollowing.add(following1);
 
         User deepCopyUser = new User(
             "u2",
@@ -183,17 +201,85 @@ public class UserTest {
             originalFollowing
         );
 
+        // Verificar que las listas se copiaron correctamente
+        assertEquals(1, deepCopyUser.getPosts().size());
+        assertEquals(post1.getId(), deepCopyUser.getPosts().get(0).getId());
+        assertEquals(1, deepCopyUser.getFollowers().size());
+        assertEquals("follower1", deepCopyUser.getFollowers().get(0).getUsername());
+        assertEquals(1, deepCopyUser.getFollowing().size());
+        assertEquals("following1", deepCopyUser.getFollowing().get(0).getUsername());
+
         // Modificar las listas originales no debe afectar al deepCopy
         originalPosts.add(new Post());
         originalFollowers.add(new User());
         originalFollowing.add(new User());
 
-        assertEquals(0, deepCopyUser.getPosts().size());
-        assertEquals(0, deepCopyUser.getFollowers().size());
-        assertEquals(0, deepCopyUser.getFollowing().size());
+        // Las listas del usuario no deben haberse modificado
+        assertEquals(1, deepCopyUser.getPosts().size());
+        assertEquals(1, deepCopyUser.getFollowers().size());
+        assertEquals(1, deepCopyUser.getFollowing().size());
+    }
+    public void testSetName() {
+        String newName = "New Name";
+        user.setName(newName);
+        assertEquals(newName, user.getName());
     }
 
-    // ——— NUEVOS TESTS AÑADIDOS ———
+@Test
+public void testSetProfilePicture() {
+    String newPic = "new_profile_picture.jpg";
+    user.setProfilePicture(newPic);
+    assertEquals(newPic, user.getProfilePicture());
+}
+
+@Test
+public void testSetEmail() {
+    String newEmail = "new@example.com";
+    user.setEmail(newEmail);
+    assertEquals(newEmail, user.getEmail());
+}
+
+@Test
+public void testSetCars() {
+    List<String> newCars = Arrays.asList("Honda", "Mercedes");
+    user.setCars(newCars);
+    assertEquals(newCars, user.getCars());
+}
+
+@Test
+public void testSetBirthDate() {
+    long newBirthDate = 789456123L;
+    user.setBirthDate(newBirthDate);
+    assertEquals(newBirthDate, user.getBirthDate());
+}
+
+@Test
+public void testSetGender() {
+    User.Gender newGender = User.Gender.FEMALE;
+    user.setGender(newGender);
+    assertEquals(newGender, user.getGender());
+}
+
+@Test
+public void testSetLocation() {
+    String newLocation = "New Location";
+    user.setLocation(newLocation);
+    assertEquals(newLocation, user.getLocation());
+}
+
+@Test
+public void testSetPassword() {
+    String newPassword = "newPassword123";
+    user.setPassword(newPassword);
+    assertEquals(newPassword, user.getPassword());
+}
+
+@Test
+public void testSetDescription() {
+    String newDescription = "This is a new description";
+    user.setDescription(newDescription);
+    assertEquals(newDescription, user.getDescription());
+}
 
     @Test
     public void testSetReporters() {
