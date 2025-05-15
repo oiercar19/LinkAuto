@@ -21,15 +21,14 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.linkauto.client.data.Comment;
 import com.linkauto.client.data.CommentCreator;
 import com.linkauto.client.data.Credentials;
+import com.linkauto.client.data.Event;
+import com.linkauto.client.data.EventCreator;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
 import com.linkauto.client.service.ClientServiceProxy;
 
 import jakarta.servlet.http.HttpServletRequest;
-
-
-
 
 @Controller
 public class ClientController {
@@ -436,5 +435,141 @@ public class ClientController {
           redirectAttributes.addFlashAttribute("error", "Error al degradar al administrador: " + e.getMessage());
       }
       return "redirect:/adminPanel"; // Redirect back to the admin panel
+  }
+
+
+  @GetMapping("/events")
+  public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
+      if (token == null) {
+          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para ver los eventos.");
+          return "redirect:/";
+      }
+
+      try {
+          List<Event> events = linkAutoServiceProxy.getAllEvents();
+          model.addAttribute("events", events);
+          
+          // Añadir datos del usuario actual
+          User currentUser = linkAutoServiceProxy.getUserProfile(token);
+          model.addAttribute("currentUser", currentUser);
+          model.addAttribute("username", this.username);
+          model.addAttribute("profilePicture", currentUser.profilePicture());
+          model.addAttribute("role", currentUser.role());
+          
+          return "events"; // Vista para mostrar todos los eventos
+      } catch (Exception e) {
+          redirectAttributes.addFlashAttribute("error", "Error al obtener los eventos: " + e.getMessage());
+          return "redirect:/feed";
+      }
+  }
+
+  @GetMapping("/events/{eventId}")
+  public String getEventDetails(@PathVariable Long eventId, Model model, RedirectAttributes redirectAttributes) {
+      if (token == null) {
+          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para ver los detalles del evento.");
+          return "redirect:/";
+      }
+
+      try {
+          Event event = linkAutoServiceProxy.getEventById(eventId);
+          model.addAttribute("event", event);
+          
+          // Añadir datos del usuario actual
+          User currentUser = linkAutoServiceProxy.getUserProfile(token);
+          model.addAttribute("currentUser", currentUser);
+          model.addAttribute("username", this.username);
+          model.addAttribute("profilePicture", currentUser.profilePicture());
+          model.addAttribute("role", currentUser.role());
+          
+          return "eventDetails"; // Vista para mostrar los detalles de un evento específico
+      } catch (Exception e) {
+          redirectAttributes.addFlashAttribute("error", "Error al obtener los detalles del evento: " + e.getMessage());
+          return "redirect:/events";
+      }
+  }
+
+  @GetMapping("/events/create")
+  public String showCreateEventForm(Model model, RedirectAttributes redirectAttributes) {
+      if (token == null) {
+          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para crear un evento.");
+          return "redirect:/";
+      }
+
+      // Añadir datos del usuario actual
+      User currentUser = linkAutoServiceProxy.getUserProfile(token);
+      model.addAttribute("currentUser", currentUser);
+      model.addAttribute("username", this.username);
+      model.addAttribute("profilePicture", currentUser.profilePicture());
+      model.addAttribute("role", currentUser.role());
+      
+      return "createEvent"; // Vista del formulario para crear un evento
+  }
+
+  @PostMapping("/events/create")
+  public String createEvent(@RequestBody EventCreator event, RedirectAttributes redirectAttributes) {
+      if (token == null) {
+          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para crear un evento.");
+          return "redirect:/";
+      }
+
+      try {
+          linkAutoServiceProxy.createEvent(token, event);
+          redirectAttributes.addFlashAttribute("success", "Evento creado con éxito");
+          return "redirect:/events"; // Redirigir a la página de eventos después de crear el evento
+      } catch (Exception e) {
+          redirectAttributes.addFlashAttribute("error", "Error al crear el evento: " + e.getMessage());
+          return "redirect:/events/create"; // Redirigir al formulario de creación en caso de error
+      }
+  }
+
+  @PostMapping("/events/{eventId}/delete")
+  public String deleteEvent(@PathVariable Long eventId, RedirectAttributes redirectAttributes) {
+      if (token == null) {
+          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para eliminar un evento.");
+          return "redirect:/";
+      }
+
+      try {
+          linkAutoServiceProxy.deleteEvent(token, eventId);
+          redirectAttributes.addFlashAttribute("success", "Evento eliminado con éxito.");
+          return "redirect:/events"; // Redirigir a la página de eventos después de eliminar el evento
+      } catch (Exception e) {
+          redirectAttributes.addFlashAttribute("error", "Error al eliminar el evento: " + e.getMessage());
+          return "redirect:/events"; // Redirigir a la página de eventos en caso de error
+      }
+  }
+
+  @PostMapping("/events/{eventId}/participate")
+  public String participateInEvent(@PathVariable Long eventId, RedirectAttributes redirectAttributes) {
+      if (token == null) {
+          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para participar en un evento.");
+          return "redirect:/";
+      }
+
+      try {
+          linkAutoServiceProxy.participateInEvent(token, eventId);
+          redirectAttributes.addFlashAttribute("success", "Has confirmado tu participación en el evento.");
+          return "redirect:/events/" + eventId; // Redirigir a los detalles del evento
+      } catch (Exception e) {
+          redirectAttributes.addFlashAttribute("error", "Error al confirmar participación: " + e.getMessage());
+          return "redirect:/events/" + eventId; // Redirigir a los detalles del evento en caso de error
+      }
+  }
+
+  @PostMapping("/events/{eventId}/cancel")
+  public String cancelParticipation(@PathVariable Long eventId, RedirectAttributes redirectAttributes) {
+      if (token == null) {
+          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para cancelar tu participación en un evento.");
+          return "redirect:/";
+      }
+
+      try {
+          linkAutoServiceProxy.cancelParticipation(token, eventId);
+          redirectAttributes.addFlashAttribute("success", "Has cancelado tu participación en el evento.");
+          return "redirect:/events/" + eventId; // Redirigir a los detalles del evento
+      } catch (Exception e) {
+          redirectAttributes.addFlashAttribute("error", "Error al cancelar participación: " + e.getMessage());
+          return "redirect:/events/" + eventId; // Redirigir a los detalles del evento en caso de error
+      }
   }
 }
