@@ -4,7 +4,7 @@ var classcom_1_1linkauto_1_1restapi_1_1model_1_1Post =
     [ "Post", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#acc9360de6d1e9c88c8addadd62ec6aac", null ],
     [ "addComentario", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#a585306968895da1839af4def9eb02e40", null ],
     [ "addImagen", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#ae3d54343b031486e90e71df6cfa8d5e9", null ],
-    [ "equals", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#aaf56b7c4ba9eec3e8df20c9b00691d73", null ],
+    [ "equals", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#a80423ac51ba674c8d378582927dede11", null ],
     [ "getComentarios", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#ac1895c0eda78fbcee9ff55efad4346ed", null ],
     [ "getFechaCreacion", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#a0e4857a8dba95ffefa1da2493e193609", null ],
     [ "getId", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#a11e365aab9fa3929b74109863730e513", null ],

@@ -148,18 +148,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1a1678f070379c7bb993458bfc4b3d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17929078e5aec498a1bac004bdf189c0" id="r_a17929078e5aec498a1bac004bdf189c0"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; List&lt; CommentReturnerDTO &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a17929078e5aec498a1bac004bdf189c0">getCommentsByPostId</a> ( @Parameter(name=&quot;post_id&quot;, description=&quot;ID of the post&quot;, required=true, example=&quot;1&quot;) @PathVariable Long post_id)</td></tr>
 <tr class="separator:a17929078e5aec498a1bac004bdf189c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8a9e45dcf88ad1537a943878c7b153b" id="r_ab8a9e45dcf88ad1537a943878c7b153b"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; Void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ab8a9e45dcf88ad1537a943878c7b153b">savePost</a> ( @Parameter(name=&quot;post_id&quot;, description=&quot;ID of the post to save&quot;, required=true, example=&quot;1&quot;) @PathVariable Long post_id, @Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String userToken)</td></tr>
-<tr class="separator:ab8a9e45dcf88ad1537a943878c7b153b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a47711a0d35d244497dd6d080d0a8ef3f" id="r_a47711a0d35d244497dd6d080d0a8ef3f"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; Void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a47711a0d35d244497dd6d080d0a8ef3f">unsavePost</a> ( @Parameter(name=&quot;post_id&quot;, description=&quot;ID of the post to unsave&quot;, required=true, example=&quot;1&quot;) @PathVariable Long post_id, @Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String userToken)</td></tr>
-<tr class="separator:a47711a0d35d244497dd6d080d0a8ef3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a577e6c21e984f623c0e38c686a053dff" id="r_a577e6c21e984f623c0e38c686a053dff"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; List&lt; PostReturnerDTO &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a577e6c21e984f623c0e38c686a053dff">getSavedPostsByUsername</a> ( @Parameter(name=&quot;username&quot;, description=&quot;Username of the user&quot;, required=true, example=&quot;johndoe&quot;) @PathVariable String username)</td></tr>
-<tr class="separator:a577e6c21e984f623c0e38c686a053dff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaf7d322e33e572b2446e6dcb06483cda" id="r_aaf7d322e33e572b2446e6dcb06483cda"><td class="memItemLeft" align="right" valign="top">List&lt; PostReturnerDTO &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#aaf7d322e33e572b2446e6dcb06483cda">parsePostsToPostReturnerDTO</a> (List&lt; Post &gt; posts)</td></tr>
-<tr class="separator:aaf7d322e33e572b2446e6dcb06483cda"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc9881b076d40a644037cdd1ec1c572e" id="r_adc9881b076d40a644037cdd1ec1c572e"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; Void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#adc9881b076d40a644037cdd1ec1c572e">reportUser</a> ( @Parameter(name=&quot;username&quot;, description=&quot;Username of the user to report&quot;, required=true, example=&quot;johndoe&quot;) @PathVariable String username, @Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user making the report&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String userToken)</td></tr>
+<tr class="separator:adc9881b076d40a644037cdd1ec1c572e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02fd4189b5a6a97ae611726f83b53837" id="r_a02fd4189b5a6a97ae611726f83b53837"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; Void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a02fd4189b5a6a97ae611726f83b53837">deleteReport</a> ( @Parameter(name=&quot;username&quot;, description=&quot;Username of the user to delete report&quot;, required=true, example=&quot;johndoe&quot;) @PathVariable String username, @Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user making the report&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String userToken)</td></tr>
+<tr class="separator:a02fd4189b5a6a97ae611726f83b53837"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00039">39</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00041">41</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a03a66262fffc687a333ae9a0f1a7cac2" name="a03a66262fffc687a333ae9a0f1a7cac2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a03a66262fffc687a333ae9a0f1a7cac2">&#9670;&#160;</a></span>LinkAutoController()</h2>
@@ -195,7 +191,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00045">45</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00047">47</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -240,7 +236,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00362">362</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00363">363</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -278,7 +274,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00068">68</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00070">70</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -316,7 +312,45 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00086">86</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00087">87</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+
+</div>
+</div>
+<a id="a02fd4189b5a6a97ae611726f83b53837" name="a02fd4189b5a6a97ae611726f83b53837"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02fd4189b5a6a97ae611726f83b53837">&#9670;&#160;</a></span>deleteReport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ResponseEntity&lt; Void &gt; com.linkauto.restapi.controller.LinkAutoController.deleteReport </td>
+          <td>(</td>
+          <td class="paramtype">@Parameter(name=&quot;username&quot;, description=&quot;Username of the user to delete report&quot;, required=true, example=&quot;johndoe&quot;) @PathVariable String&#160;</td>
+          <td class="paramname"><em>username</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">@Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user making the report&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String&#160;</td>
+          <td class="paramname"><em>userToken</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00427">427</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -354,7 +388,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00153">153</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00154">154</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -392,7 +426,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00216">216</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00217">217</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -430,7 +464,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00301">301</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00302">302</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -457,7 +491,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00378">378</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00379">379</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -484,7 +518,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00051">51</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00053">53</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -511,7 +545,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00139">139</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00140">140</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -539,7 +573,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00389">389</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00390">390</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -567,35 +601,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00058">58</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
-
-</div>
-</div>
-<a id="a577e6c21e984f623c0e38c686a053dff" name="a577e6c21e984f623c0e38c686a053dff"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a577e6c21e984f623c0e38c686a053dff">&#9670;&#160;</a></span>getSavedPostsByUsername()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">ResponseEntity&lt; List&lt; PostReturnerDTO &gt; &gt; com.linkauto.restapi.controller.LinkAutoController.getSavedPostsByUsername </td>
-          <td>(</td>
-          <td class="paramtype">@Parameter(name=&quot;username&quot;, description=&quot;Username of the user&quot;, required=true, example=&quot;johndoe&quot;) @PathVariable String&#160;</td>
-          <td class="paramname"><em>username</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00433">433</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00060">60</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -623,7 +629,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00263">263</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00264">264</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -651,7 +657,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00101">101</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00102">102</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -679,7 +685,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00275">275</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00276">276</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -707,7 +713,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00288">288</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00289">289</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -735,7 +741,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00253">253</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00254">254</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -773,35 +779,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00332">332</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
-
-</div>
-</div>
-<a id="aaf7d322e33e572b2446e6dcb06483cda" name="aaf7d322e33e572b2446e6dcb06483cda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaf7d322e33e572b2446e6dcb06483cda">&#9670;&#160;</a></span>parsePostsToPostReturnerDTO()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">List&lt; PostReturnerDTO &gt; com.linkauto.restapi.controller.LinkAutoController.parsePostsToPostReturnerDTO </td>
-          <td>(</td>
-          <td class="paramtype">List&lt; Post &gt;&#160;</td>
-          <td class="paramname"><em>posts</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00442">442</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00333">333</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -839,12 +817,12 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00180">180</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00181">181</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
-<a id="ab8a9e45dcf88ad1537a943878c7b153b" name="ab8a9e45dcf88ad1537a943878c7b153b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8a9e45dcf88ad1537a943878c7b153b">&#9670;&#160;</a></span>savePost()</h2>
+<a id="adc9881b076d40a644037cdd1ec1c572e" name="adc9881b076d40a644037cdd1ec1c572e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adc9881b076d40a644037cdd1ec1c572e">&#9670;&#160;</a></span>reportUser()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -853,15 +831,15 @@ Public Member Functions</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">ResponseEntity&lt; Void &gt; com.linkauto.restapi.controller.LinkAutoController.savePost </td>
+          <td class="memname">ResponseEntity&lt; Void &gt; com.linkauto.restapi.controller.LinkAutoController.reportUser </td>
           <td>(</td>
-          <td class="paramtype">@Parameter(name=&quot;post_id&quot;, description=&quot;ID of the post to save&quot;, required=true, example=&quot;1&quot;) @PathVariable Long&#160;</td>
-          <td class="paramname"><em>post_id</em>, </td>
+          <td class="paramtype">@Parameter(name=&quot;username&quot;, description=&quot;Username of the user to report&quot;, required=true, example=&quot;johndoe&quot;) @PathVariable String&#160;</td>
+          <td class="paramname"><em>username</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">@Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String&#160;</td>
+          <td class="paramtype">@Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user making the report&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String&#160;</td>
           <td class="paramname"><em>userToken</em>&#160;</td>
         </tr>
         <tr>
@@ -877,7 +855,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00403">403</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00404">404</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -915,7 +893,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00316">316</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00317">317</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -953,45 +931,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00347">347</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
-
-</div>
-</div>
-<a id="a47711a0d35d244497dd6d080d0a8ef3f" name="a47711a0d35d244497dd6d080d0a8ef3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a47711a0d35d244497dd6d080d0a8ef3f">&#9670;&#160;</a></span>unsavePost()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">ResponseEntity&lt; Void &gt; com.linkauto.restapi.controller.LinkAutoController.unsavePost </td>
-          <td>(</td>
-          <td class="paramtype">@Parameter(name=&quot;post_id&quot;, description=&quot;ID of the post to unsave&quot;, required=true, example=&quot;1&quot;) @PathVariable Long&#160;</td>
-          <td class="paramname"><em>post_id</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">@Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String&#160;</td>
-          <td class="paramname"><em>userToken</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00418">418</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00348">348</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -1029,7 +969,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00113">113</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00114">114</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
