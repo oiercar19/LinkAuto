@@ -20,5 +20,6 @@ var classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest =
     [ "testSavePost", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#af8edbef79eb4944a0f295d800b86343f", null ],
     [ "testUnfollowUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a036120fcd921d54411043b4f30f89e69", null ],
     [ "testUnlikePost", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ad975e7c64817bad02356fef6fdc4ec1a", null ],
-    [ "testUnsavePost", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ab2d99fadf319f7b8444d3af524a593cf", null ]
+    [ "testUnsavePost", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ab2d99fadf319f7b8444d3af524a593cf", null ],
+    [ "testVerifyUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a62184590f9d5a487557d8c81211e61f4", null ]
 ];

@@ -161,6 +161,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a15f6f51ded899990515f9a9d89997ac5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a231906fa920ebbf08995ddf2044d14a4" id="r_a231906fa920ebbf08995ddf2044d14a4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a231906fa920ebbf08995ddf2044d14a4">demoteToUser</a> (String token, String username)</td></tr>
 <tr class="separator:a231906fa920ebbf08995ddf2044d14a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1c18fbfb490a5aeb37e082fbbc0883c" id="r_ab1c18fbfb490a5aeb37e082fbbc0883c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ab1c18fbfb490a5aeb37e082fbbc0883c">verifyUser</a> (String token, String username)</td></tr>
+<tr class="separator:ab1c18fbfb490a5aeb37e082fbbc0883c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f4d78c97a6b0b9bc70b344aaadfce96" id="r_a3f4d78c97a6b0b9bc70b344aaadfce96"><td class="memItemLeft" align="right" valign="top">Boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a3f4d78c97a6b0b9bc70b344aaadfce96">isUserVerified</a> (String username)</td></tr>
+<tr class="separator:a3f4d78c97a6b0b9bc70b344aaadfce96"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd981bbf902bec12717c110183ab6e41" id="r_abd981bbf902bec12717c110183ab6e41"><td class="memItemLeft" align="right" valign="top">List&lt; Post &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#abd981bbf902bec12717c110183ab6e41">getUserSavedPosts</a> (String username)</td></tr>
 <tr class="separator:abd981bbf902bec12717c110183ab6e41"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01cc17420c2a9e0d7750c060500faac6" id="r_a01cc17420c2a9e0d7750c060500faac6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a01cc17420c2a9e0d7750c060500faac6">savePost</a> (String token, Long postId)</td></tr>
@@ -556,6 +560,26 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a3f4d78c97a6b0b9bc70b344aaadfce96" name="a3f4d78c97a6b0b9bc70b344aaadfce96"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3f4d78c97a6b0b9bc70b344aaadfce96">&#9670;&#160;</a></span>isUserVerified()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">Boolean com.linkauto.client.service.ILinkAutoServiceProxy.isUserVerified </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>username</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a1601094949a646b04abd18de6f7d8cf5">com.linkauto.client.service.ClientServiceProxy</a>.</p>
+
+</div>
+</div>
 <a id="a69066c9ac46397b3de8cc6c137f8e3ec" name="a69066c9ac46397b3de8cc6c137f8e3ec"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a69066c9ac46397b3de8cc6c137f8e3ec">&#9670;&#160;</a></span>likePost()</h2>
 
@@ -843,6 +867,36 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a0737fe82122848deb42dc89e7b1ddc98">com.linkauto.client.service.ClientServiceProxy</a>.</p>
+
+</div>
+</div>
+<a id="ab1c18fbfb490a5aeb37e082fbbc0883c" name="ab1c18fbfb490a5aeb37e082fbbc0883c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1c18fbfb490a5aeb37e082fbbc0883c">&#9670;&#160;</a></span>verifyUser()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void com.linkauto.client.service.ILinkAutoServiceProxy.verifyUser </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>token</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>username</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Implemented in <a class="el" href="classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a80e2cc2ea2bb7a518547843f3eaeae95">com.linkauto.client.service.ClientServiceProxy</a>.</p>
 
 </div>
 </div>

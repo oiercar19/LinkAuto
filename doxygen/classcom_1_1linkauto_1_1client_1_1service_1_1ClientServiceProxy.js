@@ -17,6 +17,7 @@ var classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy =
     [ "getUserPosts", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a99b5ed95aac15081aea4e8cda8f9eeec", null ],
     [ "getUserProfile", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#ac4bc2a3e8089eeb2c9b2e30360770769", null ],
     [ "getUserSavedPosts", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a4dad859b6d0b08fb8c9730680874782c", null ],
+    [ "isUserVerified", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a1601094949a646b04abd18de6f7d8cf5", null ],
     [ "likePost", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a025e99ca74b185d67977b0b7c4f76a5f", null ],
     [ "login", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a16fe4f4f51579cb6793e2a1268b83b7a", null ],
     [ "logout", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a927e1cf083bf9043502271802f4d0d43", null ],
@@ -27,5 +28,6 @@ var classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy =
     [ "unfollowUser", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a7e5078d55156fbf861e72c88a9df515e", null ],
     [ "unlikePost", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a48177f8dbbc800a69aa92bfbb26d458c", null ],
     [ "unsavePost", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a2f1b5e2c18b3f97ad9abe98e0220aa07", null ],
-    [ "updateProfile", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a0737fe82122848deb42dc89e7b1ddc98", null ]
+    [ "updateProfile", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a0737fe82122848deb42dc89e7b1ddc98", null ],
+    [ "verifyUser", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a80e2cc2ea2bb7a518547843f3eaeae95", null ]
 ];

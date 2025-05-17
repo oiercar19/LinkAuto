@@ -1,6 +1,6 @@
 var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO =
 [
-    [ "UserReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a4aa7696dafcd27a83d68257c0d54e791", null ],
+    [ "UserReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ac3a337ebd4ce330461aca5dcc129d641", null ],
     [ "addPost", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a96683c6c6b8138357ec515d8a6aa121d", null ],
     [ "addSavedPost", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a35d0aa8b91565c17ab53e00daf364bd6", null ],
     [ "getBirthDate", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae49330508c8b4bf083a6f955ac29717d", null ],
@@ -8,6 +8,7 @@ var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO =
     [ "getDescription", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aa5e9db0f60acbc8f43bb593d0ac2b5c3", null ],
     [ "getEmail", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaa23e96ac47df5bfdd524c32958383ed", null ],
     [ "getGender", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef75dc899268f84c7ceda50854adb6f", null ],
+    [ "getIsVerified", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a4c2797c30b9a2f56a53ada021df03a6e", null ],
     [ "getLocation", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af8fe96c899fcb005ff184b103ec4a637", null ],
     [ "getName", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a91dc25f84a7e65d0027470204064e043", null ],
     [ "getPassword", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaf473ea24890ed553b5c2fe3d9ab4704", null ],
@@ -21,6 +22,7 @@ var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO =
     [ "setDescription", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a357133532125c29d5de1b5cbbeb9495a", null ],
     [ "setEmail", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0704d1f853b2dbe69f2a299eebaf18d6", null ],
     [ "setGender", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6bc0c724c5a9c11e75c1f5620206b834", null ],
+    [ "setIsVerified", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aeee5d56c368cc2613807aba4946b3d9d", null ],
     [ "setLocation", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aab480bf13d83ca4fd90798cd1c7da689", null ],
     [ "setName", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0d7f87baca680ba019d31f42cb53c1f5", null ],
     [ "setPassword", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5cce60b1db40a8126337f337288b9c36", null ],

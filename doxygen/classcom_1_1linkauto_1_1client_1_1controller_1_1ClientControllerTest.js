@@ -61,5 +61,7 @@ var classcom_1_1linkauto_1_1client_1_1controller_1_1ClientControllerTest =
     [ "testUpdateProfile_Error", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientControllerTest.html#a5c13a54983a5a18f4b6e0aef01b84ae0", null ],
     [ "testUpdateProfile_Success", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientControllerTest.html#a331040950a779bb8ac42c5e7b1fc8a3a", null ],
     [ "testUserProfile_WithInvalidToken", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientControllerTest.html#a8a593355e25206f3ab05194fa6628484", null ],
-    [ "testUserProfile_WithValidToken", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientControllerTest.html#a97ed05256627cc3ded4b4867e215247d", null ]
+    [ "testUserProfile_WithValidToken", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientControllerTest.html#a97ed05256627cc3ded4b4867e215247d", null ],
+    [ "testVerifyUser_Error", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientControllerTest.html#a1d4fcac24d0a3b0cb6bfb5fb99d90c13", null ],
+    [ "testVerifyUser_Success", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientControllerTest.html#af059cb14be3f2c4c9003b044c63c6377", null ]
 ];

@@ -27,6 +27,7 @@ var classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController =
     [ "unsavePost", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a7cb04394f9dd4087a46dd8b621b6c7a9", null ],
     [ "updateProfile", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#aeef2ba8442473ad6ffc0cb35713ac331", null ],
     [ "userProfile", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#acef59d19a4e4ebc8d3f67c78fbbaaebd", null ],
+    [ "verifyUser", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#ad1136dc28eba56927db5b11f5f32c931", null ],
     [ "linkAutoServiceProxy", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#af35621b1037d6a38c46d057bafd86b80", null ],
     [ "token", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#acade04eb7353a7f0e89ccbd20ce66cc7", null ],
     [ "username", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#ab50125ec28a68b9cfb3f060b440512db", null ]

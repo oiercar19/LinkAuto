@@ -1,5 +1,6 @@
 var searchData=
 [
-  ['y_20configuración_0',['Instalación y configuración',['../md_README.html#autotoc_md3',1,'']]],
-  ['y_20soporte_1',['Contacto y soporte',['../md_README.html#autotoc_md14',1,'']]]
+  ['webclientaplicationtest_2ejava_0',['WebClientAplicationTest.java',['../WebClientAplicationTest_8java.html',1,'']]],
+  ['webclientapplication_1',['WebClientApplication',['../classcom_1_1linkauto_1_1client_1_1WebClientApplication.html',1,'com::linkauto::client']]],
+  ['webclientapplication_2ejava_2',['WebClientApplication.java',['../WebClientApplication_8java.html',1,'']]]
 ];

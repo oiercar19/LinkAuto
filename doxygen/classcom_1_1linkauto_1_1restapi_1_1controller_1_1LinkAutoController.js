@@ -18,6 +18,7 @@ var classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController =
     [ "getUserFollowers", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ae24d8c1eff51ab801b34e96f4a47fdb6", null ],
     [ "getUserFollowing", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a9a99e64fb4c9b45473e332edfcce0f01", null ],
     [ "getUserPosts", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a4709d6d858e0a22eec91e9144039086f", null ],
+    [ "isUserVerified", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a238e76f8f510e5b42aa556e7fe9437ca", null ],
     [ "likePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#af6df5a8fb5408f5f0fba5659fffc4b0d", null ],
     [ "parsePostsToPostReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#aaf7d322e33e572b2446e6dcb06483cda", null ],
     [ "promoteToAdmin", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a9c3a62ad52f6851265593abd99bf8311", null ],
@@ -25,5 +26,6 @@ var classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController =
     [ "unfollowUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ac9a64be8c7d1f00065b8a3f9a9fe8311", null ],
     [ "unlikePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ae010509eac5f28e49448a042db25ef82", null ],
     [ "unsavePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a47711a0d35d244497dd6d080d0a8ef3f", null ],
-    [ "updateUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a66e48623abca43018c73054558bc0549", null ]
+    [ "updateUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a66e48623abca43018c73054558bc0549", null ],
+    [ "verifyUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a0d9936f6850d4422676dbbe7b7368ce7", null ]
 ];

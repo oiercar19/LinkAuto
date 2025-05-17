@@ -148,6 +148,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a1a1678f070379c7bb993458bfc4b3d53"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a17929078e5aec498a1bac004bdf189c0" id="r_a17929078e5aec498a1bac004bdf189c0"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; List&lt; CommentReturnerDTO &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a17929078e5aec498a1bac004bdf189c0">getCommentsByPostId</a> ( @Parameter(name=&quot;post_id&quot;, description=&quot;ID of the post&quot;, required=true, example=&quot;1&quot;) @PathVariable Long post_id)</td></tr>
 <tr class="separator:a17929078e5aec498a1bac004bdf189c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0d9936f6850d4422676dbbe7b7368ce7" id="r_a0d9936f6850d4422676dbbe7b7368ce7"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; Void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a0d9936f6850d4422676dbbe7b7368ce7">verifyUser</a> ( @Parameter(name=&quot;username&quot;, description=&quot;Username of the user to verify&quot;, required=true, example=&quot;johndoe&quot;) @PathVariable String username, @Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user making the request&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String userToken)</td></tr>
+<tr class="separator:a0d9936f6850d4422676dbbe7b7368ce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a238e76f8f510e5b42aa556e7fe9437ca" id="r_a238e76f8f510e5b42aa556e7fe9437ca"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; Boolean &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a238e76f8f510e5b42aa556e7fe9437ca">isUserVerified</a> ( @Parameter(name=&quot;username&quot;, description=&quot;Username of the user to verify&quot;, required=true, example=&quot;johndoe&quot;) @PathVariable String username)</td></tr>
+<tr class="separator:a238e76f8f510e5b42aa556e7fe9437ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab8a9e45dcf88ad1537a943878c7b153b" id="r_ab8a9e45dcf88ad1537a943878c7b153b"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; Void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ab8a9e45dcf88ad1537a943878c7b153b">savePost</a> ( @Parameter(name=&quot;post_id&quot;, description=&quot;ID of the post to save&quot;, required=true, example=&quot;1&quot;) @PathVariable Long post_id, @Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String userToken)</td></tr>
 <tr class="separator:ab8a9e45dcf88ad1537a943878c7b153b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a47711a0d35d244497dd6d080d0a8ef3f" id="r_a47711a0d35d244497dd6d080d0a8ef3f"><td class="memItemLeft" align="right" valign="top">ResponseEntity&lt; Void &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a47711a0d35d244497dd6d080d0a8ef3f">unsavePost</a> ( @Parameter(name=&quot;post_id&quot;, description=&quot;ID of the post to unsave&quot;, required=true, example=&quot;1&quot;) @PathVariable Long post_id, @Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String userToken)</td></tr>
@@ -595,7 +599,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00433">433</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00480">480</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -739,6 +743,34 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a238e76f8f510e5b42aa556e7fe9437ca" name="a238e76f8f510e5b42aa556e7fe9437ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a238e76f8f510e5b42aa556e7fe9437ca">&#9670;&#160;</a></span>isUserVerified()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ResponseEntity&lt; Boolean &gt; com.linkauto.restapi.controller.LinkAutoController.isUserVerified </td>
+          <td>(</td>
+          <td class="paramtype">@Parameter(name=&quot;username&quot;, description=&quot;Username of the user to verify&quot;, required=true, example=&quot;johndoe&quot;) @PathVariable String&#160;</td>
+          <td class="paramname"><em>username</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00437">437</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+
+</div>
+</div>
 <a id="af6df5a8fb5408f5f0fba5659fffc4b0d" name="af6df5a8fb5408f5f0fba5659fffc4b0d"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#af6df5a8fb5408f5f0fba5659fffc4b0d">&#9670;&#160;</a></span>likePost()</h2>
 
@@ -801,7 +833,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00442">442</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00489">489</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -877,7 +909,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00403">403</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00450">450</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -991,7 +1023,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00418">418</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00465">465</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>
@@ -1030,6 +1062,44 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 
 <p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00113">113</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
+
+</div>
+</div>
+<a id="a0d9936f6850d4422676dbbe7b7368ce7" name="a0d9936f6850d4422676dbbe7b7368ce7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0d9936f6850d4422676dbbe7b7368ce7">&#9670;&#160;</a></span>verifyUser()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">ResponseEntity&lt; Void &gt; com.linkauto.restapi.controller.LinkAutoController.verifyUser </td>
+          <td>(</td>
+          <td class="paramtype">@Parameter(name=&quot;username&quot;, description=&quot;Username of the user to verify&quot;, required=true, example=&quot;johndoe&quot;) @PathVariable String&#160;</td>
+          <td class="paramname"><em>username</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">@Parameter(name=&quot;userToken&quot;, description=&quot;Token of the user making the request&quot;, required=true, example=&quot;1234567890&quot;) @RequestParam(&quot;userToken&quot;) String&#160;</td>
+          <td class="paramname"><em>userToken</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoController_8java_source.html#l00403">403</a> of file <a class="el" href="LinkAutoController_8java_source.html">LinkAutoController.java</a>.</p>
 
 </div>
 </div>

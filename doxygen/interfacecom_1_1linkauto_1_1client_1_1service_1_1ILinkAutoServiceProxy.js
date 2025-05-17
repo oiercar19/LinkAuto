@@ -16,6 +16,7 @@ var interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy =
     [ "getUserPosts", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a42fccfe47618feb575f105e20b6dbda9", null ],
     [ "getUserProfile", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a47847f890f800d652b4682e84128388e", null ],
     [ "getUserSavedPosts", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#abd981bbf902bec12717c110183ab6e41", null ],
+    [ "isUserVerified", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a3f4d78c97a6b0b9bc70b344aaadfce96", null ],
     [ "likePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a69066c9ac46397b3de8cc6c137f8e3ec", null ],
     [ "login", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a9df0d501cc28a1ff027a4643f1950a69", null ],
     [ "logout", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a557e2534282b2e4f13325eaf037bd3c4", null ],
@@ -26,5 +27,6 @@ var interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy =
     [ "unfollowUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ad5ac0fb5f530db06cc00e5c3c903d2e8", null ],
     [ "unlikePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ad38413e4cec0ab17abef553f47076535", null ],
     [ "unsavePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a526a7c5b2211b52a331e681f6b86dcac", null ],
-    [ "updateProfile", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a1e7ead83e6afd0040cb13dacfc21dbfa", null ]
+    [ "updateProfile", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a1e7ead83e6afd0040cb13dacfc21dbfa", null ],
+    [ "verifyUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ab1c18fbfb490a5aeb37e082fbbc0883c", null ]
 ];
