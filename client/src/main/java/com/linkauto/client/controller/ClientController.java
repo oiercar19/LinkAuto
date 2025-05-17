@@ -439,29 +439,36 @@ public class ClientController {
 
 
   @GetMapping("/events")
-  public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
-      if (token == null) {
-          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para ver los eventos.");
-          return "redirect:/";
-      }
+public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
+    if (token == null) {
+        redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para ver los eventos.");
+        return "redirect:/";
+    }
 
-      try {
-          List<Event> events = linkAutoServiceProxy.getAllEvents();
-          model.addAttribute("events", events);
-          
-          // Añadir datos del usuario actual
-          User currentUser = linkAutoServiceProxy.getUserProfile(token);
-          model.addAttribute("currentUser", currentUser);
-          model.addAttribute("username", this.username);
-          model.addAttribute("profilePicture", currentUser.profilePicture());
-          model.addAttribute("role", currentUser.role());
-          
-          return "events"; // Vista para mostrar todos los eventos
-      } catch (Exception e) {
-          redirectAttributes.addFlashAttribute("error", "Error al obtener los eventos: " + e.getMessage());
-          return "redirect:/feed";
-      }
-  }
+    try {
+        List<Event> events = linkAutoServiceProxy.getAllEvents();
+        model.addAttribute("events", events);
+        
+        // Añadir datos del usuario actual
+        User currentUser = linkAutoServiceProxy.getUserProfile(token);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("username", this.username);
+        model.addAttribute("profilePicture", currentUser.profilePicture());
+        model.addAttribute("role", currentUser.role());
+        
+        // Verificar que estamos recibiendo datos correctamente
+        System.out.println("Eventos encontrados: " + events.size());
+        System.out.println("Usuario actual: " + this.username);
+        
+        return "events"; // Vista para mostrar todos los eventos
+    } catch (Exception e) {
+        // Mejorar el registro de errores
+        System.err.println("Error al obtener los eventos: " + e.getMessage());
+        e.printStackTrace();
+        redirectAttributes.addFlashAttribute("error", "Error al obtener los eventos: " + e.getMessage());
+        return "redirect:/feed";
+    }
+}
 
   @GetMapping("/events/{eventId}")
   public String getEventDetails(@PathVariable Long eventId, Model model, RedirectAttributes redirectAttributes) {
