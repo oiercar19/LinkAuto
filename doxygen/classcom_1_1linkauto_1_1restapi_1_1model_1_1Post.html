@@ -141,10 +141,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a0a251935f463a1e07b91bca856136b39"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7eb9c871d74257c6a4287f178e532fb6" id="r_a7eb9c871d74257c6a4287f178e532fb6"><td class="memItemLeft" align="right" valign="top">Set&lt; String &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#a7eb9c871d74257c6a4287f178e532fb6">getLikes</a> ()</td></tr>
 <tr class="separator:a7eb9c871d74257c6a4287f178e532fb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf56b7c4ba9eec3e8df20c9b00691d73" id="r_aaf56b7c4ba9eec3e8df20c9b00691d73"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#aaf56b7c4ba9eec3e8df20c9b00691d73">equals</a> (Object o)</td></tr>
+<tr class="separator:aaf56b7c4ba9eec3e8df20c9b00691d73"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abc1859ae73ca7d2504e06eb62e57d88e" id="r_abc1859ae73ca7d2504e06eb62e57d88e"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#abc1859ae73ca7d2504e06eb62e57d88e">hashCode</a> ()</td></tr>
 <tr class="separator:abc1859ae73ca7d2504e06eb62e57d88e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80423ac51ba674c8d378582927dede11" id="r_a80423ac51ba674c8d378582927dede11"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#a80423ac51ba674c8d378582927dede11">equals</a> (Object obj)</td></tr>
-<tr class="separator:a80423ac51ba674c8d378582927dede11"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae7dee405d7af025ba49c50071e55fc4f" id="r_ae7dee405d7af025ba49c50071e55fc4f"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html#ae7dee405d7af025ba49c50071e55fc4f">toString</a> ()</td></tr>
 <tr class="separator:ae7dee405d7af025ba49c50071e55fc4f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -332,8 +332,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a80423ac51ba674c8d378582927dede11" name="a80423ac51ba674c8d378582927dede11"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a80423ac51ba674c8d378582927dede11">&#9670;&#160;</a></span>equals()</h2>
+<a id="aaf56b7c4ba9eec3e8df20c9b00691d73" name="aaf56b7c4ba9eec3e8df20c9b00691d73"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf56b7c4ba9eec3e8df20c9b00691d73">&#9670;&#160;</a></span>equals()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -345,7 +345,7 @@ Public Member Functions</h2></td></tr>
           <td class="memname">boolean com.linkauto.restapi.model.Post.equals </td>
           <td>(</td>
           <td class="paramtype">Object&#160;</td>
-          <td class="paramname"><em>obj</em></td><td>)</td>
+          <td class="paramname"><em>o</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -355,15 +355,9 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Compara dos publicaciones por su contenido. </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">obj</td><td>Objeto a comparar. </td></tr>
-  </table>
-  </dd>
-</dl>
-<dl class="section return"><dt>Returns</dt><dd>true si los objetos son equivalentes. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>Código hash de la publicación. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html#l00219">219</a> of file <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html">Post.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html#l00209">209</a> of file <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html">Post.java</a>.</p>
 
 </div>
 </div>
@@ -585,9 +579,15 @@ Public Member Functions</h2></td></tr>
   </tr>
 </table>
 </div><div class="memdoc">
-<dl class="section return"><dt>Returns</dt><dd>Código hash de la publicación. </dd></dl>
+<p>Compara dos publicaciones por su contenido. </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">obj</td><td>Objeto a comparar. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>true si los objetos son equivalentes. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html#l00209">209</a> of file <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html">Post.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html#l00223">223</a> of file <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html">Post.java</a>.</p>
 
 </div>
 </div>
@@ -819,7 +819,7 @@ Public Member Functions</h2></td></tr>
 </div><div class="memdoc">
 <dl class="section return"><dt>Returns</dt><dd>Cadena representando el contenido del post. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html#l00236">236</a> of file <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html">Post.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html#l00229">229</a> of file <a class="el" href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Post_8java_source.html">Post.java</a>.</p>
 
 </div>
 </div>
