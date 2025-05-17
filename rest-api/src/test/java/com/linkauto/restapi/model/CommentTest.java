@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 //import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -29,7 +28,7 @@ public class CommentTest {
 
         assertEquals("test comment", comment.getText());
         assertEquals(user, comment.getUser());
-        assertNotEquals(post, comment.getPost());
+        assertEquals(post, comment.getPost());
         assertEquals(999999999L, comment.getCreationDate());
 
         comment.setText("updated comment");
@@ -67,8 +66,7 @@ public class CommentTest {
             "testDescription",
             new ArrayList<>(),   // follows
             new ArrayList<>(),   // blocked
-            new ArrayList<>(), 
-            new HashSet<>()    // favoritos
+            new ArrayList<>()    // favoritos
         );
 
         Post post = new Post(

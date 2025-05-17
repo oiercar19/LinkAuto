@@ -262,13 +262,6 @@
                     </span>
                 </div>
 
-                <a th:href="@{/savedPosts}" class="btn btn-custom-outline btn-sm">
-                    <span class="btn-icon-text">
-                        <i class="bi bi-bookmark"></i>
-                        <span class="d-none d-md-inline">Guardado</span>
-                    </span>
-                </a>
-
                 <a th:if="${role == 'ADMIN'}" href="/adminPanel" class="btn btn-custom-outline btn-sm me-2">
                     <span class="btn-icon-text">
                         <i class="bi bi-shield-lock"></i>
@@ -392,23 +385,6 @@
                             th:onclick="'getSharePost(' + ${post.id} + ', event)'">
                             <i class="bi bi-share"></i> Compartir
                         </button>
-                        <!-- Botón para guardar -->
-                        <form th:if="${not savedPosts.contains(post)}"
-                            th:action="@{'/user/' + ${post.id} + '/savePost?redirectUrl=/feed'}"
-                            method="post">
-                            <button type="submit" class="btn btn-sm btn-outline-primary rounded-pill me-2 ms-2">
-                                <i class="bi bi-bookmark"></i> Guardar
-                            </button>
-                        </form>
-
-                        <!-- Botón para quitar guardado -->
-                        <form th:if="${savedPosts.contains(post)}"
-                            th:action="@{'/user/' + ${post.id} + '/unSavePost?redirectUrl=/feed'}"
-                            method="post">
-                            <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill me-2 ms-2">
-                                <i class="bi bi-bookmark-fill"></i> Guardado
-                            </button>
-                        </form>
                     </div>
                     <small th:text="${#temporals.format(T(java.time.Instant).ofEpochMilli(post.creationDate), 'dd MMM yyyy, HH:mm')}">Tiempo</small>
                 </div>

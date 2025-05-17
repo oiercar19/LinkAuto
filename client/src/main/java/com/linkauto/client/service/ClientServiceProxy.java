@@ -269,26 +269,6 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public List<Post> getUserSavedPosts(String username) {
-        String url = String.format("%s/api/user/%s/savedPosts", apiBaseUrl, username);
-        
-        try {
-            ResponseEntity<List<Post>> response = restTemplate.exchange(
-                url,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<List<Post>>() {}
-            );
-            return response.getBody();
-        } catch (HttpStatusCodeException e) {
-            switch (e.getStatusCode().value()) {
-                case 404 -> throw new RuntimeException("User not found");
-                default -> throw new RuntimeException("Failed to get user saved posts: " + e.getStatusText());
-            }
-        }
-    }
-
-    @Override
     public List<Comment> getCommentsByPostId(long postId) {
         String url = String.format("%s/api/post/%d/comments", apiBaseUrl, postId);
         
@@ -448,10 +428,6 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     @Override
     public void verifyUser(String token, String username) {
         String url = String.format("%s/api/user/%s/verify?userToken=%s", apiBaseUrl, username, token);
-
-    public void savePost(String token, Long postId) {
-        String url = String.format("%s/api/post/%d/save?userToken=%s", apiBaseUrl, postId, token);
-
         
         try {
             restTemplate.postForObject(url, null, Void.class);
@@ -461,8 +437,6 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
                 case 403 -> throw new RuntimeException("Forbidden: You do not have permission to verify this user");
                 case 404 -> throw new RuntimeException("User not found");
                 default -> throw new RuntimeException("Failed to verify user: " + e.getStatusText());
-                case 404 -> throw new RuntimeException("Post not found");
-                default -> throw new RuntimeException("Failed to save post: " + e.getStatusText());
             }
         }
     }
@@ -477,17 +451,6 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             switch (e.getStatusCode().value()) {
                 case 404 -> throw new RuntimeException("User not found");
                 default -> throw new RuntimeException("Failed to check user verification: " + e.getStatusText());
-
-    public void unsavePost(String token, Long postId) {
-        String url = String.format("%s/api/post/%d/unsave?userToken=%s", apiBaseUrl, postId, token);
-        
-        try {
-            restTemplate.delete(url);
-        } catch (HttpStatusCodeException e) {
-            switch (e.getStatusCode().value()) {
-                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
-                case 404 -> throw new RuntimeException("Post not found");
-                default -> throw new RuntimeException("Failed to unsave post: " + e.getStatusText());
             }
         }
     }

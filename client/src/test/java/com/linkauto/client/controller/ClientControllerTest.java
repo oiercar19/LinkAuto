@@ -940,7 +940,6 @@ public class ClientControllerTest {
         
         assertEquals("post", result);
     }
-
     @Test
     public void testVerifyUser_Success() {
         clientController.token = "validToken";
@@ -968,107 +967,4 @@ public class ClientControllerTest {
         verify(redirectAttributes).addFlashAttribute("error", "Error al verificar al usuario: Error al verificar al usuario");
         assertEquals("redirect:/adminPanel", result);
     }   
-}
-
-    @Test
-    public void testSavePost_Success() {
-        clientController.token = "validToken";
-        Long postId = 1L;
-
-        doNothing().when(linkAutoServiceProxy).savePost("validToken", postId);
-        String result = clientController.savePost(postId, redirectAttributes);
-
-        verify(linkAutoServiceProxy).savePost(clientController.token, postId);
-        verify(redirectAttributes).addFlashAttribute("success", "Publicación " + postId + " guardada con éxito");
-        assertEquals("redirect:/feed", result);
-    }
-
-    @Test
-    public void testSavePost_Error() {
-        clientController.token = "validToken";
-        Long postId = 1L;
-
-        doThrow(new RuntimeException("Error al guardar la publicación")).when(linkAutoServiceProxy).savePost("validToken", postId);
-        String result = clientController.savePost(postId, redirectAttributes);
-
-        verify(linkAutoServiceProxy).savePost(clientController.token, postId);
-        verify(redirectAttributes).addFlashAttribute("error", "Error al guardar la publicación: Error al guardar la publicación");
-        assertEquals("redirect:/feed", result);
-    }
-
-    @Test
-    public void testUnsavePost_Success() {
-        clientController.token = "validToken";
-        Long postId = 1L;
-
-        doNothing().when(linkAutoServiceProxy).unsavePost("validToken", postId);
-        String result = clientController.unsavePost(postId, redirectAttributes);
-
-        verify(linkAutoServiceProxy).unsavePost(clientController.token, postId);
-        verify(redirectAttributes).addFlashAttribute("success", "Publicación " + postId + " eliminada de guardados");
-        assertEquals("redirect:/feed", result);
-    }
-
-    @Test
-    public void testUnsavePost_Error() {
-        clientController.token = "validToken";
-        Long postId = 1L;
-
-        doThrow(new RuntimeException("Error al quitar la publicación de guardados")).when(linkAutoServiceProxy).unsavePost("validToken", postId);
-        String result = clientController.unsavePost(postId, redirectAttributes);
-
-        verify(linkAutoServiceProxy).unsavePost(clientController.token, postId);
-        verify(redirectAttributes).addFlashAttribute("error", "Error al quitar la publicación de guardados: Error al quitar la publicación de guardados");
-        assertEquals("redirect:/feed", result);
-    }
-
-    @Test
-    public void testSavedPosts_WithValidToken() {
-        clientController.token = "validToken";
-        clientController.username = "testUser";
-
-        List<Post> posts = new ArrayList<>();
-        Post post1 = new Post(1L, "user1", "content1", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
-        Post post2 = new Post(2L, "user2", "content2", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
-        posts.add(post1);
-        posts.add(post2);
-
-        User user = new User("testUser", "USER", "Test User", "profilePic.jpg", "test@example.com", null, 0, "Male", "Location1", "password", "desc");
-
-        when(linkAutoServiceProxy.getUserSavedPosts("testUser")).thenReturn(posts);
-        when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(user);
-        when(linkAutoServiceProxy.getUserByUsername("user1")).thenReturn(new User("user1", "USER", "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc"));
-        when(linkAutoServiceProxy.getUserByUsername("user2")).thenReturn(new User("user2", "USER", "User Two", "pic2.jpg", "user2@example.com", null, 0, "Female", "Location2", "password", "desc"));
-
-        List<User> followings = new ArrayList<>();
-        followings.add(new User("user3", "USER", "User Three", "pic3.jpg", "user3@example.com", null, 0, "Male", "Location3", "password", "desc"));
-        when(linkAutoServiceProxy.getUserFollowing("testUser")).thenReturn(followings);
-
-        List<Comment> comments = new ArrayList<>();
-        Comment comment = new Comment(1L, "texto", "testuser", 1L, 43456L);
-        comments.add(comment);
-        when(linkAutoServiceProxy.getCommentsByPostId(anyLong())).thenReturn(comments);
-
-        String result = clientController.savedPosts(model);
-
-        verify(model).addAttribute(eq("profilePictureByUsername"), any(Map.class));
-        verify(model).addAttribute("posts", posts);
-        verify(model).addAttribute("username", "testUser");
-        verify(model).addAttribute("profilePicture", "profilePic.jpg");
-        verify(model).addAttribute("role", "USER");
-        verify(model).addAttribute(eq("followings"), any(List.class));
-        verify(model).addAttribute(eq("commentsByPostId"), any(Map.class));
-
-        assertEquals("savedPost", result);
-    }
-
-    @Test
-    public void testSavedPosts_WithInvalidToken() {
-        clientController.token = null;
-
-        String result = clientController.savedPosts(model);
-
-        verifyNoInteractions(model);
-        assertEquals("redirect:/", result);
-    }
 }

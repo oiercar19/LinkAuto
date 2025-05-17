@@ -32,7 +32,7 @@ public class AuthServiceTest {
 
     @BeforeEach
     public void setUpUser() {
-        user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class AuthServiceTest {
 
     @Test
     public void testRegister_NewUser() {
-        User user = new User("newUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),new HashSet<>());
+        User user = new User("newUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.existsByUsername(user.getUsername())).thenReturn(false);
         when(userRepository.save(user)).thenReturn(user);
 
@@ -122,10 +122,10 @@ public class AuthServiceTest {
 
     @Test
     public void testDeleteUser_Success() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         Post post = new Post(1L, user, "Post message", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         user.addPost(post);
-        User user2 = new User("testUser2", "name2", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User user2 = new User("testUser2", "name2", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         user.addFollower(user2);
         user2.addFollowing(user);
         user.addFollowing(user2);
@@ -157,7 +157,7 @@ public class AuthServiceTest {
 
     @Test
     public void testDeleteUser_CatchException() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),new HashSet<>());
+        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
 
         String token = authService.login("testUser", "password");
@@ -170,9 +170,9 @@ public class AuthServiceTest {
 
     @Test
     public void testDeleteUser_AdminCanDeleteOtherUser() {
-        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
 
-        User adminUser = new User("adminUser", "Admin Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User adminUser = new User("adminUser", "Admin Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
         adminUser.setRole(Role.ADMIN);
 
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
