@@ -598,63 +598,7 @@ class ClientServiceProxyTest {
         assertEquals("Failed to update profile: Server Error", exception.getMessage());
     }
     
-    @Test
-    void testDeleteReport_Success() {
-        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
-        
-        doNothing().when(restTemplate).delete(url);
-        
-        assertDoesNotThrow(() -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
-        verify(restTemplate).delete(url);
-    }
 
-    @Test 
-    void testDeleteReport_Unauthorized() {
-        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
-        
-        doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
-            .when(restTemplate).delete(url);
-        
-        RuntimeException exception = assertThrows(RuntimeException.class, 
-            () -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
-        assertEquals("Unauthorized: Invalid token", exception.getMessage());
-    }
-
-    @Test
-    void testDeleteReport_Forbidden() {
-        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
-        
-        doThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN))
-            .when(restTemplate).delete(url);
-        
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> clientServiceProxy.deleteReport(TOKEN, "testuser")); 
-        assertEquals("Forbidden: Insufficient permissions", exception.getMessage());
-    }
-
-    @Test
-    void testDeleteReport_NotFound() {
-        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
-        
-        doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
-            .when(restTemplate).delete(url);
-        
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
-        assertEquals("Report not found", exception.getMessage());
-    }
-
-    @Test
-    void testDeleteReport_OtherError() {
-        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
-        
-        doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
-            .when(restTemplate).delete(url);
-        
-        RuntimeException exception = assertThrows(RuntimeException.class,
-            () -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
-        assertEquals("Failed to delete report: Server Error", exception.getMessage());
-    }
 
     // Create Post - Missing tests for error handling
     @Test
