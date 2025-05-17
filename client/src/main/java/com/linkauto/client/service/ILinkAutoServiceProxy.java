@@ -52,7 +52,10 @@ public interface ILinkAutoServiceProxy {
     void deleteUser(String token, String username);
     void promoteToAdmin(String token, String username);
     void demoteToUser(String token, String username);
+    void verifyUser(String token, String username);
+    Boolean isUserVerified(String username);
     List<Post> getUserSavedPosts(String username);
     void savePost(String token, Long postId);
     void unsavePost(String token, Long postId);
+
 }

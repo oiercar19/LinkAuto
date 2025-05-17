@@ -2,8 +2,10 @@ package com.linkauto.client.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,11 +77,21 @@ public class ClientController {
         if (token != null) {
             List<Post> posts = new ArrayList<>(linkAutoServiceProxy.getFeed());
             Map<String, String> profilePictureByUsername = new HashMap<>();
+            Set<String> verifiedUsers = new HashSet<>();
             for (Post post : posts) {
                 String profilePicture = linkAutoServiceProxy.getUserByUsername(post.username()).profilePicture();
                 profilePictureByUsername.putIfAbsent(post.username(), profilePicture);
 
+                if (verifiedUsers.contains(post.username())) {
+                    continue;
+                }
+                Boolean isUserVerified = linkAutoServiceProxy.isUserVerified(post.username());
+                if (isUserVerified) {
+                    verifiedUsers.add(post.username());
+                }
             }
+            model.addAttribute("verifiedUsers", verifiedUsers); // Agregar usuarios verificados al modelo
+
 
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
 
@@ -109,8 +121,11 @@ public class ClientController {
             }
             model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
 
+            model.addAttribute("isVerified", user.isVerified()); // Agregar verificación al modelo
+
             List<Post> savedPosts = new ArrayList<>(linkAutoServiceProxy.getUserSavedPosts(username));
             model.addAttribute("savedPosts", savedPosts); // Agregar publicaciones guardadas al modelo
+
 
             return "feed"; // Vista para usuarios autenticados
         } else {
@@ -276,8 +291,18 @@ public class ClientController {
 
             // Filtrar usuarios que coincidan con el término de búsqueda (ignorando mayúsculas y minúsculas)
             List<User> matchingUsers = allUsers.stream()
-                    .filter(user -> user.username().toLowerCase().contains(username.toLowerCase()))
-                    .collect(Collectors.toList());
+
+                .filter(user -> user.username().toLowerCase().contains(username.toLowerCase()))
+                .collect(Collectors.toList());
+
+            Set <String> verifiedUsers = new HashSet<>();
+            for (User user : matchingUsers) {
+                Boolean isUserVerified = linkAutoServiceProxy.isUserVerified(user.username());
+                if (isUserVerified) {
+                    verifiedUsers.add(user.username());
+                }
+            }
+            model.addAttribute("verifiedUsers", verifiedUsers);
 
             model.addAttribute("searchTerm", username);
             model.addAttribute("users", matchingUsers);
@@ -371,69 +396,82 @@ public class ClientController {
         model.addAttribute("commentsByPostId", commentsByPostId);
         return "post";
     }
+    
+  //Endpoint para el panel de administrador
+  @GetMapping("/adminPanel")
+  public String adminPanel(Model model, RedirectAttributes redirectAttributes) {
+      if (token == null) {
+          // Si no hay token, redirigir al inicio de sesión
+          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al panel de administrador.");
+          return "redirect:/";
+      }
 
-    //Endpoint para el panel de administrador
-    @GetMapping("/adminPanel")
-    public String adminPanel(Model model, RedirectAttributes redirectAttributes) {
-        if (token == null) {
-            // Si no hay token, redirigir al inicio de sesión
-            redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al panel de administrador.");
-            return "redirect:/";
-        }
+      String profilePicture = linkAutoServiceProxy.getUserByUsername(username).profilePicture();
+      model.addAttribute("profilePicture", profilePicture); // Agregar fotos de perfil al modelo
+            
+      model.addAttribute("username", username); // Agregar nombre de usuario al modelo
+      
 
-        String profilePicture = linkAutoServiceProxy.getUserByUsername(username).profilePicture();
-        model.addAttribute("profilePicture", profilePicture); // Agregar fotos de perfil al modelo
+      // Obtener el perfil del usuario logueado
+      User user = linkAutoServiceProxy.getUserProfile(token);
+  
+      // Verificar si el usuario tiene el rol de ADMIN
+      if (!user.role().equals("ADMIN")) {
+          redirectAttributes.addFlashAttribute("error", "No tienes permisos para acceder al panel de administrador.");
+          return "redirect:/feed"; // Redirigir al feed si no es administrador
+      }
 
-        model.addAttribute("username", username); // Agregar nombre de usuario al modelo
+      List<User> users = linkAutoServiceProxy.getAllUsers();
+      model.addAttribute("users", users);
+  
+      return "adminPanel"; // Vista del panel de administrador
+  }
 
-        // Obtener el perfil del usuario logueado
-        User user = linkAutoServiceProxy.getUserProfile(token);
+  @PostMapping("/admin/deleteUser")
+  public String deleteUser(@RequestParam("username") String usernameToDelete, RedirectAttributes redirectAttributes) {
+      try {
+          System.out.println("Attempting to delete user: " + usernameToDelete); // Debug log
+          linkAutoServiceProxy.deleteUser(token, usernameToDelete);
+          redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToDelete + " eliminado con éxito.");
+      } catch (Exception e) {
+          System.err.println("Error deleting user: " + e.getMessage()); // Debug log
+          redirectAttributes.addFlashAttribute("error", "Error al eliminar el usuario: " + e.getMessage());
+      }
+      return "redirect:/adminPanel"; // Redirect back to the admin panel
+  }
+  
+  @PostMapping("/admin/promoteToAdmin")
+  public String promoteToAdmin(@RequestParam("username") String usernameToPromote, RedirectAttributes redirectAttributes) {
+      try {
+          linkAutoServiceProxy.promoteToAdmin(token, usernameToPromote);
+          redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToPromote + " promovido a administrador con éxito.");
+      } catch (Exception e) {
+          redirectAttributes.addFlashAttribute("error", "Error al promover al usuario: " + e.getMessage());
+      }
+      return "redirect:/adminPanel"; // Redirect back to the admin panel
+  }
+  
+  
+  @PostMapping("/admin/demoteToUser")
+  public String demoteToUser(@RequestParam("username") String usernameToDemote, RedirectAttributes redirectAttributes) {
+      try {
+          linkAutoServiceProxy.demoteToUser(token, usernameToDemote);
+          redirectAttributes.addFlashAttribute("success", "Administrador " + usernameToDemote + " degradado con éxito.");
+      } catch (Exception e) {
+          redirectAttributes.addFlashAttribute("error", "Error al degradar al administrador: " + e.getMessage());
+      }
+      return "redirect:/adminPanel"; // Redirect back to the admin panel
+  }
 
-        // Verificar si el usuario tiene el rol de ADMIN
-        if (!user.role().equals("ADMIN")) {
-            redirectAttributes.addFlashAttribute("error", "No tienes permisos para acceder al panel de administrador.");
-            return "redirect:/feed"; // Redirigir al feed si no es administrador
-        }
-
-        List<User> users = linkAutoServiceProxy.getAllUsers();
-        model.addAttribute("users", users);
-
-        return "adminPanel"; // Vista del panel de administrador
-    }
-
-    @PostMapping("/admin/deleteUser")
-    public String deleteUser(@RequestParam("username") String usernameToDelete, RedirectAttributes redirectAttributes) {
+  @PostMapping("/user/{username}/verify")
+    public String verifyUser(@PathVariable String username, RedirectAttributes redirectAttributes, String redirect) {
         try {
-            System.out.println("Attempting to delete user: " + usernameToDelete); // Debug log
-            linkAutoServiceProxy.deleteUser(token, usernameToDelete);
-            redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToDelete + " eliminado con éxito.");
+            linkAutoServiceProxy.verifyUser(token, username);
+            redirectAttributes.addFlashAttribute("success", "Usuario " + username + " verificado con éxito.");
         } catch (Exception e) {
-            System.err.println("Error deleting user: " + e.getMessage()); // Debug log
-            redirectAttributes.addFlashAttribute("error", "Error al eliminar el usuario: " + e.getMessage());
+            redirectAttributes.addFlashAttribute("error", "Error al verificar al usuario: " + e.getMessage());
         }
-        return "redirect:/adminPanel"; // Redirect back to the admin panel
-    }
-
-    @PostMapping("/admin/promoteToAdmin")
-    public String promoteToAdmin(@RequestParam("username") String usernameToPromote, RedirectAttributes redirectAttributes) {
-        try {
-            linkAutoServiceProxy.promoteToAdmin(token, usernameToPromote);
-            redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToPromote + " promovido a administrador con éxito.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al promover al usuario: " + e.getMessage());
-        }
-        return "redirect:/adminPanel"; // Redirect back to the admin panel
-    }
-
-    @PostMapping("/admin/demoteToUser")
-    public String demoteToUser(@RequestParam("username") String usernameToDemote, RedirectAttributes redirectAttributes) {
-        try {
-            linkAutoServiceProxy.demoteToUser(token, usernameToDemote);
-            redirectAttributes.addFlashAttribute("success", "Administrador " + usernameToDemote + " degradado con éxito.");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Error al degradar al administrador: " + e.getMessage());
-        }
-        return "redirect:/adminPanel"; // Redirect back to the admin panel
+        return "redirect:" + redirect; // Redirect back to the admin panel
     }
 
     @PostMapping("/user/{postId}/savePost")
