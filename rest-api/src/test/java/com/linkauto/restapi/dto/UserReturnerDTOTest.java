@@ -33,8 +33,8 @@ public class UserReturnerDTOTest {
             "password123",
             "This is a description.",
             posts,
+            savedPosts,
             false
-            savedPosts
         );
 
         assertEquals("username123", user.getUsername());
@@ -67,8 +67,8 @@ public class UserReturnerDTOTest {
             "password123",
             "This is a description.",
             new ArrayList<>(),
+            new ArrayList<>(),
             false
-            new ArrayList<>()
         );
 
         user.setUsername("newUsername");
@@ -111,8 +111,8 @@ public class UserReturnerDTOTest {
             "password123",
             "This is a description.",
             new ArrayList<>(),
+            new ArrayList<>(),
             false
-            new ArrayList<>()
         );
 
         PostReturnerDTO post = new PostReturnerDTO();

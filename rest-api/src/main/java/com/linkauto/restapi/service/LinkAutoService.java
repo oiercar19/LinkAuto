@@ -242,6 +242,8 @@ public class LinkAutoService {
         user.setIsVerified(true);
         userRepository.save(user);
         return true;
+    }
+    
     public List<Post> getSavedPostsByUsername(String username) {
         User user = userRepository.findByUsername(username).orElse(null);
         if (user == null) {

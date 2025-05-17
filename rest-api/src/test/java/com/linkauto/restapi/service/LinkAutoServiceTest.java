@@ -384,7 +384,7 @@ public class LinkAutoServiceTest {
     @Test
     public void testVerifyUser() {
         // Arrange
-        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         user.addPost(new Post());
         user.addPost(new Post());
         user.addPost(new Post());
@@ -402,7 +402,7 @@ public class LinkAutoServiceTest {
         verify(userRepository).save(user);
 
         // Case with less than 3 posts
-        User user2 = new User("testUser2", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user2 = new User("testUser2", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         user2.addPost(new Post());
         user2.addPost(new Post());
         user2.addFollower(new User());
@@ -412,7 +412,7 @@ public class LinkAutoServiceTest {
         assertFalse(result2);
 
         // Case with less than 3 followers
-        User user3 = new User("testUser3", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user3 = new User("testUser3", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         user3.addPost(new Post());
         user3.addPost(new Post());
         user3.addPost(new Post());

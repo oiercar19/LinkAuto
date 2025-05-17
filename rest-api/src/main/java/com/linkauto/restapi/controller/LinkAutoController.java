@@ -404,19 +404,11 @@ public class LinkAutoController {
         @Parameter(name = "username", description = "Username of the user to verify", required = true, example = "johndoe")
         @PathVariable String username,
         @Parameter(name = "userToken", description = "Token of the user making the request", required = true, example = "1234567890")
-
-    @PostMapping("/post/{post_id}/save")
-    public ResponseEntity<Void> savePost(
-        @Parameter(name = "post_id", description = "ID of the post to save", required = true, example = "1")
-        @PathVariable Long post_id,
-        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
-
         @RequestParam("userToken") String userToken
     ) {
         if (!authService.isTokenValid(userToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
 
         
         User requestingUser = authService.getUserByToken(userToken);
@@ -440,7 +432,7 @@ public class LinkAutoController {
         
         return isVerified ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
-
+    
     @GetMapping("/user/{username}/verify")
     public ResponseEntity<Boolean> isUserVerified(
         @Parameter(name = "username", description = "Username of the user to verify", required = true, example = "johndoe")
@@ -454,8 +446,16 @@ public class LinkAutoController {
         return ResponseEntity.ok(user.getIsVerified());
     }
 
-    private List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
-
+    @PostMapping("/post/{post_id}/save")
+    public ResponseEntity<Void> savePost(
+        @Parameter(name = "post_id", description = "ID of the post to save", required = true, example = "1")
+        @PathVariable Long post_id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         User user = authService.getUserByToken(userToken);
         boolean isSaved = linkAutoService.savePost(post_id, user);
         return isSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
@@ -519,13 +519,9 @@ public class LinkAutoController {
 
     private UserReturnerDTO parseUserToUserReturnerDTO(User u){
         List<PostReturnerDTO> postReturner = parsePostsToPostReturnerDTO(u.getPosts());
-
-        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, u.getIsVerified());
-
         List<Post> savedPosts = new ArrayList<>(u.getSavedPosts());
         List<PostReturnerDTO> savedPost = parsePostsToPostReturnerDTO(savedPosts);
-        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost);
-
+        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost, u.getIsVerified());
     }
 
     private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {

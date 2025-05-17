@@ -968,7 +968,6 @@ public class ClientControllerTest {
         verify(redirectAttributes).addFlashAttribute("error", "Error al verificar al usuario: Error al verificar al usuario");
         assertEquals("redirect:/adminPanel", result);
     }   
-}
 
     @Test
     public void testSavePost_Success() {
@@ -1033,15 +1032,15 @@ public class ClientControllerTest {
         posts.add(post1);
         posts.add(post2);
 
-        User user = new User("testUser", "USER", "Test User", "profilePic.jpg", "test@example.com", null, 0, "Male", "Location1", "password", "desc");
+        User user = new User("testUser", "USER", "Test User", "profilePic.jpg", "test@example.com", null, 0, "Male", "Location1", "password", "desc", false);
 
         when(linkAutoServiceProxy.getUserSavedPosts("testUser")).thenReturn(posts);
         when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(user);
-        when(linkAutoServiceProxy.getUserByUsername("user1")).thenReturn(new User("user1", "USER", "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc"));
-        when(linkAutoServiceProxy.getUserByUsername("user2")).thenReturn(new User("user2", "USER", "User Two", "pic2.jpg", "user2@example.com", null, 0, "Female", "Location2", "password", "desc"));
+        when(linkAutoServiceProxy.getUserByUsername("user1")).thenReturn(new User("user1", "USER", "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc", false));
+        when(linkAutoServiceProxy.getUserByUsername("user2")).thenReturn(new User("user2", "USER", "User Two", "pic2.jpg", "user2@example.com", null, 0, "Female", "Location2", "password", "desc", false));
 
         List<User> followings = new ArrayList<>();
-        followings.add(new User("user3", "USER", "User Three", "pic3.jpg", "user3@example.com", null, 0, "Male", "Location3", "password", "desc"));
+        followings.add(new User("user3", "USER", "User Three", "pic3.jpg", "user3@example.com", null, 0, "Male", "Location3", "password", "desc", false));
         when(linkAutoServiceProxy.getUserFollowing("testUser")).thenReturn(followings);
 
         List<Comment> comments = new ArrayList<>();

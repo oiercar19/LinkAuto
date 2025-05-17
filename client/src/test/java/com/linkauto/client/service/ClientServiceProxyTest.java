@@ -1246,7 +1246,8 @@ class ClientServiceProxyTest {
         
         RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.isUserVerified(username));
         assertEquals("Failed to check user verification: INTERNAL_SERVER_ERROR", exception.getMessage());
-
+    }
+    
     @Test
     void testSavePost_Success() {
         String url = String.format("%s/api/post/%d/save?userToken=%s", API_BASE_URL, 1L, TOKEN);
