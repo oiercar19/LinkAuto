@@ -19,6 +19,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "event")
@@ -36,6 +37,9 @@ public class Event {
     private String ubicacion;
     private long fechaInicio;
     private long fechaFin;
+    
+    // Añadimos esta propiedad para que coincida con el método del repositorio
+    private long eventDate;
     
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "event_images", joinColumns = @JoinColumn(name = "event_id"))
@@ -66,6 +70,8 @@ public class Event {
         this.ubicacion = ubicacion;
         this.fechaInicio = fechaInicio;
         this.fechaFin = fechaFin;
+        // Añadimos también el eventDate con el mismo valor que fechaInicio
+        this.eventDate = fechaInicio;
         this.imagenes = new ArrayList<>();
         for (String imagen : imagenes) {
             this.imagenes.add(imagen);
@@ -119,6 +125,8 @@ public class Event {
 
     public void setFechaInicio(long fechaInicio) {
         this.fechaInicio = fechaInicio;
+        // Actualizamos también eventDate cuando se actualiza fechaInicio
+        this.eventDate = fechaInicio;
     }
 
     public long getFechaFin() {
@@ -127,6 +135,15 @@ public class Event {
 
     public void setFechaFin(long fechaFin) {
         this.fechaFin = fechaFin;
+    }
+    
+    // Añadimos getters y setters para eventDate
+    public long getEventDate() {
+        return eventDate;
+    }
+    
+    public void setEventDate(long eventDate) {
+        this.eventDate = eventDate;
     }
 
     public List<String> getImagenes() {
@@ -164,7 +181,7 @@ public class Event {
     @Override
     public int hashCode() {
         return Objects.hash(id, creador, titulo, descripcion, ubicacion, fechaInicio, fechaFin, 
-                           imagenes, participantes, comentarios);
+                           eventDate, imagenes, participantes, comentarios);
     }
 
     @Override
@@ -181,6 +198,7 @@ public class Event {
             Objects.equals(ubicacion, other.ubicacion) &&
             Objects.equals(fechaInicio, other.fechaInicio) &&
             Objects.equals(fechaFin, other.fechaFin) &&
+            Objects.equals(eventDate, other.eventDate) &&
             Objects.equals(imagenes, other.imagenes) &&
             Objects.equals(participantes, other.participantes) &&
             Objects.equals(comentarios, other.comentarios);
@@ -191,6 +209,7 @@ public class Event {
         return "Event [id=" + id + ", creador=" + creador.getUsername() + ", titulo=" + titulo + 
                 ", descripcion=" + descripcion + ", ubicacion=" + ubicacion + 
                 ", fechaInicio=" + fechaInicio + ", fechaFin=" + fechaFin + 
+                ", eventDate=" + eventDate +
                 ", imagenes=" + imagenes + ", participantes=" + participantes + 
                 ", comentarios=" + comentarios + "]";
     }
