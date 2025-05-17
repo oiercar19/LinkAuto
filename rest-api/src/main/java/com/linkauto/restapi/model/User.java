@@ -1,7 +1,9 @@
 package com.linkauto.restapi.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -45,6 +47,13 @@ public class User {
     @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<User> following;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+    name = "user_saved_posts",
+    joinColumns = @JoinColumn(name = "user_username"),
+    inverseJoinColumns = @JoinColumn(name = "post_id"))
+    private Set<Post> savedPosts;
+
     // No-argument constructor
     public User() {
     }
@@ -54,7 +63,7 @@ public class User {
             String profilePicture, String email,
             List<String> cars, long birthDate,
             Gender gender, String location,
-            String password, String description, List<Post> posts, List<User> followers, List<User> following) {
+            String password, String description, List<Post> posts, List<User> followers, List<User> following, Set<Post> savedPosts) {
         this.username = username;
         this.role = Role.USER;
         this.name = name;
@@ -77,6 +86,10 @@ public class User {
         this.following = new ArrayList<>();
         for (User follow : following) {
             this.following.add(follow);
+        }
+        this.savedPosts = new HashSet<>();
+        for (Post post : savedPosts) {
+            this.savedPosts.add(post);
         }
     }
 
@@ -200,6 +213,17 @@ public class User {
         this.following.remove(following);
     }
 
+    public Set<Post> getSavedPosts() {
+        return savedPosts;
+    }
+
+    public void addSavedPost(Post post) {
+        if (!this.savedPosts.contains(post)) {
+            this.savedPosts.add(post);
+        }
+    }
+    
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -230,7 +254,7 @@ public class User {
         return "User [username=" + username + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
                 + ", email=" + email + ", cars=" + cars + ", birthDate=" + birthDate + ", gender=" + gender
                 + ", location=" + location + ", password=" + password + ", description=" + description + ", posts="
-                + posts + "]";
+                + posts +", savedPost=" + savedPosts +"]";
     }
     
 }

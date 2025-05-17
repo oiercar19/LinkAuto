@@ -206,29 +206,22 @@ public class Post {
 
     /** @return Código hash de la publicación. */
     @Override
-    public int hashCode() {
-        return Objects.hash(id, usuario, mensaje, fechaCreacion, imagenes, comentarios, likes);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Post)) return false;
+        Post post = (Post) o;
+        return id != null && id.equals(post.id);
     }
-
+  
     /**
      * Compara dos publicaciones por su contenido.
      * @param obj Objeto a comparar.
      * @return true si los objetos son equivalentes.
      */
+
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null || getClass() != obj.getClass())
-            return false;
-        Post other = (Post) obj;
-        return Objects.equals(id, other.id) &&
-            Objects.equals(usuario, other.usuario) &&
-            Objects.equals(mensaje, other.mensaje) &&
-            Objects.equals(fechaCreacion, other.fechaCreacion) &&
-            Objects.equals(imagenes, other.imagenes) &&
-            Objects.equals(comentarios, other.comentarios) &&
-            Objects.equals(likes, other.likes);
+    public int hashCode() {
+        return id != null ? id.hashCode() : System.identityHashCode(this);
     }
 
     /** @return Cadena representando el contenido del post. */
