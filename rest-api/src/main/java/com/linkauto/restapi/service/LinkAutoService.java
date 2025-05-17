@@ -2,17 +2,21 @@ package com.linkauto.restapi.service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.linkauto.restapi.dto.CommentDTO;
+import com.linkauto.restapi.dto.EventDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.model.Comment;
+import com.linkauto.restapi.model.Event;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.repository.CommentRepository;
+import com.linkauto.restapi.repository.EventRepository;
 import com.linkauto.restapi.repository.PostRepository;
 import com.linkauto.restapi.repository.UserRepository;
 
@@ -22,11 +26,14 @@ public class LinkAutoService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final CommentRepository commentRepository;
+    private final EventRepository eventRepository;
 
-    public LinkAutoService(PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository) {
+    public LinkAutoService(PostRepository postRepository, UserRepository userRepository, 
+                          CommentRepository commentRepository, EventRepository eventRepository) {
         this.postRepository = postRepository;
         this.userRepository = userRepository;
         this.commentRepository = commentRepository;
+        this.eventRepository = eventRepository;
     }
 
     public List<Post> getAllPosts() {
@@ -193,5 +200,147 @@ public class LinkAutoService {
     public List<Post> getPostsByUsername(String username) {
         return postRepository.findByUsuario_Username(username);
     }
+    
+    // Event-related methods
+    
+    public List<Event> getAllEvents() {
+        return eventRepository.findAll();
+    }
+    
+    public Optional<Event> getEventById(Long id) {
+        return eventRepository.findById(id);
+    }
+    
+    public Event createEvent(EventDTO eventDTO, User user) {
+        Event event = new Event();
+        event.setTitulo(eventDTO.getTitulo());
+        event.setDescripcion(eventDTO.getDescripcion());
+        event.setUbicacion(eventDTO.getUbicacion());
+        event.setFechaInicio(eventDTO.getFechaInicio());
+        event.setFechaFin(eventDTO.getFechaFin());
+        event.setCreador(user);
+        
+        // Añadir imágenes
+        if (eventDTO.getImagenes() != null) {
+            for (String imagen : eventDTO.getImagenes()) {
+                event.addImagen(imagen);
+            }
+        }
+        
+        // Añadir participantes si existe en el DTO
+        if (eventDTO.getParticipantes() != null) {
+            for (String participante : eventDTO.getParticipantes()) {
+                event.addParticipante(participante);
+            }
+        }
+        
+        eventRepository.save(event);
+        
+        return event;
+    }
+    
+    @Transactional
+    public boolean deleteEvent(Long id, User user) {
+        try {
+            // Buscar el evento
+            Event event = eventRepository.findById(id)
+                .orElse(null);
+            
+            // Verificar si el evento existe
+            if (event == null) {
+                return false;
+            }
+            
+            // Verificar si el usuario tiene permiso (creador o admin)
+            if (event.getCreador() == null || 
+                !event.getCreador().getUsername().equals(user.getUsername())) {
+                return false;
+            }
+            
+            // Eliminar evento
+            eventRepository.delete(event);
+            eventRepository.flush();
+            
+            return true;
+        } catch (Exception e) {
+            System.err.println("Error al eliminar evento: " + e.getMessage());
+            return false;
+        }
+    }
+    
+    public Boolean participateInEvent(Long eventId, User user) {
+        Event event = eventRepository.findById(eventId).orElse(null);
+        if (event == null) {
+            return false;
+        }
+        
+        // Asumiendo que necesitamos guardar el username como participante
+        event.addParticipante(user.getUsername());
+        eventRepository.save(event);
+        
+        return true;
+    }
+    
+    public Boolean cancelParticipation(Long eventId, User user) {
+        Event event = eventRepository.findById(eventId).orElse(null);
+        if (event == null) {
+            return false;
+        }
+        
+        event.removeParticipante(user.getUsername());
+        eventRepository.save(event);
+        
+        return true;
+    }
+    
+    public Set<String> getEventParticipants(Long eventId) {
+        Event event = eventRepository.findById(eventId).orElse(null);
+        if (event == null) {
+            return null;
+        }
+        return event.getParticipantes();
+    }
+    
+    public List<Event> getEventsByCreador(String username) {
+        User user = userRepository.findByUsername(username).orElse(null);
+        if (user == null) {
+            return null;
+        }
+        return eventRepository.findByCreador_Username(username);
+    }
+    
+    public Boolean commentEvent(Long eventId, User user, CommentDTO commentDTO) {
+        Event event = eventRepository.findById(eventId).orElse(null);
+        if (event == null) {
+            return false;
+        }
+        
+        Comment comment = new Comment();
+        comment.setUser(user);
+        comment.setText(commentDTO.getText());
+        comment.setEvent(event); // Asumiendo que la clase Comment tiene un campo para Event
+        comment.setCreationDate(System.currentTimeMillis());
+        
+        commentRepository.save(comment);
+        event.addComentario(comment);
+        eventRepository.save(event);
+        
+        return true;
+    }
+    
+    public List<Comment> getCommentsByEventId(Long eventId) {
+        Event event = eventRepository.findById(eventId).orElse(null);
+        if (event == null) {
+            return null;
+        }
+        return event.getComentarios();
+    }
+    
+    // Método adicional para obtener los eventos en los que participa un usuario
+    public List<Event> getUserParticipatingEvents(String username) {
+        if (username == null || username.isEmpty()) {
+            return null;
+        }
+        return eventRepository.findByParticipantesContaining(username);
+    }
 }
-
