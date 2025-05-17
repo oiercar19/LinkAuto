@@ -213,21 +213,6 @@
         .btn-icon-text i {
             display: inline-flex;
         }
-
-        /* Estilo para el badge de verificación */
-        .verified-badge {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 16px;
-            height: 16px;
-            background-color: var(--primary-color);
-            color: white;
-            border-radius: 50%;
-            font-size: 10px;
-            margin-left: 4px;
-            vertical-align: middle;
-        }
     </style>
 </head>
 <body>
@@ -256,10 +241,6 @@
                              style="width: 38px; height: 38px;">
                     </div>
                     <span class="d-none d-md-inline" th:text="${username}">Usuario</span>
-                    <!-- Badge de verificación para el usuario actual en la navbar -->
-                    <span th:if="${isVerified}" class="verified-badge" title="Usuario verificado">
-                        <i class="bi bi-check"></i>
-                    </span>
                 </div>
 
                 <a th:href="@{/savedPosts}" class="btn btn-custom-outline btn-sm">
@@ -295,34 +276,9 @@
     <!-- Main content -->
     <div class="container" style="margin-top: 80px;">
         <div class="post-container">
-            <!-- Create post card -->
-            <div class="card post-card">
-                <div class="card-body">
-                    <h5 class="card-title mb-3">Crear Publicación</h5>
-                    <form id="postForm" th:action="@{'/post'}" method="post">
-                        <div class="mb-3">
-                            <textarea class="form-control create-post-input" id="postContent" rows="3" 
-                                placeholder="Comparte algo sobre coches..."></textarea>
-                        </div>
-                        
-                        <div id="imageUrlsContainer">
-                            <div class="image-url-container">
-                                <input type="url" class="form-control image-url" placeholder="URL de imagen (opcional)">
-                                <button type="button" class="btn btn-sm btn-outline-success rounded-circle ms-2 add-image-url">
-                                    <i class="bi bi-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                        
-                        <div class="d-flex justify-content-end mt-3">
-                            <button type="submit" class="btn btn-custom-primary">
-                                <i class="bi bi-send"></i> Publicar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-
+            <h1 class="text-center mb-4 fw-bold border-bottom pb-2" style="color: #343a40; font-size: 2.2rem;">
+                <i class="bi bi-bookmark"></i> Publicaciones guardadas
+            </h1>
             <!-- Iteración sobre los posts -->
             <div th:each="post : ${posts}" class="card post-card">
                 <div class="card-header">
@@ -333,10 +289,6 @@
                         <div>
                             <!-- Cambio: Convertir el nombre de usuario en un enlace al perfil -->
                             <a th:href="@{'/user/' + ${post.username}}" class="user-link" th:text="${post.username}">Nombre de Usuario</a>
-                            <!-- Badge de verificación para el usuario actual en la navbar -->
-                            <span th:if="${verifiedUsers != null and verifiedUsers.contains(post.username)}" class="verified-badge" title="Usuario verificado">
-                                <i class="bi bi-check"></i>
-                            </span>
                         </div>
                         <div class="ms-auto">
                             <form th:if="${not #lists.contains(followings, post.username) && not #strings.equals(username, post.username)}"
@@ -392,17 +344,9 @@
                             th:onclick="'getSharePost(' + ${post.id} + ', event)'">
                             <i class="bi bi-share"></i> Compartir
                         </button>
-                        <!-- Botón para guardar -->
-                        <form th:if="${not savedPosts.contains(post)}"
-                            th:action="@{'/user/' + ${post.id} + '/savePost?redirectUrl=/feed'}"
-                            method="post">
-                            <button type="submit" class="btn btn-sm btn-outline-primary rounded-pill me-2 ms-2">
-                                <i class="bi bi-bookmark"></i> Guardar
-                            </button>
-                        </form>
 
                         <!-- Botón para quitar guardado -->
-                        <form th:if="${savedPosts.contains(post)}"
+                        <form 
                             th:action="@{'/user/' + ${post.id} + '/unSavePost?redirectUrl=/feed'}"
                             method="post">
                             <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill me-2 ms-2">
