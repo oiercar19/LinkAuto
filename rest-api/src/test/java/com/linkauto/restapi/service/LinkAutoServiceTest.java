@@ -23,6 +23,7 @@ import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.model.User.Gender;
 import com.linkauto.restapi.repository.CommentRepository;
+import com.linkauto.restapi.repository.EventRepository;
 import com.linkauto.restapi.repository.PostRepository;
 import com.linkauto.restapi.repository.UserRepository;
 
@@ -32,6 +33,7 @@ public class LinkAutoServiceTest {
     private PostRepository postRepository;
     private UserRepository userRepository;
     private CommentRepository commentRepository;
+    private EventRepository eventRepository;
     private LinkAutoService linkAutoService;
 
     @BeforeEach
@@ -39,7 +41,8 @@ public class LinkAutoServiceTest {
         postRepository = mock(PostRepository.class);
         userRepository = mock(UserRepository.class);
         commentRepository = mock(CommentRepository.class);
-        linkAutoService = new LinkAutoService(postRepository, userRepository, commentRepository);
+        eventRepository = mock(EventRepository.class);
+        linkAutoService = new LinkAutoService(postRepository, userRepository, commentRepository, eventRepository);
     }
 
     @Test
