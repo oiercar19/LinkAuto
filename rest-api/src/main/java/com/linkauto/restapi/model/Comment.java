@@ -20,17 +20,31 @@ public class Comment {
     @JoinColumn(name = "username", nullable = false)
     private User user; // username of the user who made the comment
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "post_id", nullable = false)
+    @JoinColumn(name = "post_id")
     private Post post;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "event_id")
+    private Event event;
     private Long creationDate;
 
     public Comment() {
     }
 
+    // Constructor original para mantener compatibilidad con pruebas existentes
     public Comment(String text, User user, Post post, Long creationDate) {
         this.text = text;
         this.user = user;
         this.post = post;
+        this.event = null;
+        this.creationDate = creationDate;
+    }
+
+    // Nuevo constructor que incluye Event
+    public Comment(String text, User user, Post post, Event event, Long creationDate) {
+        this.text = text;
+        this.user = user;
+        this.post = post;
+        this.event = event;
         this.creationDate = creationDate;
     }
 
@@ -64,6 +78,14 @@ public class Comment {
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
     }
 
     public Long getCreationDate() {

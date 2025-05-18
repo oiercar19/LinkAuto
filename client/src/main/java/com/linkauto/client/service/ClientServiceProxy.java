@@ -16,6 +16,8 @@ import com.linkauto.client.data.User;
 import com.linkauto.client.data.Comment;
 import com.linkauto.client.data.CommentCreator;
 import com.linkauto.client.data.Credentials;
+import com.linkauto.client.data.Event;
+import com.linkauto.client.data.EventCreator;
 
 @Service
 public class ClientServiceProxy implements ILinkAutoServiceProxy {
@@ -355,13 +357,11 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
 
     @Override
     public Post sharePost(Long postId) {
-        // Se construye la URL para llamar al endpoint que realiza el compartir.
         String url = String.format("%s/api/posts/%d", apiBaseUrl, postId);
     
         try {
             return restTemplate.getForObject(url,Post.class);
         } catch (HttpStatusCodeException e) {
-            // Se manejan los distintos errores HTTP.
             switch (e.getStatusCode().value()) {
                 case 404 -> throw new RuntimeException("Publicación no encontrada");
                 default -> throw new RuntimeException("Error al compartir la publicación: " + e.getStatusText());
@@ -389,7 +389,6 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
 
             return response.getBody();
         } catch (HttpStatusCodeException e) {
-            // Manejar errores HTTP específicos
             switch (e.getStatusCode().value()) {
                 case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
                 case 403 -> throw new RuntimeException("Forbidden: You do not have permission to access this resource");
@@ -556,4 +555,98 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
         }
     }
     
+    // Event methods implementation
+    
+    @Override
+    public List<Event> getAllEvents() {
+        String url = String.format("%s/api/events", apiBaseUrl);
+        
+        try {
+            ResponseEntity<List<Event>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Event>>() {}
+            );
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            throw new RuntimeException("Failed to get events: " + e.getStatusText());
+        }
+    }
+
+    @Override
+    public Event getEventById(Long eventId) {
+        String url = String.format("%s/api/events/%d", apiBaseUrl, eventId);
+        
+        try {
+            return restTemplate.getForObject(url, Event.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("Event not found");
+                default -> throw new RuntimeException("Failed to get event: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void createEvent(String token, EventCreator event) {
+        String url = String.format("%s/api/events?userToken=%s", apiBaseUrl, token);
+        
+        try {
+            System.out.println("Event: " + event.title()); // Debug log
+            restTemplate.postForObject(url, event, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 400 -> throw new RuntimeException("Failed to create event: Invalid event data");
+                default -> throw new RuntimeException("Failed to create event: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void deleteEvent(String token, Long eventId) {
+        String url = String.format("%s/api/events/%d?userToken=%s", apiBaseUrl, eventId, token);
+        
+        try {
+            restTemplate.delete(url);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to delete this event");
+                case 404 -> throw new RuntimeException("Event not found");
+                default -> throw new RuntimeException("Failed to delete event: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void participateInEvent(String token, Long eventId) {
+        String url = String.format("%s/api/events/%d/participate?userToken=%s", apiBaseUrl, eventId, token);
+        
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("Event not found");
+                default -> throw new RuntimeException("Failed to participate in event: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void cancelParticipation(String token, Long eventId) {
+        String url = String.format("%s/api/events/%d/cancel?userToken=%s", apiBaseUrl, eventId, token);
+        
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("Event not found");
+                default -> throw new RuntimeException("Failed to cancel participation: " + e.getStatusText());
+            }
+        }
+    }
 }

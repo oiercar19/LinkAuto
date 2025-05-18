@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -25,11 +26,14 @@ import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.dto.CommentReturnerDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
+import com.linkauto.restapi.dto.EventDTO;
+import com.linkauto.restapi.dto.EventReturnerDTO;
 import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.Post;
-import com.linkauto.restapi.model.Role;
+import com.linkauto.restapi.model.Role; 
+import com.linkauto.restapi.model.Event; 
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.model.User.Gender;
 import com.linkauto.restapi.service.AuthService;
@@ -646,8 +650,7 @@ public class LinkAutoControllerTest {
         String username = "testUser";
         boolean banStatus = true;
         String userToken = "validToken";
-    
-        // Crear usuarios de prueba
+                // Crear usuarios de prueba
         User adminUser = new User("admin", "Admin Name", "adminPic", "adminEmail",
                 new ArrayList<>(), 123456L, User.Gender.MALE, "adminLocation", "adminPassword",
                 "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
@@ -673,6 +676,283 @@ public class LinkAutoControllerTest {
         verify(authService).getUserByUsername(username);
         verify(authService).banUser(username, banStatus);
     }
+    
+   @Test
+public void testGetAllEvents() {
+    List<Event> events = new ArrayList<>();
+    User creator = usuario;
+    
+    Event event1 = new Event(1L, creator, "Event 1", "Description 1", "Location 1", 
+                           1234567L, 1234568L, new ArrayList<>(), new HashSet<>(), new ArrayList<>());
+    Event event2 = new Event(2L, creator, "Event 2", "Description 2", "Location 2", 
+                           1234569L, 1234570L, new ArrayList<>(), new HashSet<>(), new ArrayList<>());
+    
+    events.add(event1);
+    events.add(event2);
+    
+    when(linkAutoService.getAllEvents()).thenReturn(events);
+    
+    ResponseEntity<List<EventReturnerDTO>> result = linkAutoController.getAllEvents();
+    
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertNotNull(result.getBody());
+    assertEquals(2, result.getBody().size());
+    assertEquals("Event 1", result.getBody().get(0).getTitle());
+    assertEquals("Event 2", result.getBody().get(1).getTitle());
+}
+
+@Test
+public void testGetEventById() {
+    Long eventId = 1L;
+    User creator = usuario;
+    
+    Event event = new Event(eventId, creator, "Test Event", "Test Description", "Test Location", 
+                          1234567L, 1234568L, new ArrayList<>(), new HashSet<>(), new ArrayList<>());
+    
+    when(linkAutoService.getEventById(eventId)).thenReturn(Optional.of(event));
+    
+    ResponseEntity<EventReturnerDTO> result = linkAutoController.getEventById(eventId);
+    
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertNotNull(result.getBody());
+    assertEquals(eventId, result.getBody().getId());
+    assertEquals("Test Event", result.getBody().getTitle());
+    
+    // Test not found scenario
+    when(linkAutoService.getEventById(2L)).thenReturn(Optional.empty());
+    ResponseEntity<EventReturnerDTO> notFoundResult = linkAutoController.getEventById(2L);
+    assertEquals(HttpStatus.NOT_FOUND, notFoundResult.getStatusCode());
+}
+
+@Test
+public void testCreateEvent() {
+    String userToken = "validToken";
+    List<String> images = Arrays.asList("img1.jpg", "img2.jpg");
+    EventDTO eventDTO = new EventDTO("New Event", "New Description", "New Location", 
+                                  1234567L, 1234568L, images);
+    
+    // Test unauthorized scenario
+    when(authService.isTokenValid("invalidToken")).thenReturn(false);
+    ResponseEntity<EventReturnerDTO> unauthorizedResult = linkAutoController.createEvent("invalidToken", eventDTO);
+    assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResult.getStatusCode());
+    
+    // Test successful creation
+    when(authService.isTokenValid(userToken)).thenReturn(true);
+    when(authService.getUserByToken(userToken)).thenReturn(usuario);
+    
+    Event createdEvent = new Event(1L, usuario, "New Event", "New Description", "New Location", 
+                                 1234567L, 1234568L, images, new HashSet<>(), new ArrayList<>());
+    
+    when(linkAutoService.createEvent(eventDTO, usuario)).thenReturn(createdEvent);
+    
+    ResponseEntity<EventReturnerDTO> result = linkAutoController.createEvent(userToken, eventDTO);
+    
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertNotNull(result.getBody());
+    assertEquals("New Event", result.getBody().getTitle());
+    assertEquals("New Description", result.getBody().getDescription());
+    assertEquals(1L, result.getBody().getId());
+}
+
+@Test
+public void testDeleteEvent() {
+    String userToken = "validToken";
+    Long eventId = 1L;
+    
+    // Test unauthorized scenario
+    when(authService.isTokenValid("invalidToken")).thenReturn(false);
+    ResponseEntity<Void> unauthorizedResult = linkAutoController.deleteEvent(eventId, "invalidToken");
+    assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResult.getStatusCode());
+    
+    // Test successful deletion
+    when(authService.isTokenValid(userToken)).thenReturn(true);
+    when(authService.getUserByToken(userToken)).thenReturn(usuario);
+    when(linkAutoService.deleteEvent(eventId, usuario)).thenReturn(true);
+    
+    ResponseEntity<Void> result = linkAutoController.deleteEvent(eventId, userToken);
+    
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    verify(linkAutoService, times(1)).deleteEvent(eventId, usuario);
+    
+    // Test not found scenario
+    when(linkAutoService.deleteEvent(2L, usuario)).thenReturn(false);
+    ResponseEntity<Void> notFoundResult = linkAutoController.deleteEvent(2L, userToken);
+    assertEquals(HttpStatus.NOT_FOUND, notFoundResult.getStatusCode());
+}
+
+@Test
+public void testParticipateInEvent() {
+    String userToken = "validToken";
+    Long eventId = 1L;
+    
+    // Test unauthorized scenario
+    when(authService.isTokenValid("invalidToken")).thenReturn(false);
+    ResponseEntity<Void> unauthorizedResult = linkAutoController.participateInEvent(eventId, "invalidToken");
+    assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResult.getStatusCode());
+    
+    // Test successful participation
+    when(authService.isTokenValid(userToken)).thenReturn(true);
+    when(authService.getUserByToken(userToken)).thenReturn(usuario);
+    when(linkAutoService.participateInEvent(eventId, usuario)).thenReturn(true);
+    
+    ResponseEntity<Void> result = linkAutoController.participateInEvent(eventId, userToken);
+    
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    verify(linkAutoService, times(1)).participateInEvent(eventId, usuario);
+    
+    // Test not found scenario
+    when(linkAutoService.participateInEvent(2L, usuario)).thenReturn(false);
+    ResponseEntity<Void> notFoundResult = linkAutoController.participateInEvent(2L, userToken);
+    assertEquals(HttpStatus.NOT_FOUND, notFoundResult.getStatusCode());
+}
+
+@Test
+public void testCancelParticipation() {
+    String userToken = "validToken";
+    Long eventId = 1L;
+    
+    // Test unauthorized scenario
+    when(authService.isTokenValid("invalidToken")).thenReturn(false);
+    ResponseEntity<Void> unauthorizedResult = linkAutoController.cancelParticipation(eventId, "invalidToken");
+    assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResult.getStatusCode());
+    
+    // Test successful cancellation
+    when(authService.isTokenValid(userToken)).thenReturn(true);
+    when(authService.getUserByToken(userToken)).thenReturn(usuario);
+    when(linkAutoService.cancelParticipation(eventId, usuario)).thenReturn(true);
+    
+    ResponseEntity<Void> result = linkAutoController.cancelParticipation(eventId, userToken);
+    
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    verify(linkAutoService, times(1)).cancelParticipation(eventId, usuario);
+    
+    // Test not found scenario
+    when(linkAutoService.cancelParticipation(2L, usuario)).thenReturn(false);
+    ResponseEntity<Void> notFoundResult = linkAutoController.cancelParticipation(2L, userToken);
+    assertEquals(HttpStatus.NOT_FOUND, notFoundResult.getStatusCode());
+}
+
+@Test
+public void testGetEventParticipants() {
+    Long eventId = 1L;
+    Set<String> participants = new HashSet<>(Arrays.asList("user1", "user2", "user3"));
+    
+    when(linkAutoService.getEventParticipants(eventId)).thenReturn(participants);
+    
+    ResponseEntity<Set<String>> result = linkAutoController.getEventParticipants(eventId);
+    
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertNotNull(result.getBody());
+    assertEquals(3, result.getBody().size());
+    
+    // Test not found scenario
+    when(linkAutoService.getEventParticipants(2L)).thenReturn(null);
+    ResponseEntity<Set<String>> notFoundResult = linkAutoController.getEventParticipants(2L);
+    assertEquals(HttpStatus.NOT_FOUND, notFoundResult.getStatusCode());
+}
+
+@Test
+public void testGetUserEvents() {
+    String username = "testUser";
+    List<Event> events = new ArrayList<>();
+    User creator = usuario;
+    
+    Event event1 = new Event(1L, creator, "Event 1", "Description 1", "Location 1", 
+                           1234567L, 1234568L, new ArrayList<>(), new HashSet<>(), new ArrayList<>());
+    Event event2 = new Event(2L, creator, "Event 2", "Description 2", "Location 2", 
+                           1234569L, 1234570L, new ArrayList<>(), new HashSet<>(), new ArrayList<>());
+    
+    events.add(event1);
+    events.add(event2);
+    
+    when(linkAutoService.getEventsByUsername(username)).thenReturn(events);
+    
+    ResponseEntity<List<EventReturnerDTO>> result = linkAutoController.getUserEvents(username);
+    
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertNotNull(result.getBody());
+    assertEquals(2, result.getBody().size());
+    assertEquals("Event 1", result.getBody().get(0).getTitle());
+    assertEquals("Event 2", result.getBody().get(1).getTitle());
+}
+
+@Test
+public void testUpdateEvent() {
+    String userToken = "validToken";
+    Long eventId = 1L;
+    List<String> images = Arrays.asList("updated-img1.jpg", "updated-img2.jpg");
+    EventDTO eventDTO = new EventDTO("Updated Event", "Updated Description", "Updated Location", 
+                                  9876543L, 9876544L, images);
+    
+    // Test unauthorized scenario
+    when(authService.isTokenValid("invalidToken")).thenReturn(false);
+    ResponseEntity<EventReturnerDTO> unauthorizedResult = linkAutoController.updateEvent(eventId, "invalidToken", eventDTO);
+    assertEquals(HttpStatus.UNAUTHORIZED, unauthorizedResult.getStatusCode());
+    
+    // Test successful update
+    when(authService.isTokenValid(userToken)).thenReturn(true);
+    when(authService.getUserByToken(userToken)).thenReturn(usuario);
+    
+    Event updatedEvent = new Event(eventId, usuario, "Updated Event", "Updated Description", "Updated Location", 
+                                 9876543L, 9876544L, images, new HashSet<>(), new ArrayList<>());
+    
+    when(linkAutoService.updateEvent(eventId, eventDTO, usuario)).thenReturn(Optional.of(updatedEvent));
+    
+    ResponseEntity<EventReturnerDTO> result = linkAutoController.updateEvent(eventId, userToken, eventDTO);
+    
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertNotNull(result.getBody());
+    assertEquals("Updated Event", result.getBody().getTitle());
+    assertEquals("Updated Description", result.getBody().getDescription());
+    assertEquals(eventId, result.getBody().getId());
+    
+    // Test not found scenario
+    when(linkAutoService.updateEvent(2L, eventDTO, usuario)).thenReturn(Optional.empty());
+    ResponseEntity<EventReturnerDTO> notFoundResult = linkAutoController.updateEvent(2L, userToken, eventDTO);
+    assertEquals(HttpStatus.NOT_FOUND, notFoundResult.getStatusCode());
+}
+
+@Test
+public void testParseEventToEventReturnerDTO() {
+    // This is a test for the private helper method, we'll need to use reflection to test it
+    // For this example, we'll test it indirectly through the public methods that use it
+    
+    User creator = usuario;
+    Long eventId = 1L;
+    List<String> images = Arrays.asList("img1.jpg", "img2.jpg");
+    Set<String> participants = new HashSet<>(Arrays.asList("user1", "user2"));
+    List<Comment> comments = new ArrayList<>();
+    
+    Comment comment1 = new Comment("Test comment 1", creator, null, 1234567L);
+    comment1.setId(10L);
+    Comment comment2 = new Comment("Test comment 2", creator, null, 1234568L);
+    comment2.setId(11L);
+    comments.add(comment1);
+    comments.add(comment2);
+    
+    Event event = new Event(eventId, creator, "Test Event", "Test Description", "Test Location", 
+                          1234567L, 1234568L, images, participants, comments);
+    
+    // We need to set the event reference for each comment
+    comment1.setEvent(event);
+    comment2.setEvent(event);
+    
+    when(linkAutoService.getEventById(eventId)).thenReturn(Optional.of(event));
+    
+    ResponseEntity<EventReturnerDTO> result = linkAutoController.getEventById(eventId);
+    
+    assertEquals(HttpStatus.OK, result.getStatusCode());
+    assertNotNull(result.getBody());
+    assertEquals(eventId, result.getBody().getId());
+    assertEquals("Test Event", result.getBody().getTitle());
+    assertEquals("Test Description", result.getBody().getDescription());
+    assertEquals("Test Location", result.getBody().getLocation());
+    assertEquals(1234567L, result.getBody().getStartDate());
+    assertEquals(1234568L, result.getBody().getEndDate());
+    assertEquals(2, result.getBody().getImages().size());
+    assertEquals(2, result.getBody().getParticipants().size());
+    assertEquals(2, result.getBody().getComment_ids().size());
+}
     
     @Test
     public void testBanUser_Unauthorized() {

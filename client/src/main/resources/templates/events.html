@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eventos - LinkAuto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #f8f9fa;
+            --accent-color: #eff6ff;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        .navbar {
+            background-color: white !important;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+        
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+        
+        .evento-container {
+            max-width: 700px;
+            margin: 100px auto;
+        }
+        
+        .evento-card {
+            margin-bottom: 24px;
+            border-radius: 10px;
+            border: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .evento-card .card-header {
+            background-color: white;
+            border-bottom: 1px solid #eaeaea;
+            padding: 15px 20px;
+        }
+        
+        .evento-card .card-body {
+            padding: 20px;
+        }
+        
+        .evento-card .card-footer {
+            background-color: white;
+            padding: 12px 20px;
+            border-top: 1px solid #eaeaea;
+        }
+        
+        .create-evento-card {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            margin-bottom: 24px;
+        }
+        
+        .create-evento-input {
+            border-radius: 20px;
+            padding: 12px 20px;
+            border: 1px solid #e4e6eb;
+            background-color: #f0f2f5;
+            resize: none;
+        }
+        
+        .create-evento-input:focus {
+            background-color: white;
+            box-shadow: none;
+            border-color: #d0d0d0;
+        }
+        
+        .image-url-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .btn-custom-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            border-radius: 20px;
+            padding: 8px 20px;
+            font-weight: 500;
+        }
+        
+        .btn-custom-primary:hover {
+            background-color: #2a75e6;
+            border-color: #2a75e6;
+            color: white;
+        }
+        
+        .btn-custom-outline {
+            border-radius: 20px;
+            padding: 7px 15px;
+            font-weight: 500;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+        }
+        
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            margin-right: 10px;
+            background-color: #e4e6eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #65676b;
+            font-weight: bold;
+        }
+
+        .user-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .evento-images {
+            margin-top: 15px;
+        }
+        
+        .evento-image {
+            border-radius: 8px;
+            margin-bottom: 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .evento-image:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Estilo para los enlaces de usuario */
+        .user-link {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+        
+        .user-link:hover {
+            text-decoration: underline;
+        }
+
+        .btn-icon-text {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-weight: 500;
+        }
+        
+        .btn-icon-text i {
+            display: inline-flex;
+        }
+        
+        .evento-details {
+            background-color: var(--accent-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .evento-details i {
+            color: var(--primary-color);
+            margin-right: 5px;
+        }
+        
+        .evento-detail-item {
+            margin-bottom: 8px;
+        }
+        
+        .participantes-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .participante-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <!-- Full-width Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light w-100 fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="/feed">LinkAuto</a>
+                <div class="d-flex justify-content-center w-100">
+                    <div class="search-container" style="max-width: 700px; width: 100%;">
+                        <form th:action="@{/search}" method="get" class="d-flex">
+                            <input type="text" class="form-control form-control-sm rounded-pill" 
+                                name="username" placeholder="Buscar usuario..." required
+                                th:value="${param.username}">
+                            <button type="submit" class="btn btn-sm btn-outline-primary ms-2 me-3 rounded-pill">
+                                <i class="bi bi-search"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="ms-auto d-flex align-items-center">
+                <div class="user-profile me-3">
+                    <div class="user-avatar">
+                        <img th:src="${profilePicture != null && (#strings.endsWith(profilePicture, '.png') || #strings.endsWith(profilePicture, '.jpg')) ? profilePicture : '/images/default-avatar.png'}" 
+                             alt="Profile Picture" 
+                             class="img-fluid rounded-circle" 
+                             style="width: 38px; height: 38px;">
+                    </div>
+                    <span class="d-none d-md-inline" th:text="${username}">Usuario</span>
+                </div>
+
+                <a th:if="${role == 'ADMIN'}" href="/adminPanel" class="btn btn-custom-outline btn-sm me-2">
+                    <span class="btn-icon-text">
+                        <i class="bi bi-shield-lock"></i>
+                        <span class="d-none d-md-inline">Admin</span>
+                    </span>
+                </a>
+                <a th:href="@{'/user/' + ${username}}" class="btn btn-custom-outline btn-sm me-2">
+                    <span class="btn-icon-text">
+                        <i class="bi bi-gear"></i>
+                        <span class="d-none d-md-inline">Perfil</span>
+                    </span>
+                </a>
+                <a th:href="@{/logout}" class="btn btn-outline-danger btn-sm">
+                    <span class="btn-icon-text">
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span class="d-none d-md-inline">Salir</span>
+                    </span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main content -->
+    <div class="container" style="margin-top: 80px;">
+        <div class="evento-container">
+            <!-- Create evento card -->
+            <div class="card evento-card">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">Crear Evento</h5>
+                    <form id="eventoForm" th:action="@{/events/create}" method="post">
+                        <div class="mb-3">
+                            <input type="text" class="form-control mb-2" id="title" placeholder="Título del evento" required>
+                            <textarea class="form-control create-evento-input" id="description" rows="3" 
+                                placeholder="Describe el evento..."></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="input-group mb-2">
+                                <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                                <input type="text" class="form-control" id="location" placeholder="Ubicación">
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                        <input type="date" class="form-control" id="startDate">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-2">
+                                    <div class="input-group">
+                                        <span class="input-group-text"><i class="bi bi-calendar"></i></span>
+                                        <input type="date" class="form-control" id="endDate">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="imageUrlsContainer">
+                            <div class="image-url-container">
+                                <input type="url" class="form-control image-url" placeholder="URL de imagen (opcional)">
+                                <button type="button" class="btn btn-sm btn-outline-success rounded-circle ms-2 add-image-url">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end mt-3">
+                            <button type="submit" class="btn btn-custom-primary">
+                                <i class="bi bi-calendar-plus"></i> Crear Evento
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Iteración sobre los eventos -->
+            <div th:each="evento : ${events}" class="card evento-card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center">
+                        <div class="user-avatar me-2">
+                            <img th:src="${profilePictureMap != null && profilePictureMap.containsKey(evento.username) ? profilePictureMap.get(evento.username) : '/images/default-avatar.png'}" 
+                                 style="width: 38px; height: 38px;" 
+                                 class="img-fluid rounded-circle" 
+                                 alt="Foto de perfil">
+                        </div>
+                        <div>
+                            <a th:href="@{'/user/' + ${evento.username}}" class="user-link" th:text="${evento.username}">Nombre de Usuario</a>
+                        </div>
+                        <div class="ms-auto">                           
+                            <form th:action="@{/events/{eventId}/delete(eventId=${evento.id})}" method="post" style="display:inline;">
+                                <button th:if="${evento.username == username}" type="submit" class="btn btn-sm btn-outline-danger delete-evento-btn">
+                                    <i class="bi bi-trash"></i> Eliminar
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title mb-2" th:text="${evento.title}">Título del Evento</h5>
+                    
+                    <div class="evento-details">
+                        <div class="evento-detail-item">
+                            <i class="bi bi-geo-alt-fill"></i>
+                            <span th:text="${evento.location}">Ubicación</span>
+                        </div>
+                        <div class="evento-detail-item">
+                            <i class="bi bi-calendar-event"></i>
+                            <span th:text="${#dates.format(new java.util.Date(evento.startDate), 'dd/MM/yyyy')}">Fecha Inicio</span>
+                        </div>
+                        <div class="evento-detail-item">
+                            <i class="bi bi-calendar-event"></i>
+                            <span th:text="${#dates.format(new java.util.Date(evento.endDate), 'dd/MM/yyyy')}">Fecha Fin</span>
+                        </div>
+                    </div>
+                    
+                    <p class="card-text" th:text="${evento.description}">Descripción del evento</p>
+                    
+                    <div th:if="${not #lists.isEmpty(evento.images)}" class="evento-images">
+                        <div class="row g-2">
+                            <div th:each="image : ${evento.images}" class="col-md-4 mb-2">
+                                <img th:src="@{${image}}" class="img-fluid evento-image w-100" alt="Imagen del evento">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <h6><i class="bi bi-people-fill"></i> Participantes (<span th:text="${evento.participants.size()}">0</span>)</h6>
+                        <div class="participantes-list">
+                            <div th:each="participante : ${evento.participants}" class="participante-avatar">
+                                <img th:src="${profilePictureMap != null && profilePictureMap.containsKey(participante) ? profilePictureMap.get(participante) : '/images/default-avatar.png'}"
+                                     class="img-fluid"
+                                     th:title="${participante}"
+                                     alt="Participante">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card-footer d-flex justify-content-between align-items-center">
+                    <div class="d-flex">
+                        <form th:if="${not evento.participants.contains(username)}" th:action="@{'/events/' + ${evento.id} + '/participate'}" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-primary rounded-pill me-2">
+                                <i class="bi bi-check-circle"></i> Participar
+                            </button>
+                        </form>
+                    
+                        <form th:if="${evento.participants.contains(username)}" th:action="@{'/events/' + ${evento.id} + '/cancel'}" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill me-2">
+                                <i class="bi bi-x-circle"></i> Cancelar
+                            </button>
+                        </form>
+                
+                        <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill ms-2"
+                            th:onclick="'getShareEvento(' + ${evento.id} + ', event)'">
+                            <i class="bi bi-share"></i> Compartir
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        function getShareEvento(eventoId) {
+            // Make sure we have the event object
+            event = event || window.event;
+        
+            // Copy the eventoId to clipboard
+            navigator.clipboard.writeText('localhost:8081/events/' + eventoId)
+            .then(() => {
+                console.log("Evento ID copied to clipboard:", eventoId);
+                
+                // Get the button that was clicked
+                const shareButton = event.target.closest('button');
+                
+                alert('Link copiado al portapapeles');
+            })
+            .catch(err => {
+                console.error('Failed to copy evento ID:', err);
+                alert('No se pudo copiar el ID al portapapeles');
+            });
+        }
+    </script>
+
+    <script th:inline="javascript">
+        document.addEventListener('DOMContentLoaded', () => {
+            const imageUrlsContainer = document.getElementById('imageUrlsContainer');
+
+            // Function to add a new image URL input
+            function addImageUrlInput() {
+                const container = document.createElement('div');
+                container.classList.add('image-url-container');
+                
+                const input = document.createElement('input');
+                input.type = 'url';
+                input.classList.add('form-control', 'image-url');
+                input.placeholder = 'URL de imagen (opcional)';
+                
+                const removeButton = document.createElement('button');
+                removeButton.type = 'button';
+                removeButton.classList.add('btn', 'btn-sm', 'btn-outline-danger', 'rounded-circle', 'ms-2', 'remove-image-url');
+                removeButton.innerHTML = '<i class="bi bi-x"></i>';
+                removeButton.addEventListener('click', () => {
+                    container.remove();
+                });
+                
+                container.appendChild(input);
+                container.appendChild(removeButton);
+                
+                imageUrlsContainer.appendChild(container);
+            }
+
+            // Event listener for adding image URL inputs
+            imageUrlsContainer.addEventListener('click', (e) => {
+                if (e.target.classList.contains('add-image-url') || e.target.closest('.add-image-url')) {
+                    addImageUrlInput();
+                }
+            });
+        });
+        
+        // Form submission handler
+        document.getElementById('eventoForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('title').value.trim();
+            const description = document.getElementById('description').value.trim();
+            const location = document.getElementById('location').value.trim();
+            const startDateStr = document.getElementById('startDate').value;
+            const endDateStr = document.getElementById('endDate').value;
+            const imageUrls = Array.from(document.querySelectorAll('.image-url'))
+                .map(input => input.value.trim())
+                .filter(url => url !== '');
+
+            if (title === '') {
+                alert('Por favor, añade un título para el evento.');
+                return;
+            }
+
+            // Convert date strings to timestamp (milliseconds since epoch)
+            const startDate = startDateStr ? new Date(startDateStr).getTime() : null;
+            const endDate = endDateStr ? new Date(endDateStr).getTime() : null;
+
+            const eventoData = {
+                title: title,
+                description: description,
+                location: location,
+                startDate: startDate,
+                endDate: endDate,
+                images: imageUrls
+            };
+
+            console.log('Sending event data:', eventoData);
+            
+            var url = e.target.action;
+
+            // Send data to server
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(eventoData),
+                redirect: 'manual' // Handle redirects manually
+            })
+            .then(response => {
+                console.log('Response status:', response.status);
+
+                // Handle redirect manually
+                if (response.type === 'opaqueredirect' || response.status === 302) {
+                    window.location.href = '/events';
+                    return;
+                }
+
+                // Handle other responses
+                if (!response.ok) {
+                    return response.text().then(text => { 
+                        throw new Error(text || 'Error desconocido'); 
+                    });
+                }
+
+                return response.json();
+            })
+            .then(data => {
+                if (data) {
+                    // Handle JSON response if it exists
+                    alert('Evento creado con éxito');
+                    window.location.href = '/events';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                if (error.message.includes('Error desconocido')) {
+                    window.location.href = '/error'; // Redirect to a custom error page
+                } else {
+                    alert('Hubo un error al procesar la creación del evento: ' + error.message);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

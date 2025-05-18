@@ -14,6 +14,8 @@ import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
+import com.linkauto.client.data.Event;
+import com.linkauto.client.data.EventCreator;
 
 @Service
 public interface ILinkAutoServiceProxy {
@@ -24,35 +26,44 @@ public interface ILinkAutoServiceProxy {
     void logout(String username);
     
     // User profile methods
-    //LO HA HECHO MANOLO
     User getUserProfile(String username);
     void updateProfile(String username, User user);
     
     // Post methods
     void createPost(String token, PostCreator post);
     void deletePost(String token, Long postId);
-    List<Post> getFeed(); //DEVUELVE TODOS LOS POSTS. CAMBIARLO
-   
-    //Obtener datos de un post en concreto. FALTA DE AÑADIR
+    List<Post> getFeed();
     Post getPostById(Long postId);
 
+    // User methods
     User getUserByUsername(String username);
-
     List<User> getUserFollowers(String username);
     List<User> getUserFollowing(String username);
     void followUser(String token, String usernameToFollow);
     void unfollowUser(String token, String usernameToUnfollow);
     List<Post> getUserPosts(String username);
+    
+    // Comment and interaction methods
     List<Comment> getCommentsByPostId(long postId);
     void unlikePost(String token, Long postId);
     void likePost(String token, Long postId);
     void commentPost(String token, Long postId, CommentCreator comment);
     Post sharePost(Long postId);
+    
+    // Admin methods
     List<User> getAllUsers();
     void deleteUser(String token, String username);
     void banUser(String token, String username, boolean banStatus);
     void promoteToAdmin(String token, String username);
     void demoteToUser(String token, String username);
+    
+    // Event methods
+    List<Event> getAllEvents();
+    Event getEventById(Long eventId);
+    void createEvent(String token, EventCreator event);
+    void deleteEvent(String token, Long eventId);
+    void participateInEvent(String token, Long eventId);
+    void cancelParticipation(String token, Long eventId);
     void reportUser(String token, String username);
     void deleteReport(String token, String username);
     void verifyUser(String token, String username);
