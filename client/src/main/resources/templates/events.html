@@ -312,7 +312,6 @@
                         </div>
                         <div>
                             <a th:href="@{'/user/' + ${evento.username}}" class="user-link" th:text="${evento.username}">Nombre de Usuario</a>
-                            <small class="text-muted d-block">Organizador</small>
                         </div>
                         <div class="ms-auto">                           
                             <form th:action="@{/events/{eventId}/delete(eventId=${evento.id})}" method="post" style="display:inline;">
@@ -382,7 +381,6 @@
                             <i class="bi bi-share"></i> Compartir
                         </button>
                     </div>
-                    <small th:text="${#temporals.format(T(java.time.Instant).ofEpochMilli(evento.creationDate), 'dd MMM yyyy, HH:mm')}">Fecha de creación</small>
                 </div>
             </div>
         </div>

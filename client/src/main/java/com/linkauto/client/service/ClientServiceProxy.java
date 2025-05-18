@@ -462,6 +462,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
         String url = String.format("%s/api/events?userToken=%s", apiBaseUrl, token);
         
         try {
+            System.out.println("Event: " + event.title()); // Debug log
             restTemplate.postForObject(url, event, Void.class);
         } catch (HttpStatusCodeException e) {
             switch (e.getStatusCode().value()) {

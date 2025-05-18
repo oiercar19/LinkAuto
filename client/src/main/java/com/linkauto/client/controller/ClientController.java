@@ -448,6 +448,9 @@ public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
     try {
         List<Event> events = linkAutoServiceProxy.getAllEvents();
         model.addAttribute("events", events);
+        for (Event event : events) {
+            System.out.println("Evento" + event.username()); // Agregar foto de perfil al modelo
+        }
         
         // Añadir datos del usuario actual
         User currentUser = linkAutoServiceProxy.getUserProfile(token);
@@ -457,8 +460,6 @@ public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("role", currentUser.role());
         
         // Verificar que estamos recibiendo datos correctamente
-        System.out.println("Eventos encontrados: " + events.size());
-        System.out.println("Usuario actual: " + this.username);
         
         return "events"; // Vista para mostrar todos los eventos
     } catch (Exception e) {

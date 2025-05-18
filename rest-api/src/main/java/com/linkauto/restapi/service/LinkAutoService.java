@@ -213,24 +213,17 @@ public class LinkAutoService {
     
     public Event createEvent(EventDTO eventDTO, User user) {
         Event event = new Event();
-        event.setTitulo(eventDTO.getTitulo());
-        event.setDescripcion(eventDTO.getDescripcion());
-        event.setUbicacion(eventDTO.getUbicacion());
-        event.setFechaInicio(eventDTO.getFechaInicio());
-        event.setFechaFin(eventDTO.getFechaFin());
+        event.setTitulo(eventDTO.getTitle());
+        event.setDescripcion(eventDTO.getDescription());
+        event.setUbicacion(eventDTO.getLocation());
+        event.setFechaInicio(eventDTO.getStartDate());
+        event.setFechaFin(eventDTO.getEndDate());
         event.setCreador(user);
         
         // Añadir imágenes
-        if (eventDTO.getImagenes() != null) {
-            for (String imagen : eventDTO.getImagenes()) {
+        if (eventDTO.getImages() != null) {
+            for (String imagen : eventDTO.getImages()) {
                 event.addImagen(imagen);
-            }
-        }
-        
-        // Añadir participantes si existe en el DTO
-        if (eventDTO.getParticipantes() != null) {
-            for (String participante : eventDTO.getParticipantes()) {
-                event.addParticipante(participante);
             }
         }
         

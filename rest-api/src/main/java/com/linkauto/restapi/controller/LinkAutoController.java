@@ -1,10 +1,10 @@
 package com.linkauto.restapi.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.HashSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,19 +21,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.dto.CommentReturnerDTO;
+import com.linkauto.restapi.dto.EventDTO;
+import com.linkauto.restapi.dto.EventReturnerDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
 import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Comment;
+import com.linkauto.restapi.model.Event;
 import com.linkauto.restapi.model.Post;
+import com.linkauto.restapi.model.Role;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
 import com.linkauto.restapi.service.LinkAutoService;
-import com.linkauto.restapi.model.Role;
-import com.linkauto.restapi.dto.EventDTO;
-import com.linkauto.restapi.dto.EventReturnerDTO;
-import com.linkauto.restapi.model.Event;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

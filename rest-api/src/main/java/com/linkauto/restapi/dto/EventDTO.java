@@ -6,115 +6,69 @@
  package com.linkauto.restapi.dto;
 
  import java.util.List;
- import java.util.Set;
  
  public class EventDTO {
-     private Long id;
-     private String creador;
-     private String titulo;
-     private String descripcion;
-     private String ubicacion;
-     private long fechaInicio;
-     private long fechaFin;
-     private List<String> imagenes;
-     private Set<String> participantes;
-     private List<CommentDTO> comentarios;
- 
-     public EventDTO() {
-     }
- 
-     public EventDTO(Long id, String creador, String titulo, String descripcion, String ubicacion,
-                   long fechaInicio, long fechaFin, List<String> imagenes,
-                   Set<String> participantes, List<CommentDTO> comentarios) {
-         this.id = id;
-         this.creador = creador;
-         this.titulo = titulo;
-         this.descripcion = descripcion;
-         this.ubicacion = ubicacion;
-         this.fechaInicio = fechaInicio;
-         this.fechaFin = fechaFin;
-         this.imagenes = imagenes;
-         this.participantes = participantes;
-         this.comentarios = comentarios;
-     }
- 
-     public Long getId() {
-         return id;
-     }
- 
-     public void setId(Long id) {
-         this.id = id;
-     }
- 
-     public String getCreador() {
-         return creador;
-     }
- 
-     public void setCreador(String creador) {
-         this.creador = creador;
-     }
- 
-     public String getTitulo() {
-         return titulo;
-     }
- 
-     public void setTitulo(String titulo) {
-         this.titulo = titulo;
-     }
- 
-     public String getDescripcion() {
-         return descripcion;
-     }
- 
-     public void setDescripcion(String descripcion) {
-         this.descripcion = descripcion;
-     }
- 
-     public String getUbicacion() {
-         return ubicacion;
-     }
- 
-     public void setUbicacion(String ubicacion) {
-         this.ubicacion = ubicacion;
-     }
- 
-     public long getFechaInicio() {
-         return fechaInicio;
-     }
- 
-     public void setFechaInicio(long fechaInicio) {
-         this.fechaInicio = fechaInicio;
-     }
- 
-     public long getFechaFin() {
-         return fechaFin;
-     }
- 
-     public void setFechaFin(long fechaFin) {
-         this.fechaFin = fechaFin;
-     }
- 
-     public List<String> getImagenes() {
-         return imagenes;
-     }
- 
-     public void setImagenes(List<String> imagenes) {
-         this.imagenes = imagenes;
-     }
- 
-     public Set<String> getParticipantes() {
-         return participantes;
-     }
- 
-     public void setParticipantes(Set<String> participantes) {
-         this.participantes = participantes;
-     }
- 
-     public List<CommentDTO> getComentarios() {
-         return comentarios;
-     }
- 
-     public void setComentarios(List<CommentDTO> comentarios) {
-         this.comentarios = comentarios;
-     }
+    private String title;
+    private String description;
+    private String location;
+    private Long startDate;
+    private Long endDate;
+    private List<String> images;
+
+    public EventDTO(String title, String description, String location, Long startDate, Long endDate, List<String> images) {
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.images = images;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public Long getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Long startDate) {
+        this.startDate = startDate;
+    }
+
+    public Long getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Long endDate) {
+        this.endDate = endDate;
+    }
+
+    public List<String> getImages() {
+        return images;
+    }
+
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
  }
