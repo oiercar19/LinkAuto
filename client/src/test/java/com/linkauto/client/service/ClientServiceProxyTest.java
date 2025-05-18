@@ -30,6 +30,8 @@ import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
+import com.linkauto.client.data.Event;
+import com.linkauto.client.data.EventCreator;
 
 class ClientServiceProxyTest {
 
@@ -1159,4 +1161,230 @@ class ClientServiceProxyTest {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.demoteToUser(TOKEN, "adminuser"));
         assertEquals("Failed to demote admin to user: Server Error", exception.getMessage());
     }
+
+    @SuppressWarnings("unchecked")
+    @Test
+void testGetAllEvents_Success() {
+    // Create test events
+    Event event1 = new Event(1L, "user1", "Event 1", "Description 1", "Location 1", 
+                            1683012000000L, 1683015600000L, new ArrayList<>(), 
+                            new HashSet<>(), new ArrayList<>());
+    Event event2 = new Event(2L, "user2", "Event 2", "Description 2", "Location 2", 
+                            1683098400000L, 1683102000000L, new ArrayList<>(), 
+                            new HashSet<>(), new ArrayList<>());
+    List<Event> events = Arrays.asList(event1, event2);
+    
+    String url = String.format("%s/api/events", API_BASE_URL);
+    
+    // Configure mock response
+    ResponseEntity<List<Event>> responseEntity = new ResponseEntity<>(events, HttpStatus.OK);
+    
+    when(restTemplate.exchange(
+            eq(url),
+            eq(HttpMethod.GET),
+            isNull(),
+            any(ParameterizedTypeReference.class)))
+        .thenReturn(responseEntity);
+    
+    // Call method and verify result
+    List<Event> result = clientServiceProxy.getAllEvents();
+    assertEquals(events, result);
+}
+
+@SuppressWarnings("unchecked")
+@Test
+void testGetAllEvents_ServerError() {
+    String url = String.format("%s/api/events", API_BASE_URL);
+    
+    when(restTemplate.exchange(
+            eq(url),
+            eq(HttpMethod.GET),
+            isNull(),
+            any(ParameterizedTypeReference.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getAllEvents());
+    assertEquals("Failed to get events: Server Error", exception.getMessage());
+}
+
+@Test
+void testGetEventById_Success() {
+    // Create test event
+    Event event = new Event(1L, "user1", "Event 1", "Description 1", "Location 1", 
+                          1683012000000L, 1683015600000L, new ArrayList<>(), 
+                          new HashSet<>(), new ArrayList<>());
+    String url = String.format("%s/api/events/%d", API_BASE_URL, 1L);
+    
+    when(restTemplate.getForObject(url, Event.class)).thenReturn(event);
+    
+    Event result = clientServiceProxy.getEventById(1L);
+    assertEquals(event, result);
+}
+
+@Test
+void testGetEventById_NotFound() {
+    String url = String.format("%s/api/events/%d", API_BASE_URL, 1L);
+    
+    when(restTemplate.getForObject(url, Event.class))
+        .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getEventById(1L));
+    assertEquals("Event not found", exception.getMessage());
+}
+
+@Test
+void testCreateEvent_Success() {
+    // Create test event creator
+    List<String> images = Arrays.asList("image1.jpg", "image2.jpg");
+    EventCreator eventCreator = new EventCreator("Test Event", "Test Description", 
+                                                "Test Location", 1683012000000L, 
+                                                1683015600000L, images);
+    String url = String.format("%s/api/events?userToken=%s", API_BASE_URL, TOKEN);
+    
+    when(restTemplate.postForObject(eq(url), eq(eventCreator), eq(Void.class))).thenReturn(null);
+    
+    assertDoesNotThrow(() -> clientServiceProxy.createEvent(TOKEN, eventCreator));
+}
+
+@Test
+void testCreateEvent_Unauthorized() {
+    // Create test event creator
+    List<String> images = Arrays.asList("image1.jpg", "image2.jpg");
+    EventCreator eventCreator = new EventCreator("Test Event", "Test Description", 
+                                                "Test Location", 1683012000000L, 
+                                                1683015600000L, images);
+    String url = String.format("%s/api/events?userToken=%s", API_BASE_URL, TOKEN);
+    
+    when(restTemplate.postForObject(eq(url), eq(eventCreator), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, 
+                                            () -> clientServiceProxy.createEvent(TOKEN, eventCreator));
+    assertEquals("Unauthorized: Invalid token", exception.getMessage());
+}
+
+@Test
+void testCreateEvent_BadRequest() {
+    // Create test event creator with invalid data
+    List<String> images = Arrays.asList("image1.jpg", "image2.jpg");
+    EventCreator eventCreator = new EventCreator("", "Test Description", 
+                                                "Test Location", 1683012000000L, 
+                                                1683015600000L, images);
+    String url = String.format("%s/api/events?userToken=%s", API_BASE_URL, TOKEN);
+    
+    when(restTemplate.postForObject(eq(url), eq(eventCreator), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, 
+                                            () -> clientServiceProxy.createEvent(TOKEN, eventCreator));
+    assertEquals("Failed to create event: Invalid event data", exception.getMessage());
+}
+
+@Test
+void testDeleteEvent_Success() {
+    String url = String.format("%s/api/events/%d?userToken=%s", API_BASE_URL, 1L, TOKEN);
+    
+    doNothing().when(restTemplate).delete(url);
+    
+    assertDoesNotThrow(() -> clientServiceProxy.deleteEvent(TOKEN, 1L));
+}
+
+@Test
+void testDeleteEvent_Unauthorized() {
+    String url = String.format("%s/api/events/%d?userToken=%s", API_BASE_URL, 1L, TOKEN);
+    
+    doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
+        .when(restTemplate).delete(url);
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteEvent(TOKEN, 1L));
+    assertEquals("Unauthorized: Invalid token", exception.getMessage());
+}
+
+@Test
+void testDeleteEvent_Forbidden() {
+    String url = String.format("%s/api/events/%d?userToken=%s", API_BASE_URL, 1L, TOKEN);
+    
+    doThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN))
+        .when(restTemplate).delete(url);
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteEvent(TOKEN, 1L));
+    assertEquals("Forbidden: You do not have permission to delete this event", exception.getMessage());
+}
+
+@Test
+void testDeleteEvent_NotFound() {
+    String url = String.format("%s/api/events/%d?userToken=%s", API_BASE_URL, 1L, TOKEN);
+    
+    doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
+        .when(restTemplate).delete(url);
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteEvent(TOKEN, 1L));
+    assertEquals("Event not found", exception.getMessage());
+}
+
+@Test
+void testParticipateInEvent_Success() {
+    String url = String.format("%s/api/events/%d/participate?userToken=%s", API_BASE_URL, 1L, TOKEN);
+    
+    when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class))).thenReturn(null);
+    
+    assertDoesNotThrow(() -> clientServiceProxy.participateInEvent(TOKEN, 1L));
+}
+
+@Test
+void testParticipateInEvent_Unauthorized() {
+    String url = String.format("%s/api/events/%d/participate?userToken=%s", API_BASE_URL, 1L, TOKEN);
+    
+    when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, 
+                                            () -> clientServiceProxy.participateInEvent(TOKEN, 1L));
+    assertEquals("Unauthorized: Invalid token", exception.getMessage());
+}
+
+@Test
+void testParticipateInEvent_NotFound() {
+    String url = String.format("%s/api/events/%d/participate?userToken=%s", API_BASE_URL, 1L, TOKEN);
+    
+    when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, 
+                                            () -> clientServiceProxy.participateInEvent(TOKEN, 1L));
+    assertEquals("Event not found", exception.getMessage());
+}
+
+@Test
+void testCancelParticipation_Success() {
+    String url = String.format("%s/api/events/%d/cancel?userToken=%s", API_BASE_URL, 1L, TOKEN);
+    
+    when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class))).thenReturn(null);
+    
+    assertDoesNotThrow(() -> clientServiceProxy.cancelParticipation(TOKEN, 1L));
+}
+
+@Test
+void testCancelParticipation_Unauthorized() {
+    String url = String.format("%s/api/events/%d/cancel?userToken=%s", API_BASE_URL, 1L, TOKEN);
+    
+    when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, 
+                                            () -> clientServiceProxy.cancelParticipation(TOKEN, 1L));
+    assertEquals("Unauthorized: Invalid token", exception.getMessage());
+}
+
+@Test
+void testCancelParticipation_NotFound() {
+    String url = String.format("%s/api/events/%d/cancel?userToken=%s", API_BASE_URL, 1L, TOKEN);
+    
+    when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+    
+    RuntimeException exception = assertThrows(RuntimeException.class, 
+                                            () -> clientServiceProxy.cancelParticipation(TOKEN, 1L));
+    assertEquals("Event not found", exception.getMessage());
+}
 }
