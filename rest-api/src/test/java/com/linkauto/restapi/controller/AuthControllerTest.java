@@ -30,7 +30,6 @@ public class AuthControllerTest {
     @Test
     public void testRegisterSuccess() {
         UserRegisterDTO userDTO = new UserRegisterDTO("user1", "User One", "profile.jpg", "user1@example.com", new ArrayList<>(), 123456L, "MALE", "Somewhere", "password123", "A description");
-        User user = authController.parseUserRegisterDTOToUser(userDTO);
         
         when(authService.register(any(User.class))).thenReturn(true);
 

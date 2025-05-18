@@ -51,7 +51,7 @@ class ClientServiceProxyTest {
     @Test
     void testRegister_Success() {
         // Create User record with constructor parameters
-        User user = new User("testuser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
         String url = API_BASE_URL + "/auth/register";
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class))).thenReturn(null);
         
@@ -61,7 +61,8 @@ class ClientServiceProxyTest {
 
     @Test
     void testRegister_BadRequest() {
-        User user = new User("testuser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
         String url = API_BASE_URL + "/auth/register";
         
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
@@ -117,7 +118,8 @@ class ClientServiceProxyTest {
 
     @Test
     void testGetUserProfile_Success() {
-        User user = new User("testuser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         when(restTemplate.getForObject(url, User.class)).thenReturn(user);
@@ -150,7 +152,8 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_Success() {
-        User user = new User("testuser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doNothing().when(restTemplate).put(url, user, Void.class);
@@ -160,7 +163,8 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_Unauthorized() {
-        User user = new User("testuser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
@@ -225,12 +229,12 @@ class ClientServiceProxyTest {
     }
 
     @Test
-    void testGetPostById_NotFound() {
+
+            void testGetPostById_NotFound() {
         String url = String.format("%s/api/posts/%d", API_BASE_URL, 1);
         
         when(restTemplate.getForObject(url, Post.class))
             .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
-        
         RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getPostById(1L));
         assertEquals("Post not found", exception.getMessage());
     }
@@ -257,7 +261,8 @@ class ClientServiceProxyTest {
 
     @Test
     void testGetUserByUsername_Success() {
-        User user = new User("testuser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
         String url = String.format("%s/api/user/%s", API_BASE_URL, "testuser");
         
         when(restTemplate.getForObject(url, User.class)).thenReturn(user);
@@ -280,8 +285,9 @@ class ClientServiceProxyTest {
     @SuppressWarnings("unchecked")
     @Test
     void testGetUserFollowers_Success() {
-        User user1 = new User("follower", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user2 = new User("follower2", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user1 = new User("follower", "USER", false, "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+        User user2 = new User("follower2", "USER", false, "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
         List<User> followers = Arrays.asList(user1, user2);
         String url = String.format("%s/api/user/%s/followers", API_BASE_URL, "testuser");
         
@@ -301,8 +307,8 @@ class ClientServiceProxyTest {
     @SuppressWarnings("unchecked")
     @Test
     void testGetUserFollowing_Success() {
-        User user1 = new User("following1", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user2 = new User("following2", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user1 = new User("following1", "USER", false, "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+        User user2 = new User("following2", "USER", false, "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
 
         List<User> following = Arrays.asList(user1, user2);
         String url = String.format("%s/api/user/%s/following", API_BASE_URL, "testuser");
@@ -433,8 +439,9 @@ class ClientServiceProxyTest {
     @SuppressWarnings("unchecked")
     @Test
     void testGetAllUsers_Success() {
-        User user1 = new User("testuser1", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
-        User user2 = new User("testuser2", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user1 = new User("testuser1", "USER", false, "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+        User user2 = new User("testuser2", "USER", false, "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
 
         List<User> users = Arrays.asList(user1, user2);
         String url = String.format("%s/api/users", API_BASE_URL);
@@ -514,7 +521,8 @@ class ClientServiceProxyTest {
 
     @Test
     void testRegister_UsernameAlreadyExists() {
-        User user = new User("testuser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
         String url = API_BASE_URL + "/auth/register";
         
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
@@ -526,7 +534,8 @@ class ClientServiceProxyTest {
 
     @Test
     void testRegister_OtherError() {
-        User user = new User("testuser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
         String url = API_BASE_URL + "/auth/register";
         
         when(restTemplate.postForObject(eq(url), eq(user), eq(Void.class)))
@@ -576,7 +585,8 @@ class ClientServiceProxyTest {
     // Update Profile - Additional error case
     @Test
     void testUpdateProfile_NotFound() {
-        User user = new User("testuser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
@@ -588,7 +598,8 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_OtherError() {
-        User user = new User("testuser", "USER", false , "test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
+        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
         doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
@@ -597,6 +608,8 @@ class ClientServiceProxyTest {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.updateProfile(TOKEN, user));
         assertEquals("Failed to update profile: Server Error", exception.getMessage());
     }
+    
+
 
     // Create Post - Missing tests for error handling
     @Test
@@ -1158,5 +1171,230 @@ class ClientServiceProxyTest {
         
         RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.demoteToUser(TOKEN, "adminuser"));
         assertEquals("Failed to demote admin to user: Server Error", exception.getMessage());
+    }
+
+    @Test
+    void testVerifyUser_Success() {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class))).thenReturn(null);
+        
+        assertDoesNotThrow(() -> clientServiceProxy.verifyUser(TOKEN, "testuser"));
+        verify(restTemplate).postForObject(url, null, Void.class);
+    }
+    
+    @Test
+    void testVerifyUser_Unauthorized() {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.verifyUser(TOKEN, "testuser"));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+    
+    @Test
+    void testVerifyUser_Forbidden() {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.verifyUser(TOKEN, "testuser"));
+        assertEquals("Forbidden: You do not have permission to verify this user", exception.getMessage());
+    }
+
+    @Test
+    void testVerifyUser_NotFound() {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", API_BASE_URL, "nonexistent", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.verifyUser(TOKEN, "nonexistent"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testVerifyUser_OtherError() {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+        .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.verifyUser(TOKEN, "testuser"));
+        assertEquals("Failed to verify user: Server Error", exception.getMessage());
+    }
+    @Test
+    void testIsUserVerified_Success() {
+        String username = "testuser";
+        String url = String.format("%s/api/user/%s/verify", API_BASE_URL, username);
+        
+        when(restTemplate.getForObject(url, Boolean.class)).thenReturn(true);
+        
+        Boolean result = clientServiceProxy.isUserVerified(username);
+        assertTrue(result);
+    }
+    
+    @Test
+    void testIsUserVerified_UserNotFound() {
+        String username = "nonexistent";
+        String url = String.format("%s/api/user/%s/verify", API_BASE_URL, username);
+        
+        when(restTemplate.getForObject(url, Boolean.class))
+        .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.isUserVerified(username));
+        assertEquals("User not found", exception.getMessage());
+    }
+    
+    @Test
+    void testIsUserVerified_Failure() {
+        String username = "testuser";
+        String url = String.format("%s/api/user/%s/verify", API_BASE_URL, username);
+        
+        when(restTemplate.getForObject(url, Boolean.class))
+        .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR));
+        
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.isUserVerified(username));
+        assertEquals("Failed to check user verification: INTERNAL_SERVER_ERROR", exception.getMessage());
+    }
+    
+    @Test
+    void testSavePost_Success() {
+        String url = String.format("%s/api/post/%d/save?userToken=%s", API_BASE_URL, 1L, TOKEN);
+
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class))).thenReturn(null);
+
+        assertDoesNotThrow(() -> clientServiceProxy.savePost(TOKEN, 1L));
+    }
+
+    @Test
+    void testSavePost_Unauthorized() {
+        String url = String.format("%s/api/post/%d/save?userToken=%s", API_BASE_URL, 1L, TOKEN);
+
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.savePost(TOKEN, 1L));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testSavePost_NotFound() {
+        String url = String.format("%s/api/post/%d/save?userToken=%s", API_BASE_URL, 1L, TOKEN);
+
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.savePost(TOKEN, 1L));
+        assertEquals("Post not found", exception.getMessage());
+    }
+
+    @Test
+    void testSavePost_OtherError() {
+        String url = String.format("%s/api/post/%d/save?userToken=%s", API_BASE_URL, 1L, TOKEN);
+
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.savePost(TOKEN, 1L));
+        assertEquals("Failed to save post: Server Error", exception.getMessage());
+    }
+
+    @Test
+    void testUnsavePost_Success() {
+        String url = String.format("%s/api/post/%d/unsave?userToken=%s", API_BASE_URL, 1L, TOKEN);
+
+        doNothing().when(restTemplate).delete(url);
+
+        assertDoesNotThrow(() -> clientServiceProxy.unsavePost(TOKEN, 1L));
+    }
+
+    @Test
+    void testUnsavePost_Unauthorized() {
+        String url = String.format("%s/api/post/%d/unsave?userToken=%s", API_BASE_URL, 1L, TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
+            .when(restTemplate).delete(url);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.unsavePost(TOKEN, 1L));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testUnsavePost_NotFound() {
+        String url = String.format("%s/api/post/%d/unsave?userToken=%s", API_BASE_URL, 1L, TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
+            .when(restTemplate).delete(url);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.unsavePost(TOKEN, 1L));
+        assertEquals("Post not found", exception.getMessage());
+    }
+
+    @Test
+    void testUnsavePost_OtherError() {
+        String url = String.format("%s/api/post/%d/unsave?userToken=%s", API_BASE_URL, 1L, TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
+            .when(restTemplate).delete(url);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.unsavePost(TOKEN, 1L));
+        assertEquals("Failed to unsave post: Server Error", exception.getMessage());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testGetUserSavedPosts_Success() {
+        Post post1 = new Post(1L, "username1", "content1", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        Post post2 = new Post(2L, "username2", "content2", 345345L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        List<Post> savedPosts = Arrays.asList(post1, post2);
+        String url = String.format("%s/api/user/%s/savedPosts", API_BASE_URL, "testuser");
+
+        ResponseEntity<List<Post>> responseEntity = new ResponseEntity<>(savedPosts, HttpStatus.OK);
+
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenReturn(responseEntity);
+
+        List<Post> result = clientServiceProxy.getUserSavedPosts("testuser");
+        assertEquals(savedPosts, result);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testGetUserSavedPosts_NotFound() {
+        String url = String.format("%s/api/user/%s/savedPosts", API_BASE_URL, "testuser");
+
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserSavedPosts("testuser"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void testGetUserSavedPosts_OtherError() {
+        String url = String.format("%s/api/user/%s/savedPosts", API_BASE_URL, "testuser");
+
+        when(restTemplate.exchange(
+                eq(url),
+                eq(HttpMethod.GET),
+                isNull(),
+                any(ParameterizedTypeReference.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserSavedPosts("testuser"));
+        assertEquals("Failed to get user saved posts: Server Error", exception.getMessage());
     }
 }

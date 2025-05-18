@@ -1,6 +1,7 @@
 package com.linkauto.client.data;
 
 import java.util.List;
+import java.util.Set;
 
 public record User(
     String username,
@@ -14,7 +15,9 @@ public record User(
     String gender,
     String location,
     String password,
-    String description
+    String description,
+    Set<User> reporters,
+    Boolean isVerified
 ) {}
 
 
