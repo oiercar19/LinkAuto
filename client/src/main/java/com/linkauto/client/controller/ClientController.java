@@ -509,8 +509,10 @@ public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
     try {
         List<Event> events = linkAutoServiceProxy.getAllEvents();
         model.addAttribute("events", events);
+        Map<String, String> profilePictureByUsername = new HashMap<>();
         for (Event event : events) {
-            System.out.println("Evento" + event.username());
+            String profilePicture = linkAutoServiceProxy.getUserByUsername(event.username()).profilePicture();
+            profilePictureByUsername.putIfAbsent(event.username(), profilePicture);
         }
         
         // Añadir datos del usuario actual
@@ -519,6 +521,7 @@ public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("username", this.username);
         model.addAttribute("profilePicture", currentUser.profilePicture());
         model.addAttribute("role", currentUser.role());
+        model.addAttribute("profilePictureMap", profilePictureByUsername); // Agregar fotos de perfil al modelo
         
         // Verificar que estamos recibiendo datos correctamente
         
