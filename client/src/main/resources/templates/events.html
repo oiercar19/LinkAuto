@@ -332,11 +332,11 @@
                         </div>
                         <div class="evento-detail-item">
                             <i class="bi bi-calendar-event"></i>
-                            <span th:text="${evento.startDate}">Fecha Inicio</span>
+                            <span th:text="${#dates.format(new java.util.Date(evento.startDate), 'dd/MM/yyyy')}">Fecha Inicio</span>
                         </div>
                         <div class="evento-detail-item">
                             <i class="bi bi-calendar-event"></i>
-                            <span th:text="${evento.endDate}">Fecha Fin</span>
+                            <span th:text="${#dates.format(new java.util.Date(evento.endDate), 'dd/MM/yyyy')}">Fecha Fin</span>
                         </div>
                     </div>
                     
