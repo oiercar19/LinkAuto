@@ -101,6 +101,12 @@ Puede modificar la configuración del proyecto editando los siguientes archivos:
 - `rest-api/resources/application.properties`: Para cambiar la configuración del backend (puerto, conexión a la base de datos, etc.)
 - `client/resources/application.properties`: Para cambiar la configuración del frontend (puerto, URL del backend, etc.)
 
+## Documentación
+La documentación de las clases es accesible a través del siguiente enlace:
+https://oiercar19.github.io/LinkAuto/doxygen/
+
+_Documentación generada con Doxygen_
+
 ## Solución de problemas comunes
 
 - **Error de conexión a la base de datos**: Verifique las credenciales y la disponibilidad del servidor de base de datos.
