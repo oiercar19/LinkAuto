@@ -336,4 +336,66 @@ public class LinkAutoService {
         }
         return eventRepository.findByParticipantesContaining(username);
     }
+    
+    /**
+     * Gets all events created by or participated in by a user
+     * @param username The username of the user
+     * @return List of events the user created or is participating in
+     */
+    public List<Event> getEventsByUsername(String username) {
+        // This should combine both created events and participating events
+        List<Event> createdEvents = eventRepository.findByCreador_Username(username);
+        List<Event> participatingEvents = eventRepository.findByParticipantesContaining(username);
+        
+        // Add all participating events not already in created events
+        for (Event event : participatingEvents) {
+            if (!createdEvents.contains(event)) {
+                createdEvents.add(event);
+            }
+        }
+        
+        return createdEvents;
+    }
+    
+    /**
+     * Updates an existing event
+     * @param id The ID of the event to update
+     * @param eventDTO The new event data
+     * @param user The user attempting to update the event
+     * @return Optional containing the updated event if successful, empty otherwise
+     */
+    public Optional<Event> updateEvent(Long id, EventDTO eventDTO, User user) {
+        // Get the event
+        Optional<Event> eventOptional = eventRepository.findById(id);
+        if (eventOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        
+        Event event = eventOptional.get();
+        
+        // Check if the user is the creator of the event
+        if (!event.getCreador().getUsername().equals(user.getUsername())) {
+            return Optional.empty();
+        }
+        
+        // Update the event details
+        event.setTitulo(eventDTO.getTitle());
+        event.setDescripcion(eventDTO.getDescription());
+        event.setUbicacion(eventDTO.getLocation());
+        event.setFechaInicio(eventDTO.getStartDate());
+        event.setFechaFin(eventDTO.getEndDate());
+        
+        // Update images if provided
+        if (eventDTO.getImages() != null) {
+            // Clear existing images and add new ones
+            event.getImagenes().clear();
+            for (String imagen : eventDTO.getImages()) {
+                event.addImagen(imagen);
+            }
+        }
+        
+        // Save the updated event
+        Event updatedEvent = eventRepository.save(event);
+        return Optional.of(updatedEvent);
+    }
 }

@@ -180,7 +180,7 @@ public class LinkAutoController {
         return isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-        @PutMapping("/user/{username}/role/admin")
+    @PutMapping("/user/{username}/role/admin")
     public ResponseEntity<Void> promoteToAdmin(
         @Parameter(name = "username", description = "Username of the user to promote", required = true, example = "johndoe")
         @PathVariable String username,
@@ -521,29 +521,56 @@ public class LinkAutoController {
         return isCancelled ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-@GetMapping("/events/{id}/participants")
-public ResponseEntity<Set<UserReturnerDTO>> getEventParticipants(
-    @Parameter(name = "id", description = "Event ID", required = true, example = "1")
-    @PathVariable Long id
-) {
-    // Obtener el conjunto de nombres de usuario de los participantes del evento
-    Set<String> participantUsernames = linkAutoService.getEventParticipants(id);
-    
-    // Si no hay participantes o el evento no existe
-    if (participantUsernames == null) {
-        return ResponseEntity.notFound().build();
+    @GetMapping("/events/{id}/participants")
+    public ResponseEntity<Set<String>> getEventParticipants(
+        @Parameter(name = "id", description = "Event ID", required = true, example = "1")
+        @PathVariable Long id
+    ) {
+        // Get the set of usernames of event participants
+        Set<String> participantUsernames = linkAutoService.getEventParticipants(id);
+        
+        // If there are no participants or the event doesn't exist
+        if (participantUsernames == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        return ResponseEntity.ok(participantUsernames);
     }
-    
-    Set<UserReturnerDTO> participantDTOs = new HashSet<>();
-    
-    // Convertir cada nombre de usuario a objeto User y luego a UserReturnerDTO
-    for (String username : participantUsernames) {
-        Optional<User> participantOpt = linkAutoService.getUserByUsername(username);
-        participantOpt.ifPresent(user -> participantDTOs.add(parseUserToUserReturnerDTO(user)));
+
+    @GetMapping("/user/{username}/events")
+    public ResponseEntity<List<EventReturnerDTO>> getUserEvents(
+        @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
+        @PathVariable String username
+    ) {
+        List<Event> events = linkAutoService.getEventsByUsername(username);
+        List<EventReturnerDTO> eventReturnerDTOs = parseEventsToEventReturnerDTO(events);
+        return ResponseEntity.ok(eventReturnerDTOs);
     }
-    
-    return ResponseEntity.ok(participantDTOs);
-}
+
+    @PutMapping("/events/{id}")
+    public ResponseEntity<EventReturnerDTO> updateEvent(
+        @Parameter(name = "id", description = "Event ID", required = true, example = "1")
+        @PathVariable Long id,
+        @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken,
+        @Parameter(name = "eventDTO", description = "Updated event data", required = true)
+        @RequestBody EventDTO eventDTO
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        
+        User user = authService.getUserByToken(userToken);
+        Optional<Event> updatedEventOpt = linkAutoService.updateEvent(id, eventDTO, user);
+        
+        if (updatedEventOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        EventReturnerDTO eventReturnerDTO = parseEventToEventReturnerDTO(updatedEventOpt.get());
+        return ResponseEntity.ok(eventReturnerDTO);
+    }
+
     // Helper methods for converting Event objects to DTOs
     private List<EventReturnerDTO> parseEventsToEventReturnerDTO(List<Event> events) {
         List<EventReturnerDTO> eventReturnerDTOs = new ArrayList<>();
@@ -555,21 +582,27 @@ public ResponseEntity<Set<UserReturnerDTO>> getEventParticipants(
     }
 
     private EventReturnerDTO parseEventToEventReturnerDTO(Event event) {
-    // Convert Set<String> to List<String> correctly
-    List<String> participantUsernames = new ArrayList<>(event.getParticipantes());
-    
-    // Get the first image from the list or an empty string if there are no images
-    String firstImageUrl = event.getImagenes().isEmpty() ? "" : event.getImagenes().get(0);
-    
-    return new EventReturnerDTO(
-        event.getId(),
-        event.getCreador().getUsername(),
-        event.getTitulo(),
-        event.getDescripcion(),
-        event.getUbicacion(),
-        event.getFechaInicio(),
-        participantUsernames,
-        firstImageUrl
-    );
-}
+        // Get comments IDs if the event has comments
+        List<Long> commentIds = new ArrayList<>();
+        // If the event has comments, add them
+        // Note: You might need to modify this part based on your Event model structure
+        if (event.getComentarios() != null) {
+            for (Comment comment : event.getComentarios()) {
+                commentIds.add(comment.getId());
+            }
+        }
+        
+        return new EventReturnerDTO(
+            event.getId(),
+            event.getCreador().getUsername(),
+            event.getTitulo(),
+            event.getDescripcion(),
+            event.getUbicacion(),
+            event.getFechaInicio(),
+            event.getFechaFin(),
+            event.getImagenes(),
+            new HashSet<>(event.getParticipantes()),
+            commentIds
+        );
+    }
 }

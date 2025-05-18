@@ -6,8 +6,8 @@ public record EventCreator(
     String title,
     String description,
     String location,
-    String startDate,
-    String endDate,
+    Long startDate,
+    Long endDate,
     List<String> images
 ) {
 } 
