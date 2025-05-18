@@ -1,6 +1,7 @@
 package com.linkauto.client.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -1015,27 +1016,35 @@ public class ClientControllerTest {
 
     @Test
     public void testGetAllEvents_WithValidToken() {
-    clientController.token = "validToken";
-    clientController.username = "testUser";
-    User user = new User("testUser", "USER", false, "Test User", "profilePic.jpg", "test@example.com", null, 0, "Male", "Location1", "password", "desc", new HashSet<>(), false);
-    
-    List<Event> events = new ArrayList<>();
-    events.add(new Event(1L, "user1", "Event 1", "Description 1", "Location 1", 1715000000000L, 1715100000000L, new ArrayList<>(), new HashSet<>(), new ArrayList<>()));
-    events.add(new Event(2L, "user2", "Event 2", "Description 2", "Location 2", 1716000000000L, 1716100000000L, new ArrayList<>(), new HashSet<>(), new ArrayList<>()));
-    
-    when(linkAutoServiceProxy.getAllEvents()).thenReturn(events);
-    when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(user);
-    
-    String result = clientController.getAllEvents(model, redirectAttributes);
-    
-    verify(model).addAttribute("events", events);
-    verify(model).addAttribute("currentUser", user);
-    verify(model).addAttribute("username", "testUser");
-    verify(model).addAttribute("profilePicture", "profilePic.jpg");
-    verify(model).addAttribute("role", "USER");
-    
-    assertEquals("events", result);
-}
+        clientController.token = "validToken";
+        clientController.username = "testUser";
+
+        // Prepare mock events
+        List<Event> events = new ArrayList<>();
+        Event event1 = new Event(1L, "user1", "Event 1", "Description 1", "Location 1", 1715000000000L, 1715100000000L, new ArrayList<>(), new HashSet<>(), new ArrayList<>());
+        Event event2 = new Event(2L, "user2", "Event 2", "Description 2", "Location 2", 1715200000000L, 1715300000000L, new ArrayList<>(), new HashSet<>(), new ArrayList<>());
+        events.add(event1);
+        events.add(event2);
+
+        User user1 = new User("user1", "USER", false, "User One", "pic1.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc", new HashSet<>(), false);
+        User user2 = new User("user2", "USER", false, "User Two", "pic2.jpg", "user2@example.com", null, 0, "Female", "Location2", "password", "desc", new HashSet<>(), false);
+        User currentUser = new User("testUser", "USER", false, "Test User", "profilePic.jpg", "test@example.com", null, 0, "Male", "Location1", "password", "desc", new HashSet<>(), false);
+
+        when(linkAutoServiceProxy.getAllEvents()).thenReturn(events);
+        when(linkAutoServiceProxy.getUserByUsername("user1")).thenReturn(user1);
+        when(linkAutoServiceProxy.getUserByUsername("user2")).thenReturn(user2);
+        when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(currentUser);
+
+        String result = clientController.getAllEvents(model, redirectAttributes);
+
+        verify(model).addAttribute("events", events);
+        verify(model).addAttribute("currentUser", currentUser);
+        verify(model).addAttribute("username", "testUser");
+        verify(model).addAttribute("profilePicture", "profilePic.jpg");
+        verify(model).addAttribute("role", "USER");
+        verify(model).addAttribute(eq("profilePictureMap"), any(Map.class));
+        assertEquals("events", result);
+    }
 
 @Test
 public void testGetAllEvents_WithInvalidToken() {
