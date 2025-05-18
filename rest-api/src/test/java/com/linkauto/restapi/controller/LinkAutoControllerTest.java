@@ -638,6 +638,102 @@ public class LinkAutoControllerTest {
         assertEquals(2L, response.getBody().get(1).getId());
     }
     
+    @Test
+    public void testReportUser() {
+        String userToken = "validToken";
+        String username = "reportedUser";
+
+        // Case 1: Invalid token
+        when(authService.isTokenValid("invalidToken")).thenReturn(false);
+        ResponseEntity<Void> invalidTokenResponse = linkAutoController.reportUser(username, "invalidToken");
+        assertEquals(HttpStatus.UNAUTHORIZED, invalidTokenResponse.getStatusCode());
+
+        // Case 2: Reported user does not exist
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        User reportingUser = new User("reportingUser", "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(authService.getUserByToken(userToken)).thenReturn(reportingUser);
+        when(authService.getUserByUsername(username)).thenReturn(null);
+        ResponseEntity<Void> notFoundResponse = linkAutoController.reportUser(username, userToken);
+        assertEquals(HttpStatus.NOT_FOUND, notFoundResponse.getStatusCode());
+
+        // Case 3: Report successful
+        User reportedUser = new User(username, "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(authService.getUserByUsername(username)).thenReturn(reportedUser);
+        when(linkAutoService.reportUser(reportingUser, reportedUser)).thenReturn(true);
+        ResponseEntity<Void> successResponse = linkAutoController.reportUser(username, userToken);
+        assertEquals(HttpStatus.OK, successResponse.getStatusCode());
+
+        // Case 4: Report failed (internal error)
+        when(linkAutoService.reportUser(reportingUser, reportedUser)).thenReturn(false);
+        ResponseEntity<Void> errorResponse = linkAutoController.reportUser(username, userToken);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteReport() {
+        String userToken = "validToken";
+        String username = "reportedUser";
+
+        // Case 1: Invalid token
+        when(authService.isTokenValid("invalidToken")).thenReturn(false);
+        ResponseEntity<Void> invalidTokenResponse = linkAutoController.deleteReport(username, "invalidToken");
+        assertEquals(HttpStatus.UNAUTHORIZED, invalidTokenResponse.getStatusCode());
+
+        // Case 2: Reported user not found (null)
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(null);
+        ResponseEntity<Void> notFoundResponse = linkAutoController.deleteReport(username, userToken);
+        assertEquals(HttpStatus.NOT_FOUND, notFoundResponse.getStatusCode());
+
+        // Case 3: Delete report successful
+        User reportedUser = new User("reportingUser", "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(authService.getUserByToken(userToken)).thenReturn(reportedUser);
+        when(linkAutoService.deleteReport(reportedUser, username)).thenReturn(true);
+        ResponseEntity<Void> successResponse = linkAutoController.deleteReport(username, userToken);
+        assertEquals(HttpStatus.OK, successResponse.getStatusCode());
+
+        // Case 4: Delete report failed (internal error)
+        when(linkAutoService.deleteReport(reportedUser, username)).thenReturn(false);
+        ResponseEntity<Void> errorResponse = linkAutoController.deleteReport(username, userToken);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode());
+    }
+
+    @Test
+    public void testParseUserToUserReturnerDTO_WithReporters() {
+        // Arrange
+        User reporter1 = new User("reporter1", "Reporter One", "pic1", "email1", new ArrayList<>(), 111L, Gender.FEMALE, "loc1", "pass1", "desc1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User reporter2 = new User("reporter2", "Reporter Two", "pic2", "email2", new ArrayList<>(), 222L, Gender.MALE, "loc2", "pass2", "desc2", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User mainUser = new User("mainUser", "Main User", "mainPic", "mainEmail", new ArrayList<>(), 333L, Gender.OTHER, "mainLoc", "mainPass", "mainDesc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        mainUser.setReporters(reporter1);
+        mainUser.setReporters(reporter2);
+
+        // Use reflection to access the private method
+        try {
+            java.lang.reflect.Method method = LinkAutoController.class.getDeclaredMethod("parseUserToUserReturnerDTO", User.class);
+            method.setAccessible(true);
+            UserReturnerDTO dto = (UserReturnerDTO) method.invoke(linkAutoController, mainUser);
+
+            assertNotNull(dto);
+            assertEquals("mainUser", dto.getUsername());
+            assertEquals("Main User", dto.getName());
+            assertEquals("mainEmail", dto.getEmail());
+            assertEquals("mainPic", dto.getProfilePicture());
+            assertEquals("mainLoc", dto.getLocation());
+            assertEquals("mainDesc", dto.getDescription());
+            assertEquals(mainUser.getRole().toString(), dto.getRole());
+            assertEquals(mainUser.getBirthDate(), dto.getBirthDate());
+            assertEquals(mainUser.getGender().toString(), dto.getGender());
+            assertNotNull(dto.getReporters());
+            assertEquals(2, dto.getReporters().size());
+            // Check that both reporters are present in the DTO set
+            boolean foundReporter1 = dto.getReporters().stream().anyMatch(r -> r.getUsername().equals("reporter1"));
+            boolean foundReporter2 = dto.getReporters().stream().anyMatch(r -> r.getUsername().equals("reporter2"));
+            assertEquals(true, foundReporter1);
+            assertEquals(true, foundReporter2);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Test
     public void testSavePost_Unauthorized() {
@@ -735,7 +831,4 @@ public class LinkAutoControllerTest {
         assertNotNull(response.getBody());
         assertEquals(2, response.getBody().size());
     }
-
-
-
 }

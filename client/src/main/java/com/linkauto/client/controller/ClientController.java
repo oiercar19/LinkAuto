@@ -396,36 +396,35 @@ public class ClientController {
         model.addAttribute("commentsByPostId", commentsByPostId);
         return "post";
     }
+    //Endpoint para el panel de administrador
+    @GetMapping("/adminPanel")
+    public String adminPanel(Model model, RedirectAttributes redirectAttributes) {
+        if (token == null) {
+            // Si no hay token, redirigir al inicio de sesión
+            redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al panel de administrador.");
+            return "redirect:/";
+        }
+
+        String profilePicture = linkAutoServiceProxy.getUserByUsername(username).profilePicture();
+        model.addAttribute("profilePicture", profilePicture); // Agregar fotos de perfil al modelo
+                
+        model.addAttribute("username", username); // Agregar nombre de usuario al modelo
+        
+
+        // Obtener el perfil del usuario logueado
+        User user = linkAutoServiceProxy.getUserProfile(token);
     
-  //Endpoint para el panel de administrador
-  @GetMapping("/adminPanel")
-  public String adminPanel(Model model, RedirectAttributes redirectAttributes) {
-      if (token == null) {
-          // Si no hay token, redirigir al inicio de sesión
-          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al panel de administrador.");
-          return "redirect:/";
-      }
+        // Verificar si el usuario tiene el rol de ADMIN
+        if (!user.role().equals("ADMIN")) {
+            redirectAttributes.addFlashAttribute("error", "No tienes permisos para acceder al panel de administrador.");
+            return "redirect:/feed"; // Redirigir al feed si no es administrador
+        }
 
-      String profilePicture = linkAutoServiceProxy.getUserByUsername(username).profilePicture();
-      model.addAttribute("profilePicture", profilePicture); // Agregar fotos de perfil al modelo
-            
-      model.addAttribute("username", username); // Agregar nombre de usuario al modelo
-      
-
-      // Obtener el perfil del usuario logueado
-      User user = linkAutoServiceProxy.getUserProfile(token);
-  
-      // Verificar si el usuario tiene el rol de ADMIN
-      if (!user.role().equals("ADMIN")) {
-          redirectAttributes.addFlashAttribute("error", "No tienes permisos para acceder al panel de administrador.");
-          return "redirect:/feed"; // Redirigir al feed si no es administrador
-      }
-
-      List<User> users = linkAutoServiceProxy.getAllUsers();
-      model.addAttribute("users", users);
-  
-      return "adminPanel"; // Vista del panel de administrador
-  }
+        List<User> users = linkAutoServiceProxy.getAllUsers();
+        model.addAttribute("users", users);
+    
+        return "adminPanel"; // Vista del panel de administrador
+    }
 
   @PostMapping("/admin/deleteUser")
   public String deleteUser(@RequestParam("username") String usernameToDelete, RedirectAttributes redirectAttributes) {
@@ -483,6 +482,30 @@ public class ClientController {
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al guardar la publicación: " + e.getMessage());
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
+    @PostMapping("/user/{username}/report")
+    public String reportUser(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.reportUser(token, username);
+            redirectAttributes.addFlashAttribute("success", "Usuario " + username + " reportado con éxito.");
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/"); // Redirigir a la página de inicio después de seguir al usuario    
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al reportar al usuario: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
+    @PostMapping("/admin/{username}/deleteReport") 
+    public String deleteReport(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.deleteReport(token, username);
+            redirectAttributes.addFlashAttribute("success", "Reporte de usuario " + username + " eliminado con éxito.");
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/");   
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar el reporte del usuario: " + e.getMessage());
+            return "redirect:/feed";
         }
     }
 
@@ -544,3 +567,4 @@ public class ClientController {
         }
     }
 }
+

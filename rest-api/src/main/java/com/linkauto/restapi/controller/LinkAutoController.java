@@ -1,8 +1,10 @@
 package com.linkauto.restapi.controller;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -399,6 +401,28 @@ public class LinkAutoController {
         return ResponseEntity.ok(commentReturnerDTOs);
     }
 
+    @PostMapping ("/user/{username}/report")
+    public ResponseEntity<Void> reportUser(
+        @Parameter(name = "username", description = "Username of the user to report", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user making the report", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User reportingUser = authService.getUserByToken(userToken);
+        User reportedUser = authService.getUserByUsername(username);
+
+        if (reportedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        boolean isReported = linkAutoService.reportUser(reportingUser, reportedUser);
+
+        return isReported ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
     @PostMapping("/user/{username}/verify")
     public ResponseEntity<Void> verifyUser(
         @Parameter(name = "username", description = "Username of the user to verify", required = true, example = "johndoe")
@@ -406,11 +430,9 @@ public class LinkAutoController {
         @Parameter(name = "userToken", description = "Token of the user making the request", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken
     ) {
-        if (!authService.isTokenValid(userToken)) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
-        }
-
-        
+    if (!authService.isTokenValid(userToken)) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }        
         User requestingUser = authService.getUserByToken(userToken);
         
         // Verificar si el usuario que realiza la solicitud es administrador
@@ -461,7 +483,29 @@ public class LinkAutoController {
         return isSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping("/post/{post_id}/unsave")
+    @DeleteMapping ("/admin/{username}/deleteReport")
+    public ResponseEntity<Void> deleteReport(
+        @Parameter(name = "username", description = "Username of the user to delete report", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user making the report", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+        if (!authService.isTokenValid(userToken)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User reportedUser = authService.getUserByToken(userToken);
+
+        if (reportedUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        boolean isReported = linkAutoService.deleteReport(reportedUser, username);
+
+        return isReported ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+        @DeleteMapping("/post/{post_id}/unsave")
     public ResponseEntity<Void> unsavePost(
         @Parameter(name = "post_id", description = "ID of the post to unsave", required = true, example = "1")
         @PathVariable Long post_id,
@@ -475,7 +519,7 @@ public class LinkAutoController {
         boolean isUnSaved = linkAutoService.unsavePost(post_id, user);
         return isUnSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
-
+    
     @GetMapping("/user/{username}/savedPosts")
     public ResponseEntity<List<PostReturnerDTO>> getSavedPostsByUsername(
         @Parameter(name = "username", description = "Username of the user", required = true, example = "johndoe")
@@ -519,9 +563,14 @@ public class LinkAutoController {
 
     private UserReturnerDTO parseUserToUserReturnerDTO(User u){
         List<PostReturnerDTO> postReturner = parsePostsToPostReturnerDTO(u.getPosts());
+        Set<UserReturnerDTO> reporters = new HashSet<>();
+        for (User user: u.getReporters()) {
+            reporters.add(parseUserToUserReturnerDTO(user));
+        }
+        
         List<Post> savedPosts = new ArrayList<>(u.getSavedPosts());
         List<PostReturnerDTO> savedPost = parsePostsToPostReturnerDTO(savedPosts);
-        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost, u.getIsVerified());
+        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost, u.getIsVerified(), reporters);
     }
 
     private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {

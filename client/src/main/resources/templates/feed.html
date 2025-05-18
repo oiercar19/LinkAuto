@@ -338,7 +338,14 @@
                                 <i class="bi bi-check"></i>
                             </span>
                         </div>
-                        <div class="ms-auto">
+                        <div class="ms-auto d-flex align-items-center gap-2">
+                            <form th:if="${not #strings.equals(username, post.username)}" 
+                                th:action="@{'/user/' + ${post.username} + '/report?redirectUrl=/feed'}" 
+                                method="post">
+                                <button type="submit" class="btn btn-sm btn-outline-warning rounded-pill" onclick="alert('Usuario reportado')">
+                                     <i class="bi bi-flag"></i> Reportar Usuario
+                                </button>
+                            </form>
                             <form th:if="${not #lists.contains(followings, post.username) && not #strings.equals(username, post.username)}"
                                 th:action="@{'/user/' + ${post.username} + '/follow?redirectUrl=/feed'}"
                                 method="post">
@@ -348,7 +355,7 @@
                                 th:action="@{'/user/' + ${post.username} + '/unfollow?redirectUrl=/feed'}" 
                                 method="post">
                                 <button type="submit" class="btn btn-sm btn-outline-danger">Dejar de seguir</button>
-                            </form>                            
+                            </form>
                             <form th:action="@{/deletePost?redirectUrl=/feed}" method="post" style="display:inline;">
                                 <input type="hidden" name="id" th:value="${post.id}">
                                 <button th:if="${post.username == username}" type="submit" class="btn btn-sm btn-outline-danger delete-post-btn">

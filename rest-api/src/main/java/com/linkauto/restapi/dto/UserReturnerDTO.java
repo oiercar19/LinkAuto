@@ -1,7 +1,9 @@
 package com.linkauto.restapi.dto;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class UserReturnerDTO {
     private String username;
@@ -18,9 +20,10 @@ public class UserReturnerDTO {
     private List<PostReturnerDTO> posts;
     private Boolean isVerified;
     private List<PostReturnerDTO> savedPost;
+    private Set<UserReturnerDTO> reporters;
 
     // Constructor
-    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts, List<PostReturnerDTO> savedPost, Boolean isVerified) {
+    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts, List<PostReturnerDTO> savedPost, Boolean isVerified, Set<UserReturnerDTO> reporters) {
         this.username = username;
         this.role = role;
         this.name = name;
@@ -35,6 +38,10 @@ public class UserReturnerDTO {
         this.posts = new ArrayList<>();
         for (PostReturnerDTO post : posts){
             this.posts.add(post);
+        }
+        this.reporters = new HashSet<>();
+        for (UserReturnerDTO reporter : reporters) {
+            this.reporters.add(reporter);
         }
         this.savedPost = new ArrayList<>();
         for (PostReturnerDTO post : savedPost){
@@ -147,6 +154,14 @@ public class UserReturnerDTO {
 
     public Boolean getIsVerified() {
         return isVerified;
+    }
+
+    public Set<UserReturnerDTO> getReporters() {
+        return reporters;
+    }
+
+    public void setReporters(Set<UserReturnerDTO> reporters) {
+        this.reporters = reporters;
     }
 
     public List<PostReturnerDTO> getSavedPost() {

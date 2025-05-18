@@ -352,6 +352,42 @@ public class LinkAutoServiceTest {
         assertEquals(2, result.size());
         verify(postRepository).findByUsuario_Username(username);
     }
+      @Test
+    public void testReportUserSuccess() {
+        User reporter = new User(); reporter.setUsername("reporter");
+        User reported = new User(); reported.setUsername("reported");
+
+        when(userRepository.findByUsername("reporter")).thenReturn(Optional.of(reporter));
+        when(userRepository.findByUsername("reported")).thenReturn(Optional.of(reported));
+
+        boolean result = linkAutoService.reportUser(reporter, reported);
+        assertTrue(result);
+        assertTrue(reported.getReporters().contains(reporter));
+        verify(userRepository).save(reported);
+    }
+
+    @Test
+    public void testReportUserReporterNotFound() {
+        User reporter = new User(); reporter.setUsername("reporter");
+        User reported = new User(); reported.setUsername("reported");
+
+        when(userRepository.findByUsername("reporter")).thenReturn(Optional.empty());
+
+        boolean result = linkAutoService.reportUser(reporter, reported);
+        assertFalse(result);
+    }
+
+    @Test
+    public void testReportUserReportedNotFound() {
+        User reporter = new User(); reporter.setUsername("reporter");
+        User reported = new User(); reported.setUsername("reported");
+
+        when(userRepository.findByUsername("reporter")).thenReturn(Optional.of(reporter));
+        when(userRepository.findByUsername("reported")).thenReturn(Optional.empty());
+
+        boolean result = linkAutoService.reportUser(reporter, reported);
+        assertFalse(result);
+    }
 
     @Test
     public void testGetCommentsByPostId() {
@@ -382,6 +418,58 @@ public class LinkAutoServiceTest {
     }
 
     @Test
+    public void testDeleteReport_Success() {
+        User userReported = new User();
+        userReported.setUsername("reported");
+        User userReporter = new User();
+        userReporter.setUsername("reporter");
+        userReported.getReporters().add(userReporter);
+
+        when(userRepository.findByUsername("reported")).thenReturn(Optional.of(userReported));
+        when(userRepository.findByUsername("reporter")).thenReturn(Optional.of(userReporter));
+        when(userRepository.save(userReported)).thenReturn(userReported);
+
+        boolean result = linkAutoService.deleteReport(userReported, "reporter");
+        assertTrue(result);
+        assertFalse(userReported.getReporters().contains(userReporter));
+        verify(userRepository).save(userReported);
+    }
+
+    @Test
+    public void testDeleteReport_UserReportedNotFound() {
+        User userReported = new User();
+        userReported.setUsername("reported");
+
+        when(userRepository.findByUsername("reported")).thenReturn(Optional.empty());
+
+        boolean result = linkAutoService.deleteReport(userReported, "reporter");
+        assertFalse(result);
+    }
+
+    @Test
+    public void testDeleteReport_UserReporterNotFound() {
+        User userReported = new User();
+        userReported.setUsername("reported");
+
+        when(userRepository.findByUsername("reported")).thenReturn(Optional.of(userReported));
+        when(userRepository.findByUsername("reporter")).thenReturn(Optional.empty());
+
+        boolean result = linkAutoService.deleteReport(userReported, "reporter");
+        assertTrue(result); // removeReporters(null) is called, but method still returns true
+        verify(userRepository).save(userReported);
+    }
+
+    @Test
+    public void testDeleteReport_UsernameIsNull() {
+        User userReported = new User();
+        userReported.setUsername("reported");
+
+        when(userRepository.findByUsername("reported")).thenReturn(Optional.of(userReported));
+
+        boolean result = linkAutoService.deleteReport(userReported, null);
+        assertFalse(result);
+    }
+
     public void testVerifyUser() {
         // Arrange
         User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());

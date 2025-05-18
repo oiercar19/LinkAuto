@@ -172,6 +172,34 @@ public class LinkAutoService {
         return true;
     }
 
+    public Boolean reportUser (User user, User userReport) {
+        User userReporter = userRepository.findByUsername(user.getUsername()).orElse(null);
+        User userToReport = userRepository.findByUsername(userReport.getUsername()).orElse(null);
+        
+        if (userReporter == null || userToReport == null) {
+            return false;
+        }
+        
+        userToReport.setReporters(userReporter);
+        userRepository.save(userToReport);
+
+        return true;
+    }
+
+    public Boolean deleteReport (User user, String username) {
+        User userReported = userRepository.findByUsername(user.getUsername()).orElse(null);
+        User userReporter = userRepository.findByUsername(username).orElse(null);
+
+        if (userReported == null || username == null) {
+            return false;
+        }
+        
+        userReported.removeReporters(userReporter);
+        userRepository.save(userReported);
+
+        return true;
+    }
+
     @Transactional
     public Boolean savePost (Long postId, User u) {
         Post post = postRepository.findById(postId).orElse(null);
