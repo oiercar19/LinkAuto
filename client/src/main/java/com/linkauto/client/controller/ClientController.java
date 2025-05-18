@@ -525,7 +525,7 @@ public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
           return "redirect:/events"; // Redirigir a la página de eventos después de crear el evento
       } catch (Exception e) {
           redirectAttributes.addFlashAttribute("error", "Error al crear el evento: " + e.getMessage());
-          return "redirect:/events/create"; // Redirigir al formulario de creación en caso de error
+          return "redirect:/events"; // Redirigir al formulario de creación en caso de error
       }
   }
 
@@ -556,10 +556,10 @@ public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
       try {
           linkAutoServiceProxy.participateInEvent(token, eventId);
           redirectAttributes.addFlashAttribute("success", "Has confirmado tu participación en el evento.");
-          return "redirect:/events/" + eventId; // Redirigir a los detalles del evento
+          return "redirect:/events"; // Redirigir a los detalles del evento
       } catch (Exception e) {
           redirectAttributes.addFlashAttribute("error", "Error al confirmar participación: " + e.getMessage());
-          return "redirect:/events/" + eventId; // Redirigir a los detalles del evento en caso de error
+          return "redirect:/events"; // Redirigir a los detalles del evento en caso de error
       }
   }
 
@@ -573,10 +573,10 @@ public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
       try {
           linkAutoServiceProxy.cancelParticipation(token, eventId);
           redirectAttributes.addFlashAttribute("success", "Has cancelado tu participación en el evento.");
-          return "redirect:/events/" + eventId; // Redirigir a los detalles del evento
+          return "redirect:/events"; // Redirigir a los detalles del evento
       } catch (Exception e) {
           redirectAttributes.addFlashAttribute("error", "Error al cancelar participación: " + e.getMessage());
-          return "redirect:/events/" + eventId; // Redirigir a los detalles del evento en caso de error
+          return "redirect:/events"; // Redirigir a los detalles del evento en caso de error
       }
   }
 }
