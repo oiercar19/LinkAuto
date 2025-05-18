@@ -453,8 +453,8 @@
             const title = document.getElementById('title').value.trim();
             const description = document.getElementById('description').value.trim();
             const location = document.getElementById('location').value.trim();
-            const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
+            const startDateStr = document.getElementById('startDate').value;
+            const endDateStr = document.getElementById('endDate').value;
             const imageUrls = Array.from(document.querySelectorAll('.image-url'))
                 .map(input => input.value.trim())
                 .filter(url => url !== '');
@@ -463,6 +463,10 @@
                 alert('Por favor, añade un título para el evento.');
                 return;
             }
+
+            // Convert date strings to timestamp (milliseconds since epoch)
+            const startDate = startDateStr ? new Date(startDateStr).getTime() : null;
+            const endDate = endDateStr ? new Date(endDateStr).getTime() : null;
 
             const eventoData = {
                 title: title,
@@ -473,6 +477,8 @@
                 images: imageUrls
             };
 
+            console.log('Sending event data:', eventoData);
+            
             var url = e.target.action;
 
             // Send data to server
@@ -486,20 +492,20 @@
             })
             .then(response => {
                 console.log('Response status:', response.status);
-        
+
                 // Handle redirect manually
                 if (response.type === 'opaqueredirect' || response.status === 302) {
                     window.location.href = '/events';
                     return;
                 }
-        
+
                 // Handle other responses
                 if (!response.ok) {
                     return response.text().then(text => { 
                         throw new Error(text || 'Error desconocido'); 
                     });
                 }
-        
+
                 return response.json();
             })
             .then(data => {
