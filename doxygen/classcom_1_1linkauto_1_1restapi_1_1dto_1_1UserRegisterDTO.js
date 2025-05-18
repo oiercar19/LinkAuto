@@ -12,6 +12,8 @@ var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO =
     [ "getProfilePicture", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#ad8d138fd2d3c83177157e34fae92183c", null ],
     [ "getRole", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#aae4fa74c4542ba4395c1bd30f981452a", null ],
     [ "getUsername", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a586f6208fec643ef11cc3d967e5b3d69", null ],
+    [ "isBanned", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a67c61a2a6a56b3e45511e6fa042ea6b7", null ],
+    [ "setBanned", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a3e45c46251f6e678e0c36cd71790631a", null ],
     [ "setBirthDate", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#ad0ef342ee54af70ee87a72ac830ba7ad", null ],
     [ "setCars", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a286ff67161890a6a543c4c33645fb517", null ],
     [ "setDescription", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html#a606c87f9666177335d215617684f8fe2", null ],

@@ -2,6 +2,11 @@ var classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest =
 [
     [ "createPost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a36521ac09856b9b002a764e440d6ac0d", null ],
     [ "setUp", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a556db608559638fb5f41f58db126d275", null ],
+    [ "testBanUser_Forbidden", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a8d5f4b4daf46270de98bc23d94ecdc27", null ],
+    [ "testBanUser_InternalServerError", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#afe74f52c7c05b059c3135a7b00508f36", null ],
+    [ "testBanUser_Success", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a64caa99988e97c57f93645ff0b2818c7", null ],
+    [ "testBanUser_Unauthorized", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#af4290cfbf46dc851b1bf471830b25f45", null ],
+    [ "testBanUser_UserNotFound", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a93bda71183ec45918272b60d1d3d587f", null ],
     [ "testCommentPost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a9eba75727814364cf7032db1778d27dd", null ],
     [ "testDeletePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#af7ab2c6ff71eca41361281f0c3ecf12d", null ],
     [ "testDeleteReport", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoControllerTest.html#a220477844b81b4737f6fedff7d586b71", null ],

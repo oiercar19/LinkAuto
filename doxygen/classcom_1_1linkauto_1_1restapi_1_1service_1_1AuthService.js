@@ -1,6 +1,7 @@
 var classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService =
 [
     [ "AuthService", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#ae189e6824dec2abd59718af04c5c9dfd", null ],
+    [ "banUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a176a479fd2e072ee153b6f76cef86ede", null ],
     [ "changeRole", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#adf20994745462350ba7bf64f4efd2dd7", null ],
     [ "deleteUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a8045ddb74274696edfce63e7f777a7f3", null ],
     [ "getUserByToken", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a39db055ba5454480dedf6e0c57bcf6a6", null ],

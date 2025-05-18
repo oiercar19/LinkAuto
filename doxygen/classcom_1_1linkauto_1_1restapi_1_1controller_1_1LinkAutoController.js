@@ -1,6 +1,7 @@
 var classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController =
 [
     [ "LinkAutoController", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a03a66262fffc687a333ae9a0f1a7cac2", null ],
+    [ "banUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a09f051b287d45ac567e0bc6a9828ed13", null ],
     [ "commentPost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a68daaf9643279a85296afe99217c4d8e", null ],
     [ "createPost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a582ff26cc8e25511a2be71623f91b3de", null ],
     [ "deletePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a699f2fce10faa438ed75639f77aacee4", null ],

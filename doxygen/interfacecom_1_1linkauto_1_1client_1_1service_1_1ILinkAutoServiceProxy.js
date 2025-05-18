@@ -1,5 +1,6 @@
 var interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy =
 [
+    [ "banUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a8cd7a2c571227fd150baa881434e6431", null ],
     [ "commentPost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#aab9f3855d3dbaa0b0fbd3ec34dce7813", null ],
     [ "createPost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a9ee4724361e3b80782335e3dc4583cce", null ],
     [ "deletePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a6a0b74fe7de9a3490a56ae5dc0e7bf36", null ],

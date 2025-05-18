@@ -1,6 +1,6 @@
 var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO =
 [
-    [ "UserDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#ace9a050627136b7960f8c540e6b9ce2f", null ],
+    [ "UserDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#af1e4da26279a2f89a5b7841d9157d89c", null ],
     [ "getBirthDate", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#a8e579b43575eeac7e183eb37cc608f43", null ],
     [ "getCars", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#adde95ffeea65477f0dfd98f83e21ea84", null ],
     [ "getDescription", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#a5d36d4e01fc1767bebbefd4608d398bc", null ],
@@ -11,6 +11,8 @@ var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO =
     [ "getPassword", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#ae9866c246bb7b9bb4ea99392678c7e5d", null ],
     [ "getProfilePicture", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#a4d81d0c4f8aa4d6d30604464dd29e0c2", null ],
     [ "getRole", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#a2ea6b9951f218e1ca5e5cf31df7c575b", null ],
+    [ "isBanned", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#aa4bbb88ede789d20f8f95ccf32519790", null ],
+    [ "setBanned", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#aca6e73514d4664e02807fbe37401475d", null ],
     [ "setBirthDate", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#ab4953f8dd9c8ad5ea39abffbeb25347e", null ],
     [ "setCars", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#a4c5fa6873ca6bf6b1e9efe49baaea2f9", null ],
     [ "setDescription", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html#ae7c740d36b1f87379811a5e1df1ee867", null ],

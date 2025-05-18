@@ -1,6 +1,6 @@
 var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO =
 [
-    [ "UserReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab33b42488cc01b322ed87af6fc870c8f", null ],
+    [ "UserReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af9852f9e0d4b21808fb87c37cb3c26ca", null ],
     [ "addPost", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a96683c6c6b8138357ec515d8a6aa121d", null ],
     [ "addSavedPost", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a35d0aa8b91565c17ab53e00daf364bd6", null ],
     [ "getBirthDate", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae49330508c8b4bf083a6f955ac29717d", null ],
@@ -18,6 +18,8 @@ var classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO =
     [ "getRole", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae60e6a21cc64950c6fb13b24cda12101", null ],
     [ "getSavedPost", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a775a377f21ae1e38b76f96ef340ac546", null ],
     [ "getUsername", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a81f828e2438242c963ad23cc5de39e36", null ],
+    [ "isBanned", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a207ea58501067a37050acbbce3fc31b3", null ],
+    [ "setBanned", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae29ee38fb18ec778d0bc74307fedaae0", null ],
     [ "setBirthDate", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#adeb9b77dd9030e4a77134d17cd79116d", null ],
     [ "setCars", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab813f78b62086b9d02151cae381ad2ae", null ],
     [ "setDescription", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a357133532125c29d5de1b5cbbeb9495a", null ],

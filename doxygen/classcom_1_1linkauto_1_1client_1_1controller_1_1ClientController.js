@@ -2,6 +2,7 @@ var classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController =
 [
     [ "addAttributes", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#adfcd333a85d96ef3b38f51ddd2e17f0d", null ],
     [ "adminPanel", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a90385a58c6131cb3c34c1e455ef9578c", null ],
+    [ "banUser", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a71978be9c330a3f332b41dc199b17c4c", null ],
     [ "commentPost", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a7f464edb4f364cd25d62ede85ff341d6", null ],
     [ "commentPostInProfile", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a2a66112628fcdfab92fffd6b735924a9", null ],
     [ "createPost", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a10ac38d30bdbdde446b3f371e6c348e8", null ],

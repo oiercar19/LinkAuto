@@ -2,6 +2,9 @@ var classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest =
 [
     [ "setUp", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a68e4315cb317221aeef1fdc756a499ce", null ],
     [ "setUpUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a171fe1e0ebf47b5055dd12eb161eb902", null ],
+    [ "testBanUser_ErrorWhileSaving", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a9616b67fd61ee7c5505717f2d0698692", null ],
+    [ "testBanUser_Success", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a26c5765c81e7b8cbfe7077b327a9afdb", null ],
+    [ "testBanUser_UserNotFound", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#aa26ae5e98c8fe3235e62d3caf8218e41", null ],
     [ "testChangeRole", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a40502753a515dcf5b2ff4453bee7579d", null ],
     [ "testDeleteUser_AdminCanDeleteOtherUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#a8d66aac9f993b9920320023c423dc4ee", null ],
     [ "testDeleteUser_CatchException", "classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthServiceTest.html#aa90ad9c5f50ad176d66c7efade4cec3c", null ],

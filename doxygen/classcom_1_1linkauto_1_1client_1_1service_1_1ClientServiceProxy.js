@@ -1,6 +1,7 @@
 var classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy =
 [
     [ "ClientServiceProxy", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a7780bfc70031e7870e355125b467ece3", null ],
+    [ "banUser", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#ab507b29d0af6d651621e51bf3ae495dd", null ],
     [ "commentPost", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#a7f0e9346b5639fac3500d30f3043069c", null ],
     [ "createPost", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#aa47bce2cf344267220b9016c837e531a", null ],
     [ "deletePost", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html#afa89e704885ea5430a931b2330115d12", null ],

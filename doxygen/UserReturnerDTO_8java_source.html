@@ -109,266 +109,283 @@ $(document).ready(function(){initNavTree('UserReturnerDTO_8java_source.html','')
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html">    8</a></span><span class="keyword">public</span> <span class="keyword">class </span><a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html">UserReturnerDTO</a> {</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keyword">private</span> String username;</div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <span class="keyword">private</span> String role;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keyword">private</span> String name;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keyword">private</span> String profilePicture;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">private</span> String email;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keyword">private</span> List&lt;String&gt; cars;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">private</span> <span class="keywordtype">long</span> birthDate;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">private</span> String gender;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keyword">private</span> String location;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">private</span> String password;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">private</span> String description;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">private</span> List&lt;PostReturnerDTO&gt; posts;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keyword">private</span> Boolean isVerified;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">private</span> List&lt;PostReturnerDTO&gt; savedPost;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">private</span> Set&lt;UserReturnerDTO&gt; reporters;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="comment">// Constructor</span></div>
-<div class="foldopen" id="foldopen00026" data-start="{" data-end="}">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab33b42488cc01b322ed87af6fc870c8f">   26</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab33b42488cc01b322ed87af6fc870c8f">UserReturnerDTO</a>(String username, String role , String name, String profilePicture, String email, List&lt;String&gt; cars, <span class="keywordtype">long</span> birthDate, String gender, String location, String password, String description, List&lt;PostReturnerDTO&gt; posts, List&lt;PostReturnerDTO&gt; savedPost, Boolean isVerified, Set&lt;UserReturnerDTO&gt; reporters) {</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        this.username = username;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        this.role = role;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        this.name = name;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        this.profilePicture = profilePicture;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        this.email = email;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        this.cars = cars;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        this.birthDate = birthDate;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        this.gender = gender;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        this.location = location;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        this.password = password;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        this.description = description;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        this.posts = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html">PostReturnerDTO</a> post : posts){</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>            this.posts.add(post);</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        }</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        this.reporters = <span class="keyword">new</span> HashSet&lt;&gt;();</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html">UserReturnerDTO</a> reporter : reporters) {</div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>            this.reporters.add(reporter);</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        }</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        this.savedPost = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html">PostReturnerDTO</a> post : savedPost){</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>            this.savedPost.add(post);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        }</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        this.isVerified = isVerified;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    }</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keyword">private</span> <span class="keywordtype">boolean</span> banned;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keyword">private</span> String name;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">private</span> String profilePicture;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keyword">private</span> String email;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">private</span> List&lt;String&gt; cars;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">private</span> <span class="keywordtype">long</span> birthDate;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <span class="keyword">private</span> String gender;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">private</span> String location;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">private</span> String password;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">private</span> String description;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keyword">private</span> List&lt;PostReturnerDTO&gt; posts;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    <span class="keyword">private</span> Boolean isVerified;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    <span class="keyword">private</span> List&lt;PostReturnerDTO&gt; savedPost;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">private</span> Set&lt;UserReturnerDTO&gt; reporters;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span> </div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="comment">// Constructo</span></div>
+<div class="foldopen" id="foldopen00028" data-start="{" data-end="}">
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af9852f9e0d4b21808fb87c37cb3c26ca">   28</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af9852f9e0d4b21808fb87c37cb3c26ca">UserReturnerDTO</a>(String username, String role , <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a207ea58501067a37050acbbce3fc31b3">isBanned</a>, String name, String profilePicture, String email, List&lt;String&gt; cars, <span class="keywordtype">long</span> birthDate, String gender, String location, String password, String description, List&lt;PostReturnerDTO&gt; posts, List&lt;PostReturnerDTO&gt; savedPost, Boolean isVerified, Set&lt;UserReturnerDTO&gt; reporters) {</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>        this.username = username;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>        this.role = role;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        this.banned = <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a207ea58501067a37050acbbce3fc31b3">isBanned</a>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>        this.name = name;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>        this.profilePicture = profilePicture;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>        this.email = email;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>        this.cars = cars;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        this.birthDate = birthDate;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        this.gender = gender;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        this.location = location;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>        this.password = password;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>        this.description = description;</div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>        this.posts = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html">PostReturnerDTO</a> post : posts){</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>            this.posts.add(post);</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>        }</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>        this.reporters = <span class="keyword">new</span> HashSet&lt;&gt;();</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html">UserReturnerDTO</a> reporter : reporters) {</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>            this.reporters.add(reporter);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        }</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>        this.savedPost = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html">PostReturnerDTO</a> post : savedPost){</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>            this.savedPost.add(post);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        }</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>        this.isVerified = isVerified;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    }</div>
 </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="comment">// Getters and Setters</span></div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="foldopen" id="foldopen00055" data-start="{" data-end="}">
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a81f828e2438242c963ad23cc5de39e36">   55</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a81f828e2438242c963ad23cc5de39e36">getUsername</a>() {</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        <span class="keywordflow">return</span> username;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="comment">// Getters and Setters</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="}">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a81f828e2438242c963ad23cc5de39e36">   58</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a81f828e2438242c963ad23cc5de39e36">getUsername</a>() {</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        <span class="keywordflow">return</span> username;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }</div>
 </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="foldopen" id="foldopen00059" data-start="{" data-end="}">
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef64f54e3a091e2b6c407716459a7ae">   59</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef64f54e3a091e2b6c407716459a7ae">setUsername</a>(String username) {</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        this.username = username;</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef64f54e3a091e2b6c407716459a7ae">   62</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef64f54e3a091e2b6c407716459a7ae">setUsername</a>(String username) {</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>        this.username = username;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    }</div>
 </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae60e6a21cc64950c6fb13b24cda12101">   63</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae60e6a21cc64950c6fb13b24cda12101">getRole</a>() {</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        <span class="keywordflow">return</span> role;</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    }</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
+<div class="foldopen" id="foldopen00066" data-start="{" data-end="}">
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae60e6a21cc64950c6fb13b24cda12101">   66</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae60e6a21cc64950c6fb13b24cda12101">getRole</a>() {</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <span class="keywordflow">return</span> role;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    }</div>
 </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
-<div class="foldopen" id="foldopen00067" data-start="{" data-end="}">
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a18b835e38146ccbaf72fbfe070939238">   67</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a18b835e38146ccbaf72fbfe070939238">setRole</a>(String role) {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        this.role = role;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="}">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a18b835e38146ccbaf72fbfe070939238">   70</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a18b835e38146ccbaf72fbfe070939238">setRole</a>(String role) {</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        this.role = role;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>    }</div>
 </div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="foldopen" id="foldopen00071" data-start="{" data-end="}">
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a91dc25f84a7e65d0027470204064e043">   71</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a91dc25f84a7e65d0027470204064e043">getName</a>() {</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordflow">return</span> name;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    }</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span> </div>
+<div class="foldopen" id="foldopen00074" data-start="{" data-end="}">
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a91dc25f84a7e65d0027470204064e043">   74</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a91dc25f84a7e65d0027470204064e043">getName</a>() {</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keywordflow">return</span> name;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>    }</div>
 </div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
-<div class="foldopen" id="foldopen00075" data-start="{" data-end="}">
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0d7f87baca680ba019d31f42cb53c1f5">   75</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0d7f87baca680ba019d31f42cb53c1f5">setName</a>(String name) {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        this.name = name;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    }</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="foldopen" id="foldopen00078" data-start="{" data-end="}">
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0d7f87baca680ba019d31f42cb53c1f5">   78</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0d7f87baca680ba019d31f42cb53c1f5">setName</a>(String name) {</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        this.name = name;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>    }</div>
 </div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
-<div class="foldopen" id="foldopen00079" data-start="{" data-end="}">
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab9f2757220eecfe027ed3bb8f29725d5">   79</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab9f2757220eecfe027ed3bb8f29725d5">getProfilePicture</a>() {</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordflow">return</span> profilePicture;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="foldopen" id="foldopen00082" data-start="{" data-end="}">
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab9f2757220eecfe027ed3bb8f29725d5">   82</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab9f2757220eecfe027ed3bb8f29725d5">getProfilePicture</a>() {</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        <span class="keywordflow">return</span> profilePicture;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    }</div>
 </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="foldopen" id="foldopen00083" data-start="{" data-end="}">
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6dfa967dd319bf97eb5ce1bfb1ac3a0a">   83</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6dfa967dd319bf97eb5ce1bfb1ac3a0a">setProfilePicture</a>(String profilePicture) {</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        this.profilePicture = profilePicture;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>    }</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6dfa967dd319bf97eb5ce1bfb1ac3a0a">   86</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6dfa967dd319bf97eb5ce1bfb1ac3a0a">setProfilePicture</a>(String profilePicture) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        this.profilePicture = profilePicture;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    }</div>
 </div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
-<div class="foldopen" id="foldopen00087" data-start="{" data-end="}">
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaa23e96ac47df5bfdd524c32958383ed">   87</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaa23e96ac47df5bfdd524c32958383ed">getEmail</a>() {</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        <span class="keywordflow">return</span> email;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>    }</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="foldopen" id="foldopen00090" data-start="{" data-end="}">
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaa23e96ac47df5bfdd524c32958383ed">   90</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaa23e96ac47df5bfdd524c32958383ed">getEmail</a>() {</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">return</span> email;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    }</div>
 </div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="foldopen" id="foldopen00091" data-start="{" data-end="}">
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0704d1f853b2dbe69f2a299eebaf18d6">   91</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0704d1f853b2dbe69f2a299eebaf18d6">setEmail</a>(String email) {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        this.email = email;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>    }</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="foldopen" id="foldopen00094" data-start="{" data-end="}">
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0704d1f853b2dbe69f2a299eebaf18d6">   94</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0704d1f853b2dbe69f2a299eebaf18d6">setEmail</a>(String email) {</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        this.email = email;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>    }</div>
 </div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a2bfe029b299de947b82282b72ea9d943">   95</a></span>    <span class="keyword">public</span> List&lt;String&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a2bfe029b299de947b82282b72ea9d943">getCars</a>() {</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">return</span> cars;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="foldopen" id="foldopen00098" data-start="{" data-end="}">
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a2bfe029b299de947b82282b72ea9d943">   98</a></span>    <span class="keyword">public</span> List&lt;String&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a2bfe029b299de947b82282b72ea9d943">getCars</a>() {</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>        <span class="keywordflow">return</span> cars;</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>    }</div>
 </div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
-<div class="foldopen" id="foldopen00099" data-start="{" data-end="}">
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab813f78b62086b9d02151cae381ad2ae">   99</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab813f78b62086b9d02151cae381ad2ae">setCars</a>(List&lt;String&gt; cars) {</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>        this.cars = cars;</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>    }</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> </div>
+<div class="foldopen" id="foldopen00102" data-start="{" data-end="}">
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab813f78b62086b9d02151cae381ad2ae">  102</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab813f78b62086b9d02151cae381ad2ae">setCars</a>(List&lt;String&gt; cars) {</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>        this.cars = cars;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    }</div>
 </div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> </div>
-<div class="foldopen" id="foldopen00103" data-start="{" data-end="}">
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae49330508c8b4bf083a6f955ac29717d">  103</a></span>    <span class="keyword">public</span> <span class="keywordtype">long</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae49330508c8b4bf083a6f955ac29717d">getBirthDate</a>() {</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="keywordflow">return</span> birthDate;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>    }</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="foldopen" id="foldopen00106" data-start="{" data-end="}">
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae49330508c8b4bf083a6f955ac29717d">  106</a></span>    <span class="keyword">public</span> <span class="keywordtype">long</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae49330508c8b4bf083a6f955ac29717d">getBirthDate</a>() {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keywordflow">return</span> birthDate;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    }</div>
 </div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="foldopen" id="foldopen00107" data-start="{" data-end="}">
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#adeb9b77dd9030e4a77134d17cd79116d">  107</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#adeb9b77dd9030e4a77134d17cd79116d">setBirthDate</a>(<span class="keywordtype">long</span> birthDate) {</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>        this.birthDate = birthDate;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>    }</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="foldopen" id="foldopen00110" data-start="{" data-end="}">
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#adeb9b77dd9030e4a77134d17cd79116d">  110</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#adeb9b77dd9030e4a77134d17cd79116d">setBirthDate</a>(<span class="keywordtype">long</span> birthDate) {</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>        this.birthDate = birthDate;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>    }</div>
 </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="foldopen" id="foldopen00111" data-start="{" data-end="}">
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef75dc899268f84c7ceda50854adb6f">  111</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef75dc899268f84c7ceda50854adb6f">getGender</a>() {</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>        <span class="keywordflow">return</span> gender;</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    }</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
+<div class="foldopen" id="foldopen00114" data-start="{" data-end="}">
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef75dc899268f84c7ceda50854adb6f">  114</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef75dc899268f84c7ceda50854adb6f">getGender</a>() {</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        <span class="keywordflow">return</span> gender;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>    }</div>
 </div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6bc0c724c5a9c11e75c1f5620206b834">  115</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6bc0c724c5a9c11e75c1f5620206b834">setGender</a>(String gender) {</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        this.gender = gender;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    }</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6bc0c724c5a9c11e75c1f5620206b834">  118</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6bc0c724c5a9c11e75c1f5620206b834">setGender</a>(String gender) {</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        this.gender = gender;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>    }</div>
 </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="foldopen" id="foldopen00119" data-start="{" data-end="}">
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af8fe96c899fcb005ff184b103ec4a637">  119</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af8fe96c899fcb005ff184b103ec4a637">getLocation</a>() {</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        <span class="keywordflow">return</span> location;</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    }</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span> </div>
+<div class="foldopen" id="foldopen00122" data-start="{" data-end="}">
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af8fe96c899fcb005ff184b103ec4a637">  122</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af8fe96c899fcb005ff184b103ec4a637">getLocation</a>() {</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>        <span class="keywordflow">return</span> location;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    }</div>
 </div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="foldopen" id="foldopen00123" data-start="{" data-end="}">
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aab480bf13d83ca4fd90798cd1c7da689">  123</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aab480bf13d83ca4fd90798cd1c7da689">setLocation</a>(String location) {</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>        this.location = location;</div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    }</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="foldopen" id="foldopen00126" data-start="{" data-end="}">
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aab480bf13d83ca4fd90798cd1c7da689">  126</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aab480bf13d83ca4fd90798cd1c7da689">setLocation</a>(String location) {</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        this.location = location;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    }</div>
 </div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span> </div>
-<div class="foldopen" id="foldopen00127" data-start="{" data-end="}">
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aa5e9db0f60acbc8f43bb593d0ac2b5c3">  127</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aa5e9db0f60acbc8f43bb593d0ac2b5c3">getDescription</a>() {</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>        <span class="keywordflow">return</span> description;</div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    }</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span> </div>
+<div class="foldopen" id="foldopen00130" data-start="{" data-end="}">
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aa5e9db0f60acbc8f43bb593d0ac2b5c3">  130</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aa5e9db0f60acbc8f43bb593d0ac2b5c3">getDescription</a>() {</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="keywordflow">return</span> description;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    }</div>
 </div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span> </div>
-<div class="foldopen" id="foldopen00131" data-start="{" data-end="}">
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a357133532125c29d5de1b5cbbeb9495a">  131</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a357133532125c29d5de1b5cbbeb9495a">setDescription</a>(String description) {</div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        this.description = description;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="foldopen" id="foldopen00134" data-start="{" data-end="}">
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a357133532125c29d5de1b5cbbeb9495a">  134</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a357133532125c29d5de1b5cbbeb9495a">setDescription</a>(String description) {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        this.description = description;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    }</div>
 </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="foldopen" id="foldopen00135" data-start="{" data-end="}">
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaf473ea24890ed553b5c2fe3d9ab4704">  135</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaf473ea24890ed553b5c2fe3d9ab4704">getPassword</a>() {</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="keywordflow">return</span> password;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaf473ea24890ed553b5c2fe3d9ab4704">  138</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaf473ea24890ed553b5c2fe3d9ab4704">getPassword</a>() {</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <span class="keywordflow">return</span> password;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    }</div>
 </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="foldopen" id="foldopen00139" data-start="{" data-end="}">
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5cce60b1db40a8126337f337288b9c36">  139</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5cce60b1db40a8126337f337288b9c36">setPassword</a>(String password) {</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        this.password = password;</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    }</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="foldopen" id="foldopen00142" data-start="{" data-end="}">
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5cce60b1db40a8126337f337288b9c36">  142</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5cce60b1db40a8126337f337288b9c36">setPassword</a>(String password) {</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>        this.password = password;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>    }</div>
 </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
-<div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab035b95c71383e07d9a79665e3855718">  143</a></span>    <span class="keyword">public</span> List&lt;PostReturnerDTO&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab035b95c71383e07d9a79665e3855718">getPosts</a>(){</div>
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="keywordflow">return</span> this.posts;</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    }</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span> </div>
+<div class="foldopen" id="foldopen00146" data-start="{" data-end="}">
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a207ea58501067a37050acbbce3fc31b3">  146</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a207ea58501067a37050acbbce3fc31b3">isBanned</a>() {</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <span class="keywordflow">return</span> banned;</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>    }</div>
 </div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span> </div>
-<div class="foldopen" id="foldopen00147" data-start="{" data-end="}">
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a96683c6c6b8138357ec515d8a6aa121d">  147</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a96683c6c6b8138357ec515d8a6aa121d">addPost</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html">PostReturnerDTO</a> post){</div>
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        this.posts.add(post);</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    }</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span> </div>
+<div class="foldopen" id="foldopen00150" data-start="{" data-end="}">
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae29ee38fb18ec778d0bc74307fedaae0">  150</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae29ee38fb18ec778d0bc74307fedaae0">setBanned</a>(<span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a207ea58501067a37050acbbce3fc31b3">isBanned</a>) {</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        this.banned = <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a207ea58501067a37050acbbce3fc31b3">isBanned</a>;</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>    }</div>
 </div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    </div>
-<div class="foldopen" id="foldopen00151" data-start="{" data-end="}">
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aeee5d56c368cc2613807aba4946b3d9d">  151</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aeee5d56c368cc2613807aba4946b3d9d">setIsVerified</a>(Boolean isVerified) {</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        this.isVerified = isVerified;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    }</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span> </div>
+<div class="foldopen" id="foldopen00154" data-start="{" data-end="}">
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab035b95c71383e07d9a79665e3855718">  154</a></span>    <span class="keyword">public</span> List&lt;PostReturnerDTO&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab035b95c71383e07d9a79665e3855718">getPosts</a>(){</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        <span class="keywordflow">return</span> this.posts;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    }</div>
 </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="foldopen" id="foldopen00155" data-start="{" data-end="}">
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a4c2797c30b9a2f56a53ada021df03a6e">  155</a></span>    <span class="keyword">public</span> Boolean <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a4c2797c30b9a2f56a53ada021df03a6e">getIsVerified</a>() {</div>
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        <span class="keywordflow">return</span> isVerified;</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    }</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="foldopen" id="foldopen00158" data-start="{" data-end="}">
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a96683c6c6b8138357ec515d8a6aa121d">  158</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a96683c6c6b8138357ec515d8a6aa121d">addPost</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html">PostReturnerDTO</a> post){</div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>        this.posts.add(post);</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>    }</div>
 </div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
-<div class="foldopen" id="foldopen00159" data-start="{" data-end="}">
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab928c4142bbd6909f02f85e0780f9788">  159</a></span>    <span class="keyword">public</span> Set&lt;UserReturnerDTO&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab928c4142bbd6909f02f85e0780f9788">getReporters</a>() {</div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        <span class="keywordflow">return</span> reporters;</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    }</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>    </div>
+<div class="foldopen" id="foldopen00162" data-start="{" data-end="}">
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aeee5d56c368cc2613807aba4946b3d9d">  162</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aeee5d56c368cc2613807aba4946b3d9d">setIsVerified</a>(Boolean isVerified) {</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        this.isVerified = isVerified;</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>    }</div>
 </div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
-<div class="foldopen" id="foldopen00163" data-start="{" data-end="}">
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aacd361dc8af8e5bd64c6ee7abb8d034e">  163</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aacd361dc8af8e5bd64c6ee7abb8d034e">setReporters</a>(Set&lt;UserReturnerDTO&gt; reporters) {</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        this.reporters = reporters;</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>    }</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span> </div>
+<div class="foldopen" id="foldopen00166" data-start="{" data-end="}">
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a4c2797c30b9a2f56a53ada021df03a6e">  166</a></span>    <span class="keyword">public</span> Boolean <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a4c2797c30b9a2f56a53ada021df03a6e">getIsVerified</a>() {</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>        <span class="keywordflow">return</span> isVerified;</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    }</div>
 </div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span> </div>
-<div class="foldopen" id="foldopen00167" data-start="{" data-end="}">
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a775a377f21ae1e38b76f96ef340ac546">  167</a></span>    <span class="keyword">public</span> List&lt;PostReturnerDTO&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a775a377f21ae1e38b76f96ef340ac546">getSavedPost</a>() {</div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>        <span class="keywordflow">return</span> savedPost;</div>
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>    }</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span> </div>
+<div class="foldopen" id="foldopen00170" data-start="{" data-end="}">
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab928c4142bbd6909f02f85e0780f9788">  170</a></span>    <span class="keyword">public</span> Set&lt;UserReturnerDTO&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab928c4142bbd6909f02f85e0780f9788">getReporters</a>() {</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>        <span class="keywordflow">return</span> reporters;</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    }</div>
 </div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span> </div>
-<div class="foldopen" id="foldopen00171" data-start="{" data-end="}">
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a35d0aa8b91565c17ab53e00daf364bd6">  171</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a35d0aa8b91565c17ab53e00daf364bd6">addSavedPost</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html">PostReturnerDTO</a> post) {</div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>        this.savedPost.add(post);</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>    }</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span> </div>
+<div class="foldopen" id="foldopen00174" data-start="{" data-end="}">
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aacd361dc8af8e5bd64c6ee7abb8d034e">  174</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aacd361dc8af8e5bd64c6ee7abb8d034e">setReporters</a>(Set&lt;UserReturnerDTO&gt; reporters) {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>        this.reporters = reporters;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>    }</div>
 </div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>}</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span> </div>
+<div class="foldopen" id="foldopen00178" data-start="{" data-end="}">
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a775a377f21ae1e38b76f96ef340ac546">  178</a></span>    <span class="keyword">public</span> List&lt;PostReturnerDTO&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a775a377f21ae1e38b76f96ef340ac546">getSavedPost</a>() {</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>        <span class="keywordflow">return</span> savedPost;</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>    }</div>
+</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span> </div>
+<div class="foldopen" id="foldopen00182" data-start="{" data-end="}">
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a35d0aa8b91565c17ab53e00daf364bd6">  182</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a35d0aa8b91565c17ab53e00daf364bd6">addSavedPost</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html">PostReturnerDTO</a> post) {</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        this.savedPost.add(post);</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>    }</div>
+</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>}</div>
 </div>
 <div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html">com.linkauto.restapi.dto.PostReturnerDTO</a></div><div class="ttdef"><b>Definition</b> <a href="PostReturnerDTO_8java_source.html#l00006">PostReturnerDTO.java:6</a></div></div>
 <div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html">com.linkauto.restapi.dto.UserReturnerDTO</a></div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00008">UserReturnerDTO.java:8</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a0704d1f853b2dbe69f2a299eebaf18d6"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0704d1f853b2dbe69f2a299eebaf18d6">com.linkauto.restapi.dto.UserReturnerDTO.setEmail</a></div><div class="ttdeci">void setEmail(String email)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00091">UserReturnerDTO.java:91</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a0d7f87baca680ba019d31f42cb53c1f5"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0d7f87baca680ba019d31f42cb53c1f5">com.linkauto.restapi.dto.UserReturnerDTO.setName</a></div><div class="ttdeci">void setName(String name)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00075">UserReturnerDTO.java:75</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a18b835e38146ccbaf72fbfe070939238"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a18b835e38146ccbaf72fbfe070939238">com.linkauto.restapi.dto.UserReturnerDTO.setRole</a></div><div class="ttdeci">void setRole(String role)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00067">UserReturnerDTO.java:67</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a2bfe029b299de947b82282b72ea9d943"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a2bfe029b299de947b82282b72ea9d943">com.linkauto.restapi.dto.UserReturnerDTO.getCars</a></div><div class="ttdeci">List&lt; String &gt; getCars()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00095">UserReturnerDTO.java:95</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a357133532125c29d5de1b5cbbeb9495a"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a357133532125c29d5de1b5cbbeb9495a">com.linkauto.restapi.dto.UserReturnerDTO.setDescription</a></div><div class="ttdeci">void setDescription(String description)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00131">UserReturnerDTO.java:131</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a35d0aa8b91565c17ab53e00daf364bd6"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a35d0aa8b91565c17ab53e00daf364bd6">com.linkauto.restapi.dto.UserReturnerDTO.addSavedPost</a></div><div class="ttdeci">void addSavedPost(PostReturnerDTO post)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00171">UserReturnerDTO.java:171</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a4c2797c30b9a2f56a53ada021df03a6e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a4c2797c30b9a2f56a53ada021df03a6e">com.linkauto.restapi.dto.UserReturnerDTO.getIsVerified</a></div><div class="ttdeci">Boolean getIsVerified()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00155">UserReturnerDTO.java:155</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a5cce60b1db40a8126337f337288b9c36"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5cce60b1db40a8126337f337288b9c36">com.linkauto.restapi.dto.UserReturnerDTO.setPassword</a></div><div class="ttdeci">void setPassword(String password)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00139">UserReturnerDTO.java:139</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a5ef64f54e3a091e2b6c407716459a7ae"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef64f54e3a091e2b6c407716459a7ae">com.linkauto.restapi.dto.UserReturnerDTO.setUsername</a></div><div class="ttdeci">void setUsername(String username)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00059">UserReturnerDTO.java:59</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a5ef75dc899268f84c7ceda50854adb6f"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef75dc899268f84c7ceda50854adb6f">com.linkauto.restapi.dto.UserReturnerDTO.getGender</a></div><div class="ttdeci">String getGender()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00111">UserReturnerDTO.java:111</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a6bc0c724c5a9c11e75c1f5620206b834"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6bc0c724c5a9c11e75c1f5620206b834">com.linkauto.restapi.dto.UserReturnerDTO.setGender</a></div><div class="ttdeci">void setGender(String gender)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00115">UserReturnerDTO.java:115</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a6dfa967dd319bf97eb5ce1bfb1ac3a0a"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6dfa967dd319bf97eb5ce1bfb1ac3a0a">com.linkauto.restapi.dto.UserReturnerDTO.setProfilePicture</a></div><div class="ttdeci">void setProfilePicture(String profilePicture)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00083">UserReturnerDTO.java:83</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a775a377f21ae1e38b76f96ef340ac546"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a775a377f21ae1e38b76f96ef340ac546">com.linkauto.restapi.dto.UserReturnerDTO.getSavedPost</a></div><div class="ttdeci">List&lt; PostReturnerDTO &gt; getSavedPost()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00167">UserReturnerDTO.java:167</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a81f828e2438242c963ad23cc5de39e36"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a81f828e2438242c963ad23cc5de39e36">com.linkauto.restapi.dto.UserReturnerDTO.getUsername</a></div><div class="ttdeci">String getUsername()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00055">UserReturnerDTO.java:55</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a91dc25f84a7e65d0027470204064e043"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a91dc25f84a7e65d0027470204064e043">com.linkauto.restapi.dto.UserReturnerDTO.getName</a></div><div class="ttdeci">String getName()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00071">UserReturnerDTO.java:71</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a96683c6c6b8138357ec515d8a6aa121d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a96683c6c6b8138357ec515d8a6aa121d">com.linkauto.restapi.dto.UserReturnerDTO.addPost</a></div><div class="ttdeci">void addPost(PostReturnerDTO post)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00147">UserReturnerDTO.java:147</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aa5e9db0f60acbc8f43bb593d0ac2b5c3"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aa5e9db0f60acbc8f43bb593d0ac2b5c3">com.linkauto.restapi.dto.UserReturnerDTO.getDescription</a></div><div class="ttdeci">String getDescription()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00127">UserReturnerDTO.java:127</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aaa23e96ac47df5bfdd524c32958383ed"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaa23e96ac47df5bfdd524c32958383ed">com.linkauto.restapi.dto.UserReturnerDTO.getEmail</a></div><div class="ttdeci">String getEmail()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00087">UserReturnerDTO.java:87</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aab480bf13d83ca4fd90798cd1c7da689"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aab480bf13d83ca4fd90798cd1c7da689">com.linkauto.restapi.dto.UserReturnerDTO.setLocation</a></div><div class="ttdeci">void setLocation(String location)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00123">UserReturnerDTO.java:123</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aacd361dc8af8e5bd64c6ee7abb8d034e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aacd361dc8af8e5bd64c6ee7abb8d034e">com.linkauto.restapi.dto.UserReturnerDTO.setReporters</a></div><div class="ttdeci">void setReporters(Set&lt; UserReturnerDTO &gt; reporters)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00163">UserReturnerDTO.java:163</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aaf473ea24890ed553b5c2fe3d9ab4704"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaf473ea24890ed553b5c2fe3d9ab4704">com.linkauto.restapi.dto.UserReturnerDTO.getPassword</a></div><div class="ttdeci">String getPassword()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00135">UserReturnerDTO.java:135</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ab035b95c71383e07d9a79665e3855718"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab035b95c71383e07d9a79665e3855718">com.linkauto.restapi.dto.UserReturnerDTO.getPosts</a></div><div class="ttdeci">List&lt; PostReturnerDTO &gt; getPosts()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00143">UserReturnerDTO.java:143</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ab33b42488cc01b322ed87af6fc870c8f"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab33b42488cc01b322ed87af6fc870c8f">com.linkauto.restapi.dto.UserReturnerDTO.UserReturnerDTO</a></div><div class="ttdeci">UserReturnerDTO(String username, String role, String name, String profilePicture, String email, List&lt; String &gt; cars, long birthDate, String gender, String location, String password, String description, List&lt; PostReturnerDTO &gt; posts, List&lt; PostReturnerDTO &gt; savedPost, Boolean isVerified, Set&lt; UserReturnerDTO &gt; reporters)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00026">UserReturnerDTO.java:26</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ab813f78b62086b9d02151cae381ad2ae"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab813f78b62086b9d02151cae381ad2ae">com.linkauto.restapi.dto.UserReturnerDTO.setCars</a></div><div class="ttdeci">void setCars(List&lt; String &gt; cars)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00099">UserReturnerDTO.java:99</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ab928c4142bbd6909f02f85e0780f9788"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab928c4142bbd6909f02f85e0780f9788">com.linkauto.restapi.dto.UserReturnerDTO.getReporters</a></div><div class="ttdeci">Set&lt; UserReturnerDTO &gt; getReporters()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00159">UserReturnerDTO.java:159</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ab9f2757220eecfe027ed3bb8f29725d5"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab9f2757220eecfe027ed3bb8f29725d5">com.linkauto.restapi.dto.UserReturnerDTO.getProfilePicture</a></div><div class="ttdeci">String getProfilePicture()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00079">UserReturnerDTO.java:79</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_adeb9b77dd9030e4a77134d17cd79116d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#adeb9b77dd9030e4a77134d17cd79116d">com.linkauto.restapi.dto.UserReturnerDTO.setBirthDate</a></div><div class="ttdeci">void setBirthDate(long birthDate)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00107">UserReturnerDTO.java:107</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ae49330508c8b4bf083a6f955ac29717d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae49330508c8b4bf083a6f955ac29717d">com.linkauto.restapi.dto.UserReturnerDTO.getBirthDate</a></div><div class="ttdeci">long getBirthDate()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00103">UserReturnerDTO.java:103</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ae60e6a21cc64950c6fb13b24cda12101"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae60e6a21cc64950c6fb13b24cda12101">com.linkauto.restapi.dto.UserReturnerDTO.getRole</a></div><div class="ttdeci">String getRole()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00063">UserReturnerDTO.java:63</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aeee5d56c368cc2613807aba4946b3d9d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aeee5d56c368cc2613807aba4946b3d9d">com.linkauto.restapi.dto.UserReturnerDTO.setIsVerified</a></div><div class="ttdeci">void setIsVerified(Boolean isVerified)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00151">UserReturnerDTO.java:151</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_af8fe96c899fcb005ff184b103ec4a637"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af8fe96c899fcb005ff184b103ec4a637">com.linkauto.restapi.dto.UserReturnerDTO.getLocation</a></div><div class="ttdeci">String getLocation()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00119">UserReturnerDTO.java:119</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a0704d1f853b2dbe69f2a299eebaf18d6"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0704d1f853b2dbe69f2a299eebaf18d6">com.linkauto.restapi.dto.UserReturnerDTO.setEmail</a></div><div class="ttdeci">void setEmail(String email)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00094">UserReturnerDTO.java:94</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a0d7f87baca680ba019d31f42cb53c1f5"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a0d7f87baca680ba019d31f42cb53c1f5">com.linkauto.restapi.dto.UserReturnerDTO.setName</a></div><div class="ttdeci">void setName(String name)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00078">UserReturnerDTO.java:78</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a18b835e38146ccbaf72fbfe070939238"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a18b835e38146ccbaf72fbfe070939238">com.linkauto.restapi.dto.UserReturnerDTO.setRole</a></div><div class="ttdeci">void setRole(String role)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00070">UserReturnerDTO.java:70</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a207ea58501067a37050acbbce3fc31b3"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a207ea58501067a37050acbbce3fc31b3">com.linkauto.restapi.dto.UserReturnerDTO.isBanned</a></div><div class="ttdeci">boolean isBanned()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00146">UserReturnerDTO.java:146</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a2bfe029b299de947b82282b72ea9d943"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a2bfe029b299de947b82282b72ea9d943">com.linkauto.restapi.dto.UserReturnerDTO.getCars</a></div><div class="ttdeci">List&lt; String &gt; getCars()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00098">UserReturnerDTO.java:98</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a357133532125c29d5de1b5cbbeb9495a"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a357133532125c29d5de1b5cbbeb9495a">com.linkauto.restapi.dto.UserReturnerDTO.setDescription</a></div><div class="ttdeci">void setDescription(String description)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00134">UserReturnerDTO.java:134</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a35d0aa8b91565c17ab53e00daf364bd6"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a35d0aa8b91565c17ab53e00daf364bd6">com.linkauto.restapi.dto.UserReturnerDTO.addSavedPost</a></div><div class="ttdeci">void addSavedPost(PostReturnerDTO post)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00182">UserReturnerDTO.java:182</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a4c2797c30b9a2f56a53ada021df03a6e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a4c2797c30b9a2f56a53ada021df03a6e">com.linkauto.restapi.dto.UserReturnerDTO.getIsVerified</a></div><div class="ttdeci">Boolean getIsVerified()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00166">UserReturnerDTO.java:166</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a5cce60b1db40a8126337f337288b9c36"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5cce60b1db40a8126337f337288b9c36">com.linkauto.restapi.dto.UserReturnerDTO.setPassword</a></div><div class="ttdeci">void setPassword(String password)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00142">UserReturnerDTO.java:142</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a5ef64f54e3a091e2b6c407716459a7ae"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef64f54e3a091e2b6c407716459a7ae">com.linkauto.restapi.dto.UserReturnerDTO.setUsername</a></div><div class="ttdeci">void setUsername(String username)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00062">UserReturnerDTO.java:62</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a5ef75dc899268f84c7ceda50854adb6f"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a5ef75dc899268f84c7ceda50854adb6f">com.linkauto.restapi.dto.UserReturnerDTO.getGender</a></div><div class="ttdeci">String getGender()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00114">UserReturnerDTO.java:114</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a6bc0c724c5a9c11e75c1f5620206b834"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6bc0c724c5a9c11e75c1f5620206b834">com.linkauto.restapi.dto.UserReturnerDTO.setGender</a></div><div class="ttdeci">void setGender(String gender)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00118">UserReturnerDTO.java:118</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a6dfa967dd319bf97eb5ce1bfb1ac3a0a"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a6dfa967dd319bf97eb5ce1bfb1ac3a0a">com.linkauto.restapi.dto.UserReturnerDTO.setProfilePicture</a></div><div class="ttdeci">void setProfilePicture(String profilePicture)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00086">UserReturnerDTO.java:86</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a775a377f21ae1e38b76f96ef340ac546"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a775a377f21ae1e38b76f96ef340ac546">com.linkauto.restapi.dto.UserReturnerDTO.getSavedPost</a></div><div class="ttdeci">List&lt; PostReturnerDTO &gt; getSavedPost()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00178">UserReturnerDTO.java:178</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a81f828e2438242c963ad23cc5de39e36"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a81f828e2438242c963ad23cc5de39e36">com.linkauto.restapi.dto.UserReturnerDTO.getUsername</a></div><div class="ttdeci">String getUsername()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00058">UserReturnerDTO.java:58</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a91dc25f84a7e65d0027470204064e043"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a91dc25f84a7e65d0027470204064e043">com.linkauto.restapi.dto.UserReturnerDTO.getName</a></div><div class="ttdeci">String getName()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00074">UserReturnerDTO.java:74</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_a96683c6c6b8138357ec515d8a6aa121d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a96683c6c6b8138357ec515d8a6aa121d">com.linkauto.restapi.dto.UserReturnerDTO.addPost</a></div><div class="ttdeci">void addPost(PostReturnerDTO post)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00158">UserReturnerDTO.java:158</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aa5e9db0f60acbc8f43bb593d0ac2b5c3"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aa5e9db0f60acbc8f43bb593d0ac2b5c3">com.linkauto.restapi.dto.UserReturnerDTO.getDescription</a></div><div class="ttdeci">String getDescription()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00130">UserReturnerDTO.java:130</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aaa23e96ac47df5bfdd524c32958383ed"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaa23e96ac47df5bfdd524c32958383ed">com.linkauto.restapi.dto.UserReturnerDTO.getEmail</a></div><div class="ttdeci">String getEmail()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00090">UserReturnerDTO.java:90</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aab480bf13d83ca4fd90798cd1c7da689"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aab480bf13d83ca4fd90798cd1c7da689">com.linkauto.restapi.dto.UserReturnerDTO.setLocation</a></div><div class="ttdeci">void setLocation(String location)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00126">UserReturnerDTO.java:126</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aacd361dc8af8e5bd64c6ee7abb8d034e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aacd361dc8af8e5bd64c6ee7abb8d034e">com.linkauto.restapi.dto.UserReturnerDTO.setReporters</a></div><div class="ttdeci">void setReporters(Set&lt; UserReturnerDTO &gt; reporters)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00174">UserReturnerDTO.java:174</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aaf473ea24890ed553b5c2fe3d9ab4704"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aaf473ea24890ed553b5c2fe3d9ab4704">com.linkauto.restapi.dto.UserReturnerDTO.getPassword</a></div><div class="ttdeci">String getPassword()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00138">UserReturnerDTO.java:138</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ab035b95c71383e07d9a79665e3855718"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab035b95c71383e07d9a79665e3855718">com.linkauto.restapi.dto.UserReturnerDTO.getPosts</a></div><div class="ttdeci">List&lt; PostReturnerDTO &gt; getPosts()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00154">UserReturnerDTO.java:154</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ab813f78b62086b9d02151cae381ad2ae"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab813f78b62086b9d02151cae381ad2ae">com.linkauto.restapi.dto.UserReturnerDTO.setCars</a></div><div class="ttdeci">void setCars(List&lt; String &gt; cars)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00102">UserReturnerDTO.java:102</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ab928c4142bbd6909f02f85e0780f9788"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab928c4142bbd6909f02f85e0780f9788">com.linkauto.restapi.dto.UserReturnerDTO.getReporters</a></div><div class="ttdeci">Set&lt; UserReturnerDTO &gt; getReporters()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00170">UserReturnerDTO.java:170</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ab9f2757220eecfe027ed3bb8f29725d5"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ab9f2757220eecfe027ed3bb8f29725d5">com.linkauto.restapi.dto.UserReturnerDTO.getProfilePicture</a></div><div class="ttdeci">String getProfilePicture()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00082">UserReturnerDTO.java:82</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_adeb9b77dd9030e4a77134d17cd79116d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#adeb9b77dd9030e4a77134d17cd79116d">com.linkauto.restapi.dto.UserReturnerDTO.setBirthDate</a></div><div class="ttdeci">void setBirthDate(long birthDate)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00110">UserReturnerDTO.java:110</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ae29ee38fb18ec778d0bc74307fedaae0"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae29ee38fb18ec778d0bc74307fedaae0">com.linkauto.restapi.dto.UserReturnerDTO.setBanned</a></div><div class="ttdeci">void setBanned(boolean isBanned)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00150">UserReturnerDTO.java:150</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ae49330508c8b4bf083a6f955ac29717d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae49330508c8b4bf083a6f955ac29717d">com.linkauto.restapi.dto.UserReturnerDTO.getBirthDate</a></div><div class="ttdeci">long getBirthDate()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00106">UserReturnerDTO.java:106</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_ae60e6a21cc64950c6fb13b24cda12101"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#ae60e6a21cc64950c6fb13b24cda12101">com.linkauto.restapi.dto.UserReturnerDTO.getRole</a></div><div class="ttdeci">String getRole()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00066">UserReturnerDTO.java:66</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_aeee5d56c368cc2613807aba4946b3d9d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#aeee5d56c368cc2613807aba4946b3d9d">com.linkauto.restapi.dto.UserReturnerDTO.setIsVerified</a></div><div class="ttdeci">void setIsVerified(Boolean isVerified)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00162">UserReturnerDTO.java:162</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_af8fe96c899fcb005ff184b103ec4a637"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af8fe96c899fcb005ff184b103ec4a637">com.linkauto.restapi.dto.UserReturnerDTO.getLocation</a></div><div class="ttdeci">String getLocation()</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00122">UserReturnerDTO.java:122</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO_html_af9852f9e0d4b21808fb87c37cb3c26ca"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#af9852f9e0d4b21808fb87c37cb3c26ca">com.linkauto.restapi.dto.UserReturnerDTO.UserReturnerDTO</a></div><div class="ttdeci">UserReturnerDTO(String username, String role, boolean isBanned, String name, String profilePicture, String email, List&lt; String &gt; cars, long birthDate, String gender, String location, String password, String description, List&lt; PostReturnerDTO &gt; posts, List&lt; PostReturnerDTO &gt; savedPost, Boolean isVerified, Set&lt; UserReturnerDTO &gt; reporters)</div><div class="ttdef"><b>Definition</b> <a href="UserReturnerDTO_8java_source.html#l00028">UserReturnerDTO.java:28</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
