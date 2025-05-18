@@ -15,7 +15,8 @@ public record User(
     String location,
     String password,
     String description,
-    Set<User> reporters
+    Set<User> reporters,
+    Boolean isVerified
 ) {}
 
 

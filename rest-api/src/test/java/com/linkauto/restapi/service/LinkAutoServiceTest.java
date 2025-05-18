@@ -470,6 +470,46 @@ public class LinkAutoServiceTest {
         assertFalse(result);
     }
 
+    public void testVerifyUser() {
+        // Arrange
+        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        user.addPost(new Post());
+        user.addPost(new Post());
+        user.addPost(new Post());
+        user.addFollower(new User());
+        user.addFollower(new User());
+        user.addFollower(new User());
+        
+        when(userRepository.save(user)).thenReturn(user);
+
+        Boolean result = linkAutoService.verifyUser(user);
+
+        // Assert
+        assertTrue(result);
+        assertTrue(user.getIsVerified());
+        verify(userRepository).save(user);
+
+        // Case with less than 3 posts
+        User user2 = new User("testUser2", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        user2.addPost(new Post());
+        user2.addPost(new Post());
+        user2.addFollower(new User());
+        user2.addFollower(new User());
+        user2.addFollower(new User());
+        Boolean result2 = linkAutoService.verifyUser(user2);
+        assertFalse(result2);
+
+        // Case with less than 3 followers
+        User user3 = new User("testUser3", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        user3.addPost(new Post());
+        user3.addPost(new Post());
+        user3.addPost(new Post());
+        user3.addFollower(new User());
+        user3.addFollower(new User());
+        Boolean result3 = linkAutoService.verifyUser(user3);
+        assertFalse(result3);
+    }
+
     public void testGetSavedPostsByUsername() {
         // Preparar posts guardados para el usuario
         Post post1 = new Post(1L, new User(), "Post 1", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());

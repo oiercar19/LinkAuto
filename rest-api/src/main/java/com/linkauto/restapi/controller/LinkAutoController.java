@@ -27,10 +27,10 @@ import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.Post;
+import com.linkauto.restapi.model.Role;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.service.AuthService;
 import com.linkauto.restapi.service.LinkAutoService;
-import com.linkauto.restapi.model.Role;
 
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -411,7 +411,6 @@ public class LinkAutoController {
         if (!authService.isTokenValid(userToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
         User reportingUser = authService.getUserByToken(userToken);
         User reportedUser = authService.getUserByUsername(username);
 
@@ -423,6 +422,52 @@ public class LinkAutoController {
 
         return isReported ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
+
+    @PostMapping("/user/{username}/verify")
+    public ResponseEntity<Void> verifyUser(
+        @Parameter(name = "username", description = "Username of the user to verify", required = true, example = "johndoe")
+        @PathVariable String username,
+        @Parameter(name = "userToken", description = "Token of the user making the request", required = true, example = "1234567890")
+        @RequestParam("userToken") String userToken
+    ) {
+    if (!authService.isTokenValid(userToken)) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+    }        
+        User requestingUser = authService.getUserByToken(userToken);
+        
+        // Verificar si el usuario que realiza la solicitud es administrador
+        // O si el usuario que realiza la solicitud es el mismo que se quiere verificar
+        if (!requestingUser.getRole().equals(Role.ADMIN) && !requestingUser.getUsername().equals(username)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+    
+        // Obtener el usuario objetivo
+        User targetUser = authService.getUserByUsername(username);
+        if (targetUser == null) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        Boolean isVerified = linkAutoService.verifyUser(targetUser);
+        if (isVerified == null) {
+            ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+        
+        return isVerified ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+    
+    @GetMapping("/user/{username}/verify")
+    public ResponseEntity<Boolean> isUserVerified(
+        @Parameter(name = "username", description = "Username of the user to verify", required = true, example = "johndoe")
+        @PathVariable String username
+    ) {
+        User user = authService.getUserByUsername(username);
+        System.out.println("User: " + user);
+        if (user == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(user.getIsVerified());
+    }
+
     @PostMapping("/post/{post_id}/save")
     public ResponseEntity<Void> savePost(
         @Parameter(name = "post_id", description = "ID of the post to save", required = true, example = "1")
@@ -486,6 +531,7 @@ public class LinkAutoController {
     }
 
     public List<PostReturnerDTO> parsePostsToPostReturnerDTO(List<Post> posts) {
+
         List<PostReturnerDTO> postReturnerDTOs = new ArrayList<>();
         for (Post post : posts) {
             List<Long> comment_ids = new ArrayList<>();
@@ -524,7 +570,7 @@ public class LinkAutoController {
         
         List<Post> savedPosts = new ArrayList<>(u.getSavedPosts());
         List<PostReturnerDTO> savedPost = parsePostsToPostReturnerDTO(savedPosts);
-        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost, reporters);
+        return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost, u.getIsVerified(), reporters);
     }
 
     private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {

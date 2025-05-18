@@ -35,6 +35,7 @@ public class UserReturnerDTOTest {
             "This is a description.",
             posts,
             savedPosts,
+            false,
             new HashSet<>()
         );
 
@@ -69,6 +70,7 @@ public class UserReturnerDTOTest {
             "This is a description.",
             new ArrayList<>(),
             new ArrayList<>(),
+            false,
             new HashSet<>()
         );
 
@@ -114,6 +116,7 @@ public class UserReturnerDTOTest {
             "This is a description.",
             new ArrayList<>(),
             new ArrayList<>(),
+            false,
             new HashSet<>()
         );
 

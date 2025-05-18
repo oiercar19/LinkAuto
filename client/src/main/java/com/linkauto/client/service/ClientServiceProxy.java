@@ -460,6 +460,20 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
         }
     }
 
+    public void verifyUser(String token, String username) {
+        String url = String.format("%s/api/user/%s/verify?userToken=%s", apiBaseUrl, username, token);
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 403 -> throw new RuntimeException("Forbidden: You do not have permission to verify this user");
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to verify user: " + e.getStatusText());
+            }
+        }
+    }
+
     @Override
     public void deleteReport(String token, String username) {
         String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", apiBaseUrl, username, token);
@@ -471,6 +485,18 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
                 case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
                 case 404 -> throw new RuntimeException("User not found");
                 default -> throw new RuntimeException("Failed to delete report: " + e.getStatusText());
+            }
+        }
+    }
+    public Boolean isUserVerified(String username) {
+        String url = String.format("%s/api/user/%s/verify", apiBaseUrl, username);
+        
+        try {
+            return restTemplate.getForObject(url, Boolean.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to check user verification: " + e.getStatusText());
             }
         }
     }

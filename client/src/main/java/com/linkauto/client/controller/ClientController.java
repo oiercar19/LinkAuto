@@ -2,8 +2,10 @@ package com.linkauto.client.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,11 +77,21 @@ public class ClientController {
         if (token != null) {
             List<Post> posts = new ArrayList<>(linkAutoServiceProxy.getFeed());
             Map<String, String> profilePictureByUsername = new HashMap<>();
+            Set<String> verifiedUsers = new HashSet<>();
             for (Post post : posts) {
                 String profilePicture = linkAutoServiceProxy.getUserByUsername(post.username()).profilePicture();
                 profilePictureByUsername.putIfAbsent(post.username(), profilePicture);
 
+                if (verifiedUsers.contains(post.username())) {
+                    continue;
+                }
+                Boolean isUserVerified = linkAutoServiceProxy.isUserVerified(post.username());
+                if (isUserVerified) {
+                    verifiedUsers.add(post.username());
+                }
             }
+            model.addAttribute("verifiedUsers", verifiedUsers); // Agregar usuarios verificados al modelo
+
 
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
 
@@ -109,8 +121,11 @@ public class ClientController {
             }
             model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
 
+            model.addAttribute("isVerified", user.isVerified()); // Agregar verificación al modelo
+
             List<Post> savedPosts = new ArrayList<>(linkAutoServiceProxy.getUserSavedPosts(username));
             model.addAttribute("savedPosts", savedPosts); // Agregar publicaciones guardadas al modelo
+
 
             return "feed"; // Vista para usuarios autenticados
         } else {
@@ -276,8 +291,18 @@ public class ClientController {
 
             // Filtrar usuarios que coincidan con el término de búsqueda (ignorando mayúsculas y minúsculas)
             List<User> matchingUsers = allUsers.stream()
-                    .filter(user -> user.username().toLowerCase().contains(username.toLowerCase()))
-                    .collect(Collectors.toList());
+
+                .filter(user -> user.username().toLowerCase().contains(username.toLowerCase()))
+                .collect(Collectors.toList());
+
+            Set <String> verifiedUsers = new HashSet<>();
+            for (User user : matchingUsers) {
+                Boolean isUserVerified = linkAutoServiceProxy.isUserVerified(user.username());
+                if (isUserVerified) {
+                    verifiedUsers.add(user.username());
+                }
+            }
+            model.addAttribute("verifiedUsers", verifiedUsers);
 
             model.addAttribute("searchTerm", username);
             model.addAttribute("users", matchingUsers);
@@ -401,18 +426,18 @@ public class ClientController {
         return "adminPanel"; // Vista del panel de administrador
     }
 
-    @PostMapping("/admin/deleteUser")
-    public String deleteUser(@RequestParam("username") String usernameToDelete, RedirectAttributes redirectAttributes) {
-        try {
-            System.out.println("Attempting to delete user: " + usernameToDelete); // Debug log
-            linkAutoServiceProxy.deleteUser(token, usernameToDelete);
-            redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToDelete + " eliminado con éxito.");
-        } catch (Exception e) {
-            System.err.println("Error deleting user: " + e.getMessage()); // Debug log
-            redirectAttributes.addFlashAttribute("error", "Error al eliminar el usuario: " + e.getMessage());
-        }
-        return "redirect:/adminPanel"; // Redirect back to the admin panel
-    }
+  @PostMapping("/admin/deleteUser")
+  public String deleteUser(@RequestParam("username") String usernameToDelete, RedirectAttributes redirectAttributes) {
+      try {
+          System.out.println("Attempting to delete user: " + usernameToDelete); // Debug log
+          linkAutoServiceProxy.deleteUser(token, usernameToDelete);
+          redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToDelete + " eliminado con éxito.");
+      } catch (Exception e) {
+          System.err.println("Error deleting user: " + e.getMessage()); // Debug log
+          redirectAttributes.addFlashAttribute("error", "Error al eliminar el usuario: " + e.getMessage());
+      }
+      return "redirect:/adminPanel"; // Redirect back to the admin panel
+  }
   
   @PostMapping("/admin/promoteToAdmin")
   public String promoteToAdmin(@RequestParam("username") String usernameToPromote, RedirectAttributes redirectAttributes) {
@@ -436,6 +461,17 @@ public class ClientController {
       }
       return "redirect:/adminPanel"; // Redirect back to the admin panel
   }
+
+  @PostMapping("/user/{username}/verify")
+    public String verifyUser(@PathVariable String username, RedirectAttributes redirectAttributes, String redirect) {
+        try {
+            linkAutoServiceProxy.verifyUser(token, username);
+            redirectAttributes.addFlashAttribute("success", "Usuario " + username + " verificado con éxito.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al verificar al usuario: " + e.getMessage());
+        }
+        return "redirect:" + redirect; // Redirect back to the admin panel
+    }
 
     @PostMapping("/user/{postId}/savePost")
     public String savePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
