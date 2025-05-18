@@ -29,6 +29,8 @@ import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
 import com.linkauto.client.data.User;
+import com.linkauto.client.data.Event;
+import com.linkauto.client.data.EventCreator;
 import com.linkauto.client.service.ClientServiceProxy;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -936,4 +938,286 @@ public class ClientControllerTest {
         
         assertEquals("post", result);
     }
+
+    @Test
+public void testGetAllEvents_WithValidToken() {
+    clientController.token = "validToken";
+    clientController.username = "testUser";
+    User user = new User("testUser", "USER", "Test User", "profilePic.jpg", "test@example.com", null, 0, "Male", "Location1", "password", "desc");
+    
+    List<Event> events = new ArrayList<>();
+    events.add(new Event(1L, "user1", "Event 1", "Description 1", "Location 1", 1715000000000L, 1715100000000L, new ArrayList<>(), new HashSet<>(), new ArrayList<>()));
+    events.add(new Event(2L, "user2", "Event 2", "Description 2", "Location 2", 1716000000000L, 1716100000000L, new ArrayList<>(), new HashSet<>(), new ArrayList<>()));
+    
+    when(linkAutoServiceProxy.getAllEvents()).thenReturn(events);
+    when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(user);
+    
+    String result = clientController.getAllEvents(model, redirectAttributes);
+    
+    verify(model).addAttribute("events", events);
+    verify(model).addAttribute("currentUser", user);
+    verify(model).addAttribute("username", "testUser");
+    verify(model).addAttribute("profilePicture", "profilePic.jpg");
+    verify(model).addAttribute("role", "USER");
+    
+    assertEquals("events", result);
+}
+
+@Test
+public void testGetAllEvents_WithInvalidToken() {
+    clientController.token = null;
+    
+    String result = clientController.getAllEvents(model, redirectAttributes);
+    
+    verify(redirectAttributes).addFlashAttribute("error", "Debes iniciar sesión para ver los eventos.");
+    assertEquals("redirect:/", result);
+}
+
+@Test
+public void testGetAllEvents_WithException() {
+    clientController.token = "validToken";
+    
+    when(linkAutoServiceProxy.getAllEvents()).thenThrow(new RuntimeException("Error getting events"));
+    
+    String result = clientController.getAllEvents(model, redirectAttributes);
+    
+    verify(redirectAttributes).addFlashAttribute("error", "Error al obtener los eventos: Error getting events");
+    assertEquals("redirect:/feed", result);
+}
+
+@Test
+public void testGetEventDetails_WithValidToken() {
+    clientController.token = "validToken";
+    clientController.username = "testUser";
+    
+    Long eventId = 1L;
+    Event event = new Event(eventId, "user1", "Event 1", "Description 1", "Location 1", 1715000000000L, 1715100000000L, new ArrayList<>(), new HashSet<>(), new ArrayList<>());
+    User user = new User("testUser", "USER", "Test User", "profilePic.jpg", "test@example.com", null, 0, "Male", "Location1", "password", "desc");
+    
+    when(linkAutoServiceProxy.getEventById(eventId)).thenReturn(event);
+    when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(user);
+    
+    String result = clientController.getEventDetails(eventId, model, redirectAttributes);
+    
+    verify(model).addAttribute("event", event);
+    verify(model).addAttribute("currentUser", user);
+    verify(model).addAttribute("username", "testUser");
+    verify(model).addAttribute("profilePicture", "profilePic.jpg");
+    verify(model).addAttribute("role", "USER");
+    
+    assertEquals("eventDetails", result);
+}
+
+@Test
+public void testGetEventDetails_WithInvalidToken() {
+    clientController.token = null;
+    
+    Long eventId = 1L;
+    
+    String result = clientController.getEventDetails(eventId, model, redirectAttributes);
+    
+    verify(redirectAttributes).addFlashAttribute("error", "Debes iniciar sesión para ver los detalles del evento.");
+    assertEquals("redirect:/", result);
+}
+
+@Test
+public void testGetEventDetails_WithException() {
+    clientController.token = "validToken";
+    
+    Long eventId = 1L;
+    
+    when(linkAutoServiceProxy.getEventById(eventId)).thenThrow(new RuntimeException("Error getting event details"));
+    
+    String result = clientController.getEventDetails(eventId, model, redirectAttributes);
+    
+    verify(redirectAttributes).addFlashAttribute("error", "Error al obtener los detalles del evento: Error getting event details");
+    assertEquals("redirect:/events", result);
+}
+
+@Test
+public void testShowCreateEventForm_WithValidToken() {
+    clientController.token = "validToken";
+    clientController.username = "testUser";
+    User user = new User("testUser", "USER", "Test User", "profilePic.jpg", "test@example.com", null, 0, "Male", "Location1", "password", "desc");
+    
+    when(linkAutoServiceProxy.getUserProfile("validToken")).thenReturn(user);
+    
+    String result = clientController.showCreateEventForm(model, redirectAttributes);
+    
+    verify(model).addAttribute("currentUser", user);
+    verify(model).addAttribute("username", "testUser");
+    verify(model).addAttribute("profilePicture", "profilePic.jpg");
+    verify(model).addAttribute("role", "USER");
+    
+    assertEquals("createEvent", result);
+}
+
+@Test
+public void testShowCreateEventForm_WithInvalidToken() {
+    clientController.token = null;
+    
+    String result = clientController.showCreateEventForm(model, redirectAttributes);
+    
+    verify(redirectAttributes).addFlashAttribute("error", "Debes iniciar sesión para crear un evento.");
+    assertEquals("redirect:/", result);
+}
+
+@Test
+public void testCreateEvent_Success() {
+    clientController.token = "validToken";
+    
+    EventCreator eventCreator = new EventCreator("Event Title", "Event Description", "Event Location", 1715000000000L, 1715100000000L, new ArrayList<>());
+    
+    doNothing().when(linkAutoServiceProxy).createEvent("validToken", eventCreator);
+    
+    String result = clientController.createEvent(eventCreator, redirectAttributes);
+    
+    verify(linkAutoServiceProxy).createEvent(clientController.token, eventCreator);
+    verify(redirectAttributes).addFlashAttribute("success", "Evento creado con éxito");
+    assertEquals("redirect:/events", result);
+}
+
+@Test
+public void testCreateEvent_WithInvalidToken() {
+    clientController.token = null;
+    
+    EventCreator eventCreator = new EventCreator("Event Title", "Event Description", "Event Location", 1715000000000L, 1715100000000L, new ArrayList<>());
+    
+    String result = clientController.createEvent(eventCreator, redirectAttributes);
+    
+    verify(redirectAttributes).addFlashAttribute("error", "Debes iniciar sesión para crear un evento.");
+    assertEquals("redirect:/", result);
+}
+
+@Test
+public void testCreateEvent_Error() {
+    clientController.token = "validToken";
+    
+    EventCreator eventCreator = new EventCreator("Event Title", "Event Description", "Event Location", 1715000000000L, 1715100000000L, new ArrayList<>());
+    
+    doThrow(new RuntimeException("Error creating event")).when(linkAutoServiceProxy).createEvent("validToken", eventCreator);
+    
+    String result = clientController.createEvent(eventCreator, redirectAttributes);
+    
+    verify(linkAutoServiceProxy).createEvent(clientController.token, eventCreator);
+    verify(redirectAttributes).addFlashAttribute("error", "Error al crear el evento: Error creating event");
+    assertEquals("redirect:/events", result);
+}
+
+@Test
+public void testDeleteEvent_Success() {
+    clientController.token = "validToken";
+    Long eventId = 1L;
+    
+    doNothing().when(linkAutoServiceProxy).deleteEvent("validToken", eventId);
+    
+    String result = clientController.deleteEvent(eventId, redirectAttributes);
+    
+    verify(linkAutoServiceProxy).deleteEvent(clientController.token, eventId);
+    verify(redirectAttributes).addFlashAttribute("success", "Evento eliminado con éxito.");
+    assertEquals("redirect:/events", result);
+}
+
+@Test
+public void testDeleteEvent_WithInvalidToken() {
+    clientController.token = null;
+    Long eventId = 1L;
+    
+    String result = clientController.deleteEvent(eventId, redirectAttributes);
+    
+    verify(redirectAttributes).addFlashAttribute("error", "Debes iniciar sesión para eliminar un evento.");
+    assertEquals("redirect:/", result);
+}
+
+@Test
+public void testDeleteEvent_Error() {
+    clientController.token = "validToken";
+    Long eventId = 1L;
+    
+    doThrow(new RuntimeException("Error deleting event")).when(linkAutoServiceProxy).deleteEvent("validToken", eventId);
+    
+    String result = clientController.deleteEvent(eventId, redirectAttributes);
+    
+    verify(linkAutoServiceProxy).deleteEvent(clientController.token, eventId);
+    verify(redirectAttributes).addFlashAttribute("error", "Error al eliminar el evento: Error deleting event");
+    assertEquals("redirect:/events", result);
+}
+
+@Test
+public void testParticipateInEvent_Success() {
+    clientController.token = "validToken";
+    Long eventId = 1L;
+    
+    doNothing().when(linkAutoServiceProxy).participateInEvent("validToken", eventId);
+    
+    String result = clientController.participateInEvent(eventId, redirectAttributes);
+    
+    verify(linkAutoServiceProxy).participateInEvent(clientController.token, eventId);
+    verify(redirectAttributes).addFlashAttribute("success", "Has confirmado tu participación en el evento.");
+    assertEquals("redirect:/events", result);
+}
+
+@Test
+public void testParticipateInEvent_WithInvalidToken() {
+    clientController.token = null;
+    Long eventId = 1L;
+    
+    String result = clientController.participateInEvent(eventId, redirectAttributes);
+    
+    verify(redirectAttributes).addFlashAttribute("error", "Debes iniciar sesión para participar en un evento.");
+    assertEquals("redirect:/", result);
+}
+
+@Test
+public void testParticipateInEvent_Error() {
+    clientController.token = "validToken";
+    Long eventId = 1L;
+    
+    doThrow(new RuntimeException("Error participating in event")).when(linkAutoServiceProxy).participateInEvent("validToken", eventId);
+    
+    String result = clientController.participateInEvent(eventId, redirectAttributes);
+    
+    verify(linkAutoServiceProxy).participateInEvent(clientController.token, eventId);
+    verify(redirectAttributes).addFlashAttribute("error", "Error al confirmar participación: Error participating in event");
+    assertEquals("redirect:/events", result);
+}
+
+@Test
+public void testCancelParticipation_Success() {
+    clientController.token = "validToken";
+    Long eventId = 1L;
+    
+    doNothing().when(linkAutoServiceProxy).cancelParticipation("validToken", eventId);
+    
+    String result = clientController.cancelParticipation(eventId, redirectAttributes);
+    
+    verify(linkAutoServiceProxy).cancelParticipation(clientController.token, eventId);
+    verify(redirectAttributes).addFlashAttribute("success", "Has cancelado tu participación en el evento.");
+    assertEquals("redirect:/events", result);
+}
+
+@Test
+public void testCancelParticipation_WithInvalidToken() {
+    clientController.token = null;
+    Long eventId = 1L;
+    
+    String result = clientController.cancelParticipation(eventId, redirectAttributes);
+    
+    verify(redirectAttributes).addFlashAttribute("error", "Debes iniciar sesión para cancelar tu participación en un evento.");
+    assertEquals("redirect:/", result);
+}
+
+@Test
+public void testCancelParticipation_Error() {
+    clientController.token = "validToken";
+    Long eventId = 1L;
+    
+    doThrow(new RuntimeException("Error canceling participation")).when(linkAutoServiceProxy).cancelParticipation("validToken", eventId);
+    
+    String result = clientController.cancelParticipation(eventId, redirectAttributes);
+    
+    verify(linkAutoServiceProxy).cancelParticipation(clientController.token, eventId);
+    verify(redirectAttributes).addFlashAttribute("error", "Error al cancelar participación: Error canceling participation");
+    assertEquals("redirect:/events", result);
+}
 }
