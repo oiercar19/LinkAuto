@@ -157,6 +157,10 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ad1136dc28eba56927db5b11f5f32c931"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a70ecd6f09232e5a27f8428466fc26c5b" id="r_a70ecd6f09232e5a27f8428466fc26c5b"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a70ecd6f09232e5a27f8428466fc26c5b">savePost</a> (@PathVariable Long postId, RedirectAttributes redirectAttributes)</td></tr>
 <tr class="separator:a70ecd6f09232e5a27f8428466fc26c5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62f89034bbdbef77fa6742a05a83ea37" id="r_a62f89034bbdbef77fa6742a05a83ea37"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a62f89034bbdbef77fa6742a05a83ea37">reportUser</a> (@PathVariable String <a class="el" href="classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#ab50125ec28a68b9cfb3f060b440512db">username</a>, @RequestParam(value=&quot;redirectUrl&quot;, required=false) String redirectUrl, RedirectAttributes redirectAttributes)</td></tr>
+<tr class="separator:a62f89034bbdbef77fa6742a05a83ea37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6838ffe1602cfa6619dc4a77597205f2" id="r_a6838ffe1602cfa6619dc4a77597205f2"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a6838ffe1602cfa6619dc4a77597205f2">deleteReport</a> (@PathVariable String <a class="el" href="classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#ab50125ec28a68b9cfb3f060b440512db">username</a>, @RequestParam(value=&quot;redirectUrl&quot;, required=false) String redirectUrl, RedirectAttributes redirectAttributes)</td></tr>
+<tr class="separator:a6838ffe1602cfa6619dc4a77597205f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cb04394f9dd4087a46dd8b621b6c7a9" id="r_a7cb04394f9dd4087a46dd8b621b6c7a9"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a7cb04394f9dd4087a46dd8b621b6c7a9">unsavePost</a> (@PathVariable Long postId, RedirectAttributes redirectAttributes)</td></tr>
 <tr class="separator:a7cb04394f9dd4087a46dd8b621b6c7a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad52affe05996c7cf5a5e80df570ea63f" id="r_ad52affe05996c7cf5a5e80df570ea63f"><td class="memItemLeft" align="right" valign="top">String&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#ad52affe05996c7cf5a5e80df570ea63f">savedPosts</a> (Model model)</td></tr>
@@ -247,7 +251,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00402">402</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00401">401</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
 
 </div>
 </div>
@@ -421,6 +425,50 @@ Public Attributes</h2></td></tr>
 
 </div>
 </div>
+<a id="a6838ffe1602cfa6619dc4a77597205f2" name="a6838ffe1602cfa6619dc4a77597205f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6838ffe1602cfa6619dc4a77597205f2">&#9670;&#160;</a></span>deleteReport()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">String com.linkauto.client.controller.ClientController.deleteReport </td>
+          <td>(</td>
+          <td class="paramtype">@PathVariable String&#160;</td>
+          <td class="paramname"><em>username</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">@RequestParam(value=&quot;redirectUrl&quot;, required=false) String&#160;</td>
+          <td class="paramname"><em>redirectUrl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RedirectAttributes&#160;</td>
+          <td class="paramname"><em>redirectAttributes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00501">501</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
+
+</div>
+</div>
 <a id="a073d6a33dd57ca271ab409f2e2b8086b" name="a073d6a33dd57ca271ab409f2e2b8086b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a073d6a33dd57ca271ab409f2e2b8086b">&#9670;&#160;</a></span>deleteUser()</h2>
 
@@ -455,7 +503,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00431">431</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00430">430</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
 
 </div>
 </div>
@@ -493,7 +541,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00456">456</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00455">455</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
 
 </div>
 </div>
@@ -784,7 +832,51 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00444">444</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00443">443</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
+
+</div>
+</div>
+<a id="a62f89034bbdbef77fa6742a05a83ea37" name="a62f89034bbdbef77fa6742a05a83ea37"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a62f89034bbdbef77fa6742a05a83ea37">&#9670;&#160;</a></span>reportUser()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">String com.linkauto.client.controller.ClientController.reportUser </td>
+          <td>(</td>
+          <td class="paramtype">@PathVariable String&#160;</td>
+          <td class="paramname"><em>username</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">@RequestParam(value=&quot;redirectUrl&quot;, required=false) String&#160;</td>
+          <td class="paramname"><em>redirectUrl</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">RedirectAttributes&#160;</td>
+          <td class="paramname"><em>redirectAttributes</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00489">489</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
 
 </div>
 </div>
@@ -812,7 +904,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00502">502</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00525">525</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
 
 </div>
 </div>
@@ -850,7 +942,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00478">478</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00477">477</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
 
 </div>
 </div>
@@ -1118,7 +1210,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00490">490</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00513">513</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
 
 </div>
 </div>
@@ -1238,7 +1330,7 @@ Public Attributes</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00467">467</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="ClientController_8java_source.html#l00466">466</a> of file <a class="el" href="ClientController_8java_source.html">ClientController.java</a>.</p>
 
 </div>
 </div>

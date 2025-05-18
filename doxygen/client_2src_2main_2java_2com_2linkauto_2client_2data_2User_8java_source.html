@@ -101,26 +101,28 @@ $(document).ready(function(){initNavTree('client_2src_2main_2java_2com_2linkauto
 <a href="client_2src_2main_2java_2com_2linkauto_2client_2data_2User_8java.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="keyword">package </span>com.linkauto.client.data;</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> java.util.List;</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="foldopen" id="foldopen00005" data-start="{" data-end="}">
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="namespacecom_1_1linkauto_1_1client_1_1data.html#abdb2a8ea0a830f5c795cc38e892852de">    5</a></span><span class="keyword">public</span> record <a class="code hl_function" href="namespacecom_1_1linkauto_1_1client_1_1data.html#abdb2a8ea0a830f5c795cc38e892852de">User</a>(</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>    String username,</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    String role,</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    String name,</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    String profilePicture,</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    String email,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    List&lt;String&gt; cars,</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <span class="keywordtype">long</span> birthDate,</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    String gender,</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    String location,</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    String password,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    String description,</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    Boolean isVerified</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>) {}</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> java.util.Set;</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="foldopen" id="foldopen00006" data-start="{" data-end="}">
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="namespacecom_1_1linkauto_1_1client_1_1data.html#ac0fee2084783ed264717e048dcc3cb71">    6</a></span><span class="keyword">public</span> record <a class="code hl_function" href="namespacecom_1_1linkauto_1_1client_1_1data.html#ac0fee2084783ed264717e048dcc3cb71">User</a>(</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    String username,</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>    String role,</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    String name,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    String profilePicture,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    String email,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    List&lt;String&gt; cars,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordtype">long</span> birthDate,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    String gender,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    String location,</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    String password,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    String description,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    Set&lt;User&gt; reporters,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    Boolean isVerified</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>) {}</div>
 </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="ttc" id="anamespacecom_1_1linkauto_1_1client_1_1data_html_abdb2a8ea0a830f5c795cc38e892852de"><div class="ttname"><a href="namespacecom_1_1linkauto_1_1client_1_1data.html#abdb2a8ea0a830f5c795cc38e892852de">com.linkauto.client.data.User</a></div><div class="ttdeci">record User(String username, String role, String name, String profilePicture, String email, List&lt; String &gt; cars, long birthDate, String gender, String location, String password, String description, Boolean isVerified)</div><div class="ttdef"><b>Definition</b> <a href="client_2src_2main_2java_2com_2linkauto_2client_2data_2User_8java_source.html#l00005">User.java:5</a></div></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="ttc" id="anamespacecom_1_1linkauto_1_1client_1_1data_html_ac0fee2084783ed264717e048dcc3cb71"><div class="ttname"><a href="namespacecom_1_1linkauto_1_1client_1_1data.html#ac0fee2084783ed264717e048dcc3cb71">com.linkauto.client.data.User</a></div><div class="ttdeci">record User(String username, String role, String name, String profilePicture, String email, List&lt; String &gt; cars, long birthDate, String gender, String location, String password, String description, Set&lt; User &gt; reporters, Boolean isVerified)</div><div class="ttdef"><b>Definition</b> <a href="client_2src_2main_2java_2com_2linkauto_2client_2data_2User_8java_source.html#l00006">User.java:6</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
