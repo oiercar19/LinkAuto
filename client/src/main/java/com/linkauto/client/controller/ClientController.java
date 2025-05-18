@@ -449,7 +449,7 @@ public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
         List<Event> events = linkAutoServiceProxy.getAllEvents();
         model.addAttribute("events", events);
         for (Event event : events) {
-            System.out.println("Evento" + event.username()); // Agregar foto de perfil al modelo
+            System.out.println("Evento" + event.username());
         }
         
         // Añadir datos del usuario actual

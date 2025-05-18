@@ -7,26 +7,26 @@ import java.util.List;
  */
 public class EventReturnerDTO {
     private Long id;
+    private String username;
     private String title;
     private String description;
     private String location;
     private long date;
-    private String organizer;
     private List<String> participants;
     private String image;
 
     public EventReturnerDTO() {
     }
 
-    public EventReturnerDTO(Long id, String title, String description, String location,
-                         long date, String organizer, List<String> participants,
+    public EventReturnerDTO(Long id, String username, String title, String description, String location,
+                         long date, List<String> participants,
                          String image) {
         this.id = id;
+        this.username = username;
         this.title = title;
         this.description = description;
         this.location = location;
         this.date = date;
-        this.organizer = organizer;
         this.participants = participants;
         this.image = image;
     }
@@ -72,11 +72,11 @@ public class EventReturnerDTO {
     }
 
     public String getOrganizer() {
-        return organizer;
+        return username;
     }
 
-    public void setOrganizer(String organizer) {
-        this.organizer = organizer;
+    public void setOrganizer(String username) {
+        this.username = username;
     }
 
     public List<String> getParticipants() {
@@ -103,7 +103,7 @@ public class EventReturnerDTO {
                 ", description='" + description + '\'' +
                 ", location='" + location + '\'' +
                 ", date=" + date +
-                ", organizer='" + organizer + '\'' +
+                ", organizer='" + username + '\'' +
                 ", participants=" + participants +
                 ", image='" + image + '\'' +
                 '}';

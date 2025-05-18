@@ -563,13 +563,13 @@ public ResponseEntity<Set<UserReturnerDTO>> getEventParticipants(
     
     return new EventReturnerDTO(
         event.getId(),
+        event.getCreador().getUsername(),
         event.getTitulo(),
         event.getDescripcion(),
         event.getUbicacion(),
         event.getFechaInicio(),
-        event.getCreador().getUsername(),
-        participantUsernames,  // Pass the list of usernames
-        firstImageUrl  // Pass only the first image URL
+        participantUsernames,
+        firstImageUrl
     );
 }
 }
