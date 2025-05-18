@@ -51,18 +51,30 @@ public class ClientController {
 
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, RedirectAttributes redirectAttributes, Model model) {
-        try {
-            Credentials credentials = new Credentials(username, password);
-            token = linkAutoServiceProxy.login(credentials);
-            this.username = linkAutoServiceProxy.getUserProfile(token).username();
-            return "redirect:/feed";
+    try {
+        // Crear credenciales y obtener el token
+        Credentials credentials = new Credentials(username, password);
+        token = linkAutoServiceProxy.login(credentials);
 
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Credenciales incorrectas");
-            return "redirect:/";
+        // Obtener el perfil del usuario
+        User user = linkAutoServiceProxy.getUserProfile(token);
+
+        // Verificar si el usuario está baneado
+        if (user.banned()) {
+            redirectAttributes.addFlashAttribute("error", "Tu cuenta está baneada. No puedes acceder a la plataforma.");
+            return "banned"; // Redirigir a la página de usuario baneado
         }
-    }
 
+        // Si no está baneado, guardar el username y redirigir al feed
+        this.username = user.username();
+        return "redirect:/feed";
+
+    } catch (Exception e) {
+        redirectAttributes.addFlashAttribute("error", "Credenciales incorrectas o error al iniciar sesión.");
+        return "redirect:/";
+    }
+}
+    
     @GetMapping("/logout")
     public String logout(RedirectAttributes redirectAttributes) {
         linkAutoServiceProxy.logout(token);
@@ -438,6 +450,28 @@ public class ClientController {
       }
       return "redirect:/adminPanel"; // Redirect back to the admin panel
   }
+
+  @PostMapping("/admin/banUser")
+    public String banUser(
+        @RequestParam("username") String usernameToBan,
+        @RequestParam("banStatus") boolean banStatus,
+        RedirectAttributes redirectAttributes,
+        Model model) {
+    try {
+        System.out.println("Attempting to update ban status for user: " + usernameToBan); // Debug log
+        System.out.println("\n\n\n\n\nBAN STATUS: " + banStatus + "\n\n\n\n\n"); // Debug log
+        linkAutoServiceProxy.banUser(token, usernameToBan, banStatus);
+        String action = banStatus ? "baneado" : "desbaneado";
+        redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToBan + " " + action + " con éxito.");
+    } catch (Exception e) {
+        System.err.println("Error updating ban status for user: " + e.getMessage()); // Debug log
+        redirectAttributes.addFlashAttribute("error", "Error al actualizar el estado de baneo del usuario: " + e.getMessage());
+    }
+    // Actualizar la lista de usuarios
+    List<User> users = linkAutoServiceProxy.getAllUsers();
+    model.addAttribute("users", users);
+    return "redirect:/adminPanel"; // Redirect back to the admin panel
+}
   
   @PostMapping("/admin/promoteToAdmin")
   public String promoteToAdmin(@RequestParam("username") String usernameToPromote, RedirectAttributes redirectAttributes) {

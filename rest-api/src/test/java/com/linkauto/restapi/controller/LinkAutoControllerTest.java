@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -393,7 +395,7 @@ public class LinkAutoControllerTest {
     @Test
     public void testUpdateUser() {
         String userToken = "validToken";
-        UserDTO userDto = new UserDTO("updatedName", "USER", "avatar.jpg" ,"updatedEmail", 
+        UserDTO userDto = new UserDTO("updatedName", "USER", false , "avatar.jpg" ,"updatedEmail", 
                                     new ArrayList<>(), 123456L, "male", "updatedLocation",
                                     "updatedPassword", "updatedDescription");
         
@@ -413,7 +415,7 @@ public class LinkAutoControllerTest {
         assertEquals("updatedName", validResponse.getBody().getName());
         
         // Case 3: Regular user trying to update role
-        UserDTO roleSwitchDto = new UserDTO("name", "ADMIN", "pic", "email", 
+        UserDTO roleSwitchDto = new UserDTO("name", "ADMIN", false , "pic", "email", 
                                         new ArrayList<>(), 123456L, "male", "location",
                                         "password", "description");
         
@@ -636,6 +638,152 @@ public class LinkAutoControllerTest {
         assertEquals(2, response.getBody().size());
         assertEquals(1L, response.getBody().get(0).getId());
         assertEquals(2L, response.getBody().get(1).getId());
+    }
+
+    @Test
+    public void testBanUser_Success() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+        String userToken = "validToken";
+    
+        // Crear usuarios de prueba
+        User adminUser = new User("admin", "Admin Name", "adminPic", "adminEmail",
+                new ArrayList<>(), 123456L, User.Gender.MALE, "adminLocation", "adminPassword",
+                "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        adminUser.setRole(Role.ADMIN);
+    
+        User targetUser = new User(username, "Target Name", "targetPic", "targetEmail",
+                new ArrayList<>(), 123456L, User.Gender.FEMALE, "targetLocation", "targetPassword",
+                "targetDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+    
+        // Mock del servicio
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(adminUser);
+        when(authService.getUserByUsername(username)).thenReturn(targetUser);
+        when(authService.banUser(username, banStatus)).thenReturn(true);
+    
+        // Llamar al método del controlador
+        ResponseEntity<Void> response = linkAutoController.banUser(username, banStatus, userToken);
+    
+        // Verificar el resultado
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService).getUserByToken(userToken);
+        verify(authService).getUserByUsername(username);
+        verify(authService).banUser(username, banStatus);
+    }
+    
+    @Test
+    public void testBanUser_Unauthorized() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+        String userToken = "invalidToken";
+    
+        // Mock del servicio
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+    
+        // Llamar al método del controlador
+        ResponseEntity<Void> response = linkAutoController.banUser(username, banStatus, userToken);
+    
+        // Verificar el resultado
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService, never()).getUserByToken(anyString());
+        verify(authService, never()).getUserByUsername(anyString());
+        verify(authService, never()).banUser(anyString(), anyBoolean());
+    }
+    
+    @Test
+    public void testBanUser_Forbidden() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+        String userToken = "validToken";
+    
+        // Crear un usuario no administrador
+        User nonAdminUser = new User("nonAdmin", "Non Admin Name", "nonAdminPic", "nonAdminEmail",
+                new ArrayList<>(), 123456L, User.Gender.MALE, "nonAdminLocation", "nonAdminPassword",
+                "nonAdminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        nonAdminUser.setRole(Role.USER);
+    
+        // Mock del servicio
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(nonAdminUser);
+    
+        // Llamar al método del controlador
+        ResponseEntity<Void> response = linkAutoController.banUser(username, banStatus, userToken);
+    
+        // Verificar el resultado
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService).getUserByToken(userToken);
+        verify(authService, never()).getUserByUsername(anyString());
+        verify(authService, never()).banUser(anyString(), anyBoolean());
+    }
+    
+    @Test
+    public void testBanUser_UserNotFound() {
+        // Datos de prueba
+        String username = "nonExistentUser";
+        boolean banStatus = true;
+        String userToken = "validToken";
+    
+        // Crear un usuario administrador
+        User adminUser = new User("admin", "Admin Name", "adminPic", "adminEmail",
+                new ArrayList<>(), 123456L, User.Gender.MALE, "adminLocation", "adminPassword",
+                "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        adminUser.setRole(Role.ADMIN);
+    
+        // Mock del servicio
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(adminUser);
+        when(authService.getUserByUsername(username)).thenReturn(null);
+    
+        // Llamar al método del controlador
+        ResponseEntity<Void> response = linkAutoController.banUser(username, banStatus, userToken);
+    
+        // Verificar el resultado
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService).getUserByToken(userToken);
+        verify(authService).getUserByUsername(username);
+        verify(authService, never()).banUser(anyString(), anyBoolean());
+    }
+    
+    @Test
+    public void testBanUser_InternalServerError() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+        String userToken = "validToken";
+    
+        // Crear usuarios de prueba
+        User adminUser = new User("admin", "Admin Name", "adminPic", "adminEmail",
+                new ArrayList<>(), 123456L, User.Gender.MALE, "adminLocation", "adminPassword",
+                "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        adminUser.setRole(Role.ADMIN);
+    
+        User targetUser = new User(username, "Target Name", "targetPic", "targetEmail",
+                new ArrayList<>(), 123456L, User.Gender.FEMALE, "targetLocation", "targetPassword",
+                "targetDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+    
+        // Mock del servicio
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(adminUser);
+        when(authService.getUserByUsername(username)).thenReturn(targetUser);
+        when(authService.banUser(username, banStatus)).thenReturn(false);
+    
+        // Llamar al método del controlador
+        ResponseEntity<Void> response = linkAutoController.banUser(username, banStatus, userToken);
+    
+        // Verificar el resultado
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService).getUserByToken(userToken);
+        verify(authService).getUserByUsername(username);
+        verify(authService).banUser(username, banStatus);
     }
     
     @Test

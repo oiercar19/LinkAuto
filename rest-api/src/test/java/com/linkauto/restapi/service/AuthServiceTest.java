@@ -188,6 +188,73 @@ public class AuthServiceTest {
         assertFalse(authService.isTokenValid(tokenAdmin)); 
 }
 
+@Test
+    public void testBanUser_Success() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+
+        // Crear un usuario de prueba
+        User user = new User();
+        user.setUsername(username);
+        user.setBanned(false);
+
+        // Mock del repositorio
+        when(userRepository.findById(username)).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        // Llamar al método
+        boolean result = authService.banUser(username, banStatus);
+
+        // Verificar el resultado
+        assertTrue(result);
+        assertTrue(user.isBanned());
+        verify(userRepository).findById(username);
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    public void testBanUser_UserNotFound() {
+        // Datos de prueba
+        String username = "nonExistentUser";
+        boolean banStatus = true;
+
+        // Mock del repositorio
+        when(userRepository.findById(username)).thenReturn(Optional.empty());
+
+        // Llamar al método
+        boolean result = authService.banUser(username, banStatus);
+
+        // Verificar el resultado
+        assertFalse(result);
+        verify(userRepository).findById(username);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    public void testBanUser_ErrorWhileSaving() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+
+        // Crear un usuario de prueba
+        User user = new User();
+        user.setUsername(username);
+        user.setBanned(false);
+
+        // Mock del repositorio
+        when(userRepository.findById(username)).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenThrow(new RuntimeException("Error al guardar el usuario"));
+
+        // Llamar al método
+        boolean result = authService.banUser(username, banStatus);
+
+        // Verificar el resultado
+        assertFalse(result);
+        verify(userRepository).findById(username);
+        verify(userRepository).save(user); // Verificar que se intentó guardar el usuario
+    }
+
     @Test
     public void testChangeRole() {
         when(userRepository.save(user)).thenReturn(user);

@@ -8,6 +8,7 @@ import java.util.Set;
 public class UserReturnerDTO {
     private String username;
     private String role;
+    private boolean banned;
     private String name;
     private String profilePicture;
     private String email;
@@ -17,15 +18,17 @@ public class UserReturnerDTO {
     private String location;
     private String password;
     private String description;
+
     private List<PostReturnerDTO> posts;
     private Boolean isVerified;
     private List<PostReturnerDTO> savedPost;
     private Set<UserReturnerDTO> reporters;
 
-    // Constructor
-    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts, List<PostReturnerDTO> savedPost, Boolean isVerified, Set<UserReturnerDTO> reporters) {
+    // Constructo
+    public UserReturnerDTO(String username, String role , boolean isBanned, String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts, List<PostReturnerDTO> savedPost, Boolean isVerified, Set<UserReturnerDTO> reporters) {
         this.username = username;
         this.role = role;
+        this.banned = isBanned;
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
@@ -138,6 +141,14 @@ public class UserReturnerDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isBanned() {
+        return banned;
+    }
+
+    public void setBanned(boolean isBanned) {
+        this.banned = isBanned;
     }
 
     public List<PostReturnerDTO> getPosts(){

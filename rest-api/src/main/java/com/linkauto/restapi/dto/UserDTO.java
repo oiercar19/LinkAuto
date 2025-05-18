@@ -5,6 +5,7 @@ import java.util.List;
 public class UserDTO {
     private String name;
     private String role;
+    private boolean isBanned;
     private String profilePicture;
     private String email;
     private List<String> cars;
@@ -13,11 +14,13 @@ public class UserDTO {
     private String location;
     private String password;
     private String description;
+  
 
     // Constructor
-    public UserDTO(String name, String role , String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description) {
+    public UserDTO(String name, String role , boolean isBanned , String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description) {
         this.name = name;
         this.role = role;
+        this.isBanned = isBanned;
         this.profilePicture = profilePicture;
         this.email = email;
         this.cars = cars;
@@ -108,5 +111,13 @@ public class UserDTO {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isBanned() {
+        return isBanned;
+    }
+
+    public void setBanned(boolean isBanned) {
+        this.isBanned = isBanned;
     }
 }

@@ -59,9 +59,39 @@ public class UserTest {
         assertEquals("Loc", user.getLocation());
         assertEquals("pwd", user.getPassword());
         assertEquals("Desc", user.getDescription());
+        assertFalse(user.isBanned());
+
+        user.setUsername("user2");
+        user.setRole(Role.ADMIN);
+        user.setName("Alejandro Garcia");
+        user.setProfilePicture("newpic.jpg");
+        user.setEmail("garcia@ejempo.com");
+        List<String> newCars = Arrays.asList("Audi");
+        user.setCars(newCars);
+        long newBirthDate = 123456789L;
+        user.setBirthDate(newBirthDate);
+        user.setGender(User.Gender.FEMALE);
+        user.setLocation("LA");
+        user.setPassword("newpass");
+        user.setDescription("New Desc");
+        user.setBanned(true);
+
+        assertEquals("user2", user.getUsername());
+        assertEquals(Role.ADMIN, user.getRole());
+        assertEquals("Alejandro Garcia", user.getName());
+        assertEquals("newpic.jpg", user.getProfilePicture());
+        assertEquals("garcia@ejempo.com", user.getEmail());
+        assertEquals(newCars, user.getCars());
+        assertEquals(newBirthDate, user.getBirthDate());
+        assertEquals(User.Gender.FEMALE, user.getGender());
+        assertEquals("LA", user.getLocation());
+        assertEquals("newpass", user.getPassword());
+        assertEquals("New Desc", user.getDescription());
+        assertTrue(user.isBanned());
         assertSame(user.getPosts(), user.getPosts());
         assertSame(user.getFollowers(), user.getFollowers());
         assertSame(user.getFollowing(), user.getFollowing());
+
     }
 
     @Test
@@ -216,7 +246,7 @@ public class UserTest {
             new ArrayList<>(),
             new HashSet<>()
         );
-        String expected = "User [username=u1, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[], savedPost=[]]";
+        String expected = "User [username=u1, banned=false, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[], savedPost=[]]";
         assertEquals(expected, u.toString());
     }
 

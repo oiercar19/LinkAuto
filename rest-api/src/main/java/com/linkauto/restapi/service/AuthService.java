@@ -203,4 +203,25 @@ public class AuthService {
             return false;
         }
     }
+
+    public boolean banUser(String username, boolean banStatus) {
+        try {
+
+            System.out.println("\n\n\n\nBan request received for username: " + username + ", banStatus: " + banStatus + "\\n" + //
+                        "\n" + //
+                        "\n" + //
+                        "\n");
+            User user = userRepository.findById(username).orElse(null);
+            if (user == null) {
+                return false; // Usuario no encontrado
+            }
+            user.setBanned(banStatus);
+            userRepository.save(user);
+            return true; // Usuario actualizado correctamente
+        } catch (Exception e) {
+            System.out.println("Error al actualizar el estado de baneo del usuario: " + e.getMessage());
+            e.printStackTrace();
+            return false; // Error al actualizar el usuario
+        }
+    }
 }

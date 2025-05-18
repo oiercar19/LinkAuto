@@ -6,6 +6,7 @@ import java.util.Set;
 public record User(
     String username,
     String role,
+    boolean banned,
     String name,
     String profilePicture,
     String email,
