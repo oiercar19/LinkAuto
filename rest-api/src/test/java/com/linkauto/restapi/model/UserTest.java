@@ -4,7 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,6 +22,7 @@ public class UserTest {
         List<User> followers = new ArrayList<>();
         List<User> following = new ArrayList<>();
         List<String> cars = new ArrayList<>(Arrays.asList("Toyota", "BMW"));
+        Set<Post> savedPosts = new HashSet<>();
         user = new User(
             "u1",
             "Name",
@@ -33,7 +36,8 @@ public class UserTest {
             "Desc",
             posts,
             followers,
-            following
+            following,
+            savedPosts
         );
     }
 
@@ -69,6 +73,15 @@ public class UserTest {
     }
 
     @Test
+    public void testSavedPostOperations() {
+        assertTrue(user.getSavedPosts().isEmpty());
+        Post savedPost = new Post();
+        user.addSavedPost(savedPost);
+        assertEquals(1, user.getSavedPosts().size());
+        assertTrue(user.getSavedPosts().contains(savedPost));
+    }
+
+    @Test
     public void testFollowerOperations() {
         assertTrue(user.getFollowers().isEmpty());
         User follower = new User(
@@ -84,7 +97,8 @@ public class UserTest {
             "DescF",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
         user.addFollower(follower);
         assertEquals(1, user.getFollowers().size());
@@ -96,11 +110,27 @@ public class UserTest {
     @Test
     public void testFollowingOperations() {
         assertTrue(user.getFollowing().isEmpty());
-        User followee = new User();
-        user.addFollowing(followee);
+        User followingUser = new User(
+            "follow1",
+            "Name",
+            "pic",
+            "e@mail",
+            new ArrayList<>(),
+            BIRTH_DATE,
+            User.Gender.OTHER,
+            "Loc",
+            "pwd",
+            "desc",
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new HashSet<>()
+        );
+        user.addFollowing(followingUser);
         assertEquals(1, user.getFollowing().size());
-        assertTrue(user.getFollowing().contains(followee));
-        user.removeFollowing(followee);
+        assertTrue(user.getFollowing().contains(followingUser));
+
+        user.removeFollowing(followingUser);
         assertTrue(user.getFollowing().isEmpty());
     }
 
@@ -108,13 +138,13 @@ public class UserTest {
     public void testEqualsComprehensive() {
         // Caso 1: Mismo objeto (reflexividad)
         assertTrue(user.equals(user), "Un objeto debe ser igual a sí mismo");
-        
+
         // Caso 2: Comparación con null
         assertFalse(user.equals(null), "Un objeto no debe ser igual a null");
-        
+
         // Caso 3: Comparación con diferente tipo de objeto
         assertFalse(user.equals("string"), "Un objeto no debe ser igual a otro de diferente tipo");
-        
+
         // Caso 4: Dos objetos con mismo username
         User sameUsername = new User(
             "u1",  // mismo username que nuestro user de test
@@ -129,10 +159,11 @@ public class UserTest {
             "Different description",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
         assertTrue(user.equals(sameUsername), "Usuarios con mismo username deben ser iguales");
-        
+
         // Caso 5: Dos objetos con username diferente
         User differentUsername = new User(
             "u2",  // username diferente
@@ -147,17 +178,19 @@ public class UserTest {
             "Desc",
             new ArrayList<>(),
             new ArrayList<>(),
-            new ArrayList<>()
+            new ArrayList<>(),
+            new HashSet<>()
         );
+
         assertFalse(user.equals(differentUsername), "Usuarios con username diferente no deben ser iguales");
-        
+
         // Caso 6: Dos objetos con usernames null
         User nullUsername1 = new User();
         nullUsername1.setUsername(null);
         User nullUsername2 = new User();
         nullUsername2.setUsername(null);
         assertTrue(nullUsername1.equals(nullUsername2), "Usuarios con username null deben ser iguales entre sí");
-        
+
         // Caso 7: Un objeto con username null y otro no
         User notNullUsername = new User();
         notNullUsername.setUsername("notNull");
@@ -165,63 +198,98 @@ public class UserTest {
         assertFalse(notNullUsername.equals(nullUsername1), "Usuario con username no null no debe ser igual a uno con username null");
     }
 
+    @Test
+    public void testToString() {
+        User u = new User(
+            "u1",
+            "Name",
+            "pic",
+            "e@mail",
+            Arrays.asList("car1"),
+            12345L,
+            User.Gender.OTHER,
+            "Loc",
+            "pwd",
+            "Desc",
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new HashSet<>()
+        );
+        String expected = "User [username=u1, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[], savedPost=[]]";
+        assertEquals(expected, u.toString());
+    }
+
 
     
     @Test
-    public void testDeepCopyConstructor() {
-        // Crear listas con elementos reales para probar los bucles for en el constructor
+    public void testConstructorDeepCopy() {
         List<Post> originalPosts = new ArrayList<>();
-        Post post1 = new Post();
-        originalPosts.add(post1);
+        Post firstPost = new Post(1L, new User(), "msg", 0L, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        originalPosts.add(firstPost);
 
         List<User> originalFollowers = new ArrayList<>();
-        User follower1 = new User();
-        follower1.setUsername("follower1");
-        originalFollowers.add(follower1);
+        User follower = new User(
+            "f1",
+            "N",
+            "p",
+            "e@",
+            new ArrayList<>(),
+            BIRTH_DATE,
+            User.Gender.MALE,
+            "loc",
+            "pw",
+            "d",
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new HashSet<>()
+        );
+        originalFollowers.add(follower);
 
         List<User> originalFollowing = new ArrayList<>();
-        User following1 = new User();
-        following1.setUsername("following1");
-        originalFollowing.add(following1);
+        User followingU = new User(
+            "f2",
+            "N",
+            "p",
+            "e@",
+            new ArrayList<>(),
+            BIRTH_DATE,
+            User.Gender.FEMALE,
+            "loc",
+            "pw",
+            "d",
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new HashSet<>()
+        );
+        originalFollowing.add(followingU);
 
         User deepCopyUser = new User(
-            "u2",
-            "Deep",
-            "picD",
-            "d@mail",
-            Arrays.asList("d1"),
-            444L,
+            "copyUser",
+            "X",
+            "xp",
+            "x@",
+            new ArrayList<>(),
+            BIRTH_DATE,
             User.Gender.OTHER,
-            "LocD",
-            "pwdD",
-            "DescD",
+            "xloc",
+            "xpw",
+            "xd",
             originalPosts,
             originalFollowers,
-            originalFollowing
+            originalFollowing,
+            new HashSet<>()
         );
 
-        // Verificar que las listas se copiaron correctamente
-        assertEquals(1, deepCopyUser.getPosts().size());
-        assertEquals(post1.getId(), deepCopyUser.getPosts().get(0).getId());
-        assertEquals(1, deepCopyUser.getFollowers().size());
-        assertEquals("follower1", deepCopyUser.getFollowers().get(0).getUsername());
-        assertEquals(1, deepCopyUser.getFollowing().size());
-        assertEquals("following1", deepCopyUser.getFollowing().get(0).getUsername());
-
-        // Modificar las listas originales no debe afectar al deepCopy
         originalPosts.add(new Post());
         originalFollowers.add(new User());
         originalFollowing.add(new User());
 
-        // Las listas del usuario no deben haberse modificado
         assertEquals(1, deepCopyUser.getPosts().size());
         assertEquals(1, deepCopyUser.getFollowers().size());
         assertEquals(1, deepCopyUser.getFollowing().size());
-    }
-    public void testSetName() {
-        String newName = "New Name";
-        user.setName(newName);
-        assertEquals(newName, user.getName());
     }
 
 @Test

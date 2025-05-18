@@ -269,6 +269,26 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
+    public List<Post> getUserSavedPosts(String username) {
+        String url = String.format("%s/api/user/%s/savedPosts", apiBaseUrl, username);
+        
+        try {
+            ResponseEntity<List<Post>> response = restTemplate.exchange(
+                url,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<List<Post>>() {}
+            );
+            return response.getBody();
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 404 -> throw new RuntimeException("User not found");
+                default -> throw new RuntimeException("Failed to get user saved posts: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
     public List<Comment> getCommentsByPostId(long postId) {
         String url = String.format("%s/api/post/%d/comments", apiBaseUrl, postId);
         
@@ -424,10 +444,11 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
             }
         }
     }
+
     @Override
     public void reportUser(String token, String username) {
         String url = String.format("%s/api/user/%s/report?userToken=%s", apiBaseUrl, username, token);
-        
+
         try {
             restTemplate.postForObject(url, null, Void.class);
         } catch (HttpStatusCodeException e) {
@@ -442,7 +463,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     @Override
     public void deleteReport(String token, String username) {
         String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", apiBaseUrl, username, token);
-        
+
         try {
             restTemplate.delete(url);
         } catch (HttpStatusCodeException e) {
@@ -450,6 +471,34 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
                 case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
                 case 404 -> throw new RuntimeException("User not found");
                 default -> throw new RuntimeException("Failed to delete report: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void savePost(String token, Long postId) {
+        String url = String.format("%s/api/post/%d/save?userToken=%s", apiBaseUrl, postId, token);
+        try {
+            restTemplate.postForObject(url, null, Void.class);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("Post not found");
+                default -> throw new RuntimeException("Failed to save post: " + e.getStatusText());
+            }
+        }
+    }
+
+    @Override
+    public void unsavePost(String token, Long postId) {
+        String url = String.format("%s/api/post/%d/unsave?userToken=%s", apiBaseUrl, postId, token);        
+        try {
+            restTemplate.delete(url);
+        } catch (HttpStatusCodeException e) {
+            switch (e.getStatusCode().value()) {
+                case 401 -> throw new RuntimeException("Unauthorized: Invalid token");
+                case 404 -> throw new RuntimeException("Post not found");
+                default -> throw new RuntimeException("Failed to unsave post: " + e.getStatusText());
             }
         }
     }

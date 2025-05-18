@@ -18,10 +18,11 @@ public class UserReturnerDTO {
     private String password;
     private String description;
     private List<PostReturnerDTO> posts;
+    private List<PostReturnerDTO> savedPost;
     private Set<UserReturnerDTO> reporters;
 
     // Constructor
-    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts, Set<UserReturnerDTO> reporters) {
+    public UserReturnerDTO(String username, String role , String name, String profilePicture, String email, List<String> cars, long birthDate, String gender, String location, String password, String description, List<PostReturnerDTO> posts, List<PostReturnerDTO> savedPost, Set<UserReturnerDTO> reporters) {
         this.username = username;
         this.role = role;
         this.name = name;
@@ -40,6 +41,10 @@ public class UserReturnerDTO {
         this.reporters = new HashSet<>();
         for (UserReturnerDTO reporter : reporters) {
             this.reporters.add(reporter);
+        }
+        this.savedPost = new ArrayList<>();
+        for (PostReturnerDTO post : savedPost){
+            this.savedPost.add(post);
         }
     }
 
@@ -147,5 +152,13 @@ public class UserReturnerDTO {
 
     public void setReporters(Set<UserReturnerDTO> reporters) {
         this.reporters = reporters;
+    }
+
+    public List<PostReturnerDTO> getSavedPost() {
+        return savedPost;
+    }
+
+    public void addSavedPost(PostReturnerDTO post) {
+        this.savedPost.add(post);
     }
 }
