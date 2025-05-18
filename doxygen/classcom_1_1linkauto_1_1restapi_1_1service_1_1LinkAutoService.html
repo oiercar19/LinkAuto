@@ -104,8 +104,8 @@ $(document).ready(function(){initNavTree('classcom_1_1linkauto_1_1restapi_1_1ser
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ae07c984e9cab1a0df0cd01686f0c8871" id="r_ae07c984e9cab1a0df0cd01686f0c8871"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#ae07c984e9cab1a0df0cd01686f0c8871">LinkAutoService</a> (PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository)</td></tr>
-<tr class="separator:ae07c984e9cab1a0df0cd01686f0c8871"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1596f55f5954180479bd2fe8a4d0e167" id="r_a1596f55f5954180479bd2fe8a4d0e167"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a1596f55f5954180479bd2fe8a4d0e167">LinkAutoService</a> (PostRepository postRepository, UserRepository userRepository, CommentRepository commentRepository, EventRepository eventRepository)</td></tr>
+<tr class="separator:a1596f55f5954180479bd2fe8a4d0e167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2400ecec37aab1628b24c8a5bd4cb167" id="r_a2400ecec37aab1628b24c8a5bd4cb167"><td class="memItemLeft" align="right" valign="top">List&lt; Post &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a2400ecec37aab1628b24c8a5bd4cb167">getAllPosts</a> ()</td></tr>
 <tr class="separator:a2400ecec37aab1628b24c8a5bd4cb167"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a322d344689c50e3f269b3e76f3391778" id="r_a322d344689c50e3f269b3e76f3391778"><td class="memItemLeft" align="right" valign="top">Optional&lt; Post &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a322d344689c50e3f269b3e76f3391778">getPostById</a> (Long id)</td></tr>
@@ -146,17 +146,43 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac530d557925c1e50e4be656ad9d261ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad85bc828a21c6a7317a5df26dbae1459" id="r_ad85bc828a21c6a7317a5df26dbae1459"><td class="memItemLeft" align="right" valign="top">List&lt; Post &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#ad85bc828a21c6a7317a5df26dbae1459">getPostsByUsername</a> (String username)</td></tr>
 <tr class="separator:ad85bc828a21c6a7317a5df26dbae1459"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af502ac282a69bcb52c18fdd0d420e1fe" id="r_af502ac282a69bcb52c18fdd0d420e1fe"><td class="memItemLeft" align="right" valign="top">List&lt; Event &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#af502ac282a69bcb52c18fdd0d420e1fe">getAllEvents</a> ()</td></tr>
+<tr class="separator:af502ac282a69bcb52c18fdd0d420e1fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3e46268a386afbfdab8a45516fde1810" id="r_a3e46268a386afbfdab8a45516fde1810"><td class="memItemLeft" align="right" valign="top">Optional&lt; Event &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a3e46268a386afbfdab8a45516fde1810">getEventById</a> (Long id)</td></tr>
+<tr class="separator:a3e46268a386afbfdab8a45516fde1810"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a74de665bc2d565fe092a82bb0509d67c" id="r_a74de665bc2d565fe092a82bb0509d67c"><td class="memItemLeft" align="right" valign="top">Event&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a74de665bc2d565fe092a82bb0509d67c">createEvent</a> (EventDTO eventDTO, User user)</td></tr>
+<tr class="separator:a74de665bc2d565fe092a82bb0509d67c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67c3f3aeaa6c55a43dae25f424229044" id="r_a67c3f3aeaa6c55a43dae25f424229044"><td class="memItemLeft" align="right" valign="top">boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a67c3f3aeaa6c55a43dae25f424229044">deleteEvent</a> (Long id, User user)</td></tr>
+<tr class="separator:a67c3f3aeaa6c55a43dae25f424229044"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd5db62acedff7933ab550e1e446a0cc" id="r_abd5db62acedff7933ab550e1e446a0cc"><td class="memItemLeft" align="right" valign="top">Boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#abd5db62acedff7933ab550e1e446a0cc">participateInEvent</a> (Long eventId, User user)</td></tr>
+<tr class="separator:abd5db62acedff7933ab550e1e446a0cc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6bf064b1e2cc1dbd73bce6a04953b83" id="r_ae6bf064b1e2cc1dbd73bce6a04953b83"><td class="memItemLeft" align="right" valign="top">Boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#ae6bf064b1e2cc1dbd73bce6a04953b83">cancelParticipation</a> (Long eventId, User user)</td></tr>
+<tr class="separator:ae6bf064b1e2cc1dbd73bce6a04953b83"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a399440a05f09503a1f1b2552a28727ed" id="r_a399440a05f09503a1f1b2552a28727ed"><td class="memItemLeft" align="right" valign="top">Set&lt; String &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a399440a05f09503a1f1b2552a28727ed">getEventParticipants</a> (Long eventId)</td></tr>
+<tr class="separator:a399440a05f09503a1f1b2552a28727ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ba68248b0c27e436747a6349bce62f5" id="r_a2ba68248b0c27e436747a6349bce62f5"><td class="memItemLeft" align="right" valign="top">List&lt; Event &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a2ba68248b0c27e436747a6349bce62f5">getEventsByCreador</a> (String username)</td></tr>
+<tr class="separator:a2ba68248b0c27e436747a6349bce62f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83a16f11a561ce04ea168ae47e85cf37" id="r_a83a16f11a561ce04ea168ae47e85cf37"><td class="memItemLeft" align="right" valign="top">Boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a83a16f11a561ce04ea168ae47e85cf37">verifyUser</a> (User user)</td></tr>
 <tr class="separator:a83a16f11a561ce04ea168ae47e85cf37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a83499f3a48cebae816b0a78aa8415c63" id="r_a83499f3a48cebae816b0a78aa8415c63"><td class="memItemLeft" align="right" valign="top">List&lt; Post &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a83499f3a48cebae816b0a78aa8415c63">getSavedPostsByUsername</a> (String username)</td></tr>
 <tr class="separator:a83499f3a48cebae816b0a78aa8415c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa1102a858eb8f62ca6349c434a8931b2" id="r_aa1102a858eb8f62ca6349c434a8931b2"><td class="memItemLeft" align="right" valign="top">Boolean&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#aa1102a858eb8f62ca6349c434a8931b2">commentEvent</a> (Long eventId, User user, CommentDTO commentDTO)</td></tr>
+<tr class="separator:aa1102a858eb8f62ca6349c434a8931b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3e9e3d57bb33fbe921f8808f3647bb8" id="r_af3e9e3d57bb33fbe921f8808f3647bb8"><td class="memItemLeft" align="right" valign="top">List&lt; Comment &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#af3e9e3d57bb33fbe921f8808f3647bb8">getCommentsByEventId</a> (Long eventId)</td></tr>
+<tr class="separator:af3e9e3d57bb33fbe921f8808f3647bb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa2b1871a180d2aa98a04ff19795ebdb" id="r_aaa2b1871a180d2aa98a04ff19795ebdb"><td class="memItemLeft" align="right" valign="top">List&lt; Event &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#aaa2b1871a180d2aa98a04ff19795ebdb">getUserParticipatingEvents</a> (String username)</td></tr>
+<tr class="separator:aaa2b1871a180d2aa98a04ff19795ebdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8834959a4d8452667c7658f6e17bd996" id="r_a8834959a4d8452667c7658f6e17bd996"><td class="memItemLeft" align="right" valign="top">List&lt; Event &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a8834959a4d8452667c7658f6e17bd996">getEventsByUsername</a> (String username)</td></tr>
+<tr class="separator:a8834959a4d8452667c7658f6e17bd996"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac2ccb98353d3fab72b620c617ef72f3" id="r_aac2ccb98353d3fab72b620c617ef72f3"><td class="memItemLeft" align="right" valign="top">Optional&lt; Event &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#aac2ccb98353d3fab72b620c617ef72f3">updateEvent</a> (Long id, EventDTO eventDTO, User user)</td></tr>
+<tr class="separator:aac2ccb98353d3fab72b620c617ef72f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock">
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00021">21</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00025">25</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="ae07c984e9cab1a0df0cd01686f0c8871" name="ae07c984e9cab1a0df0cd01686f0c8871"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae07c984e9cab1a0df0cd01686f0c8871">&#9670;&#160;</a></span>LinkAutoService()</h2>
+<a id="a1596f55f5954180479bd2fe8a4d0e167" name="a1596f55f5954180479bd2fe8a4d0e167"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1596f55f5954180479bd2fe8a4d0e167">&#9670;&#160;</a></span>LinkAutoService()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -180,7 +206,13 @@ Public Member Functions</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">CommentRepository&#160;</td>
-          <td class="paramname"><em>commentRepository</em>&#160;</td>
+          <td class="paramname"><em>commentRepository</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EventRepository&#160;</td>
+          <td class="paramname"><em>eventRepository</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -195,11 +227,93 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00027">27</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00032">32</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="ae6bf064b1e2cc1dbd73bce6a04953b83" name="ae6bf064b1e2cc1dbd73bce6a04953b83"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6bf064b1e2cc1dbd73bce6a04953b83">&#9670;&#160;</a></span>cancelParticipation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Boolean com.linkauto.restapi.service.LinkAutoService.cancelParticipation </td>
+          <td>(</td>
+          <td class="paramtype">Long&#160;</td>
+          <td class="paramname"><em>eventId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">User&#160;</td>
+          <td class="paramname"><em>user</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00345">345</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="aa1102a858eb8f62ca6349c434a8931b2" name="aa1102a858eb8f62ca6349c434a8931b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa1102a858eb8f62ca6349c434a8931b2">&#9670;&#160;</a></span>commentEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Boolean com.linkauto.restapi.service.LinkAutoService.commentEvent </td>
+          <td>(</td>
+          <td class="paramtype">Long&#160;</td>
+          <td class="paramname"><em>eventId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">User&#160;</td>
+          <td class="paramname"><em>user</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">CommentDTO&#160;</td>
+          <td class="paramname"><em>commentDTO</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00388">388</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
 <a id="a77ef3a21a331f21be7905893bd15ca37" name="a77ef3a21a331f21be7905893bd15ca37"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a77ef3a21a331f21be7905893bd15ca37">&#9670;&#160;</a></span>commentPost()</h2>
 
@@ -240,7 +354,45 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00158">158</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00165">165</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="a74de665bc2d565fe092a82bb0509d67c" name="a74de665bc2d565fe092a82bb0509d67c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a74de665bc2d565fe092a82bb0509d67c">&#9670;&#160;</a></span>createEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Event com.linkauto.restapi.service.LinkAutoService.createEvent </td>
+          <td>(</td>
+          <td class="paramtype">EventDTO&#160;</td>
+          <td class="paramname"><em>eventDTO</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">User&#160;</td>
+          <td class="paramname"><em>user</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00282">282</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -278,7 +430,45 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00041">41</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00048">48</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="a67c3f3aeaa6c55a43dae25f424229044" name="a67c3f3aeaa6c55a43dae25f424229044"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67c3f3aeaa6c55a43dae25f424229044">&#9670;&#160;</a></span>deleteEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">boolean com.linkauto.restapi.service.LinkAutoService.deleteEvent </td>
+          <td>(</td>
+          <td class="paramtype">Long&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">User&#160;</td>
+          <td class="paramname"><em>user</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00304">304</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -316,7 +506,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00056">56</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00063">63</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -354,7 +544,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00189">189</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00196">196</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -392,7 +582,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00110">110</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00117">117</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -419,7 +609,34 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00241">241</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00248">248</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="af502ac282a69bcb52c18fdd0d420e1fe" name="af502ac282a69bcb52c18fdd0d420e1fe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af502ac282a69bcb52c18fdd0d420e1fe">&#9670;&#160;</a></span>getAllEvents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt; Event &gt; com.linkauto.restapi.service.LinkAutoService.getAllEvents </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00274">274</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -446,7 +663,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00033">33</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00040">40</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -473,7 +690,35 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00253">253</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00260">260</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="af3e9e3d57bb33fbe921f8808f3647bb8" name="af3e9e3d57bb33fbe921f8808f3647bb8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3e9e3d57bb33fbe921f8808f3647bb8">&#9670;&#160;</a></span>getCommentsByEventId()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt; Comment &gt; com.linkauto.restapi.service.LinkAutoService.getCommentsByEventId </td>
+          <td>(</td>
+          <td class="paramtype">Long&#160;</td>
+          <td class="paramname"><em>eventId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00407">407</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -501,7 +746,126 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00245">245</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00252">252</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="a3e46268a386afbfdab8a45516fde1810" name="a3e46268a386afbfdab8a45516fde1810"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3e46268a386afbfdab8a45516fde1810">&#9670;&#160;</a></span>getEventById()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Optional&lt; Event &gt; com.linkauto.restapi.service.LinkAutoService.getEventById </td>
+          <td>(</td>
+          <td class="paramtype">Long&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00278">278</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="a399440a05f09503a1f1b2552a28727ed" name="a399440a05f09503a1f1b2552a28727ed"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a399440a05f09503a1f1b2552a28727ed">&#9670;&#160;</a></span>getEventParticipants()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Set&lt; String &gt; com.linkauto.restapi.service.LinkAutoService.getEventParticipants </td>
+          <td>(</td>
+          <td class="paramtype">Long&#160;</td>
+          <td class="paramname"><em>eventId</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00357">357</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="a2ba68248b0c27e436747a6349bce62f5" name="a2ba68248b0c27e436747a6349bce62f5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ba68248b0c27e436747a6349bce62f5">&#9670;&#160;</a></span>getEventsByCreador()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt; Event &gt; com.linkauto.restapi.service.LinkAutoService.getEventsByCreador </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>username</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00365">365</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="a8834959a4d8452667c7658f6e17bd996" name="a8834959a4d8452667c7658f6e17bd996"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8834959a4d8452667c7658f6e17bd996">&#9670;&#160;</a></span>getEventsByUsername()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt; Event &gt; com.linkauto.restapi.service.LinkAutoService.getEventsByUsername </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>username</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Gets all events created by or participated in by a user </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">username</td><td>The username of the user </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>List of events the user created or is participating in </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00428">428</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -529,7 +893,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00094">94</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00101">101</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -557,7 +921,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00102">102</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00109">109</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -585,7 +949,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00037">37</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00044">44</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -613,7 +977,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00261">261</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00268">268</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -641,7 +1005,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00275">275</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00379">379</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -669,7 +1033,35 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00257">257</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00264">264</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="aaa2b1871a180d2aa98a04ff19795ebdb" name="aaa2b1871a180d2aa98a04ff19795ebdb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaa2b1871a180d2aa98a04ff19795ebdb">&#9670;&#160;</a></span>getUserParticipatingEvents()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">List&lt; Event &gt; com.linkauto.restapi.service.LinkAutoService.getUserParticipatingEvents </td>
+          <td>(</td>
+          <td class="paramtype">String&#160;</td>
+          <td class="paramname"><em>username</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00416">416</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -707,7 +1099,45 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00136">136</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00143">143</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="abd5db62acedff7933ab550e1e446a0cc" name="abd5db62acedff7933ab550e1e446a0cc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd5db62acedff7933ab550e1e446a0cc">&#9670;&#160;</a></span>participateInEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Boolean com.linkauto.restapi.service.LinkAutoService.participateInEvent </td>
+          <td>(</td>
+          <td class="paramtype">Long&#160;</td>
+          <td class="paramname"><em>eventId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">User&#160;</td>
+          <td class="paramname"><em>user</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00332">332</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -745,7 +1175,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00175">175</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00182">182</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -783,7 +1213,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00204">204</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00211">211</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -821,7 +1251,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00122">122</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00129">129</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -859,7 +1289,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00147">147</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00154">154</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -897,7 +1327,60 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00220">220</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00227">227</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+
+</div>
+</div>
+<a id="aac2ccb98353d3fab72b620c617ef72f3" name="aac2ccb98353d3fab72b620c617ef72f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aac2ccb98353d3fab72b620c617ef72f3">&#9670;&#160;</a></span>updateEvent()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">Optional&lt; Event &gt; com.linkauto.restapi.service.LinkAutoService.updateEvent </td>
+          <td>(</td>
+          <td class="paramtype">Long&#160;</td>
+          <td class="paramname"><em>id</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">EventDTO&#160;</td>
+          <td class="paramname"><em>eventDTO</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">User&#160;</td>
+          <td class="paramname"><em>user</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Updates an existing event </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>The ID of the event to update </td></tr>
+    <tr><td class="paramname">eventDTO</td><td>The new event data </td></tr>
+    <tr><td class="paramname">user</td><td>The user attempting to update the event </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Optional containing the updated event if successful, empty otherwise </dd></dl>
+
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00450">450</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>
@@ -925,7 +1408,7 @@ Public Member Functions</h2></td></tr>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00265">265</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
+<p class="definition">Definition at line <a class="el" href="LinkAutoService_8java_source.html#l00369">369</a> of file <a class="el" href="LinkAutoService_8java_source.html">LinkAutoService.java</a>.</p>
 
 </div>
 </div>

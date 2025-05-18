@@ -16,12 +16,19 @@ var hierarchy =
     [ "com.linkauto.restapi.model.CommentTest", "classcom_1_1linkauto_1_1restapi_1_1model_1_1CommentTest.html", null ],
     [ "com.linkauto.restapi.dto.CredencialesDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1CredencialesDTO.html", null ],
     [ "com.linkauto.restapi.dto.CredencialesDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1CredencialesDTOTest.html", null ],
+    [ "com.linkauto.restapi.model.Event", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html", null ],
+    [ "com.linkauto.restapi.dto.EventDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventDTO.html", null ],
+    [ "com.linkauto.restapi.dto.EventDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventDTOTest.html", null ],
+    [ "com.linkauto.restapi.dto.EventReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventReturnerDTO.html", null ],
+    [ "com.linkauto.restapi.dto.EventReturnerDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventReturnerDTOTest.html", null ],
+    [ "com.linkauto.restapi.model.EventTest", "classcom_1_1linkauto_1_1restapi_1_1model_1_1EventTest.html", null ],
     [ "com.linkauto.restapi.model.User.Gender", "enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html", null ],
     [ "com.linkauto.client.service.ILinkAutoServiceProxy", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html", [
       [ "com.linkauto.client.service.ClientServiceProxy", "classcom_1_1linkauto_1_1client_1_1service_1_1ClientServiceProxy.html", null ]
     ] ],
     [ "JpaRepository", null, [
       [ "com.linkauto.restapi.repository.CommentRepository", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1CommentRepository.html", null ],
+      [ "com.linkauto.restapi.repository.EventRepository", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1EventRepository.html", null ],
       [ "com.linkauto.restapi.repository.PostRepository", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1PostRepository.html", null ],
       [ "com.linkauto.restapi.repository.UserRepository", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1UserRepository.html", null ]
     ] ],
