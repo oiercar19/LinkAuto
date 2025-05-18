@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['gender_0',['Gender',['../enumcom_1_1linkauto_1_1restapi_1_1model_1_1User_1_1Gender.html',1,'com::linkauto::restapi::model::User']]]
+  ['ilinkautoserviceproxy_0',['ILinkAutoServiceProxy',['../interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html',1,'com::linkauto::client::service']]]
 ];

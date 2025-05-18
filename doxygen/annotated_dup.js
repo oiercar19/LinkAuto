@@ -27,10 +27,6 @@ var annotated_dup =
             [ "CommentReturnerDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1CommentReturnerDTOTest.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1CommentReturnerDTOTest" ],
             [ "CredencialesDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1CredencialesDTO.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1CredencialesDTO" ],
             [ "CredencialesDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1CredencialesDTOTest.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1CredencialesDTOTest" ],
-            [ "EventDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventDTO.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventDTO" ],
-            [ "EventDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventDTOTest.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventDTOTest" ],
-            [ "EventReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventReturnerDTO.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventReturnerDTO" ],
-            [ "EventReturnerDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventReturnerDTOTest.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1EventReturnerDTOTest" ],
             [ "PostDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostDTO.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostDTO" ],
             [ "PostDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostDTOTest.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostDTOTest" ],
             [ "PostReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO" ],
@@ -52,8 +48,6 @@ var annotated_dup =
           [ "model", "namespacecom_1_1linkauto_1_1restapi_1_1model.html", [
             [ "Comment", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Comment.html", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Comment" ],
             [ "CommentTest", "classcom_1_1linkauto_1_1restapi_1_1model_1_1CommentTest.html", "classcom_1_1linkauto_1_1restapi_1_1model_1_1CommentTest" ],
-            [ "Event", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Event" ],
-            [ "EventTest", "classcom_1_1linkauto_1_1restapi_1_1model_1_1EventTest.html", "classcom_1_1linkauto_1_1restapi_1_1model_1_1EventTest" ],
             [ "Post", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Post.html", "classcom_1_1linkauto_1_1restapi_1_1model_1_1Post" ],
             [ "PostTest", "classcom_1_1linkauto_1_1restapi_1_1model_1_1PostTest.html", "classcom_1_1linkauto_1_1restapi_1_1model_1_1PostTest" ],
             [ "Role", "enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html", "enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role" ],
@@ -66,7 +60,6 @@ var annotated_dup =
           ] ],
           [ "repository", "namespacecom_1_1linkauto_1_1restapi_1_1repository.html", [
             [ "CommentRepository", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1CommentRepository.html", null ],
-            [ "EventRepository", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1EventRepository.html", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1EventRepository" ],
             [ "PostRepository", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1PostRepository.html", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1PostRepository" ],
             [ "UserRepository", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1UserRepository.html", "interfacecom_1_1linkauto_1_1restapi_1_1repository_1_1UserRepository" ]
           ] ],

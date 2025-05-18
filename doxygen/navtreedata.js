@@ -41,9 +41,10 @@ var NAVTREE =
         [ "Acceso a la aplicación", "md_README.html#autotoc_md10", null ],
         [ "Ejecución de tests", "md_README.html#autotoc_md11", null ],
         [ "Configuración personalizada", "md_README.html#autotoc_md12", null ],
-        [ "Solución de problemas comunes", "md_README.html#autotoc_md13", null ],
-        [ "Contacto y soporte", "md_README.html#autotoc_md14", null ],
-        [ "Licencia", "md_README.html#autotoc_md15", null ]
+        [ "Documentación", "md_README.html#autotoc_md13", null ],
+        [ "Solución de problemas comunes", "md_README.html#autotoc_md14", null ],
+        [ "Contacto y soporte", "md_README.html#autotoc_md15", null ],
+        [ "Licencia", "md_README.html#autotoc_md16", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
@@ -72,10 +73,9 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "AuthControllerTest_8java.html",
-"classcom_1_1linkauto_1_1client_1_1controller_1_1ClientControllerTest.html#afef9c1b23e9016b4f2bf5d8b36105391",
-"classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html#abcffeacf6a10ebf0534397559dcbf859",
-"classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#ab881eb87d42392d02c2c63649322542e",
-"functions_func_i.html"
+"classcom_1_1linkauto_1_1restapi_1_1controller_1_1AuthControllerTest.html",
+"classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTOTest.html#aa9e894a783de03d9eb18307cc76dcfee",
+"dir_60875126776443ee760e15f4e123ea47.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
