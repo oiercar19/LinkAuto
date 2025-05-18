@@ -72,32 +72,28 @@ jobs:
 
     - name: Install Doxygen
       run: |
-          sudo apt-get update
-          sudo apt-get install -y doxygen graphviz
+        sudo apt-get update
+        sudo apt-get install -y doxygen graphviz
 
     - name: Generate Maven Site
-      run: sudo ./mvnw site
+      run: mvn site
     
-    - name: Copy all documentation artifacts to docs folder
+    - name: Copy site doxygen output to docs folder
       run: |
-        rm -rf docs
+        mkdir -p docs
+        rm -rf docs/site
+        mkdir -p docs/site
+        cp -r target/site/* docs/site/
+        mkdir -p docs/site/client
+        cp -r client/target/site/* docs/site/client/
+        mkdir -p docs/site/rest-api
+        cp -r rest-api/target/site/* docs/site/rest-api/
+        mkdir -p docs/site/reports
+        cp -r rest-api/target/reports/* docs/site/reports/
+        rm -rf docs/doxygen
         mkdir -p docs/doxygen
-        cp -r target/doxygen/html/* docs/doxygen/ || true
-        cp -r target/doxygen/latex docs/doxygen/ || true
-    
-        # Procesar cada submódulo
-        for module in rest-api client; do
-          if [ -d "$module/target/site" ]; then
-            mkdir -p "docs/site/$module"
-            cp -r "$module/target/site/"* "docs/site/$module/"
-          fi
-    
-          if [ -d "$module/target/reports" ]; then
-            mkdir -p "docs/site/$module/reports"
-            cp -r "$module/target/reports/"* "docs/site/$module/reports/"
-          fi
-        done
-        
+        cp -r doxygen/html/* docs/doxygen/
+
     - name: Deploy 🚀
       uses: JamesIves/github-pages-deploy-action@v4
       with:

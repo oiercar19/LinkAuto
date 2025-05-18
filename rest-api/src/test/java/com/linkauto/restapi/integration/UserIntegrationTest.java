@@ -78,6 +78,7 @@ public class UserIntegrationTest {
         UserDTO updatedUserInfo = new UserDTO(
                 "Updated Name",
                 "USER",
+                false,
                 "new_avatar.jpg",
                 "updated@test.com",
                 List.of("Ford Mustang", "Porsche 911"),

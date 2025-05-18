@@ -1,9 +1,14 @@
 package com.linkauto.restapi.model;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
@@ -26,6 +31,7 @@ public class User {
     @Id
     private String username;
     private Role role;
+    private boolean banned;
     private String name;
     private String profilePicture;
     private String email;
@@ -35,6 +41,14 @@ public class User {
     private String location;
     private String password;
     private String description;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "user_reports", joinColumns = @JoinColumn(name = "username"))
+    @Column(name = "reports")
+    private Set <User> reporters = new HashSet<>();
+
+    private Boolean isVerified;
+
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Post> posts;
 
@@ -45,6 +59,13 @@ public class User {
     @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<User> following;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+    name = "user_saved_posts",
+    joinColumns = @JoinColumn(name = "user_username"),
+    inverseJoinColumns = @JoinColumn(name = "post_id"))
+    private Set<Post> savedPosts;
+
     // No-argument constructor
     public User() {
     }
@@ -54,9 +75,10 @@ public class User {
             String profilePicture, String email,
             List<String> cars, long birthDate,
             Gender gender, String location,
-            String password, String description, List<Post> posts, List<User> followers, List<User> following) {
+            String password, String description, List<Post> posts, List<User> followers, List<User> following, Set<Post> savedPosts) {
         this.username = username;
         this.role = Role.USER;
+        this.banned = false;
         this.name = name;
         this.profilePicture = profilePicture;
         this.email = email;
@@ -78,6 +100,12 @@ public class User {
         for (User follow : following) {
             this.following.add(follow);
         }
+        this.isVerified = false;
+        this.savedPosts = new HashSet<>();
+        for (Post post : savedPosts) {
+            this.savedPosts.add(post);
+        }
+        this.reporters = new HashSet<>();
     }
 
     public String getUsername() {
@@ -168,8 +196,31 @@ public class User {
         this.description = description;
     }
 
+    public boolean isBanned() {
+        return banned;
+    }
+
+    public void setBanned(boolean isBanned) {
+        this.banned = isBanned;
+    }
+    public Boolean getIsVerified() {
+        return isVerified;
+    }
+
+    public void setIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
+    }
+
     public List<Post> getPosts() {
         return posts;
+    }
+    
+    public Set<User> getReporters() {
+        return reporters;
+    }
+
+    public void setReporters(User reporter) {
+        this.reporters.add(reporter);
     }
 
     public void addPost(Post post) {
@@ -200,6 +251,20 @@ public class User {
         this.following.remove(following);
     }
 
+    public void removeReporters(User reporter) {
+        this.reporters.remove(reporter);
+    }
+
+    public Set<Post> getSavedPosts() {
+        return savedPosts;
+    }
+
+    public void addSavedPost(Post post) {
+        if (!this.savedPosts.contains(post)) {
+            this.savedPosts.add(post);
+        }
+    }
+    
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -227,10 +292,10 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [username=" + username + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
+        return "User [username=" + username + ", banned="+ banned + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
                 + ", email=" + email + ", cars=" + cars + ", birthDate=" + birthDate + ", gender=" + gender
                 + ", location=" + location + ", password=" + password + ", description=" + description + ", posts="
-                + posts + "]";
+                + posts +", savedPost=" + savedPosts +"]";
     }
     
 }

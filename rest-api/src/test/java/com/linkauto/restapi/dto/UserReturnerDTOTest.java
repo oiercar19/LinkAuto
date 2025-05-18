@@ -2,6 +2,7 @@ package com.linkauto.restapi.dto;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,10 +17,14 @@ public class UserReturnerDTOTest {
         List<PostReturnerDTO> posts = new ArrayList<>();
         posts.add(new PostReturnerDTO());
         posts.add(new PostReturnerDTO());
+        List<PostReturnerDTO> savedPosts = new ArrayList<>();
+        savedPosts.add(new PostReturnerDTO());
+        savedPosts.add(new PostReturnerDTO());
 
         UserReturnerDTO user = new UserReturnerDTO(
             "username123",
             "USER",
+            false,
             "John Doe",
             "profilePic.jpg",
             "john.doe@example.com",
@@ -29,11 +34,15 @@ public class UserReturnerDTOTest {
             "New York",
             "password123",
             "This is a description.",
-            posts
+            posts,
+            savedPosts,
+            false,
+            new HashSet<>()
         );
 
         assertEquals("username123", user.getUsername());
         assertEquals("USER", user.getRole());
+        assertEquals(false, user.isBanned());
         assertEquals("John Doe", user.getName());
         assertEquals("profilePic.jpg", user.getProfilePicture());
         assertEquals("john.doe@example.com", user.getEmail());
@@ -44,6 +53,7 @@ public class UserReturnerDTOTest {
         assertEquals("password123", user.getPassword());
         assertEquals("This is a description.", user.getDescription());
         assertEquals(posts, user.getPosts());
+        assertEquals(savedPosts, user.getSavedPost());
     }
 
     @Test
@@ -51,6 +61,7 @@ public class UserReturnerDTOTest {
         UserReturnerDTO user = new UserReturnerDTO(
             "username123",
             "USER",
+            false,
             "John Doe",
             "profilePic.jpg",
             "john.doe@example.com",
@@ -60,11 +71,15 @@ public class UserReturnerDTOTest {
             "New York",
             "password123",
             "This is a description.",
-            new ArrayList<>()
+            new ArrayList<>(),
+            new ArrayList<>(),
+            false,
+            new HashSet<>()
         );
 
         user.setUsername("newUsername");
         user.setRole("ADMIN");
+        user.setBanned(true);
         user.setName("Jane Doe");
         user.setProfilePicture("newProfilePic.jpg");
         user.setEmail("jane.doe@example.com");
@@ -74,9 +89,11 @@ public class UserReturnerDTOTest {
         user.setLocation("Los Angeles");
         user.setPassword("newPassword123");
         user.setDescription("Updated description.");
+        user.setReporters(new HashSet<>());
 
         assertEquals("newUsername", user.getUsername());
         assertEquals("ADMIN", user.getRole());
+        assertEquals(true, user.isBanned());
         assertEquals("Jane Doe", user.getName());
         assertEquals("newProfilePic.jpg", user.getProfilePicture());
         assertEquals("jane.doe@example.com", user.getEmail());
@@ -93,6 +110,7 @@ public class UserReturnerDTOTest {
         UserReturnerDTO user = new UserReturnerDTO(
             "username123",
             "USER",
+            false,
             "John Doe",
             "profilePic.jpg",
             "john.doe@example.com",
@@ -102,7 +120,10 @@ public class UserReturnerDTOTest {
             "New York",
             "password123",
             "This is a description.",
-            new ArrayList<>()
+            new ArrayList<>(),
+            new ArrayList<>(),
+            false,
+            new HashSet<>()
         );
 
         PostReturnerDTO post = new PostReturnerDTO();
@@ -111,4 +132,5 @@ public class UserReturnerDTOTest {
         assertEquals(1, user.getPosts().size());
         assertTrue(user.getPosts().contains(post));
     }
+    
 }

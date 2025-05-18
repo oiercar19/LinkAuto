@@ -25,7 +25,7 @@ public class EventTest {
     public void setUp() {
         user = new User("testUsername", "testName", "testProfilePicture", "testEmail", 
                 new ArrayList<>(), 123456L, Gender.MALE, "testLocation", "testPassword", 
-                "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                "testDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         event = new Event(1L, user, "Test Event", "Event Description", "Test Location", 
                 1000000000L, 1000001000L, Arrays.asList("image1.jpg", "image2.jpg"), 
                 new HashSet<>(), new ArrayList<>());
@@ -49,7 +49,7 @@ public class EventTest {
         // Probar los setters
         User newUser = new User("newUser", "New Name", "newPic", "new@email.com", 
                 new ArrayList<>(), 987654L, Gender.FEMALE, "New Location", "newPassword", 
-                "New Description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                "New Description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         event.setCreador(newUser);
         assertEquals(newUser, event.getCreador());
 
@@ -153,7 +153,7 @@ public class EventTest {
         // Diferentes creadores
         User user2 = new User("user2", "Name2", "pic2", "e2@mail", 
                 new ArrayList<>(), 12345L, Gender.OTHER, "Loc2", "pwd2", 
-                "Desc2", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                "Desc2", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         Event event4 = new Event(1L, user2, "Test Event", "Event Description", "Test Location", 
                 1000000000L, 1000001000L, Arrays.asList("image1.jpg", "image2.jpg"), 
                 new HashSet<>(), new ArrayList<>());
@@ -257,7 +257,7 @@ public class EventTest {
     public void testParameterizedConstructor() {
         User testUser = new User("testUser", "Test Name", "testPic", "test@mail", 
                 new ArrayList<>(), 12345L, Gender.OTHER, "Test Location", "testPwd", 
-                "Test Description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+                "Test Description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         List<String> images = Arrays.asList("img1.jpg", "img2.jpg");
         Set<String> participants = new HashSet<>();
         participants.add("user1");

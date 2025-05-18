@@ -1,5 +1,6 @@
 package com.linkauto.restapi.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -78,6 +79,7 @@ public class LinkAutoService {
             // Desasociar el post del usuario
             User postUser = post.getUsuario();
             postUser.getPosts().remove(post);
+            postUser.getSavedPosts().remove(post); 
             userRepository.save(postUser);
             
             // Limpiar imágenes
@@ -175,6 +177,72 @@ public class LinkAutoService {
         postRepository.save(post);
     
         return true;
+    }
+
+    public Boolean reportUser (User user, User userReport) {
+        User userReporter = userRepository.findByUsername(user.getUsername()).orElse(null);
+        User userToReport = userRepository.findByUsername(userReport.getUsername()).orElse(null);
+        
+        if (userReporter == null || userToReport == null) {
+            return false;
+        }
+        
+        userToReport.setReporters(userReporter);
+        userRepository.save(userToReport);
+
+        return true;
+    }
+
+    public Boolean deleteReport (User user, String username) {
+        User userReported = userRepository.findByUsername(user.getUsername()).orElse(null);
+        User userReporter = userRepository.findByUsername(username).orElse(null);
+
+        if (userReported == null || username == null) {
+            return false;
+        }
+        
+        userReported.removeReporters(userReporter);
+        userRepository.save(userReported);
+
+        return true;
+    }
+
+    @Transactional
+    public Boolean savePost (Long postId, User u) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) return false;
+    
+        // Recupera el usuario desde DB para que tenga su Set<Post> sincronizado
+        User user = userRepository.findByUsername(u.getUsername()).orElse(null);
+        if (u == null) return false;
+    
+        boolean added = user.getSavedPosts().add(post); // Evita duplicados si ya existe en Set
+        if (!added) return false; // Ya estaba guardado
+    
+        userRepository.save(user);
+        return true;
+    }
+
+    @Transactional
+    public Boolean unsavePost (Long postId, User u) {
+        Post post = postRepository.findById(postId).orElse(null);
+        if (post == null) return false;
+    
+        User user = userRepository.findByUsername(u.getUsername()).orElse(null);
+        // Buscar el post a eliminar dentro del Set de guardados
+        Post postToRemove = user.getSavedPosts().stream()
+            .filter(p -> p.getId().equals(postId))
+            .findFirst()
+            .orElse(null);
+    
+        if (postToRemove != null) {
+            user.getSavedPosts().remove(postToRemove);
+            userRepository.save(user);
+            userRepository.flush();
+            return true;
+        }
+    
+        return false;
     }
 
     public List<Comment> getAllComments() {
@@ -295,12 +363,27 @@ public class LinkAutoService {
     }
     
     public List<Event> getEventsByCreador(String username) {
+        return eventRepository.findByCreador_Username(username);
+    }
+
+    public Boolean verifyUser(User user) {
+        // Comprobar si tiene al menos 3 posts y 3 seguidores
+        if (user.getPosts().size() < 3 || user.getFollowers().size() < 3) {
+            return false;
+        }
+        user.setIsVerified(true);
+        userRepository.save(user);
+        return true;
+    }
+    
+    public List<Post> getSavedPostsByUsername(String username) {
         User user = userRepository.findByUsername(username).orElse(null);
         if (user == null) {
             return null;
         }
-        return eventRepository.findByCreador_Username(username);
+        return new ArrayList<>(user.getSavedPosts());
     }
+
     
     public Boolean commentEvent(Long eventId, User user, CommentDTO commentDTO) {
         Event event = eventRepository.findById(eventId).orElse(null);

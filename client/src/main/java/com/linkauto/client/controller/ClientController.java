@@ -2,8 +2,10 @@ package com.linkauto.client.controller;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +37,14 @@ public class ClientController {
 
     @Autowired
     public ClientServiceProxy linkAutoServiceProxy;
-	
+
     public String token; // Stores the session token
     public String username; // Stores the username
 
     public void addAttributes(Model model, HttpServletRequest request) {
-		String currentUrl = ServletUriComponentsBuilder.fromRequestUri(request).toUriString();
-		model.addAttribute("currentUrl", currentUrl); // Makes current URL available in all templates
-	}
+        String currentUrl = ServletUriComponentsBuilder.fromRequestUri(request).toUriString();
+        model.addAttribute("currentUrl", currentUrl); // Makes current URL available in all templates
+    }
 
     @GetMapping("/")
     public String home() {
@@ -50,22 +52,34 @@ public class ClientController {
     }
 
     @PostMapping("/login")
-    public String login (@RequestParam String username, @RequestParam String password, RedirectAttributes redirectAttributes, Model model) {
-        try {
-            Credentials credentials = new Credentials(username, password);
-            token = linkAutoServiceProxy.login(credentials);
-            this.username = linkAutoServiceProxy.getUserProfile(token).username();
-            return "redirect:/feed";
-            
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", "Credenciales incorrectas");
-            return "redirect:/";
+    public String login(@RequestParam String username, @RequestParam String password, RedirectAttributes redirectAttributes, Model model) {
+    try {
+        // Crear credenciales y obtener el token
+        Credentials credentials = new Credentials(username, password);
+        token = linkAutoServiceProxy.login(credentials);
+
+        // Obtener el perfil del usuario
+        User user = linkAutoServiceProxy.getUserProfile(token);
+
+        // Verificar si el usuario está baneado
+        if (user.banned()) {
+            redirectAttributes.addFlashAttribute("error", "Tu cuenta está baneada. No puedes acceder a la plataforma.");
+            return "banned"; // Redirigir a la página de usuario baneado
         }
+
+        // Si no está baneado, guardar el username y redirigir al feed
+        this.username = user.username();
+        return "redirect:/feed";
+
+    } catch (Exception e) {
+        redirectAttributes.addFlashAttribute("error", "Credenciales incorrectas o error al iniciar sesión.");
+        return "redirect:/";
     }
+}
     
     @GetMapping("/logout")
     public String logout(RedirectAttributes redirectAttributes) {
-        linkAutoServiceProxy.logout(token);     
+        linkAutoServiceProxy.logout(token);
         token = null; // Clear the token after logout
         username = null; // Clear the username after logout
         return "redirect:/"; // Redirect to the home page after logout   
@@ -77,17 +91,27 @@ public class ClientController {
         if (token != null) {
             List<Post> posts = new ArrayList<>(linkAutoServiceProxy.getFeed());
             Map<String, String> profilePictureByUsername = new HashMap<>();
+            Set<String> verifiedUsers = new HashSet<>();
             for (Post post : posts) {
                 String profilePicture = linkAutoServiceProxy.getUserByUsername(post.username()).profilePicture();
                 profilePictureByUsername.putIfAbsent(post.username(), profilePicture);
-                
+
+                if (verifiedUsers.contains(post.username())) {
+                    continue;
+                }
+                Boolean isUserVerified = linkAutoServiceProxy.isUserVerified(post.username());
+                if (isUserVerified) {
+                    verifiedUsers.add(post.username());
+                }
             }
-            
+            model.addAttribute("verifiedUsers", verifiedUsers); // Agregar usuarios verificados al modelo
+
+
             model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
-            
+
             model.addAttribute("posts", posts); // Agregar publicaciones al modelo
             model.addAttribute("username", username); // Agregar nombre de usuario al modelo
-            
+
             User user = linkAutoServiceProxy.getUserProfile(token);
             String profilePicture = user.profilePicture();
             model.addAttribute("profilePicture", profilePicture); // Agregar foto de perfil al modelo
@@ -99,18 +123,24 @@ public class ClientController {
                 followingUsernames.add(following.username());
             }
             model.addAttribute("followings", followingUsernames); // Agregar seguidores al modelo
-            
+
             Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
             for (Post post : posts) {
                 List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
-                
-                for (Comment comment : comments) {                    
+
+                for (Comment comment : comments) {
                     commentsByPostId.putIfAbsent(post.id(), new ArrayList<>());
                     commentsByPostId.get(post.id()).add(comment);
                 }
             }
             model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
-            
+
+            model.addAttribute("isVerified", user.isVerified()); // Agregar verificación al modelo
+
+            List<Post> savedPosts = new ArrayList<>(linkAutoServiceProxy.getUserSavedPosts(username));
+            model.addAttribute("savedPosts", savedPosts); // Agregar publicaciones guardadas al modelo
+
+
             return "feed"; // Vista para usuarios autenticados
         } else {
             // Token inválido o no proporcionado, redirigir al inicio de sesión
@@ -120,7 +150,7 @@ public class ClientController {
 
     @GetMapping("/register")
     public String showRegister(@RequestParam(value = "redirectUrl", required = false) String redirectUrl,
-    Model model) {
+            Model model) {
         model.addAttribute("redirectUrl", redirectUrl);
         return "register"; // Vista de registro
     }
@@ -142,7 +172,7 @@ public class ClientController {
         if (token != null) {
             User u = linkAutoServiceProxy.getUserProfile(token);
             model.addAttribute("user", u);
-            return "editProfile"; 
+            return "editProfile";
         } else {
             return "redirect:/";
         }
@@ -211,15 +241,15 @@ public class ClientController {
     @GetMapping("/user/{username}")
     public String userProfile(@PathVariable String username, Model model) {
         if (token != null) {
-            
+
             User user = linkAutoServiceProxy.getUserByUsername(username);
             model.addAttribute("user", user); // Agregar usuario al modelo
-            
+
             model.addAttribute("role", user.role()); // Agregar rol al modelo
-            
+
             User currentUser = linkAutoServiceProxy.getUserProfile(token);
             model.addAttribute("currentUser", currentUser); // Agregar usuario al modelo
-            
+
             List<Post> userPosts = new ArrayList<>(linkAutoServiceProxy.getUserPosts(username));
             model.addAttribute("userPosts", userPosts); // Agregar publicaciones al modelo
 
@@ -227,11 +257,11 @@ public class ClientController {
             Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
             for (Post post : userPosts) {
                 List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
-                
+
                 for (Comment comment : comments) {
                     String profilePicture = linkAutoServiceProxy.getUserByUsername(comment.username()).profilePicture();
                     profilePictureByUsername.putIfAbsent(comment.username(), profilePicture);
-                    
+
                     commentsByPostId.putIfAbsent(post.id(), new ArrayList<>());
                     commentsByPostId.get(post.id()).add(comment);
                 }
@@ -252,7 +282,6 @@ public class ClientController {
             int followingCount = linkAutoServiceProxy.getUserFollowing(username).size();
             model.addAttribute("followingCount", followingCount);
 
-
             return "userProfile"; // Vista del perfil de usuario
         } else {
             return "redirect:/";
@@ -264,44 +293,54 @@ public class ClientController {
         if (token == null) {
             return "redirect:/";
         }
-        
+
         try {
             // Si el término de búsqueda es null o vacío, redirigir al feed
             if (username == null || username.trim().isEmpty()) {
                 return "redirect:/feed";
             }
-            
+
             // Obtener todos los usuarios
             List<User> allUsers = linkAutoServiceProxy.getAllUsers();
-            
+
             // Filtrar usuarios que coincidan con el término de búsqueda (ignorando mayúsculas y minúsculas)
             List<User> matchingUsers = allUsers.stream()
+
                 .filter(user -> user.username().toLowerCase().contains(username.toLowerCase()))
                 .collect(Collectors.toList());
-            
+
+            Set <String> verifiedUsers = new HashSet<>();
+            for (User user : matchingUsers) {
+                Boolean isUserVerified = linkAutoServiceProxy.isUserVerified(user.username());
+                if (isUserVerified) {
+                    verifiedUsers.add(user.username());
+                }
+            }
+            model.addAttribute("verifiedUsers", verifiedUsers);
+
             model.addAttribute("searchTerm", username);
             model.addAttribute("users", matchingUsers);
-            
+
             // Añadir datos del usuario actual
             User currentUser = linkAutoServiceProxy.getUserProfile(token);
             model.addAttribute("currentUser", currentUser);
             model.addAttribute("username", this.username);
             model.addAttribute("profilePicture", currentUser.profilePicture());
             model.addAttribute("role", currentUser.role());
-            
+
             // Obtener usuarios que sigue el usuario actual
             List<User> followings = linkAutoServiceProxy.getUserFollowing(this.username);
             List<String> followingUsernames = followings.stream()
-                .map(User::username)
-                .collect(Collectors.toList());
+                    .map(User::username)
+                    .collect(Collectors.toList());
             model.addAttribute("followings", followingUsernames);
-            
+
             return "searchResults"; // Nueva plantilla para mostrar resultados
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute("error", "Error al buscar usuarios: " + e.getMessage());
             return "redirect:/feed";
         }
-}
+    }
 
     @PostMapping("/user/{postId}/like")
     public String likePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
@@ -314,6 +353,7 @@ public class ClientController {
             return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
         }
     }
+
     @PostMapping("/user/{postId}/unlike")
     public String unlikePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
         try {
@@ -328,7 +368,7 @@ public class ClientController {
 
     @PostMapping("/user/{postId}/comment")
     public String commentPost(@PathVariable Long postId, @ModelAttribute CommentCreator comment, RedirectAttributes redirectAttributes) {
-        try { 
+        try {
             linkAutoServiceProxy.commentPost(token, postId, comment);
             redirectAttributes.addFlashAttribute("success", "Comentario agregado con éxito");
             return "redirect:/feed"; // Redirigir a la página de inicio después de comentar en la publicación
@@ -340,7 +380,7 @@ public class ClientController {
 
     @PostMapping("/user/{postId}/commentInProfile")
     public String commentPostInProfile(@PathVariable Long postId, @ModelAttribute CommentCreator comment, RedirectAttributes redirectAttributes) {
-        try { 
+        try {
             linkAutoServiceProxy.commentPost(token, postId, comment);
             redirectAttributes.addFlashAttribute("success", "Comentario agregado con éxito");
             return "redirect:/user/" + linkAutoServiceProxy.getPostById(postId).username(); // Redirigir a la página de inicio después de comentar en la publicación
@@ -361,7 +401,7 @@ public class ClientController {
         for (Comment comment : comments) {
             String profilePicture = linkAutoServiceProxy.getUserByUsername(comment.username()).profilePicture();
             profilePictureByUsername.putIfAbsent(comment.username(), profilePicture);
-            
+
             commentsByPostId.putIfAbsent(post.id(), comment);
         }
         String profilePicture = linkAutoServiceProxy.getUserByUsername(post.username()).profilePicture();
@@ -370,36 +410,35 @@ public class ClientController {
         model.addAttribute("commentsByPostId", commentsByPostId);
         return "post";
     }
+    //Endpoint para el panel de administrador
+    @GetMapping("/adminPanel")
+    public String adminPanel(Model model, RedirectAttributes redirectAttributes) {
+        if (token == null) {
+            // Si no hay token, redirigir al inicio de sesión
+            redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al panel de administrador.");
+            return "redirect:/";
+        }
+
+        String profilePicture = linkAutoServiceProxy.getUserByUsername(username).profilePicture();
+        model.addAttribute("profilePicture", profilePicture); // Agregar fotos de perfil al modelo
+                
+        model.addAttribute("username", username); // Agregar nombre de usuario al modelo
+        
+
+        // Obtener el perfil del usuario logueado
+        User user = linkAutoServiceProxy.getUserProfile(token);
     
-  //Endpoint para el panel de administrador
-  @GetMapping("/adminPanel")
-  public String adminPanel(Model model, RedirectAttributes redirectAttributes) {
-      if (token == null) {
-          // Si no hay token, redirigir al inicio de sesión
-          redirectAttributes.addFlashAttribute("error", "Debes iniciar sesión para acceder al panel de administrador.");
-          return "redirect:/";
-      }
+        // Verificar si el usuario tiene el rol de ADMIN
+        if (!user.role().equals("ADMIN")) {
+            redirectAttributes.addFlashAttribute("error", "No tienes permisos para acceder al panel de administrador.");
+            return "redirect:/feed"; // Redirigir al feed si no es administrador
+        }
 
-      String profilePicture = linkAutoServiceProxy.getUserByUsername(username).profilePicture();
-      model.addAttribute("profilePicture", profilePicture); // Agregar fotos de perfil al modelo
-            
-      model.addAttribute("username", username); // Agregar nombre de usuario al modelo
-      
-
-      // Obtener el perfil del usuario logueado
-      User user = linkAutoServiceProxy.getUserProfile(token);
-  
-      // Verificar si el usuario tiene el rol de ADMIN
-      if (!user.role().equals("ADMIN")) {
-          redirectAttributes.addFlashAttribute("error", "No tienes permisos para acceder al panel de administrador.");
-          return "redirect:/feed"; // Redirigir al feed si no es administrador
-      }
-
-      List<User> users = linkAutoServiceProxy.getAllUsers();
-      model.addAttribute("users", users);
-  
-      return "adminPanel"; // Vista del panel de administrador
-  }
+        List<User> users = linkAutoServiceProxy.getAllUsers();
+        model.addAttribute("users", users);
+    
+        return "adminPanel"; // Vista del panel de administrador
+    }
 
   @PostMapping("/admin/deleteUser")
   public String deleteUser(@RequestParam("username") String usernameToDelete, RedirectAttributes redirectAttributes) {
@@ -413,6 +452,28 @@ public class ClientController {
       }
       return "redirect:/adminPanel"; // Redirect back to the admin panel
   }
+
+  @PostMapping("/admin/banUser")
+    public String banUser(
+        @RequestParam("username") String usernameToBan,
+        @RequestParam("banStatus") boolean banStatus,
+        RedirectAttributes redirectAttributes,
+        Model model) {
+    try {
+        System.out.println("Attempting to update ban status for user: " + usernameToBan); // Debug log
+        System.out.println("\n\n\n\n\nBAN STATUS: " + banStatus + "\n\n\n\n\n"); // Debug log
+        linkAutoServiceProxy.banUser(token, usernameToBan, banStatus);
+        String action = banStatus ? "baneado" : "desbaneado";
+        redirectAttributes.addFlashAttribute("success", "Usuario " + usernameToBan + " " + action + " con éxito.");
+    } catch (Exception e) {
+        System.err.println("Error updating ban status for user: " + e.getMessage()); // Debug log
+        redirectAttributes.addFlashAttribute("error", "Error al actualizar el estado de baneo del usuario: " + e.getMessage());
+    }
+    // Actualizar la lista de usuarios
+    List<User> users = linkAutoServiceProxy.getAllUsers();
+    model.addAttribute("users", users);
+    return "redirect:/adminPanel"; // Redirect back to the admin panel
+}
   
   @PostMapping("/admin/promoteToAdmin")
   public String promoteToAdmin(@RequestParam("username") String usernameToPromote, RedirectAttributes redirectAttributes) {
@@ -580,4 +641,110 @@ public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
           return "redirect:/events"; // Redirigir a los detalles del evento en caso de error
       }
   }
+
+  @PostMapping("/user/{username}/verify")
+    public String verifyUser(@PathVariable String username, RedirectAttributes redirectAttributes, String redirect) {
+        try {
+            linkAutoServiceProxy.verifyUser(token, username);
+            redirectAttributes.addFlashAttribute("success", "Usuario " + username + " verificado con éxito.");
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al verificar al usuario: " + e.getMessage());
+        }
+        return "redirect:" + redirect; // Redirect back to the admin panel
+    }
+
+    @PostMapping("/user/{postId}/savePost")
+    public String savePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.savePost(token, postId);
+            redirectAttributes.addFlashAttribute("success", "Publicación " + postId + " guardada con éxito");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de guardar la publicación
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al guardar la publicación: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
+    @PostMapping("/user/{username}/report")
+    public String reportUser(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.reportUser(token, username);
+            redirectAttributes.addFlashAttribute("success", "Usuario " + username + " reportado con éxito.");
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/"); // Redirigir a la página de inicio después de seguir al usuario    
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al reportar al usuario: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
+    @PostMapping("/admin/{username}/deleteReport") 
+    public String deleteReport(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.deleteReport(token, username);
+            redirectAttributes.addFlashAttribute("success", "Reporte de usuario " + username + " eliminado con éxito.");
+            return "redirect:" + (redirectUrl != null ? redirectUrl : "/");   
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al eliminar el reporte del usuario: " + e.getMessage());
+            return "redirect:/feed";
+        }
+    }
+
+    @PostMapping("/user/{postId}/unSavePost")
+    public String unsavePost(@PathVariable Long postId, RedirectAttributes redirectAttributes) {
+        try {
+            linkAutoServiceProxy.unsavePost(token, postId);
+            redirectAttributes.addFlashAttribute("success", "Publicación " + postId + " eliminada de guardados");
+            return "redirect:/feed"; // Redirigir a la página de inicio después de quitar la publicación de guardados
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("error", "Error al quitar la publicación de guardados: " + e.getMessage());
+            return "redirect:/feed"; // Redirigir a la página de inicio en caso de error
+        }
+    }
+
+    @GetMapping("/savedPosts")
+    public String savedPosts(Model model) {
+        if (token != null) {
+            List<Post> posts = new ArrayList<>(linkAutoServiceProxy.getUserSavedPosts(username));
+            Map<String, String> profilePictureByUsername = new HashMap<>();
+            for (Post post : posts) {
+                String profilePicture = linkAutoServiceProxy.getUserByUsername(post.username()).profilePicture();
+                profilePictureByUsername.putIfAbsent(post.username(), profilePicture);
+
+            }
+
+            model.addAttribute("profilePictureByUsername", profilePictureByUsername); // Agregar fotos de perfil al modelo
+
+            model.addAttribute("posts", posts); // Agregar publicaciones al modelo
+            model.addAttribute("username", username); // Agregar nombre de usuario al modelo
+
+            User user = linkAutoServiceProxy.getUserProfile(token);
+            String profilePicture = user.profilePicture();
+            model.addAttribute("profilePicture", profilePicture); // Agregar foto de perfil al modelo
+            model.addAttribute("role", user.role()); // Agregar rol al modelo
+
+            List<User> followings = linkAutoServiceProxy.getUserFollowing(username);
+            List<String> followingUsernames = new ArrayList<>();
+            for (User following : followings) {
+                followingUsernames.add(following.username());
+            }
+            model.addAttribute("followings", followingUsernames); // Agregar seguidores al modelo
+
+            Map<Long, List<Comment>> commentsByPostId = new HashMap<>();
+            for (Post post : posts) {
+                List<Comment> comments = linkAutoServiceProxy.getCommentsByPostId(post.id());
+
+                for (Comment comment : comments) {
+                    commentsByPostId.putIfAbsent(post.id(), new ArrayList<>());
+                    commentsByPostId.get(post.id()).add(comment);
+                }
+            }
+            model.addAttribute("commentsByPostId", commentsByPostId); // Agregar comentarios al modelo
+
+            return "savedPost"; // Vista para usuarios autenticados
+        } else {
+            // Token inválido o no proporcionado, redirigir al inicio de sesión
+            return "redirect:/";
+        }
+    }
 }
+

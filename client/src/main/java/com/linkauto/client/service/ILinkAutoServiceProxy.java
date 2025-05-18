@@ -53,6 +53,7 @@ public interface ILinkAutoServiceProxy {
     // Admin methods
     List<User> getAllUsers();
     void deleteUser(String token, String username);
+    void banUser(String token, String username, boolean banStatus);
     void promoteToAdmin(String token, String username);
     void demoteToUser(String token, String username);
     
@@ -63,4 +64,12 @@ public interface ILinkAutoServiceProxy {
     void deleteEvent(String token, Long eventId);
     void participateInEvent(String token, Long eventId);
     void cancelParticipation(String token, Long eventId);
+    void reportUser(String token, String username);
+    void deleteReport(String token, String username);
+    void verifyUser(String token, String username);
+    Boolean isUserVerified(String username);
+    List<Post> getUserSavedPosts(String username);
+    void savePost(String token, Long postId);
+    void unsavePost(String token, Long postId);
+
 }

@@ -32,7 +32,7 @@ public class AuthServiceTest {
 
     @BeforeEach
     public void setUpUser() {
-        user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
     }
 
     @Test
@@ -45,7 +45,7 @@ public class AuthServiceTest {
 
     @Test
     public void testRegister_NewUser() {
-        User user = new User("newUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("newUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),new HashSet<>());
         when(userRepository.existsByUsername(user.getUsername())).thenReturn(false);
         when(userRepository.save(user)).thenReturn(user);
 
@@ -122,10 +122,10 @@ public class AuthServiceTest {
 
     @Test
     public void testDeleteUser_Success() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         Post post = new Post(1L, user, "Post message", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         user.addPost(post);
-        User user2 = new User("testUser2", "name2", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user2 = new User("testUser2", "name2", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         user.addFollower(user2);
         user2.addFollowing(user);
         user.addFollowing(user2);
@@ -157,7 +157,7 @@ public class AuthServiceTest {
 
     @Test
     public void testDeleteUser_CatchException() {
-        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", "name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),new HashSet<>());
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
 
         String token = authService.login("testUser", "password");
@@ -170,9 +170,9 @@ public class AuthServiceTest {
 
     @Test
     public void testDeleteUser_AdminCanDeleteOtherUser() {
-        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User user = new User("testUser", "Test Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
 
-        User adminUser = new User("adminUser", "Admin Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User adminUser = new User("adminUser", "Admin Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         adminUser.setRole(Role.ADMIN);
 
         when(userRepository.findById("testUser")).thenReturn(Optional.of(user));
@@ -187,6 +187,73 @@ public class AuthServiceTest {
         assertTrue(result);
         assertFalse(authService.isTokenValid(tokenAdmin)); 
 }
+
+@Test
+    public void testBanUser_Success() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+
+        // Crear un usuario de prueba
+        User user = new User();
+        user.setUsername(username);
+        user.setBanned(false);
+
+        // Mock del repositorio
+        when(userRepository.findById(username)).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenReturn(user);
+
+        // Llamar al método
+        boolean result = authService.banUser(username, banStatus);
+
+        // Verificar el resultado
+        assertTrue(result);
+        assertTrue(user.isBanned());
+        verify(userRepository).findById(username);
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    public void testBanUser_UserNotFound() {
+        // Datos de prueba
+        String username = "nonExistentUser";
+        boolean banStatus = true;
+
+        // Mock del repositorio
+        when(userRepository.findById(username)).thenReturn(Optional.empty());
+
+        // Llamar al método
+        boolean result = authService.banUser(username, banStatus);
+
+        // Verificar el resultado
+        assertFalse(result);
+        verify(userRepository).findById(username);
+        verify(userRepository, never()).save(any(User.class));
+    }
+
+    @Test
+    public void testBanUser_ErrorWhileSaving() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+
+        // Crear un usuario de prueba
+        User user = new User();
+        user.setUsername(username);
+        user.setBanned(false);
+
+        // Mock del repositorio
+        when(userRepository.findById(username)).thenReturn(Optional.of(user));
+        when(userRepository.save(any(User.class))).thenThrow(new RuntimeException("Error al guardar el usuario"));
+
+        // Llamar al método
+        boolean result = authService.banUser(username, banStatus);
+
+        // Verificar el resultado
+        assertFalse(result);
+        verify(userRepository).findById(username);
+        verify(userRepository).save(user); // Verificar que se intentó guardar el usuario
+    }
 
     @Test
     public void testChangeRole() {

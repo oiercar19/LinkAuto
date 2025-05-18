@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
@@ -49,7 +51,7 @@ public class LinkAutoControllerTest {
         linkAutoService = mock(LinkAutoService.class);
         authService = mock(AuthService.class);
         linkAutoController = new LinkAutoController(linkAutoService, authService);
-        usuario = new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        usuario = new User("ownerUsername", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
     }
     
     @Test
@@ -137,7 +139,7 @@ public class LinkAutoControllerTest {
     public void testGetUserFollowers(){
         List<User> followers = new ArrayList<>();
         followers.add(usuario);
-        followers.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
+        followers.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(),new HashSet<>())); 
         when(linkAutoService.getFollowersByUsername("test")).thenReturn(followers);
         ResponseEntity<List<UserReturnerDTO>> result = linkAutoController.getUserFollowers("test");
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -150,7 +152,7 @@ public class LinkAutoControllerTest {
     public void testGetUserFollowing(){
         List<User> following = new ArrayList<>();
         following.add(usuario);
-        following.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>())); 
+        following.add(new User("usuario2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>())); 
         when(linkAutoService.getFollowingByUsername("test")).thenReturn(following);
         ResponseEntity<List<UserReturnerDTO>> result = linkAutoController.getUserFollowing("test");
         assertEquals(HttpStatus.OK, result.getStatusCode());
@@ -187,7 +189,7 @@ public class LinkAutoControllerTest {
         ResponseEntity<Void> result = linkAutoController.unfollowUser("test", userToken);
         assertEquals(HttpStatus.UNAUTHORIZED, result.getStatusCode());
 
-        User test = new User("test", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User test = new User("test", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         test.addFollower(usuario);
         usuario.addFollowing(test);
         when(authService.isTokenValid(userToken)).thenReturn(true);
@@ -217,7 +219,7 @@ public class LinkAutoControllerTest {
 
         // Scenario 2: Logged-in user not authorized to delete target user
         when(authService.isTokenValid(userToken)).thenReturn(true);
-        User loggedUser = new User("loggedUser", "name", "profilePic", "email", new ArrayList<>(), 123456L, Gender.MALE, "location", "password", "description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User loggedUser = new User("loggedUser", "name", "profilePic", "email", new ArrayList<>(), 123456L, Gender.MALE, "location", "password", "description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         when(authService.getUserByToken(userToken)).thenReturn(loggedUser);
         ResponseEntity<Void> result2 = linkAutoController.deleteUser(userToken, targetUsername);
         assertEquals(HttpStatus.FORBIDDEN, result2.getStatusCode());
@@ -231,7 +233,7 @@ public class LinkAutoControllerTest {
         verify(authService, times(1)).getUserByUsername(targetUsername);
 
         // Scenario 4: Successful deletion
-        User targetUser = new User(targetUsername, "name", "profilePic", "email", new ArrayList<>(), 123456L, Gender.MALE, "location", "password", "description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User targetUser = new User(targetUsername, "name", "profilePic", "email", new ArrayList<>(), 123456L, Gender.MALE, "location", "password", "description", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         when(authService.getUserByUsername(targetUsername)).thenReturn(targetUser);
         when(authService.deleteUser(targetUser, userToken)).thenReturn(true);
         ResponseEntity<Void> result4 = linkAutoController.deleteUser(userToken, targetUsername);
@@ -397,7 +399,7 @@ public class LinkAutoControllerTest {
     @Test
     public void testUpdateUser() {
         String userToken = "validToken";
-        UserDTO userDto = new UserDTO("updatedName", "USER", "avatar.jpg" ,"updatedEmail", 
+        UserDTO userDto = new UserDTO("updatedName", "USER", false , "avatar.jpg" ,"updatedEmail", 
                                     new ArrayList<>(), 123456L, "male", "updatedLocation",
                                     "updatedPassword", "updatedDescription");
         
@@ -417,7 +419,7 @@ public class LinkAutoControllerTest {
         assertEquals("updatedName", validResponse.getBody().getName());
         
         // Case 3: Regular user trying to update role
-        UserDTO roleSwitchDto = new UserDTO("name", "ADMIN", "pic", "email", 
+        UserDTO roleSwitchDto = new UserDTO("name", "ADMIN", false , "pic", "email", 
                                         new ArrayList<>(), 123456L, "male", "location",
                                         "password", "description");
         
@@ -428,7 +430,7 @@ public class LinkAutoControllerTest {
         User adminUser = new User("adminUsername", "adminName", "adminPic", "adminEmail", 
                                 new ArrayList<>(), 123456L, Gender.MALE, "adminLocation", 
                                 "adminPassword", "adminDescription", new ArrayList<>(), 
-                                new ArrayList<>(), new ArrayList<>());
+                                new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         adminUser.setRole(Role.ADMIN);
         
         when(authService.getUserByToken(userToken)).thenReturn(adminUser).thenReturn(usuario);
@@ -442,7 +444,7 @@ public class LinkAutoControllerTest {
 
         // Case 6: Random user trying to update another user
         when(authService.isTokenValid("randomUser1Token")).thenReturn(true);
-        User randomUser1 = new User("randomUser1", "randomUser1", "adminPic", "adminEmail", new ArrayList<>(), 123456L, Gender.MALE, "adminLocation", "adminPassword", "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User randomUser1 = new User("randomUser1", "randomUser1", "adminPic", "adminEmail", new ArrayList<>(), 123456L, Gender.MALE, "adminLocation", "adminPassword", "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
         when(authService.getUserByToken("randomUser1Token")).thenReturn(randomUser1).thenReturn(usuario);
         ResponseEntity<User> randomUserResponse = linkAutoController.updateUser("randomUser1Token", userDto);
         assertEquals(HttpStatus.FORBIDDEN, randomUserResponse.getStatusCode());
@@ -455,7 +457,7 @@ public class LinkAutoControllerTest {
         users.add(new User("user2", "name2", "pic2", "email2", 
                         new ArrayList<>(), 123456L, Gender.FEMALE, "location2", 
                         "password2", "description2", new ArrayList<>(), 
-                        new ArrayList<>(), new ArrayList<>()));
+                        new ArrayList<>(), new ArrayList<>(), new HashSet<>()));
         
         when(linkAutoService.getAllUsers()).thenReturn(users);
         
@@ -498,7 +500,7 @@ public class LinkAutoControllerTest {
         User testUser = new User(username, "testName", "testPic", "testEmail", 
                                 new ArrayList<>(), 123456L, Gender.MALE, "testLocation", 
                                 "testPassword", "testDescription", new ArrayList<>(), 
-                                new ArrayList<>(), new ArrayList<>());
+                                new ArrayList<>(), new ArrayList<>(), new HashSet<>());
 
         when(linkAutoService.getUserByUsername(username)).thenReturn(Optional.of(testUser));
         
@@ -640,6 +642,39 @@ public class LinkAutoControllerTest {
         assertEquals(2, response.getBody().size());
         assertEquals(1L, response.getBody().get(0).getId());
         assertEquals(2L, response.getBody().get(1).getId());
+    }
+
+    @Test
+    public void testBanUser_Success() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+        String userToken = "validToken";
+                // Crear usuarios de prueba
+        User adminUser = new User("admin", "Admin Name", "adminPic", "adminEmail",
+                new ArrayList<>(), 123456L, User.Gender.MALE, "adminLocation", "adminPassword",
+                "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        adminUser.setRole(Role.ADMIN);
+    
+        User targetUser = new User(username, "Target Name", "targetPic", "targetEmail",
+                new ArrayList<>(), 123456L, User.Gender.FEMALE, "targetLocation", "targetPassword",
+                "targetDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+    
+        // Mock del servicio
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(adminUser);
+        when(authService.getUserByUsername(username)).thenReturn(targetUser);
+        when(authService.banUser(username, banStatus)).thenReturn(true);
+    
+        // Llamar al método del controlador
+        ResponseEntity<Void> response = linkAutoController.banUser(username, banStatus, userToken);
+    
+        // Verificar el resultado
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService).getUserByToken(userToken);
+        verify(authService).getUserByUsername(username);
+        verify(authService).banUser(username, banStatus);
     }
     
    @Test
@@ -918,4 +953,310 @@ public void testParseEventToEventReturnerDTO() {
     assertEquals(2, result.getBody().getParticipants().size());
     assertEquals(2, result.getBody().getComment_ids().size());
 }
+    
+    @Test
+    public void testBanUser_Unauthorized() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+        String userToken = "invalidToken";
+    
+        // Mock del servicio
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+    
+        // Llamar al método del controlador
+        ResponseEntity<Void> response = linkAutoController.banUser(username, banStatus, userToken);
+    
+        // Verificar el resultado
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService, never()).getUserByToken(anyString());
+        verify(authService, never()).getUserByUsername(anyString());
+        verify(authService, never()).banUser(anyString(), anyBoolean());
+    }
+    
+    @Test
+    public void testBanUser_Forbidden() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+        String userToken = "validToken";
+    
+        // Crear un usuario no administrador
+        User nonAdminUser = new User("nonAdmin", "Non Admin Name", "nonAdminPic", "nonAdminEmail",
+                new ArrayList<>(), 123456L, User.Gender.MALE, "nonAdminLocation", "nonAdminPassword",
+                "nonAdminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        nonAdminUser.setRole(Role.USER);
+    
+        // Mock del servicio
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(nonAdminUser);
+    
+        // Llamar al método del controlador
+        ResponseEntity<Void> response = linkAutoController.banUser(username, banStatus, userToken);
+    
+        // Verificar el resultado
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService).getUserByToken(userToken);
+        verify(authService, never()).getUserByUsername(anyString());
+        verify(authService, never()).banUser(anyString(), anyBoolean());
+    }
+    
+    @Test
+    public void testBanUser_UserNotFound() {
+        // Datos de prueba
+        String username = "nonExistentUser";
+        boolean banStatus = true;
+        String userToken = "validToken";
+    
+        // Crear un usuario administrador
+        User adminUser = new User("admin", "Admin Name", "adminPic", "adminEmail",
+                new ArrayList<>(), 123456L, User.Gender.MALE, "adminLocation", "adminPassword",
+                "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        adminUser.setRole(Role.ADMIN);
+    
+        // Mock del servicio
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(adminUser);
+        when(authService.getUserByUsername(username)).thenReturn(null);
+    
+        // Llamar al método del controlador
+        ResponseEntity<Void> response = linkAutoController.banUser(username, banStatus, userToken);
+    
+        // Verificar el resultado
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService).getUserByToken(userToken);
+        verify(authService).getUserByUsername(username);
+        verify(authService, never()).banUser(anyString(), anyBoolean());
+    }
+    
+    @Test
+    public void testBanUser_InternalServerError() {
+        // Datos de prueba
+        String username = "testUser";
+        boolean banStatus = true;
+        String userToken = "validToken";
+    
+        // Crear usuarios de prueba
+        User adminUser = new User("admin", "Admin Name", "adminPic", "adminEmail",
+                new ArrayList<>(), 123456L, User.Gender.MALE, "adminLocation", "adminPassword",
+                "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        adminUser.setRole(Role.ADMIN);
+    
+        User targetUser = new User(username, "Target Name", "targetPic", "targetEmail",
+                new ArrayList<>(), 123456L, User.Gender.FEMALE, "targetLocation", "targetPassword",
+                "targetDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+    
+        // Mock del servicio
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(adminUser);
+        when(authService.getUserByUsername(username)).thenReturn(targetUser);
+        when(authService.banUser(username, banStatus)).thenReturn(false);
+    
+        // Llamar al método del controlador
+        ResponseEntity<Void> response = linkAutoController.banUser(username, banStatus, userToken);
+    
+        // Verificar el resultado
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService).getUserByToken(userToken);
+        verify(authService).getUserByUsername(username);
+        verify(authService).banUser(username, banStatus);
+    }
+    
+    @Test
+    public void testReportUser() {
+        String userToken = "validToken";
+        String username = "reportedUser";
+
+        // Case 1: Invalid token
+        when(authService.isTokenValid("invalidToken")).thenReturn(false);
+        ResponseEntity<Void> invalidTokenResponse = linkAutoController.reportUser(username, "invalidToken");
+        assertEquals(HttpStatus.UNAUTHORIZED, invalidTokenResponse.getStatusCode());
+
+        // Case 2: Reported user does not exist
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        User reportingUser = new User("reportingUser", "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(authService.getUserByToken(userToken)).thenReturn(reportingUser);
+        when(authService.getUserByUsername(username)).thenReturn(null);
+        ResponseEntity<Void> notFoundResponse = linkAutoController.reportUser(username, userToken);
+        assertEquals(HttpStatus.NOT_FOUND, notFoundResponse.getStatusCode());
+
+        // Case 3: Report successful
+        User reportedUser = new User(username, "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(authService.getUserByUsername(username)).thenReturn(reportedUser);
+        when(linkAutoService.reportUser(reportingUser, reportedUser)).thenReturn(true);
+        ResponseEntity<Void> successResponse = linkAutoController.reportUser(username, userToken);
+        assertEquals(HttpStatus.OK, successResponse.getStatusCode());
+
+        // Case 4: Report failed (internal error)
+        when(linkAutoService.reportUser(reportingUser, reportedUser)).thenReturn(false);
+        ResponseEntity<Void> errorResponse = linkAutoController.reportUser(username, userToken);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode());
+    }
+
+    @Test
+    public void testDeleteReport() {
+        String userToken = "validToken";
+        String username = "reportedUser";
+
+        // Case 1: Invalid token
+        when(authService.isTokenValid("invalidToken")).thenReturn(false);
+        ResponseEntity<Void> invalidTokenResponse = linkAutoController.deleteReport(username, "invalidToken");
+        assertEquals(HttpStatus.UNAUTHORIZED, invalidTokenResponse.getStatusCode());
+
+        // Case 2: Reported user not found (null)
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(null);
+        ResponseEntity<Void> notFoundResponse = linkAutoController.deleteReport(username, userToken);
+        assertEquals(HttpStatus.NOT_FOUND, notFoundResponse.getStatusCode());
+
+        // Case 3: Delete report successful
+        User reportedUser = new User("reportingUser", "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        when(authService.getUserByToken(userToken)).thenReturn(reportedUser);
+        when(linkAutoService.deleteReport(reportedUser, username)).thenReturn(true);
+        ResponseEntity<Void> successResponse = linkAutoController.deleteReport(username, userToken);
+        assertEquals(HttpStatus.OK, successResponse.getStatusCode());
+
+        // Case 4: Delete report failed (internal error)
+        when(linkAutoService.deleteReport(reportedUser, username)).thenReturn(false);
+        ResponseEntity<Void> errorResponse = linkAutoController.deleteReport(username, userToken);
+        assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode());
+    }
+
+    @Test
+    public void testParseUserToUserReturnerDTO_WithReporters() {
+        // Arrange
+        User reporter1 = new User("reporter1", "Reporter One", "pic1", "email1", new ArrayList<>(), 111L, Gender.FEMALE, "loc1", "pass1", "desc1", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User reporter2 = new User("reporter2", "Reporter Two", "pic2", "email2", new ArrayList<>(), 222L, Gender.MALE, "loc2", "pass2", "desc2", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User mainUser = new User("mainUser", "Main User", "mainPic", "mainEmail", new ArrayList<>(), 333L, Gender.OTHER, "mainLoc", "mainPass", "mainDesc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        mainUser.setReporters(reporter1);
+        mainUser.setReporters(reporter2);
+
+        // Use reflection to access the private method
+        try {
+            java.lang.reflect.Method method = LinkAutoController.class.getDeclaredMethod("parseUserToUserReturnerDTO", User.class);
+            method.setAccessible(true);
+            UserReturnerDTO dto = (UserReturnerDTO) method.invoke(linkAutoController, mainUser);
+
+            assertNotNull(dto);
+            assertEquals("mainUser", dto.getUsername());
+            assertEquals("Main User", dto.getName());
+            assertEquals("mainEmail", dto.getEmail());
+            assertEquals("mainPic", dto.getProfilePicture());
+            assertEquals("mainLoc", dto.getLocation());
+            assertEquals("mainDesc", dto.getDescription());
+            assertEquals(mainUser.getRole().toString(), dto.getRole());
+            assertEquals(mainUser.getBirthDate(), dto.getBirthDate());
+            assertEquals(mainUser.getGender().toString(), dto.getGender());
+            assertNotNull(dto.getReporters());
+            assertEquals(2, dto.getReporters().size());
+            // Check that both reporters are present in the DTO set
+            boolean foundReporter1 = dto.getReporters().stream().anyMatch(r -> r.getUsername().equals("reporter1"));
+            boolean foundReporter2 = dto.getReporters().stream().anyMatch(r -> r.getUsername().equals("reporter2"));
+            assertEquals(true, foundReporter1);
+            assertEquals(true, foundReporter2);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Test
+    public void testSavePost_Unauthorized() {
+        Long postId = 1L;
+        String userToken = "invalidToken";
+
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+
+        ResponseEntity<Void> response = linkAutoController.savePost(postId, userToken);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(authService, times(1)).isTokenValid(userToken);
+    }
+
+    @Test
+    public void testSavePost_Success() {
+        Long postId = 1L;
+        String userToken = "validToken";
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(usuario);
+        when(linkAutoService.savePost(postId, usuario)).thenReturn(true);
+
+        ResponseEntity<Void> response = linkAutoController.savePost(postId, userToken);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(linkAutoService, times(1)).savePost(eq(postId), any(User.class));
+    }
+
+    @Test
+    public void testSavePost_NotFound() {
+        Long postId = 99L;
+        String userToken = "validToken";
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(usuario);
+        when(linkAutoService.savePost(postId, usuario)).thenReturn(false);
+
+        ResponseEntity<Void> response = linkAutoController.savePost(postId, userToken);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(linkAutoService, times(1)).savePost(postId, usuario);
+    }
+
+    @Test
+    public void testUnsavePost() {
+        Long postId = 1L;
+        String userToken = "1234567890";
+
+        // Caso 1: Token inválido
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+        ResponseEntity<Void> responseInvalid = linkAutoController.unsavePost(postId, userToken);
+        assertEquals(HttpStatus.UNAUTHORIZED, responseInvalid.getStatusCode());
+        verify(authService, times(1)).isTokenValid(userToken);
+
+        // Caso 2: Unsave exitoso
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(usuario);
+        when(linkAutoService.unsavePost(postId, usuario)).thenReturn(true);
+
+        ResponseEntity<Void> responseSuccess = linkAutoController.unsavePost(postId, userToken);
+        assertEquals(HttpStatus.OK, responseSuccess.getStatusCode());
+        verify(linkAutoService, times(1)).unsavePost(postId, usuario);
+
+        // Caso 3: Post no encontrado o no guardado
+        when(linkAutoService.unsavePost(postId, usuario)).thenReturn(false);
+        ResponseEntity<Void> responseNotFound = linkAutoController.unsavePost(postId, userToken);
+        assertEquals(HttpStatus.NOT_FOUND, responseNotFound.getStatusCode());
+        verify(linkAutoService, times(2)).unsavePost(postId, usuario);
+    }
+
+    @Test
+    void testGetSavedPostsByUsername() {
+        // Arrange
+        String username = "johndoe";
+    
+        User user = new User();
+        user.setUsername(username); // o usa constructor si tienes
+    
+        Post post1 = new Post();
+        post1.setUsuario(user);
+    
+        Post post2 = new Post();
+        post2.setUsuario(user);
+    
+        List<Post> savedPosts = List.of(post1, post2);
+    
+        when(linkAutoService.getSavedPostsByUsername(username)).thenReturn(savedPosts);
+    
+        // Act
+        ResponseEntity<List<PostReturnerDTO>> response = linkAutoController.getSavedPostsByUsername(username);
+    
+        // Assert
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertNotNull(response.getBody());
+        assertEquals(2, response.getBody().size());
+    }
 }

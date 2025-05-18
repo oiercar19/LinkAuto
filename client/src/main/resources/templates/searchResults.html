@@ -112,6 +112,21 @@
         .btn-icon-text i {
             display: inline-flex;
         }
+
+                /* Estilo para el badge de verificación */
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            font-size: 10px;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
     </style>
 </head>
 <body>
@@ -193,14 +208,20 @@
                 <div th:each="user : ${users}" class="user-card">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="user-profile">
-                            <div class="user-avatar" style="width: 50px; heigh: 50px">
+                            <div class="user-avatar" style="width: 50px; height: 50px">
                                 <img th:src="${user.profilePicture != null && (#strings.endsWith(user.profilePicture, '.png') || #strings.endsWith(user.profilePicture, '.jpg')) ? user.profilePicture : '/images/default-avatar.png'}" 
                                      alt="Profile" 
                                      class="img-fluid rounded-circle" 
                                      style="width: 50px; height: 50px;">
                             </div>
                             <div>
-                                <h5 class="mb-0" th:text="${user.username}">Username</h5>
+                                <h5>
+                                    <span class="mb-0" th:text="${user.username}">Username</span>
+                                    <!-- Badge de verificación para el usuario actual en la navbar -->
+                                    <span th:if="${verifiedUsers != null and verifiedUsers.contains(user.username)}" class="verified-badge" title="Usuario verificado">
+                                        <i class="bi bi-check"></i>
+                                    </span>                                    
+                                </h5>
                                 <small class="text-muted" th:text="${user.email}">email@example.com</small>
                             </div>
                         </div>
