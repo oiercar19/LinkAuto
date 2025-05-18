@@ -86,6 +86,9 @@ public class Event {
     public Long getId() {
         return id;
     }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public User getCreador() {
         return creador;
@@ -152,6 +155,11 @@ public class Event {
 
     public void addImagen(String imagen) {
         this.imagenes.add(imagen);
+    }
+
+    public void setImagenes(List<String> imagenes) {
+        this.imagenes.clear();
+        this.imagenes.addAll(imagenes);
     }
 
     public Set<String> getParticipantes() {

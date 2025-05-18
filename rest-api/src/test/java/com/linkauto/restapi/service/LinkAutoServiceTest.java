@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,10 +19,12 @@ import static org.mockito.Mockito.when;
 
 import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.dto.PostDTO;
+import com.linkauto.restapi.dto.EventDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.model.User.Gender;
+import com.linkauto.restapi.model.Event;
 import com.linkauto.restapi.repository.CommentRepository;
 import com.linkauto.restapi.repository.EventRepository;
 import com.linkauto.restapi.repository.PostRepository;
@@ -361,5 +364,430 @@ public class LinkAutoServiceTest {
         when(postRepository.findById(2L)).thenReturn(Optional.empty());
         List<Comment> result2 = linkAutoService.getCommentsByPostId(2L);
         assertEquals(null, result2);
+    }
+    @Test
+    public void testGetAllEvents() {
+        List<com.linkauto.restapi.model.Event> events = new ArrayList<>();
+        com.linkauto.restapi.model.Event event1 = new com.linkauto.restapi.model.Event();
+        com.linkauto.restapi.model.Event event2 = new com.linkauto.restapi.model.Event();
+        events.add(event1);
+        events.add(event2);
+
+        when(eventRepository.findAll()).thenReturn(events);
+
+        List<com.linkauto.restapi.model.Event> result = linkAutoService.getAllEvents();
+
+        assertEquals(2, result.size());
+        assertEquals(event1, result.get(0));
+        assertEquals(event2, result.get(1));
+        verify(eventRepository).findAll();
+    }
+
+    @Test
+    public void testGetEventById_Found() {
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
+
+        Optional<com.linkauto.restapi.model.Event> result = linkAutoService.getEventById(1L);
+
+        assertTrue(result.isPresent());
+        assertEquals(event, result.get());
+        verify(eventRepository).findById(1L);
+    }
+
+    @Test
+    public void testGetEventById_NotFound() {
+        when(eventRepository.findById(2L)).thenReturn(Optional.empty());
+
+        Optional<com.linkauto.restapi.model.Event> result = linkAutoService.getEventById(2L);
+
+        assertFalse(result.isPresent());
+        verify(eventRepository).findById(2L);
+    }
+
+    @Test
+    public void testCreateEvent_WithImages() {
+        com.linkauto.restapi.dto.EventDTO eventDTO = new com.linkauto.restapi.dto.EventDTO(
+            "Title", "Description", "Location", 123L, 456L, Arrays.asList("img1", "img2")
+        );
+        User user = new User("creator", "Creator Name", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        com.linkauto.restapi.model.Event result = linkAutoService.createEvent(eventDTO, user);
+
+        assertEquals("Title", result.getTitulo());
+        assertEquals("Description", result.getDescripcion());
+        assertEquals("Location", result.getUbicacion());
+        assertEquals(123L, result.getFechaInicio());
+        assertEquals(456L, result.getFechaFin());
+        assertEquals(user, result.getCreador());
+        assertEquals(Arrays.asList("img1", "img2"), result.getImagenes());
+        verify(eventRepository).save(result);
+    }
+
+    @Test
+    public void testCreateEvent_WithoutImages() {
+        com.linkauto.restapi.dto.EventDTO eventDTO = new com.linkauto.restapi.dto.EventDTO(
+            "Title2", "Description2", "Location2", 789L, 1011L, null
+        );
+        User user = new User("creator2", "Creator2", "", "", new ArrayList<>(), 0L, Gender.FEMALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        com.linkauto.restapi.model.Event result = linkAutoService.createEvent(eventDTO, user);
+
+        assertEquals("Title2", result.getTitulo());
+        assertEquals("Description2", result.getDescripcion());
+        assertEquals("Location2", result.getUbicacion());
+        assertEquals(789L, result.getFechaInicio());
+        assertEquals(1011L, result.getFechaFin());
+        assertEquals(user, result.getCreador());
+        assertTrue(result.getImagenes().isEmpty());
+        verify(eventRepository).save(result);
+    }
+
+    @Test
+    public void testDeleteEvent_Success() {
+        User creator = new User("creator", "Creator", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        event.setCreador(creator);
+
+        when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
+
+        boolean result = linkAutoService.deleteEvent(1L, creator);
+
+        assertTrue(result);
+        verify(eventRepository).delete(event);
+        verify(eventRepository).flush();
+    }
+
+    @Test
+    public void testDeleteEvent_EventNotFound() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        when(eventRepository.findById(2L)).thenReturn(Optional.empty());
+
+        boolean result = linkAutoService.deleteEvent(2L, user);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testDeleteEvent_UserNotCreator() {
+        User creator = new User("creator", "Creator", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User otherUser = new User("other", "Other", "", "", new ArrayList<>(), 0L, Gender.FEMALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        event.setCreador(creator);
+
+        when(eventRepository.findById(3L)).thenReturn(Optional.of(event));
+
+        boolean result = linkAutoService.deleteEvent(3L, otherUser);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testDeleteEvent_CreadorNull() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        event.setCreador(null);
+
+        when(eventRepository.findById(4L)).thenReturn(Optional.of(event));
+
+        boolean result = linkAutoService.deleteEvent(4L, user);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testDeleteEvent_Exception() {
+        User creator = new User("creator", "Creator", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        event.setCreador(creator);
+
+        when(eventRepository.findById(5L)).thenReturn(Optional.of(event));
+        doNothing().when(eventRepository).delete(event);
+        doNothing().when(eventRepository).flush();
+        // Simulate exception on delete
+        doNothing().when(eventRepository).delete(event);
+        doNothing().when(eventRepository).flush();
+        // Actually, to simulate exception, we need to throw:
+        org.mockito.Mockito.doThrow(new RuntimeException("DB error")).when(eventRepository).delete(event);
+
+        boolean result = linkAutoService.deleteEvent(5L, creator);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testParticipateInEvent_Success() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+
+        when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
+        when(eventRepository.save(event)).thenReturn(event);
+
+        boolean result = linkAutoService.participateInEvent(1L, user);
+
+        assertTrue(result);
+        assertTrue(event.getParticipantes().contains("user"));
+        verify(eventRepository).save(event);
+    }
+
+    @Test
+    public void testParticipateInEvent_EventNotFound() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(eventRepository.findById(2L)).thenReturn(Optional.empty());
+
+        boolean result = linkAutoService.participateInEvent(2L, user);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testCancelParticipation_Success() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        event.addParticipante("user");
+
+        when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
+        when(eventRepository.save(event)).thenReturn(event);
+
+        boolean result = linkAutoService.cancelParticipation(1L, user);
+
+        assertTrue(result);
+        assertFalse(event.getParticipantes().contains("user"));
+        verify(eventRepository).save(event);
+    }
+
+    @Test
+    public void testCancelParticipation_EventNotFound() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+
+        when(eventRepository.findById(2L)).thenReturn(Optional.empty());
+
+        boolean result = linkAutoService.cancelParticipation(2L, user);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testGetEventParticipants_Found() {
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        event.addParticipante("user1");
+        event.addParticipante("user2");
+
+        when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
+
+        Set<String> result = linkAutoService.getEventParticipants(1L);
+
+        assertEquals(2, result.size());
+        assertTrue(result.contains("user1"));
+        assertTrue(result.contains("user2"));
+    }
+
+    @Test
+    public void testGetEventParticipants_EventNotFound() {
+        when(eventRepository.findById(2L)).thenReturn(Optional.empty());
+
+        Set<String> result = linkAutoService.getEventParticipants(2L);
+
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void testGetEventsByCreador_Found() {
+        User creator = new User("creator", "Creator", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        List<com.linkauto.restapi.model.Event> events = Arrays.asList(new com.linkauto.restapi.model.Event(), new com.linkauto.restapi.model.Event());
+
+        when(userRepository.findByUsername("creator")).thenReturn(Optional.of(creator));
+        when(eventRepository.findByCreador_Username("creator")).thenReturn(events);
+
+        List<com.linkauto.restapi.model.Event> result = linkAutoService.getEventsByCreador("creator");
+
+        assertEquals(events, result);
+    }
+
+    @Test
+    public void testGetEventsByCreador_UserNotFound() {
+        when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
+
+        List<com.linkauto.restapi.model.Event> result = linkAutoService.getEventsByCreador("unknown");
+
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void testCommentEvent_Success() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        CommentDTO commentDTO = new CommentDTO("Test comment");
+
+        when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
+        when(commentRepository.save(org.mockito.Mockito.any(Comment.class))).thenAnswer(invocation -> invocation.getArgument(0));
+        when(eventRepository.save(event)).thenReturn(event);
+
+        boolean result = linkAutoService.commentEvent(1L, user, commentDTO);
+
+        assertTrue(result);
+        assertEquals(1, event.getComentarios().size());
+        assertEquals("Test comment", event.getComentarios().get(0).getText());
+        verify(commentRepository).save(org.mockito.Mockito.any(Comment.class));
+        verify(eventRepository).save(event);
+    }
+
+    @Test
+    public void testCommentEvent_EventNotFound() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        CommentDTO commentDTO = new CommentDTO("Test comment");
+
+        when(eventRepository.findById(2L)).thenReturn(Optional.empty());
+
+        boolean result = linkAutoService.commentEvent(2L, user, commentDTO);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testGetCommentsByEventId_Found() {
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        Comment c1 = new Comment();
+        c1.setText("Comment 1");
+        Comment c2 = new Comment();
+        c2.setText("Comment 2");
+        event.setComentarios(Arrays.asList(c1, c2));
+
+        when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
+
+        List<Comment> result = linkAutoService.getCommentsByEventId(1L);
+
+        assertEquals(2, result.size());
+        assertEquals("Comment 1", result.get(0).getText());
+        assertEquals("Comment 2", result.get(1).getText());
+    }
+
+    @Test
+    public void testGetCommentsByEventId_EventNotFound() {
+        when(eventRepository.findById(2L)).thenReturn(Optional.empty());
+
+        List<Comment> result = linkAutoService.getCommentsByEventId(2L);
+
+        assertEquals(null, result);
+    }
+
+    @Test
+    public void testGetUserParticipatingEvents_Found() {
+        String username = "user";
+        List<com.linkauto.restapi.model.Event> events = Arrays.asList(new com.linkauto.restapi.model.Event(), new com.linkauto.restapi.model.Event());
+
+        when(eventRepository.findByParticipantesContaining(username)).thenReturn(events);
+
+        List<com.linkauto.restapi.model.Event> result = linkAutoService.getUserParticipatingEvents(username);
+
+        assertEquals(events, result);
+    }
+
+    @Test
+    public void testGetUserParticipatingEvents_UsernameNullOrEmpty() {
+        List<com.linkauto.restapi.model.Event> result1 = linkAutoService.getUserParticipatingEvents(null);
+        List<com.linkauto.restapi.model.Event> result2 = linkAutoService.getUserParticipatingEvents("");
+
+        assertEquals(null, result1);
+        assertEquals(null, result2);
+    }
+
+    @Test
+    public void testGetEventsByUsername_CombinesCreatedAndParticipating() {
+        String username = "user";
+        com.linkauto.restapi.model.Event createdEvent = new com.linkauto.restapi.model.Event();
+        com.linkauto.restapi.model.Event participatingEvent = new com.linkauto.restapi.model.Event();
+
+        List<com.linkauto.restapi.model.Event> createdEvents = new ArrayList<>();
+        createdEvents.add(createdEvent);
+
+        List<com.linkauto.restapi.model.Event> participatingEvents = new ArrayList<>();
+        participatingEvents.add(participatingEvent);
+
+        when(eventRepository.findByCreador_Username(username)).thenReturn(createdEvents);
+        when(eventRepository.findByParticipantesContaining(username)).thenReturn(participatingEvents);
+
+        List<com.linkauto.restapi.model.Event> result = linkAutoService.getEventsByUsername(username);
+
+        assertEquals(1, result.size());
+        assertTrue(result.contains(createdEvent));
+        assertTrue(result.contains(participatingEvent));
+    }
+
+    @Test
+    public void testGetEventsByUsername_NoDuplicates() {
+        String username = "user";
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+
+        List<com.linkauto.restapi.model.Event> createdEvents = new ArrayList<>();
+        createdEvents.add(event);
+
+        List<com.linkauto.restapi.model.Event> participatingEvents = new ArrayList<>();
+        participatingEvents.add(event);
+
+        when(eventRepository.findByCreador_Username(username)).thenReturn(createdEvents);
+        when(eventRepository.findByParticipantesContaining(username)).thenReturn(participatingEvents);
+
+        List<com.linkauto.restapi.model.Event> result = linkAutoService.getEventsByUsername(username);
+
+        assertEquals(1, result.size());
+        assertTrue(result.contains(event));
+    }
+
+    @Test
+    public void testUpdateEvent_Success() {
+        User creator = new User("creator", "Creator", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        event.setCreador(creator);
+        event.setImagenes(new ArrayList<>(Arrays.asList("oldImg")));
+        com.linkauto.restapi.dto.EventDTO eventDTO = new com.linkauto.restapi.dto.EventDTO(
+            "NewTitle", "NewDesc", "NewLoc", 100L, 200L, Arrays.asList("img1", "img2")
+        );
+
+        when(eventRepository.findById(1L)).thenReturn(Optional.of(event));
+        when(eventRepository.save(event)).thenReturn(event);
+
+        Optional<com.linkauto.restapi.model.Event> result = linkAutoService.updateEvent(1L, eventDTO, creator);
+
+        assertTrue(result.isPresent());
+        assertEquals("NewTitle", result.get().getTitulo());
+        assertEquals("NewDesc", result.get().getDescripcion());
+        assertEquals("NewLoc", result.get().getUbicacion());
+        assertEquals(100L, result.get().getFechaInicio());
+        assertEquals(200L, result.get().getFechaFin());
+        assertEquals(Arrays.asList("img1", "img2"), result.get().getImagenes());
+        verify(eventRepository).save(event);
+    }
+
+    @Test
+    public void testUpdateEvent_EventNotFound() {
+        User creator = new User("creator", "Creator", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        com.linkauto.restapi.dto.EventDTO eventDTO = new com.linkauto.restapi.dto.EventDTO(
+            "Title", "Desc", "Loc", 100L, 200L, null
+        );
+
+        when(eventRepository.findById(2L)).thenReturn(Optional.empty());
+
+        Optional<com.linkauto.restapi.model.Event> result = linkAutoService.updateEvent(2L, eventDTO, creator);
+
+        assertFalse(result.isPresent());
+    }
+
+    @Test
+    public void testUpdateEvent_UserNotCreator() {
+        User creator = new User("creator", "Creator", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        User otherUser = new User("other", "Other", "", "", new ArrayList<>(), 0L, Gender.FEMALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>());
+        com.linkauto.restapi.model.Event event = new com.linkauto.restapi.model.Event();
+        event.setCreador(creator);
+        com.linkauto.restapi.dto.EventDTO eventDTO = new com.linkauto.restapi.dto.EventDTO(
+            "Title", "Desc", "Loc", 100L, 200L, null
+        );
+
+        when(eventRepository.findById(3L)).thenReturn(Optional.of(event));
+
+        Optional<com.linkauto.restapi.model.Event> result = linkAutoService.updateEvent(3L, eventDTO, otherUser);
+
+        assertFalse(result.isPresent());
     }
 }
