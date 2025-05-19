@@ -229,7 +229,7 @@ $(document).ready(function(){initNavTree('LinkAutoController_8java_source.html',
 <div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    @PutMapping(<span class="stringliteral">&quot;/user&quot;</span>)</div>
 <div class="foldopen" id="foldopen00118" data-start="{" data-end="}">
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a66e48623abca43018c73054558bc0549">  118</a></span>    public ResponseEntity&lt;User&gt; updateUser(</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a61bec226e2ccd0620c52c2cf0be2ae6d">  118</a></span>    public ResponseEntity&lt;UserReturnerDTO&gt; updateUser(</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        @RequestParam(&quot;userToken&quot;) String userToken, </div>
 <div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        @RequestBody UserDTO userDetails) {</div>
@@ -250,8 +250,8 @@ $(document).ready(function(){initNavTree('LinkAutoController_8java_source.html',
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.FORBIDDEN).build();</div>
 <div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>        }</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    </div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        User updatedUser = parseUserDTOToUser(userDetails, oldUser);</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        <span class="keywordflow">return</span> authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        User updatedUser = parseUserDTOToUser(userDetails, oldUser);        </div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        <span class="keywordflow">return</span> authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(parseUserToUserReturnerDTO(updatedUser)) : ResponseEntity.notFound().build();</div>
 <div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    }</div>
 </div>
 <div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span> </div>
@@ -695,282 +695,283 @@ $(document).ready(function(){initNavTree('LinkAutoController_8java_source.html',
 <div class="line"><a id="l00539" name="l00539"></a><span class="lineno">  539</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
 <div class="line"><a id="l00540" name="l00540"></a><span class="lineno">  540</span>        }</div>
 <div class="line"><a id="l00541" name="l00541"></a><span class="lineno">  541</span> </div>
-<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>        User reportedUser = authService.getUserByToken(userToken);</div>
-<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span> </div>
-<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span>        <span class="keywordflow">if</span> (reportedUser == <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>            <span class="keywordflow">return</span> ResponseEntity.notFound().build();</div>
-<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>        }</div>
-<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span> </div>
-<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span>        <span class="keywordtype">boolean</span> isReported = linkAutoService.deleteReport(reportedUser, username);</div>
-<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span> </div>
-<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span>        <span class="keywordflow">return</span> isReported ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();</div>
-<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>    }</div>
+<div class="line"><a id="l00542" name="l00542"></a><span class="lineno">  542</span>        User reporterUser = authService.getUserByToken(userToken);</div>
+<div class="line"><a id="l00543" name="l00543"></a><span class="lineno">  543</span>        User reportedUser = authService.getUserByUsername(username);</div>
+<div class="line"><a id="l00544" name="l00544"></a><span class="lineno">  544</span> </div>
+<div class="line"><a id="l00545" name="l00545"></a><span class="lineno">  545</span>        <span class="keywordflow">if</span> (reporterUser == <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00546" name="l00546"></a><span class="lineno">  546</span>            <span class="keywordflow">return</span> ResponseEntity.notFound().build();</div>
+<div class="line"><a id="l00547" name="l00547"></a><span class="lineno">  547</span>        }</div>
+<div class="line"><a id="l00548" name="l00548"></a><span class="lineno">  548</span> </div>
+<div class="line"><a id="l00549" name="l00549"></a><span class="lineno">  549</span>        <span class="keywordtype">boolean</span> isReported = linkAutoService.deleteReport(reportedUser, reporterUser.getUsername());</div>
+<div class="line"><a id="l00550" name="l00550"></a><span class="lineno">  550</span> </div>
+<div class="line"><a id="l00551" name="l00551"></a><span class="lineno">  551</span>        <span class="keywordflow">return</span> isReported ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();</div>
+<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span>    }</div>
 </div>
-<div class="line"><a id="l00552" name="l00552"></a><span class="lineno">  552</span> </div>
-<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span>        @DeleteMapping(<span class="stringliteral">&quot;/post/{post_id}/unsave&quot;</span>)</div>
-<div class="foldopen" id="foldopen00554" data-start="{" data-end="}">
-<div class="line"><a id="l00554" name="l00554"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a47711a0d35d244497dd6d080d0a8ef3f">  554</a></span>    public ResponseEntity&lt;Void&gt; unsavePost(</div>
-<div class="line"><a id="l00555" name="l00555"></a><span class="lineno">  555</span>        @Parameter(name = &quot;post_id&quot;, description = &quot;ID of the post to unsave&quot;, required = true, example = &quot;1&quot;)</div>
-<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>        @PathVariable Long post_id,</div>
-<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
-<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>        @RequestParam(&quot;userToken&quot;) String userToken</div>
-<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>    ) {</div>
-<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
-<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
-<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>        }</div>
-<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>        User user = authService.getUserByToken(userToken);</div>
-<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>        <span class="keywordtype">boolean</span> isUnSaved = linkAutoService.unsavePost(post_id, user);</div>
-<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>        <span class="keywordflow">return</span> isUnSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();</div>
-<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>    }</div>
+<div class="line"><a id="l00553" name="l00553"></a><span class="lineno">  553</span> </div>
+<div class="line"><a id="l00554" name="l00554"></a><span class="lineno">  554</span>        @DeleteMapping(<span class="stringliteral">&quot;/post/{post_id}/unsave&quot;</span>)</div>
+<div class="foldopen" id="foldopen00555" data-start="{" data-end="}">
+<div class="line"><a id="l00555" name="l00555"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a47711a0d35d244497dd6d080d0a8ef3f">  555</a></span>    public ResponseEntity&lt;Void&gt; unsavePost(</div>
+<div class="line"><a id="l00556" name="l00556"></a><span class="lineno">  556</span>        @Parameter(name = &quot;post_id&quot;, description = &quot;ID of the post to unsave&quot;, required = true, example = &quot;1&quot;)</div>
+<div class="line"><a id="l00557" name="l00557"></a><span class="lineno">  557</span>        @PathVariable Long post_id,</div>
+<div class="line"><a id="l00558" name="l00558"></a><span class="lineno">  558</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
+<div class="line"><a id="l00559" name="l00559"></a><span class="lineno">  559</span>        @RequestParam(&quot;userToken&quot;) String userToken</div>
+<div class="line"><a id="l00560" name="l00560"></a><span class="lineno">  560</span>    ) {</div>
+<div class="line"><a id="l00561" name="l00561"></a><span class="lineno">  561</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
+<div class="line"><a id="l00562" name="l00562"></a><span class="lineno">  562</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
+<div class="line"><a id="l00563" name="l00563"></a><span class="lineno">  563</span>        }</div>
+<div class="line"><a id="l00564" name="l00564"></a><span class="lineno">  564</span>        User user = authService.getUserByToken(userToken);</div>
+<div class="line"><a id="l00565" name="l00565"></a><span class="lineno">  565</span>        <span class="keywordtype">boolean</span> isUnSaved = linkAutoService.unsavePost(post_id, user);</div>
+<div class="line"><a id="l00566" name="l00566"></a><span class="lineno">  566</span>        <span class="keywordflow">return</span> isUnSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();</div>
+<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>    }</div>
 </div>
-<div class="line"><a id="l00567" name="l00567"></a><span class="lineno">  567</span>    </div>
-<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>    @GetMapping(<span class="stringliteral">&quot;/user/{username}/savedPosts&quot;</span>)</div>
-<div class="foldopen" id="foldopen00569" data-start="{" data-end="}">
-<div class="line"><a id="l00569" name="l00569"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a577e6c21e984f623c0e38c686a053dff">  569</a></span>    public ResponseEntity&lt;List&lt;PostReturnerDTO&gt;&gt; getSavedPostsByUsername(</div>
-<div class="line"><a id="l00570" name="l00570"></a><span class="lineno">  570</span>        @Parameter(name = &quot;username&quot;, description = &quot;Username of the user&quot;, required = true, example = &quot;johndoe&quot;)</div>
-<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>        @PathVariable String username</div>
-<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>    ) {</div>
-<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>        List&lt;Post&gt; savedPosts = linkAutoService.getSavedPostsByUsername(username);</div>
-<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>        List&lt;PostReturnerDTO&gt; savedPostReturnerDTOs = parsePostsToPostReturnerDTO(savedPosts);</div>
-<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>        <span class="keywordflow">return</span> ResponseEntity.ok(savedPostReturnerDTOs);</div>
-<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>    }</div>
+<div class="line"><a id="l00568" name="l00568"></a><span class="lineno">  568</span>    </div>
+<div class="line"><a id="l00569" name="l00569"></a><span class="lineno">  569</span>    @GetMapping(<span class="stringliteral">&quot;/user/{username}/savedPosts&quot;</span>)</div>
+<div class="foldopen" id="foldopen00570" data-start="{" data-end="}">
+<div class="line"><a id="l00570" name="l00570"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a577e6c21e984f623c0e38c686a053dff">  570</a></span>    public ResponseEntity&lt;List&lt;PostReturnerDTO&gt;&gt; getSavedPostsByUsername(</div>
+<div class="line"><a id="l00571" name="l00571"></a><span class="lineno">  571</span>        @Parameter(name = &quot;username&quot;, description = &quot;Username of the user&quot;, required = true, example = &quot;johndoe&quot;)</div>
+<div class="line"><a id="l00572" name="l00572"></a><span class="lineno">  572</span>        @PathVariable String username</div>
+<div class="line"><a id="l00573" name="l00573"></a><span class="lineno">  573</span>    ) {</div>
+<div class="line"><a id="l00574" name="l00574"></a><span class="lineno">  574</span>        List&lt;Post&gt; savedPosts = linkAutoService.getSavedPostsByUsername(username);</div>
+<div class="line"><a id="l00575" name="l00575"></a><span class="lineno">  575</span>        List&lt;PostReturnerDTO&gt; savedPostReturnerDTOs = parsePostsToPostReturnerDTO(savedPosts);</div>
+<div class="line"><a id="l00576" name="l00576"></a><span class="lineno">  576</span>        <span class="keywordflow">return</span> ResponseEntity.ok(savedPostReturnerDTOs);</div>
+<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span>    }</div>
 </div>
-<div class="line"><a id="l00577" name="l00577"></a><span class="lineno">  577</span> </div>
-<div class="foldopen" id="foldopen00578" data-start="{" data-end="}">
-<div class="line"><a id="l00578" name="l00578"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#aaf7d322e33e572b2446e6dcb06483cda">  578</a></span>    <span class="keyword">public</span> List&lt;PostReturnerDTO&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#aaf7d322e33e572b2446e6dcb06483cda">parsePostsToPostReturnerDTO</a>(List&lt;Post&gt; posts) {</div>
-<div class="line"><a id="l00579" name="l00579"></a><span class="lineno">  579</span> </div>
-<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span>        List&lt;PostReturnerDTO&gt; postReturnerDTOs = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>        <span class="keywordflow">for</span> (Post post : posts) {</div>
-<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>            List&lt;Long&gt; comment_ids = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>            <span class="keywordflow">for</span> (Comment comment : post.getComentarios()) {</div>
-<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>                comment_ids.add(comment.getId());</div>
-<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>            }</div>
-<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span> </div>
-<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span>            PostReturnerDTO postReturnerDTO = <span class="keyword">new</span> PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes(), comment_ids, post.getLikes());</div>
-<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>            postReturnerDTOs.add(postReturnerDTO);</div>
-<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>        }</div>
-<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>        <span class="keywordflow">return</span> postReturnerDTOs;</div>
-<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>    }</div>
+<div class="line"><a id="l00578" name="l00578"></a><span class="lineno">  578</span> </div>
+<div class="foldopen" id="foldopen00579" data-start="{" data-end="}">
+<div class="line"><a id="l00579" name="l00579"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#aaf7d322e33e572b2446e6dcb06483cda">  579</a></span>    <span class="keyword">public</span> List&lt;PostReturnerDTO&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#aaf7d322e33e572b2446e6dcb06483cda">parsePostsToPostReturnerDTO</a>(List&lt;Post&gt; posts) {</div>
+<div class="line"><a id="l00580" name="l00580"></a><span class="lineno">  580</span> </div>
+<div class="line"><a id="l00581" name="l00581"></a><span class="lineno">  581</span>        List&lt;PostReturnerDTO&gt; postReturnerDTOs = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00582" name="l00582"></a><span class="lineno">  582</span>        <span class="keywordflow">for</span> (Post post : posts) {</div>
+<div class="line"><a id="l00583" name="l00583"></a><span class="lineno">  583</span>            List&lt;Long&gt; comment_ids = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00584" name="l00584"></a><span class="lineno">  584</span>            <span class="keywordflow">for</span> (Comment comment : post.getComentarios()) {</div>
+<div class="line"><a id="l00585" name="l00585"></a><span class="lineno">  585</span>                comment_ids.add(comment.getId());</div>
+<div class="line"><a id="l00586" name="l00586"></a><span class="lineno">  586</span>            }</div>
+<div class="line"><a id="l00587" name="l00587"></a><span class="lineno">  587</span> </div>
+<div class="line"><a id="l00588" name="l00588"></a><span class="lineno">  588</span>            PostReturnerDTO postReturnerDTO = <span class="keyword">new</span> PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes(), comment_ids, post.getLikes());</div>
+<div class="line"><a id="l00589" name="l00589"></a><span class="lineno">  589</span>            postReturnerDTOs.add(postReturnerDTO);</div>
+<div class="line"><a id="l00590" name="l00590"></a><span class="lineno">  590</span>        }</div>
+<div class="line"><a id="l00591" name="l00591"></a><span class="lineno">  591</span>        <span class="keywordflow">return</span> postReturnerDTOs;</div>
+<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span>    }</div>
 </div>
-<div class="line"><a id="l00592" name="l00592"></a><span class="lineno">  592</span> </div>
-<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span>    <span class="keyword">private</span> PostReturnerDTO parsePostToPostReturnerDTO(Post post) {</div>
-<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>        List&lt;Long&gt; comment_ids = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>        <span class="keywordflow">for</span> (Comment comment : post.getComentarios()) {</div>
-<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>            comment_ids.add(comment.getId());</div>
-<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>        }</div>
-<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>    </div>
-<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>        PostReturnerDTO postReturnerDTO = <span class="keyword">new</span> PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes(), comment_ids, post.getLikes());</div>
-<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>        <span class="keywordflow">return</span> postReturnerDTO;</div>
-<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>    }</div>
-<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span> </div>
-<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span>    <span class="keyword">private</span> User parseUserDTOToUser(UserDTO userDTO, User oldUser) {</div>
-<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>        User u = <span class="keyword">new</span> User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing(), oldUser.getSavedPosts());</div>
-<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>        u.setRole(oldUser.getRole());</div>
-<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>        <span class="keywordflow">return</span> u;</div>
-<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>    }</div>
-<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span> </div>
-<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span>    <span class="keyword">private</span> UserReturnerDTO parseUserToUserReturnerDTO(User u){</div>
-<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>        List&lt;PostReturnerDTO&gt; postReturner = parsePostsToPostReturnerDTO(u.getPosts());</div>
-<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>        Set&lt;UserReturnerDTO&gt; reporters = <span class="keyword">new</span> HashSet&lt;&gt;();</div>
-<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>        <span class="keywordflow">for</span> (User user: u.getReporters()) {</div>
-<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>            reporters.add(parseUserToUserReturnerDTO(user));</div>
-<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>        }</div>
-<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>        </div>
-<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>        List&lt;Post&gt; savedPosts = <span class="keyword">new</span> ArrayList&lt;&gt;(u.getSavedPosts());</div>
-<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        List&lt;PostReturnerDTO&gt; savedPost = parsePostsToPostReturnerDTO(savedPosts);</div>
-<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.isBanned() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost, u.getIsVerified(), reporters);</div>
-<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>    }</div>
-<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span> </div>
-<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span>    <span class="keyword">private</span> CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {</div>
-<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> CommentReturnerDTO(comment.getId(), comment.getText(), comment.getUser().getUsername(), comment.getPost().getId(), comment.getCreationDate());</div>
-<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>    }</div>
-<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span> </div>
-<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span>    @GetMapping(<span class="stringliteral">&quot;/events&quot;</span>)</div>
-<div class="foldopen" id="foldopen00626" data-start="{" data-end="}">
-<div class="line"><a id="l00626" name="l00626"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a51480d5b1201b8d53d905c38cf5988c3">  626</a></span>    public ResponseEntity&lt;List&lt;EventReturnerDTO&gt;&gt; getAllEvents() {</div>
-<div class="line"><a id="l00627" name="l00627"></a><span class="lineno">  627</span>        List&lt;Event&gt; events = linkAutoService.getAllEvents();</div>
-<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>        List&lt;EventReturnerDTO&gt; eventReturnerDTOs = parseEventsToEventReturnerDTO(events);</div>
-<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>        <span class="keywordflow">return</span> ResponseEntity.ok(eventReturnerDTOs);</div>
-<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>    }</div>
+<div class="line"><a id="l00593" name="l00593"></a><span class="lineno">  593</span> </div>
+<div class="line"><a id="l00594" name="l00594"></a><span class="lineno">  594</span>    <span class="keyword">private</span> PostReturnerDTO parsePostToPostReturnerDTO(Post post) {</div>
+<div class="line"><a id="l00595" name="l00595"></a><span class="lineno">  595</span>        List&lt;Long&gt; comment_ids = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00596" name="l00596"></a><span class="lineno">  596</span>        <span class="keywordflow">for</span> (Comment comment : post.getComentarios()) {</div>
+<div class="line"><a id="l00597" name="l00597"></a><span class="lineno">  597</span>            comment_ids.add(comment.getId());</div>
+<div class="line"><a id="l00598" name="l00598"></a><span class="lineno">  598</span>        }</div>
+<div class="line"><a id="l00599" name="l00599"></a><span class="lineno">  599</span>    </div>
+<div class="line"><a id="l00600" name="l00600"></a><span class="lineno">  600</span>        PostReturnerDTO postReturnerDTO = <span class="keyword">new</span> PostReturnerDTO(post.getId(), post.getUsuario().getUsername(), post.getMensaje(), post.getFechaCreacion(), post.getImagenes(), comment_ids, post.getLikes());</div>
+<div class="line"><a id="l00601" name="l00601"></a><span class="lineno">  601</span>        <span class="keywordflow">return</span> postReturnerDTO;</div>
+<div class="line"><a id="l00602" name="l00602"></a><span class="lineno">  602</span>    }</div>
+<div class="line"><a id="l00603" name="l00603"></a><span class="lineno">  603</span> </div>
+<div class="line"><a id="l00604" name="l00604"></a><span class="lineno">  604</span>    <span class="keyword">private</span> User parseUserDTOToUser(UserDTO userDTO, User oldUser) {</div>
+<div class="line"><a id="l00605" name="l00605"></a><span class="lineno">  605</span>        User u = <span class="keyword">new</span> User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing(), oldUser.getSavedPosts());</div>
+<div class="line"><a id="l00606" name="l00606"></a><span class="lineno">  606</span>        u.setRole(oldUser.getRole());</div>
+<div class="line"><a id="l00607" name="l00607"></a><span class="lineno">  607</span>        <span class="keywordflow">return</span> u;</div>
+<div class="line"><a id="l00608" name="l00608"></a><span class="lineno">  608</span>    }</div>
+<div class="line"><a id="l00609" name="l00609"></a><span class="lineno">  609</span> </div>
+<div class="line"><a id="l00610" name="l00610"></a><span class="lineno">  610</span>    <span class="keyword">private</span> UserReturnerDTO parseUserToUserReturnerDTO(User u){</div>
+<div class="line"><a id="l00611" name="l00611"></a><span class="lineno">  611</span>        List&lt;PostReturnerDTO&gt; postReturner = parsePostsToPostReturnerDTO(u.getPosts());</div>
+<div class="line"><a id="l00612" name="l00612"></a><span class="lineno">  612</span>        Set&lt;UserReturnerDTO&gt; reporters = <span class="keyword">new</span> HashSet&lt;&gt;();</div>
+<div class="line"><a id="l00613" name="l00613"></a><span class="lineno">  613</span>        <span class="keywordflow">for</span> (User user: u.getReporters()) {</div>
+<div class="line"><a id="l00614" name="l00614"></a><span class="lineno">  614</span>            reporters.add(parseUserToUserReturnerDTO(user));</div>
+<div class="line"><a id="l00615" name="l00615"></a><span class="lineno">  615</span>        }</div>
+<div class="line"><a id="l00616" name="l00616"></a><span class="lineno">  616</span>        </div>
+<div class="line"><a id="l00617" name="l00617"></a><span class="lineno">  617</span>        List&lt;Post&gt; savedPosts = <span class="keyword">new</span> ArrayList&lt;&gt;(u.getSavedPosts());</div>
+<div class="line"><a id="l00618" name="l00618"></a><span class="lineno">  618</span>        List&lt;PostReturnerDTO&gt; savedPost = parsePostsToPostReturnerDTO(savedPosts);</div>
+<div class="line"><a id="l00619" name="l00619"></a><span class="lineno">  619</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.isBanned() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost, u.getIsVerified(), reporters);</div>
+<div class="line"><a id="l00620" name="l00620"></a><span class="lineno">  620</span>    }</div>
+<div class="line"><a id="l00621" name="l00621"></a><span class="lineno">  621</span> </div>
+<div class="line"><a id="l00622" name="l00622"></a><span class="lineno">  622</span>    <span class="keyword">private</span> CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {</div>
+<div class="line"><a id="l00623" name="l00623"></a><span class="lineno">  623</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> CommentReturnerDTO(comment.getId(), comment.getText(), comment.getUser().getUsername(), comment.getPost().getId(), comment.getCreationDate());</div>
+<div class="line"><a id="l00624" name="l00624"></a><span class="lineno">  624</span>    }</div>
+<div class="line"><a id="l00625" name="l00625"></a><span class="lineno">  625</span> </div>
+<div class="line"><a id="l00626" name="l00626"></a><span class="lineno">  626</span>    @GetMapping(<span class="stringliteral">&quot;/events&quot;</span>)</div>
+<div class="foldopen" id="foldopen00627" data-start="{" data-end="}">
+<div class="line"><a id="l00627" name="l00627"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a51480d5b1201b8d53d905c38cf5988c3">  627</a></span>    public ResponseEntity&lt;List&lt;EventReturnerDTO&gt;&gt; getAllEvents() {</div>
+<div class="line"><a id="l00628" name="l00628"></a><span class="lineno">  628</span>        List&lt;Event&gt; events = linkAutoService.getAllEvents();</div>
+<div class="line"><a id="l00629" name="l00629"></a><span class="lineno">  629</span>        List&lt;EventReturnerDTO&gt; eventReturnerDTOs = parseEventsToEventReturnerDTO(events);</div>
+<div class="line"><a id="l00630" name="l00630"></a><span class="lineno">  630</span>        <span class="keywordflow">return</span> ResponseEntity.ok(eventReturnerDTOs);</div>
+<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span>    }</div>
 </div>
-<div class="line"><a id="l00631" name="l00631"></a><span class="lineno">  631</span> </div>
-<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span>    @GetMapping(<span class="stringliteral">&quot;/events/{id}&quot;</span>)</div>
-<div class="foldopen" id="foldopen00633" data-start="{" data-end="}">
-<div class="line"><a id="l00633" name="l00633"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a017fb1f498585a66f6cf809c1dcc3e41">  633</a></span>    public ResponseEntity&lt;EventReturnerDTO&gt; getEventById(@PathVariable Long <span class="keywordtype">id</span>) {</div>
-<div class="line"><a id="l00634" name="l00634"></a><span class="lineno">  634</span>        Optional&lt;Event&gt; <span class="keyword">event</span> = linkAutoService.getEventById(<span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>        <span class="keywordflow">if</span> (event.isEmpty()) {</div>
-<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>            <span class="keywordflow">return</span> ResponseEntity.notFound().build();</div>
-<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>        }</div>
-<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>        EventReturnerDTO eventReturnerDTO = parseEventToEventReturnerDTO(event.get());</div>
-<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>        <span class="keywordflow">return</span> ResponseEntity.ok(eventReturnerDTO);</div>
-<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>    }</div>
+<div class="line"><a id="l00632" name="l00632"></a><span class="lineno">  632</span> </div>
+<div class="line"><a id="l00633" name="l00633"></a><span class="lineno">  633</span>    @GetMapping(<span class="stringliteral">&quot;/events/{id}&quot;</span>)</div>
+<div class="foldopen" id="foldopen00634" data-start="{" data-end="}">
+<div class="line"><a id="l00634" name="l00634"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a017fb1f498585a66f6cf809c1dcc3e41">  634</a></span>    public ResponseEntity&lt;EventReturnerDTO&gt; getEventById(@PathVariable Long <span class="keywordtype">id</span>) {</div>
+<div class="line"><a id="l00635" name="l00635"></a><span class="lineno">  635</span>        Optional&lt;Event&gt; <span class="keyword">event</span> = linkAutoService.getEventById(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00636" name="l00636"></a><span class="lineno">  636</span>        <span class="keywordflow">if</span> (event.isEmpty()) {</div>
+<div class="line"><a id="l00637" name="l00637"></a><span class="lineno">  637</span>            <span class="keywordflow">return</span> ResponseEntity.notFound().build();</div>
+<div class="line"><a id="l00638" name="l00638"></a><span class="lineno">  638</span>        }</div>
+<div class="line"><a id="l00639" name="l00639"></a><span class="lineno">  639</span>        EventReturnerDTO eventReturnerDTO = parseEventToEventReturnerDTO(event.get());</div>
+<div class="line"><a id="l00640" name="l00640"></a><span class="lineno">  640</span>        <span class="keywordflow">return</span> ResponseEntity.ok(eventReturnerDTO);</div>
+<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span>    }</div>
 </div>
-<div class="line"><a id="l00641" name="l00641"></a><span class="lineno">  641</span> </div>
-<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span>    @PostMapping(<span class="stringliteral">&quot;/events&quot;</span>)</div>
-<div class="foldopen" id="foldopen00643" data-start="{" data-end="}">
-<div class="line"><a id="l00643" name="l00643"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a6e44bdacdec73d9d65a53d9b40b939fd">  643</a></span>    public ResponseEntity&lt;EventReturnerDTO&gt; createEvent(</div>
-<div class="line"><a id="l00644" name="l00644"></a><span class="lineno">  644</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
-<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>        @RequestParam(&quot;userToken&quot;) String userToken,</div>
-<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>        @Parameter(name = &quot;eventDTO&quot;, description = &quot;Event data&quot;, required = true)</div>
-<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>        @RequestBody EventDTO eventDTO</div>
-<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>        ) {</div>
-<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span> </div>
-<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
-<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
-<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>        }</div>
-<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>        User user = authService.getUserByToken(userToken);</div>
-<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>        Event createdEvent = linkAutoService.createEvent(eventDTO, user);</div>
-<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>        EventReturnerDTO eventReturnerDTO = parseEventToEventReturnerDTO(createdEvent);</div>
-<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>        <span class="keywordflow">return</span> ResponseEntity.ok(eventReturnerDTO);</div>
-<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>    }</div>
+<div class="line"><a id="l00642" name="l00642"></a><span class="lineno">  642</span> </div>
+<div class="line"><a id="l00643" name="l00643"></a><span class="lineno">  643</span>    @PostMapping(<span class="stringliteral">&quot;/events&quot;</span>)</div>
+<div class="foldopen" id="foldopen00644" data-start="{" data-end="}">
+<div class="line"><a id="l00644" name="l00644"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a6e44bdacdec73d9d65a53d9b40b939fd">  644</a></span>    public ResponseEntity&lt;EventReturnerDTO&gt; createEvent(</div>
+<div class="line"><a id="l00645" name="l00645"></a><span class="lineno">  645</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
+<div class="line"><a id="l00646" name="l00646"></a><span class="lineno">  646</span>        @RequestParam(&quot;userToken&quot;) String userToken,</div>
+<div class="line"><a id="l00647" name="l00647"></a><span class="lineno">  647</span>        @Parameter(name = &quot;eventDTO&quot;, description = &quot;Event data&quot;, required = true)</div>
+<div class="line"><a id="l00648" name="l00648"></a><span class="lineno">  648</span>        @RequestBody EventDTO eventDTO</div>
+<div class="line"><a id="l00649" name="l00649"></a><span class="lineno">  649</span>        ) {</div>
+<div class="line"><a id="l00650" name="l00650"></a><span class="lineno">  650</span> </div>
+<div class="line"><a id="l00651" name="l00651"></a><span class="lineno">  651</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
+<div class="line"><a id="l00652" name="l00652"></a><span class="lineno">  652</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
+<div class="line"><a id="l00653" name="l00653"></a><span class="lineno">  653</span>        }</div>
+<div class="line"><a id="l00654" name="l00654"></a><span class="lineno">  654</span>        User user = authService.getUserByToken(userToken);</div>
+<div class="line"><a id="l00655" name="l00655"></a><span class="lineno">  655</span>        Event createdEvent = linkAutoService.createEvent(eventDTO, user);</div>
+<div class="line"><a id="l00656" name="l00656"></a><span class="lineno">  656</span>        EventReturnerDTO eventReturnerDTO = parseEventToEventReturnerDTO(createdEvent);</div>
+<div class="line"><a id="l00657" name="l00657"></a><span class="lineno">  657</span>        <span class="keywordflow">return</span> ResponseEntity.ok(eventReturnerDTO);</div>
+<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span>    }</div>
 </div>
-<div class="line"><a id="l00658" name="l00658"></a><span class="lineno">  658</span> </div>
-<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span>    @DeleteMapping(<span class="stringliteral">&quot;/events/{id}&quot;</span>)</div>
-<div class="foldopen" id="foldopen00660" data-start="{" data-end="}">
-<div class="line"><a id="l00660" name="l00660"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a975a4a694d9209437b7c8f146144fddf">  660</a></span>    public ResponseEntity&lt;Void&gt; deleteEvent(</div>
-<div class="line"><a id="l00661" name="l00661"></a><span class="lineno">  661</span>        @Parameter(name = &quot;<span class="keywordtype">id</span>&quot;, description = &quot;Event ID&quot;, required = true, example = &quot;1&quot;)</div>
-<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>        @PathVariable Long <span class="keywordtype">id</span>,</div>
-<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
-<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>        @RequestParam(&quot;userToken&quot;) String userToken</div>
-<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>        ) {</div>
-<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
-<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
-<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>        }</div>
-<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>        User user = authService.getUserByToken(userToken);</div>
-<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>        <span class="keywordtype">boolean</span> isDeleted = linkAutoService.deleteEvent(<span class="keywordtype">id</span>, user);</div>
-<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>        <span class="keywordflow">return</span> isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();</div>
-<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>    }</div>
+<div class="line"><a id="l00659" name="l00659"></a><span class="lineno">  659</span> </div>
+<div class="line"><a id="l00660" name="l00660"></a><span class="lineno">  660</span>    @DeleteMapping(<span class="stringliteral">&quot;/events/{id}&quot;</span>)</div>
+<div class="foldopen" id="foldopen00661" data-start="{" data-end="}">
+<div class="line"><a id="l00661" name="l00661"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a975a4a694d9209437b7c8f146144fddf">  661</a></span>    public ResponseEntity&lt;Void&gt; deleteEvent(</div>
+<div class="line"><a id="l00662" name="l00662"></a><span class="lineno">  662</span>        @Parameter(name = &quot;<span class="keywordtype">id</span>&quot;, description = &quot;Event ID&quot;, required = true, example = &quot;1&quot;)</div>
+<div class="line"><a id="l00663" name="l00663"></a><span class="lineno">  663</span>        @PathVariable Long <span class="keywordtype">id</span>,</div>
+<div class="line"><a id="l00664" name="l00664"></a><span class="lineno">  664</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
+<div class="line"><a id="l00665" name="l00665"></a><span class="lineno">  665</span>        @RequestParam(&quot;userToken&quot;) String userToken</div>
+<div class="line"><a id="l00666" name="l00666"></a><span class="lineno">  666</span>        ) {</div>
+<div class="line"><a id="l00667" name="l00667"></a><span class="lineno">  667</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
+<div class="line"><a id="l00668" name="l00668"></a><span class="lineno">  668</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
+<div class="line"><a id="l00669" name="l00669"></a><span class="lineno">  669</span>        }</div>
+<div class="line"><a id="l00670" name="l00670"></a><span class="lineno">  670</span>        User user = authService.getUserByToken(userToken);</div>
+<div class="line"><a id="l00671" name="l00671"></a><span class="lineno">  671</span>        <span class="keywordtype">boolean</span> isDeleted = linkAutoService.deleteEvent(<span class="keywordtype">id</span>, user);</div>
+<div class="line"><a id="l00672" name="l00672"></a><span class="lineno">  672</span>        <span class="keywordflow">return</span> isDeleted ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();</div>
+<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span>    }</div>
 </div>
-<div class="line"><a id="l00673" name="l00673"></a><span class="lineno">  673</span> </div>
-<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span>    @PostMapping(<span class="stringliteral">&quot;/events/{id}/participate&quot;</span>)</div>
-<div class="foldopen" id="foldopen00675" data-start="{" data-end="}">
-<div class="line"><a id="l00675" name="l00675"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a727ddd18360a1a50d525b15e848b061f">  675</a></span>    public ResponseEntity&lt;Void&gt; participateInEvent(</div>
-<div class="line"><a id="l00676" name="l00676"></a><span class="lineno">  676</span>        @Parameter(name = &quot;<span class="keywordtype">id</span>&quot;, description = &quot;Event ID&quot;, required = true, example = &quot;1&quot;)</div>
-<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>        @PathVariable Long <span class="keywordtype">id</span>,</div>
-<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
-<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>        @RequestParam(&quot;userToken&quot;) String userToken</div>
-<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>        ) {</div>
-<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
-<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
-<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>        }</div>
-<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>        User user = authService.getUserByToken(userToken);</div>
-<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>        <span class="keywordtype">boolean</span> isParticipating = linkAutoService.participateInEvent(<span class="keywordtype">id</span>, user);</div>
-<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>        <span class="keywordflow">return</span> isParticipating ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();</div>
-<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>    }</div>
+<div class="line"><a id="l00674" name="l00674"></a><span class="lineno">  674</span> </div>
+<div class="line"><a id="l00675" name="l00675"></a><span class="lineno">  675</span>    @PostMapping(<span class="stringliteral">&quot;/events/{id}/participate&quot;</span>)</div>
+<div class="foldopen" id="foldopen00676" data-start="{" data-end="}">
+<div class="line"><a id="l00676" name="l00676"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a727ddd18360a1a50d525b15e848b061f">  676</a></span>    public ResponseEntity&lt;Void&gt; participateInEvent(</div>
+<div class="line"><a id="l00677" name="l00677"></a><span class="lineno">  677</span>        @Parameter(name = &quot;<span class="keywordtype">id</span>&quot;, description = &quot;Event ID&quot;, required = true, example = &quot;1&quot;)</div>
+<div class="line"><a id="l00678" name="l00678"></a><span class="lineno">  678</span>        @PathVariable Long <span class="keywordtype">id</span>,</div>
+<div class="line"><a id="l00679" name="l00679"></a><span class="lineno">  679</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
+<div class="line"><a id="l00680" name="l00680"></a><span class="lineno">  680</span>        @RequestParam(&quot;userToken&quot;) String userToken</div>
+<div class="line"><a id="l00681" name="l00681"></a><span class="lineno">  681</span>        ) {</div>
+<div class="line"><a id="l00682" name="l00682"></a><span class="lineno">  682</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
+<div class="line"><a id="l00683" name="l00683"></a><span class="lineno">  683</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
+<div class="line"><a id="l00684" name="l00684"></a><span class="lineno">  684</span>        }</div>
+<div class="line"><a id="l00685" name="l00685"></a><span class="lineno">  685</span>        User user = authService.getUserByToken(userToken);</div>
+<div class="line"><a id="l00686" name="l00686"></a><span class="lineno">  686</span>        <span class="keywordtype">boolean</span> isParticipating = linkAutoService.participateInEvent(<span class="keywordtype">id</span>, user);</div>
+<div class="line"><a id="l00687" name="l00687"></a><span class="lineno">  687</span>        <span class="keywordflow">return</span> isParticipating ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();</div>
+<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span>    }</div>
 </div>
-<div class="line"><a id="l00688" name="l00688"></a><span class="lineno">  688</span> </div>
-<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span>    @PostMapping(<span class="stringliteral">&quot;/events/{id}/cancel&quot;</span>)</div>
-<div class="foldopen" id="foldopen00690" data-start="{" data-end="}">
-<div class="line"><a id="l00690" name="l00690"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a4fe9cf32c4b30cfadd1715de811494f4">  690</a></span>    public ResponseEntity&lt;Void&gt; cancelParticipation(</div>
-<div class="line"><a id="l00691" name="l00691"></a><span class="lineno">  691</span>        @Parameter(name = &quot;<span class="keywordtype">id</span>&quot;, description = &quot;Event ID&quot;, required = true, example = &quot;1&quot;)</div>
-<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>        @PathVariable Long <span class="keywordtype">id</span>,</div>
-<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
-<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>        @RequestParam(&quot;userToken&quot;) String userToken</div>
-<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>        ) {</div>
-<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
-<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
-<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>        }</div>
-<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>        User user = authService.getUserByToken(userToken);</div>
-<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>        <span class="keywordtype">boolean</span> isCancelled = linkAutoService.cancelParticipation(<span class="keywordtype">id</span>, user);</div>
-<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>        <span class="keywordflow">return</span> isCancelled ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();</div>
-<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>    }</div>
+<div class="line"><a id="l00689" name="l00689"></a><span class="lineno">  689</span> </div>
+<div class="line"><a id="l00690" name="l00690"></a><span class="lineno">  690</span>    @PostMapping(<span class="stringliteral">&quot;/events/{id}/cancel&quot;</span>)</div>
+<div class="foldopen" id="foldopen00691" data-start="{" data-end="}">
+<div class="line"><a id="l00691" name="l00691"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a4fe9cf32c4b30cfadd1715de811494f4">  691</a></span>    public ResponseEntity&lt;Void&gt; cancelParticipation(</div>
+<div class="line"><a id="l00692" name="l00692"></a><span class="lineno">  692</span>        @Parameter(name = &quot;<span class="keywordtype">id</span>&quot;, description = &quot;Event ID&quot;, required = true, example = &quot;1&quot;)</div>
+<div class="line"><a id="l00693" name="l00693"></a><span class="lineno">  693</span>        @PathVariable Long <span class="keywordtype">id</span>,</div>
+<div class="line"><a id="l00694" name="l00694"></a><span class="lineno">  694</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
+<div class="line"><a id="l00695" name="l00695"></a><span class="lineno">  695</span>        @RequestParam(&quot;userToken&quot;) String userToken</div>
+<div class="line"><a id="l00696" name="l00696"></a><span class="lineno">  696</span>        ) {</div>
+<div class="line"><a id="l00697" name="l00697"></a><span class="lineno">  697</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
+<div class="line"><a id="l00698" name="l00698"></a><span class="lineno">  698</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
+<div class="line"><a id="l00699" name="l00699"></a><span class="lineno">  699</span>        }</div>
+<div class="line"><a id="l00700" name="l00700"></a><span class="lineno">  700</span>        User user = authService.getUserByToken(userToken);</div>
+<div class="line"><a id="l00701" name="l00701"></a><span class="lineno">  701</span>        <span class="keywordtype">boolean</span> isCancelled = linkAutoService.cancelParticipation(<span class="keywordtype">id</span>, user);</div>
+<div class="line"><a id="l00702" name="l00702"></a><span class="lineno">  702</span>        <span class="keywordflow">return</span> isCancelled ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();</div>
+<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span>    }</div>
 </div>
-<div class="line"><a id="l00703" name="l00703"></a><span class="lineno">  703</span> </div>
-<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span>    @GetMapping(<span class="stringliteral">&quot;/events/{id}/participants&quot;</span>)</div>
-<div class="foldopen" id="foldopen00705" data-start="{" data-end="}">
-<div class="line"><a id="l00705" name="l00705"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#abf62d109a89f43ef3e1f124b264708c0">  705</a></span>    public ResponseEntity&lt;Set&lt;String&gt;&gt; getEventParticipants(</div>
-<div class="line"><a id="l00706" name="l00706"></a><span class="lineno">  706</span>        @Parameter(name = &quot;<span class="keywordtype">id</span>&quot;, description = &quot;Event ID&quot;, required = true, example = &quot;1&quot;)</div>
-<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>        @PathVariable Long <span class="keywordtype">id</span></div>
-<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>    ) {</div>
-<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>        <span class="comment">// Get the set of usernames of event participants</span></div>
-<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>        Set&lt;String&gt; participantUsernames = linkAutoService.getEventParticipants(<span class="keywordtype">id</span>);</div>
-<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>        </div>
-<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>        <span class="comment">// If there are no participants or the event doesn&#39;t exist</span></div>
-<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>        <span class="keywordflow">if</span> (participantUsernames == <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>            <span class="keywordflow">return</span> ResponseEntity.notFound().build();</div>
-<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>        }</div>
-<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>        </div>
-<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>        <span class="keywordflow">return</span> ResponseEntity.ok(participantUsernames);</div>
-<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>    }</div>
+<div class="line"><a id="l00704" name="l00704"></a><span class="lineno">  704</span> </div>
+<div class="line"><a id="l00705" name="l00705"></a><span class="lineno">  705</span>    @GetMapping(<span class="stringliteral">&quot;/events/{id}/participants&quot;</span>)</div>
+<div class="foldopen" id="foldopen00706" data-start="{" data-end="}">
+<div class="line"><a id="l00706" name="l00706"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#abf62d109a89f43ef3e1f124b264708c0">  706</a></span>    public ResponseEntity&lt;Set&lt;String&gt;&gt; getEventParticipants(</div>
+<div class="line"><a id="l00707" name="l00707"></a><span class="lineno">  707</span>        @Parameter(name = &quot;<span class="keywordtype">id</span>&quot;, description = &quot;Event ID&quot;, required = true, example = &quot;1&quot;)</div>
+<div class="line"><a id="l00708" name="l00708"></a><span class="lineno">  708</span>        @PathVariable Long <span class="keywordtype">id</span></div>
+<div class="line"><a id="l00709" name="l00709"></a><span class="lineno">  709</span>    ) {</div>
+<div class="line"><a id="l00710" name="l00710"></a><span class="lineno">  710</span>        <span class="comment">// Get the set of usernames of event participants</span></div>
+<div class="line"><a id="l00711" name="l00711"></a><span class="lineno">  711</span>        Set&lt;String&gt; participantUsernames = linkAutoService.getEventParticipants(<span class="keywordtype">id</span>);</div>
+<div class="line"><a id="l00712" name="l00712"></a><span class="lineno">  712</span>        </div>
+<div class="line"><a id="l00713" name="l00713"></a><span class="lineno">  713</span>        <span class="comment">// If there are no participants or the event doesn&#39;t exist</span></div>
+<div class="line"><a id="l00714" name="l00714"></a><span class="lineno">  714</span>        <span class="keywordflow">if</span> (participantUsernames == <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00715" name="l00715"></a><span class="lineno">  715</span>            <span class="keywordflow">return</span> ResponseEntity.notFound().build();</div>
+<div class="line"><a id="l00716" name="l00716"></a><span class="lineno">  716</span>        }</div>
+<div class="line"><a id="l00717" name="l00717"></a><span class="lineno">  717</span>        </div>
+<div class="line"><a id="l00718" name="l00718"></a><span class="lineno">  718</span>        <span class="keywordflow">return</span> ResponseEntity.ok(participantUsernames);</div>
+<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span>    }</div>
 </div>
-<div class="line"><a id="l00719" name="l00719"></a><span class="lineno">  719</span> </div>
-<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span>    @GetMapping(<span class="stringliteral">&quot;/user/{username}/events&quot;</span>)</div>
-<div class="foldopen" id="foldopen00721" data-start="{" data-end="}">
-<div class="line"><a id="l00721" name="l00721"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a9977adc17abb966b8e9bb045bb8af8da">  721</a></span>    public ResponseEntity&lt;List&lt;EventReturnerDTO&gt;&gt; getUserEvents(</div>
-<div class="line"><a id="l00722" name="l00722"></a><span class="lineno">  722</span>        @Parameter(name = &quot;username&quot;, description = &quot;Username of the user&quot;, required = true, example = &quot;johndoe&quot;)</div>
-<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>        @PathVariable String username</div>
-<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>    ) {</div>
-<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>        List&lt;Event&gt; events = linkAutoService.getEventsByUsername(username);</div>
-<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>        List&lt;EventReturnerDTO&gt; eventReturnerDTOs = parseEventsToEventReturnerDTO(events);</div>
-<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>        <span class="keywordflow">return</span> ResponseEntity.ok(eventReturnerDTOs);</div>
-<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>    }</div>
+<div class="line"><a id="l00720" name="l00720"></a><span class="lineno">  720</span> </div>
+<div class="line"><a id="l00721" name="l00721"></a><span class="lineno">  721</span>    @GetMapping(<span class="stringliteral">&quot;/user/{username}/events&quot;</span>)</div>
+<div class="foldopen" id="foldopen00722" data-start="{" data-end="}">
+<div class="line"><a id="l00722" name="l00722"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a9977adc17abb966b8e9bb045bb8af8da">  722</a></span>    public ResponseEntity&lt;List&lt;EventReturnerDTO&gt;&gt; getUserEvents(</div>
+<div class="line"><a id="l00723" name="l00723"></a><span class="lineno">  723</span>        @Parameter(name = &quot;username&quot;, description = &quot;Username of the user&quot;, required = true, example = &quot;johndoe&quot;)</div>
+<div class="line"><a id="l00724" name="l00724"></a><span class="lineno">  724</span>        @PathVariable String username</div>
+<div class="line"><a id="l00725" name="l00725"></a><span class="lineno">  725</span>    ) {</div>
+<div class="line"><a id="l00726" name="l00726"></a><span class="lineno">  726</span>        List&lt;Event&gt; events = linkAutoService.getEventsByUsername(username);</div>
+<div class="line"><a id="l00727" name="l00727"></a><span class="lineno">  727</span>        List&lt;EventReturnerDTO&gt; eventReturnerDTOs = parseEventsToEventReturnerDTO(events);</div>
+<div class="line"><a id="l00728" name="l00728"></a><span class="lineno">  728</span>        <span class="keywordflow">return</span> ResponseEntity.ok(eventReturnerDTOs);</div>
+<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span>    }</div>
 </div>
-<div class="line"><a id="l00729" name="l00729"></a><span class="lineno">  729</span> </div>
-<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span>    @PutMapping(<span class="stringliteral">&quot;/events/{id}&quot;</span>)</div>
-<div class="foldopen" id="foldopen00731" data-start="{" data-end="}">
-<div class="line"><a id="l00731" name="l00731"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a4d755aec50e77f47bcdf05549ee656da">  731</a></span>    public ResponseEntity&lt;EventReturnerDTO&gt; updateEvent(</div>
-<div class="line"><a id="l00732" name="l00732"></a><span class="lineno">  732</span>        @Parameter(name = &quot;<span class="keywordtype">id</span>&quot;, description = &quot;Event ID&quot;, required = true, example = &quot;1&quot;)</div>
-<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>        @PathVariable Long <span class="keywordtype">id</span>,</div>
-<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
-<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>        @RequestParam(&quot;userToken&quot;) String userToken,</div>
-<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>        @Parameter(name = &quot;eventDTO&quot;, description = &quot;Updated event data&quot;, required = true)</div>
-<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>        @RequestBody EventDTO eventDTO</div>
-<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>    ) {</div>
-<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
-<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
-<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>        }</div>
-<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>        </div>
-<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>        User user = authService.getUserByToken(userToken);</div>
-<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>        Optional&lt;Event&gt; updatedEventOpt = linkAutoService.updateEvent(<span class="keywordtype">id</span>, eventDTO, user);</div>
-<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>        </div>
-<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>        <span class="keywordflow">if</span> (updatedEventOpt.isEmpty()) {</div>
-<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>            <span class="keywordflow">return</span> ResponseEntity.notFound().build();</div>
-<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>        }</div>
-<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span>        </div>
-<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>        EventReturnerDTO eventReturnerDTO = parseEventToEventReturnerDTO(updatedEventOpt.get());</div>
-<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>        <span class="keywordflow">return</span> ResponseEntity.ok(eventReturnerDTO);</div>
-<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span>    }</div>
+<div class="line"><a id="l00730" name="l00730"></a><span class="lineno">  730</span> </div>
+<div class="line"><a id="l00731" name="l00731"></a><span class="lineno">  731</span>    @PutMapping(<span class="stringliteral">&quot;/events/{id}&quot;</span>)</div>
+<div class="foldopen" id="foldopen00732" data-start="{" data-end="}">
+<div class="line"><a id="l00732" name="l00732"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a4d755aec50e77f47bcdf05549ee656da">  732</a></span>    public ResponseEntity&lt;EventReturnerDTO&gt; updateEvent(</div>
+<div class="line"><a id="l00733" name="l00733"></a><span class="lineno">  733</span>        @Parameter(name = &quot;<span class="keywordtype">id</span>&quot;, description = &quot;Event ID&quot;, required = true, example = &quot;1&quot;)</div>
+<div class="line"><a id="l00734" name="l00734"></a><span class="lineno">  734</span>        @PathVariable Long <span class="keywordtype">id</span>,</div>
+<div class="line"><a id="l00735" name="l00735"></a><span class="lineno">  735</span>        @Parameter(name = &quot;userToken&quot;, description = &quot;Token of the user&quot;, required = true, example = &quot;1234567890&quot;)</div>
+<div class="line"><a id="l00736" name="l00736"></a><span class="lineno">  736</span>        @RequestParam(&quot;userToken&quot;) String userToken,</div>
+<div class="line"><a id="l00737" name="l00737"></a><span class="lineno">  737</span>        @Parameter(name = &quot;eventDTO&quot;, description = &quot;Updated event data&quot;, required = true)</div>
+<div class="line"><a id="l00738" name="l00738"></a><span class="lineno">  738</span>        @RequestBody EventDTO eventDTO</div>
+<div class="line"><a id="l00739" name="l00739"></a><span class="lineno">  739</span>    ) {</div>
+<div class="line"><a id="l00740" name="l00740"></a><span class="lineno">  740</span>        <span class="keywordflow">if</span> (!authService.isTokenValid(userToken)) {</div>
+<div class="line"><a id="l00741" name="l00741"></a><span class="lineno">  741</span>            <span class="keywordflow">return</span> ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();</div>
+<div class="line"><a id="l00742" name="l00742"></a><span class="lineno">  742</span>        }</div>
+<div class="line"><a id="l00743" name="l00743"></a><span class="lineno">  743</span>        </div>
+<div class="line"><a id="l00744" name="l00744"></a><span class="lineno">  744</span>        User user = authService.getUserByToken(userToken);</div>
+<div class="line"><a id="l00745" name="l00745"></a><span class="lineno">  745</span>        Optional&lt;Event&gt; updatedEventOpt = linkAutoService.updateEvent(<span class="keywordtype">id</span>, eventDTO, user);</div>
+<div class="line"><a id="l00746" name="l00746"></a><span class="lineno">  746</span>        </div>
+<div class="line"><a id="l00747" name="l00747"></a><span class="lineno">  747</span>        <span class="keywordflow">if</span> (updatedEventOpt.isEmpty()) {</div>
+<div class="line"><a id="l00748" name="l00748"></a><span class="lineno">  748</span>            <span class="keywordflow">return</span> ResponseEntity.notFound().build();</div>
+<div class="line"><a id="l00749" name="l00749"></a><span class="lineno">  749</span>        }</div>
+<div class="line"><a id="l00750" name="l00750"></a><span class="lineno">  750</span>        </div>
+<div class="line"><a id="l00751" name="l00751"></a><span class="lineno">  751</span>        EventReturnerDTO eventReturnerDTO = parseEventToEventReturnerDTO(updatedEventOpt.get());</div>
+<div class="line"><a id="l00752" name="l00752"></a><span class="lineno">  752</span>        <span class="keywordflow">return</span> ResponseEntity.ok(eventReturnerDTO);</div>
+<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span>    }</div>
 </div>
-<div class="line"><a id="l00753" name="l00753"></a><span class="lineno">  753</span> </div>
-<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span>    <span class="comment">// Helper methods for converting Event objects to DTOs</span></div>
-<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>    <span class="keyword">private</span> List&lt;EventReturnerDTO&gt; parseEventsToEventReturnerDTO(List&lt;Event&gt; events) {</div>
-<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>        List&lt;EventReturnerDTO&gt; eventReturnerDTOs = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>        <span class="keywordflow">for</span> (Event event : events) {</div>
-<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>            EventReturnerDTO eventReturnerDTO = parseEventToEventReturnerDTO(event);</div>
-<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>            eventReturnerDTOs.add(eventReturnerDTO);</div>
-<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>        }</div>
-<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>        <span class="keywordflow">return</span> eventReturnerDTOs;</div>
-<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>    }</div>
-<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span> </div>
-<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span>    <span class="keyword">private</span> EventReturnerDTO parseEventToEventReturnerDTO(Event event) {</div>
-<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>        <span class="comment">// Get comments IDs if the event has comments</span></div>
-<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>        List&lt;Long&gt; commentIds = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>        <span class="comment">// If the event has comments, add them</span></div>
-<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>        <span class="comment">// Note: You might need to modify this part based on your Event model structure</span></div>
-<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>        <span class="keywordflow">if</span> (event.getComentarios() != <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>            <span class="keywordflow">for</span> (Comment comment : event.getComentarios()) {</div>
-<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>                commentIds.add(comment.getId());</div>
-<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>            }</div>
-<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>        }</div>
-<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>        </div>
-<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> EventReturnerDTO(</div>
-<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>            event.getId(),</div>
-<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>            event.getCreador().getUsername(),</div>
-<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>            event.getTitulo(),</div>
-<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>            event.getDescripcion(),</div>
-<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>            event.getUbicacion(),</div>
-<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>            event.getFechaInicio(),</div>
-<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>            event.getFechaFin(),</div>
-<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>            event.getImagenes(),</div>
-<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>            <span class="keyword">new</span> HashSet&lt;&gt;(event.getParticipantes()),</div>
-<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>            commentIds</div>
-<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>        );</div>
-<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>    }</div>
-<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>}</div>
+<div class="line"><a id="l00754" name="l00754"></a><span class="lineno">  754</span> </div>
+<div class="line"><a id="l00755" name="l00755"></a><span class="lineno">  755</span>    <span class="comment">// Helper methods for converting Event objects to DTOs</span></div>
+<div class="line"><a id="l00756" name="l00756"></a><span class="lineno">  756</span>    <span class="keyword">private</span> List&lt;EventReturnerDTO&gt; parseEventsToEventReturnerDTO(List&lt;Event&gt; events) {</div>
+<div class="line"><a id="l00757" name="l00757"></a><span class="lineno">  757</span>        List&lt;EventReturnerDTO&gt; eventReturnerDTOs = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00758" name="l00758"></a><span class="lineno">  758</span>        <span class="keywordflow">for</span> (Event event : events) {</div>
+<div class="line"><a id="l00759" name="l00759"></a><span class="lineno">  759</span>            EventReturnerDTO eventReturnerDTO = parseEventToEventReturnerDTO(event);</div>
+<div class="line"><a id="l00760" name="l00760"></a><span class="lineno">  760</span>            eventReturnerDTOs.add(eventReturnerDTO);</div>
+<div class="line"><a id="l00761" name="l00761"></a><span class="lineno">  761</span>        }</div>
+<div class="line"><a id="l00762" name="l00762"></a><span class="lineno">  762</span>        <span class="keywordflow">return</span> eventReturnerDTOs;</div>
+<div class="line"><a id="l00763" name="l00763"></a><span class="lineno">  763</span>    }</div>
+<div class="line"><a id="l00764" name="l00764"></a><span class="lineno">  764</span> </div>
+<div class="line"><a id="l00765" name="l00765"></a><span class="lineno">  765</span>    <span class="keyword">private</span> EventReturnerDTO parseEventToEventReturnerDTO(Event event) {</div>
+<div class="line"><a id="l00766" name="l00766"></a><span class="lineno">  766</span>        <span class="comment">// Get comments IDs if the event has comments</span></div>
+<div class="line"><a id="l00767" name="l00767"></a><span class="lineno">  767</span>        List&lt;Long&gt; commentIds = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00768" name="l00768"></a><span class="lineno">  768</span>        <span class="comment">// If the event has comments, add them</span></div>
+<div class="line"><a id="l00769" name="l00769"></a><span class="lineno">  769</span>        <span class="comment">// Note: You might need to modify this part based on your Event model structure</span></div>
+<div class="line"><a id="l00770" name="l00770"></a><span class="lineno">  770</span>        <span class="keywordflow">if</span> (event.getComentarios() != <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00771" name="l00771"></a><span class="lineno">  771</span>            <span class="keywordflow">for</span> (Comment comment : event.getComentarios()) {</div>
+<div class="line"><a id="l00772" name="l00772"></a><span class="lineno">  772</span>                commentIds.add(comment.getId());</div>
+<div class="line"><a id="l00773" name="l00773"></a><span class="lineno">  773</span>            }</div>
+<div class="line"><a id="l00774" name="l00774"></a><span class="lineno">  774</span>        }</div>
+<div class="line"><a id="l00775" name="l00775"></a><span class="lineno">  775</span>        </div>
+<div class="line"><a id="l00776" name="l00776"></a><span class="lineno">  776</span>        <span class="keywordflow">return</span> <span class="keyword">new</span> EventReturnerDTO(</div>
+<div class="line"><a id="l00777" name="l00777"></a><span class="lineno">  777</span>            event.getId(),</div>
+<div class="line"><a id="l00778" name="l00778"></a><span class="lineno">  778</span>            event.getCreador().getUsername(),</div>
+<div class="line"><a id="l00779" name="l00779"></a><span class="lineno">  779</span>            event.getTitulo(),</div>
+<div class="line"><a id="l00780" name="l00780"></a><span class="lineno">  780</span>            event.getDescripcion(),</div>
+<div class="line"><a id="l00781" name="l00781"></a><span class="lineno">  781</span>            event.getUbicacion(),</div>
+<div class="line"><a id="l00782" name="l00782"></a><span class="lineno">  782</span>            event.getFechaInicio(),</div>
+<div class="line"><a id="l00783" name="l00783"></a><span class="lineno">  783</span>            event.getFechaFin(),</div>
+<div class="line"><a id="l00784" name="l00784"></a><span class="lineno">  784</span>            event.getImagenes(),</div>
+<div class="line"><a id="l00785" name="l00785"></a><span class="lineno">  785</span>            <span class="keyword">new</span> HashSet&lt;&gt;(event.getParticipantes()),</div>
+<div class="line"><a id="l00786" name="l00786"></a><span class="lineno">  786</span>            commentIds</div>
+<div class="line"><a id="l00787" name="l00787"></a><span class="lineno">  787</span>        );</div>
+<div class="line"><a id="l00788" name="l00788"></a><span class="lineno">  788</span>    }</div>
+<div class="line"><a id="l00789" name="l00789"></a><span class="lineno">  789</span>}</div>
 </div>
 <div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html">com.linkauto.restapi.controller.LinkAutoController</a></div><div class="ttdef"><b>Definition</b> <a href="LinkAutoController_8java_source.html#l00044">LinkAutoController.java:44</a></div></div>
 <div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController_html_a03a66262fffc687a333ae9a0f1a7cac2"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a03a66262fffc687a333ae9a0f1a7cac2">com.linkauto.restapi.controller.LinkAutoController.LinkAutoController</a></div><div class="ttdeci">LinkAutoController(LinkAutoService linkAutoService, AuthService authService)</div><div class="ttdef"><b>Definition</b> <a href="LinkAutoController_8java_source.html#l00050">LinkAutoController.java:50</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController_html_aaf7d322e33e572b2446e6dcb06483cda"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#aaf7d322e33e572b2446e6dcb06483cda">com.linkauto.restapi.controller.LinkAutoController.parsePostsToPostReturnerDTO</a></div><div class="ttdeci">List&lt; PostReturnerDTO &gt; parsePostsToPostReturnerDTO(List&lt; Post &gt; posts)</div><div class="ttdef"><b>Definition</b> <a href="LinkAutoController_8java_source.html#l00578">LinkAutoController.java:578</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController_html_aaf7d322e33e572b2446e6dcb06483cda"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#aaf7d322e33e572b2446e6dcb06483cda">com.linkauto.restapi.controller.LinkAutoController.parsePostsToPostReturnerDTO</a></div><div class="ttdeci">List&lt; PostReturnerDTO &gt; parsePostsToPostReturnerDTO(List&lt; Post &gt; posts)</div><div class="ttdef"><b>Definition</b> <a href="LinkAutoController_8java_source.html#l00579">LinkAutoController.java:579</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
