@@ -252,7 +252,9 @@ public class User {
     }
 
     public void removeReporters(User reporter) {
+        System.out.println(this.reporters);
         this.reporters.remove(reporter);
+        System.out.println(this.reporters);
     }
 
     public Set<Post> getSavedPosts() {

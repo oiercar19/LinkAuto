@@ -193,6 +193,7 @@ public class LinkAutoService {
         return true;
     }
 
+    @Transactional
     public Boolean deleteReport (User user, String username) {
         User userReported = userRepository.findByUsername(user.getUsername()).orElse(null);
         User userReporter = userRepository.findByUsername(username).orElse(null);

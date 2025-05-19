@@ -539,13 +539,14 @@ public class LinkAutoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        User reportedUser = authService.getUserByToken(userToken);
+        User reporterUser = authService.getUserByToken(userToken);
+        User reportedUser = authService.getUserByUsername(username);
 
-        if (reportedUser == null) {
+        if (reporterUser == null) {
             return ResponseEntity.notFound().build();
         }
 
-        boolean isReported = linkAutoService.deleteReport(reportedUser, username);
+        boolean isReported = linkAutoService.deleteReport(reportedUser, reporterUser.getUsername());
 
         return isReported ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
