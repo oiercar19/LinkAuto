@@ -195,7 +195,7 @@
                             </td>
                             <td>
                                 <span th:each="reporter : ${user.reporters}" class="d-inline-block me-2">
-                                    <form th:action="@{'/admin/' + ${reporter.username} + '/deleteReport?redirectUrl=/adminPanel'}" method="POST" style="display:inline;">
+                                    <form th:action="@{'/admin/' + ${user.username} + '/deleteReport?redirectUrl=/adminPanel'}" method="POST" style="display:inline;">
                                         <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="fas fa-times"></i>
                                         </button>

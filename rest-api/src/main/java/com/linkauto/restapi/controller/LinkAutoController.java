@@ -115,7 +115,7 @@ public class LinkAutoController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity<User> updateUser(
+    public ResponseEntity<UserReturnerDTO> updateUser(
         @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken, 
         @RequestBody UserDTO userDetails) {
@@ -136,8 +136,8 @@ public class LinkAutoController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     
-        User updatedUser = parseUserDTOToUser(userDetails, oldUser);
-        return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(updatedUser) : ResponseEntity.notFound().build();
+        User updatedUser = parseUserDTOToUser(userDetails, oldUser);        
+        return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(parseUserToUserReturnerDTO(updatedUser)) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/users")
@@ -539,13 +539,14 @@ public class LinkAutoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        User reportedUser = authService.getUserByToken(userToken);
+        User reporterUser = authService.getUserByToken(userToken);
+        User reportedUser = authService.getUserByUsername(username);
 
-        if (reportedUser == null) {
+        if (reporterUser == null) {
             return ResponseEntity.notFound().build();
         }
 
-        boolean isReported = linkAutoService.deleteReport(reportedUser, username);
+        boolean isReported = linkAutoService.deleteReport(reportedUser, reporterUser.getUsername());
 
         return isReported ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }
