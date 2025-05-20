@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.Optional;
-import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -24,12 +23,10 @@ import static org.mockito.Mockito.when;
 
 import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.dto.PostDTO;
-import com.linkauto.restapi.dto.EventDTO;
 import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.Comment;
 import com.linkauto.restapi.model.User;
 import com.linkauto.restapi.model.User.Gender;
-import com.linkauto.restapi.model.Event;
 import com.linkauto.restapi.repository.CommentRepository;
 import com.linkauto.restapi.repository.EventRepository;
 import com.linkauto.restapi.repository.PostRepository;
@@ -1028,12 +1025,6 @@ public class LinkAutoServiceTest {
         assertTrue(resultUserNotNull);
         
         // Caso fallido: usuario no existe en la base de datos
-        User validUser = new User(
-            "validUser", "Valid Name", "profilePic", "email",
-            new ArrayList<>(), 123456L, Gender.MALE, "location",
-            "password", "description",
-            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>()
-        );
         when(userRepository.findByUsername("validUser")).thenReturn(Optional.empty());
         
         //boolean resultUserNotFound = linkAutoService.savePost(3L, validUser);
@@ -1106,12 +1097,6 @@ public class LinkAutoServiceTest {
         assertFalse(resultUserNull);
         
         // Caso fallido: usuario no existe en la base de datos
-        User validUser = new User(
-            "validUser", "Valid Name", "profilePic", "email",
-            new ArrayList<>(), 123456L, Gender.MALE, "location",
-            "password", "description",
-            new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>()
-        );
         when(userRepository.findByUsername("validUser")).thenReturn(Optional.empty());
         
         //boolean resultUserNotFound = linkAutoService.unsavePost(1L, validUser);

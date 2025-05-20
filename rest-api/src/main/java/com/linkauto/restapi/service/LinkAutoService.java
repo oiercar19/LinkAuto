@@ -215,7 +215,7 @@ public class LinkAutoService {
     
         // Recupera el usuario desde DB para que tenga su Set<Post> sincronizado
         User user = userRepository.findByUsername(u.getUsername()).orElse(null);
-        if (u == null) return false;
+        if (user == null) return false;
     
         boolean added = user.getSavedPosts().add(post); // Evita duplicados si ya existe en Set
         if (!added) return false; // Ya estaba guardado
