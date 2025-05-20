@@ -246,7 +246,7 @@ public class UserTest {
             new ArrayList<>(),
             new HashSet<>()
         );
-        String expected = "User [username=u1, banned=false, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc, posts=[], savedPost=[]]";
+        String expected = "User [username=u1, banned=false, role=USER, name=Name, profilePicture=pic, email=e@mail, cars=[car1], birthDate=12345, gender=OTHER, location=Loc, password=pwd, description=Desc]";
         assertEquals(expected, u.toString());
     }
 

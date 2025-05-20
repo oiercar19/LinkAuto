@@ -296,8 +296,7 @@ public class User {
     public String toString() {
         return "User [username=" + username + ", banned="+ banned + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
                 + ", email=" + email + ", cars=" + cars + ", birthDate=" + birthDate + ", gender=" + gender
-                + ", location=" + location + ", password=" + password + ", description=" + description + ", posts="
-                + posts +", savedPost=" + savedPosts +"]";
+                + ", location=" + location + ", password=" + password + ", description=" + description + "]";
     }
     
 }
