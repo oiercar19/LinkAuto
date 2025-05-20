@@ -13,6 +13,7 @@ import com.linkauto.client.data.CommentCreator;
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
+import com.linkauto.client.data.UpdateUser;
 import com.linkauto.client.data.User;
 import com.linkauto.client.data.Event;
 import com.linkauto.client.data.EventCreator;
@@ -27,7 +28,7 @@ public interface ILinkAutoServiceProxy {
     
     // User profile methods
     User getUserProfile(String username);
-    void updateProfile(String username, User user);
+    void updateProfile(String username, UpdateUser user);
     
     // Post methods
     void createPost(String token, PostCreator post);

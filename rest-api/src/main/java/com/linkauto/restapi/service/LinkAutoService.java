@@ -114,17 +114,32 @@ public class LinkAutoService {
         return user.getFollowing();
     }
 
-    public Boolean followUser(User user, String usernameToFollow) {
-        User userToFollow = userRepository.findByUsername(usernameToFollow).orElse(null);
-        if (userToFollow == null) {
+    @Transactional
+    public Boolean followUser(String followerUsername, String followedUsername) {
+        if (followerUsername.equals(followedUsername)) {
             return false;
         }
-        user.addFollowing(userToFollow);
-        userToFollow.addFollower(user);
-        userRepository.save(user);
-    
+
+        User follower = userRepository.findByUsername(followerUsername).orElse(null);
+        User followed = userRepository.findByUsername(followedUsername).orElse(null);
+
+        if (follower == null || followed == null) {
+            return false;
+        }
+
+        if (!followed.getFollowers().contains(follower)) {
+            followed.getFollowers().add(follower);
+            follower.getFollowing().add(followed);
+        }
+
+        // Solo guardar uno, Hibernate lo propaga si tienes cascade configurado
+        // O guarda ambos si quieres asegurarte
+        userRepository.save(followed);
+        userRepository.save(follower);
+
         return true;
     }
+
 
     public Boolean unfollowUser(User user, String usernameToUnfollow) {
         User userToUnfollow = userRepository.findByUsername(usernameToUnfollow).orElse(null);
@@ -215,7 +230,7 @@ public class LinkAutoService {
     
         // Recupera el usuario desde DB para que tenga su Set<Post> sincronizado
         User user = userRepository.findByUsername(u.getUsername()).orElse(null);
-        if (u == null) return false;
+        if (user == null) return false;
     
         boolean added = user.getSavedPosts().add(post); // Evita duplicados si ya existe en Set
         if (!added) return false; // Ya estaba guardado

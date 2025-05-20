@@ -53,7 +53,7 @@ public class User {
     private List<Post> posts;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_followers", joinColumns = @JoinColumn(name = "key_user_username"), inverseJoinColumns = @JoinColumn(name = "follower_username"))
+    @JoinTable(name = "user_followers", joinColumns = @JoinColumn(name = "user_username"), inverseJoinColumns = @JoinColumn(name = "follower_username"))
     private List<User> followers;
 
     @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -296,8 +296,7 @@ public class User {
     public String toString() {
         return "User [username=" + username + ", banned="+ banned + ", role=" + role + ", name=" + name + ", profilePicture=" + profilePicture
                 + ", email=" + email + ", cars=" + cars + ", birthDate=" + birthDate + ", gender=" + gender
-                + ", location=" + location + ", password=" + password + ", description=" + description + ", posts="
-                + posts +", savedPost=" + savedPosts +"]";
+                + ", location=" + location + ", password=" + password + ", description=" + description + "]";
     }
     
 }

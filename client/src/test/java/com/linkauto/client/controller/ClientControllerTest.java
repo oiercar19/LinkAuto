@@ -1,7 +1,6 @@
 package com.linkauto.client.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,7 @@ import com.linkauto.client.data.CommentCreator;
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
+import com.linkauto.client.data.UpdateUser;
 import com.linkauto.client.data.User;
 import com.linkauto.client.data.Event;
 import com.linkauto.client.data.EventCreator;
@@ -242,9 +242,7 @@ public class ClientControllerTest {
     public void testUpdateProfile_Success() {
         clientController.token = "validToken";
 
-        User user = new User("user1", "USER", false, "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc", new HashSet<>(), false);
-
-        when(linkAutoServiceProxy.getUserProfile(clientController.token)).thenReturn(user);
+        UpdateUser user = new UpdateUser("user1", "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
 
         doNothing().when(linkAutoServiceProxy).updateProfile("validToken", user);
         String result = clientController.updateProfile(user, redirectAttributes);
@@ -258,9 +256,7 @@ public class ClientControllerTest {
     public void testUpdateProfile_Error() {
         clientController.token = "validToken";
 
-        User user = new User("user1", "USER", false, "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc", new HashSet<>(), false);
-
-        when(linkAutoServiceProxy.getUserProfile(clientController.token)).thenReturn(user);
+        UpdateUser user = new UpdateUser("user1", "User One", "profilePic.jpg", "user1@example.com", null, 0, "Male", "Location1", "password", "desc");
 
         doThrow(new RuntimeException("Error al actualizar el perfil")).when(linkAutoServiceProxy).updateProfile(clientController.token, user);
 

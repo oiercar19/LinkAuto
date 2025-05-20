@@ -27,6 +27,7 @@ import com.linkauto.client.data.Event;
 import com.linkauto.client.data.EventCreator;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
+import com.linkauto.client.data.UpdateUser;
 import com.linkauto.client.data.User;
 import com.linkauto.client.service.ClientServiceProxy;
 
@@ -179,7 +180,7 @@ public class ClientController {
     }
 
     @PostMapping("/updateProfile")
-    public String updateProfile(@RequestBody User u, RedirectAttributes redirectAttributes) {
+    public String updateProfile(@RequestBody UpdateUser u, RedirectAttributes redirectAttributes) {
         try {
             linkAutoServiceProxy.updateProfile(token, u);
             redirectAttributes.addFlashAttribute("success", "Perfil actualizado con éxito");
