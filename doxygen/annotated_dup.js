@@ -37,6 +37,7 @@ var annotated_dup =
             [ "PostReturnerDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTOTest.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTOTest" ],
             [ "ShareReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1ShareReturnerDTO.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1ShareReturnerDTO" ],
             [ "ShareReturnerDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1ShareReturnerDTOTest.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1ShareReturnerDTOTest" ],
+            [ "UpdateUserDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UpdateUserDTO.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UpdateUserDTO" ],
             [ "UserDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO" ],
             [ "UserDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTOTest.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTOTest" ],
             [ "UserRegisterDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO.html", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserRegisterDTO" ],

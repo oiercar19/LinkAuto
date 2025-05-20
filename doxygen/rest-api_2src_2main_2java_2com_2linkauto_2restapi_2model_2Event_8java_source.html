@@ -119,303 +119,302 @@ $(document).ready(function(){initNavTree('rest-api_2src_2main_2java_2com_2linkau
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span><span class="keyword">import</span> jakarta.persistence.ManyToOne;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">import</span> jakarta.persistence.OneToMany;</div>
 <div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">import</span> jakarta.persistence.Table;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="keyword">import</span> jakarta.persistence.Transient;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>@Entity</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>@Table(name = <span class="stringliteral">&quot;event&quot;</span>)</div>
-<div class="foldopen" id="foldopen00026" data-start="{" data-end="};">
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html">   26</a></span>public class <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html">Event</a> {</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    @Id</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    @GeneratedValue(strategy = GenerationType.IDENTITY)</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keyword">private</span> Long id;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    @ManyToOne()</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    @JoinColumn(name = <span class="stringliteral">&quot;username&quot;</span>, nullable = <span class="keyword">false</span>)        </div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    <span class="keyword">private</span> <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> creador;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">private</span> String titulo;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">private</span> String descripcion;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">private</span> String ubicacion;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">private</span> <span class="keywordtype">long</span> fechaInicio;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    <span class="keyword">private</span> <span class="keywordtype">long</span> fechaFin;</div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="comment">// Añadimos esta propiedad para que coincida con el método del repositorio</span></div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keyword">private</span> <span class="keywordtype">long</span> eventDate;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    @ElementCollection(fetch = FetchType.EAGER)</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    @CollectionTable(name = <span class="stringliteral">&quot;event_images&quot;</span>, joinColumns = @JoinColumn(name = <span class="stringliteral">&quot;event_id&quot;</span>))</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    @Column(name = <span class="stringliteral">&quot;image_url&quot;</span>)</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;String&gt; imagenes;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    </div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    @ElementCollection(fetch = FetchType.EAGER)</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    @CollectionTable(name = <span class="stringliteral">&quot;event_participants&quot;</span>, joinColumns = @JoinColumn(name = <span class="stringliteral">&quot;event_id&quot;</span>))</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    @Column(name = <span class="stringliteral">&quot;participant&quot;</span>)</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keyword">private</span> Set&lt;String&gt; participantes;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    @OneToMany(mappedBy = <span class="stringliteral">&quot;event&quot;</span>, cascade = CascadeType.ALL, orphanRemoval = <span class="keyword">true</span>, fetch = FetchType.EAGER)</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>    <span class="keyword">private</span> List&lt;Comment&gt; comentarios;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ae721dd626fa88c6a005b7cf252eebcb8">   57</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ae721dd626fa88c6a005b7cf252eebcb8">Event</a>() {</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        this.imagenes = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        this.participantes = <span class="keyword">new</span> HashSet&lt;&gt;();</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        this.comentarios = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    }</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>@Entity</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>@Table(name = <span class="stringliteral">&quot;event&quot;</span>)</div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="};">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html">   25</a></span>public class <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html">Event</a> {</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    @Id</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    @GeneratedValue(strategy = GenerationType.IDENTITY)</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">private</span> Long id;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    @ManyToOne()</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    @JoinColumn(name = <span class="stringliteral">&quot;username&quot;</span>, nullable = <span class="keyword">false</span>)        </div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="keyword">private</span> <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> creador;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>    </div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>    <span class="keyword">private</span> String titulo;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    <span class="keyword">private</span> String descripcion;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keyword">private</span> String ubicacion;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <span class="keyword">private</span> <span class="keywordtype">long</span> fechaInicio;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">private</span> <span class="keywordtype">long</span> fechaFin;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    </div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>    <span class="comment">// Añadimos esta propiedad para que coincida con el método del repositorio</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    <span class="keyword">private</span> <span class="keywordtype">long</span> eventDate;</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    </div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    @ElementCollection(fetch = FetchType.EAGER)</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    @CollectionTable(name = <span class="stringliteral">&quot;event_images&quot;</span>, joinColumns = @JoinColumn(name = <span class="stringliteral">&quot;event_id&quot;</span>))</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    @Column(name = <span class="stringliteral">&quot;image_url&quot;</span>)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">private</span> <span class="keyword">final</span> List&lt;String&gt; imagenes;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    </div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    @ElementCollection(fetch = FetchType.EAGER)</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    @CollectionTable(name = <span class="stringliteral">&quot;event_participants&quot;</span>, joinColumns = @JoinColumn(name = <span class="stringliteral">&quot;event_id&quot;</span>))</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    @Column(name = <span class="stringliteral">&quot;participant&quot;</span>)</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keyword">private</span> Set&lt;String&gt; participantes;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    @OneToMany(mappedBy = <span class="stringliteral">&quot;event&quot;</span>, cascade = CascadeType.ALL, orphanRemoval = <span class="keyword">true</span>, fetch = FetchType.EAGER)</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>    <span class="keyword">private</span> List&lt;Comment&gt; comentarios;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="foldopen" id="foldopen00056" data-start="{" data-end="}">
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ae721dd626fa88c6a005b7cf252eebcb8">   56</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ae721dd626fa88c6a005b7cf252eebcb8">Event</a>() {</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>        this.imagenes = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        this.participantes = <span class="keyword">new</span> HashSet&lt;&gt;();</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>        this.comentarios = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    }</div>
 </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
-<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4d03f3410c2d9d0e300771db05a0fee1">   63</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4d03f3410c2d9d0e300771db05a0fee1">Event</a>(Long <span class="keywordtype">id</span>, <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> creador, String titulo, String descripcion, String ubicacion, </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                <span class="keywordtype">long</span> fechaInicio, <span class="keywordtype">long</span> fechaFin, List&lt;String&gt; imagenes, </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                Set&lt;String&gt; participantes, List&lt;Comment&gt; comentarios) {</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        this.id = id;</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        this.creador = creador;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        this.titulo = titulo;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        this.descripcion = descripcion;</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        this.ubicacion = ubicacion;</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        this.fechaInicio = fechaInicio;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        this.fechaFin = fechaFin;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="comment">// Añadimos también el eventDate con el mismo valor que fechaInicio</span></div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        this.eventDate = fechaInicio;</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        this.imagenes = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keywordflow">for</span> (String imagen : imagenes) {</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>            this.imagenes.add(imagen);</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        }</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        this.participantes = <span class="keyword">new</span> HashSet&lt;&gt;(participantes);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        this.comentarios = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Comment.html">Comment</a> comentario : comentarios) {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            this.comentarios.add(comentario);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        }</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>    }</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="foldopen" id="foldopen00062" data-start="{" data-end="}">
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4d03f3410c2d9d0e300771db05a0fee1">   62</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4d03f3410c2d9d0e300771db05a0fee1">Event</a>(Long <span class="keywordtype">id</span>, <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> creador, String titulo, String descripcion, String ubicacion, </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>                <span class="keywordtype">long</span> fechaInicio, <span class="keywordtype">long</span> fechaFin, List&lt;String&gt; imagenes, </div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>                Set&lt;String&gt; participantes, List&lt;Comment&gt; comentarios) {</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        this.id = id;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>        this.creador = creador;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        this.titulo = titulo;</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        this.descripcion = descripcion;</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        this.ubicacion = ubicacion;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        this.fechaInicio = fechaInicio;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        this.fechaFin = fechaFin;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="comment">// Añadimos también el eventDate con el mismo valor que fechaInicio</span></div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        this.eventDate = fechaInicio;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        this.imagenes = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keywordflow">for</span> (String imagen : imagenes) {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            this.imagenes.add(imagen);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        }</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        this.participantes = <span class="keyword">new</span> HashSet&lt;&gt;(participantes);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        this.comentarios = <span class="keyword">new</span> ArrayList&lt;&gt;();</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordflow">for</span> (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Comment.html">Comment</a> comentario : comentarios) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>            this.comentarios.add(comentario);</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        }</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>    }</div>
 </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
-<div class="foldopen" id="foldopen00086" data-start="{" data-end="}">
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b57b7b81b00b3b2ecae204d44a7a8aa">   86</a></span>    <span class="keyword">public</span> Long <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b57b7b81b00b3b2ecae204d44a7a8aa">getId</a>() {</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        <span class="keywordflow">return</span> id;</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="foldopen" id="foldopen00085" data-start="{" data-end="}">
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b57b7b81b00b3b2ecae204d44a7a8aa">   85</a></span>    <span class="keyword">public</span> Long <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b57b7b81b00b3b2ecae204d44a7a8aa">getId</a>() {</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="keywordflow">return</span> id;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
 </div>
-<div class="foldopen" id="foldopen00089" data-start="{" data-end="}">
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a78a12b213feac5843eb98cb52f8ddb20">   89</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a78a12b213feac5843eb98cb52f8ddb20">setId</a>(Long <span class="keywordtype">id</span>) {</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        this.id = id;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>    }</div>
+<div class="foldopen" id="foldopen00088" data-start="{" data-end="}">
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a78a12b213feac5843eb98cb52f8ddb20">   88</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a78a12b213feac5843eb98cb52f8ddb20">setId</a>(Long <span class="keywordtype">id</span>) {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>        this.id = id;</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    }</div>
 </div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span> </div>
-<div class="foldopen" id="foldopen00093" data-start="{" data-end="}">
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a24f2a01523297882e0b198a419d0ab37">   93</a></span>    <span class="keyword">public</span> <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a24f2a01523297882e0b198a419d0ab37">getCreador</a>() {</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        <span class="keywordflow">return</span> creador;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>    }</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="foldopen" id="foldopen00092" data-start="{" data-end="}">
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a24f2a01523297882e0b198a419d0ab37">   92</a></span>    <span class="keyword">public</span> <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a24f2a01523297882e0b198a419d0ab37">getCreador</a>() {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        <span class="keywordflow">return</span> creador;</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    }</div>
 </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
-<div class="foldopen" id="foldopen00097" data-start="{" data-end="}">
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a1985a5e3e7c49386f5e60189515e6aea">   97</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a1985a5e3e7c49386f5e60189515e6aea">setCreador</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> creador) {</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        this.creador = creador;</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>    }</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> </div>
+<div class="foldopen" id="foldopen00096" data-start="{" data-end="}">
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a1985a5e3e7c49386f5e60189515e6aea">   96</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a1985a5e3e7c49386f5e60189515e6aea">setCreador</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a> creador) {</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        this.creador = creador;</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>    }</div>
 </div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span> </div>
-<div class="foldopen" id="foldopen00101" data-start="{" data-end="}">
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b2658c4607c1d7df9c85f7503308a0c">  101</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b2658c4607c1d7df9c85f7503308a0c">getTitulo</a>() {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>        <span class="keywordflow">return</span> titulo;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>    }</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
+<div class="foldopen" id="foldopen00100" data-start="{" data-end="}">
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b2658c4607c1d7df9c85f7503308a0c">  100</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b2658c4607c1d7df9c85f7503308a0c">getTitulo</a>() {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>        <span class="keywordflow">return</span> titulo;</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>    }</div>
 </div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
-<div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac440be5552c7a3ebea99dcc6fb66834d">  105</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac440be5552c7a3ebea99dcc6fb66834d">setTitulo</a>(String titulo) {</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        this.titulo = titulo;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="foldopen" id="foldopen00104" data-start="{" data-end="}">
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac440be5552c7a3ebea99dcc6fb66834d">  104</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac440be5552c7a3ebea99dcc6fb66834d">setTitulo</a>(String titulo) {</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        this.titulo = titulo;</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>    }</div>
 </div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
-<div class="foldopen" id="foldopen00109" data-start="{" data-end="}">
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a221cb16f1c71107c79046d3794841510">  109</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a221cb16f1c71107c79046d3794841510">getDescripcion</a>() {</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>        <span class="keywordflow">return</span> descripcion;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>    }</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> </div>
+<div class="foldopen" id="foldopen00108" data-start="{" data-end="}">
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a221cb16f1c71107c79046d3794841510">  108</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a221cb16f1c71107c79046d3794841510">getDescripcion</a>() {</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>        <span class="keywordflow">return</span> descripcion;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    }</div>
 </div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
-<div class="foldopen" id="foldopen00113" data-start="{" data-end="}">
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a914223c7f2acdd19178394beb7163d26">  113</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a914223c7f2acdd19178394beb7163d26">setDescripcion</a>(String descripcion) {</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        this.descripcion = descripcion;</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>    }</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span> </div>
+<div class="foldopen" id="foldopen00112" data-start="{" data-end="}">
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a914223c7f2acdd19178394beb7163d26">  112</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a914223c7f2acdd19178394beb7163d26">setDescripcion</a>(String descripcion) {</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>        this.descripcion = descripcion;</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>    }</div>
 </div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="foldopen" id="foldopen00117" data-start="{" data-end="}">
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a3e3d8d87cf7e274272697246c840f4a0">  117</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a3e3d8d87cf7e274272697246c840f4a0">getUbicacion</a>() {</div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        <span class="keywordflow">return</span> ubicacion;</div>
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    }</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span> </div>
+<div class="foldopen" id="foldopen00116" data-start="{" data-end="}">
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a3e3d8d87cf7e274272697246c840f4a0">  116</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a3e3d8d87cf7e274272697246c840f4a0">getUbicacion</a>() {</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>        <span class="keywordflow">return</span> ubicacion;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    }</div>
 </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="foldopen" id="foldopen00121" data-start="{" data-end="}">
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ada006c5598cf91cadb79899aa527c29b">  121</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ada006c5598cf91cadb79899aa527c29b">setUbicacion</a>(String ubicacion) {</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        this.ubicacion = ubicacion;</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    }</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> </div>
+<div class="foldopen" id="foldopen00120" data-start="{" data-end="}">
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ada006c5598cf91cadb79899aa527c29b">  120</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ada006c5598cf91cadb79899aa527c29b">setUbicacion</a>(String ubicacion) {</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        this.ubicacion = ubicacion;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    }</div>
 </div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="foldopen" id="foldopen00125" data-start="{" data-end="}">
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a62512bb87b1d819539a1237407f5c6de">  125</a></span>    <span class="keyword">public</span> <span class="keywordtype">long</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a62512bb87b1d819539a1237407f5c6de">getFechaInicio</a>() {</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordflow">return</span> fechaInicio;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="foldopen" id="foldopen00124" data-start="{" data-end="}">
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a62512bb87b1d819539a1237407f5c6de">  124</a></span>    <span class="keyword">public</span> <span class="keywordtype">long</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a62512bb87b1d819539a1237407f5c6de">getFechaInicio</a>() {</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        <span class="keywordflow">return</span> fechaInicio;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    }</div>
 </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="foldopen" id="foldopen00129" data-start="{" data-end="}">
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a08bc3b494f25fcfc45fbc90086a09ac0">  129</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a08bc3b494f25fcfc45fbc90086a09ac0">setFechaInicio</a>(<span class="keywordtype">long</span> fechaInicio) {</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        this.fechaInicio = fechaInicio;</div>
-<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        <span class="comment">// Actualizamos también eventDate cuando se actualiza fechaInicio</span></div>
-<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>        this.eventDate = fechaInicio;</div>
-<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    }</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="foldopen" id="foldopen00128" data-start="{" data-end="}">
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a08bc3b494f25fcfc45fbc90086a09ac0">  128</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a08bc3b494f25fcfc45fbc90086a09ac0">setFechaInicio</a>(<span class="keywordtype">long</span> fechaInicio) {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        this.fechaInicio = fechaInicio;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        <span class="comment">// Actualizamos también eventDate cuando se actualiza fechaInicio</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>        this.eventDate = fechaInicio;</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    }</div>
 </div>
-<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
-<div class="foldopen" id="foldopen00135" data-start="{" data-end="}">
-<div class="line"><a id="l00135" name="l00135"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abb9e10f39243ded4c52390f35ab344aa">  135</a></span>    <span class="keyword">public</span> <span class="keywordtype">long</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abb9e10f39243ded4c52390f35ab344aa">getFechaFin</a>() {</div>
-<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>        <span class="keywordflow">return</span> fechaFin;</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>    }</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="foldopen" id="foldopen00134" data-start="{" data-end="}">
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abb9e10f39243ded4c52390f35ab344aa">  134</a></span>    <span class="keyword">public</span> <span class="keywordtype">long</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abb9e10f39243ded4c52390f35ab344aa">getFechaFin</a>() {</div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>        <span class="keywordflow">return</span> fechaFin;</div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>    }</div>
 </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span> </div>
-<div class="foldopen" id="foldopen00139" data-start="{" data-end="}">
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#add9926868f39f35a20990a0becf6765b">  139</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#add9926868f39f35a20990a0becf6765b">setFechaFin</a>(<span class="keywordtype">long</span> fechaFin) {</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        this.fechaFin = fechaFin;</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    }</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#add9926868f39f35a20990a0becf6765b">  138</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#add9926868f39f35a20990a0becf6765b">setFechaFin</a>(<span class="keywordtype">long</span> fechaFin) {</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        this.fechaFin = fechaFin;</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    }</div>
 </div>
-<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    </div>
-<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    <span class="comment">// Añadimos getters y setters para eventDate</span></div>
-<div class="foldopen" id="foldopen00144" data-start="{" data-end="}">
-<div class="line"><a id="l00144" name="l00144"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4c507f65bfb42f2032c58005b197c92e">  144</a></span>    <span class="keyword">public</span> <span class="keywordtype">long</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4c507f65bfb42f2032c58005b197c92e">getEventDate</a>() {</div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>        <span class="keywordflow">return</span> eventDate;</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    }</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>    </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="comment">// Añadimos getters y setters para eventDate</span></div>
+<div class="foldopen" id="foldopen00143" data-start="{" data-end="}">
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4c507f65bfb42f2032c58005b197c92e">  143</a></span>    <span class="keyword">public</span> <span class="keywordtype">long</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4c507f65bfb42f2032c58005b197c92e">getEventDate</a>() {</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span>        <span class="keywordflow">return</span> eventDate;</div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    }</div>
 </div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>    </div>
-<div class="foldopen" id="foldopen00148" data-start="{" data-end="}">
-<div class="line"><a id="l00148" name="l00148"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aebf0d547b67cde0bfab42089b7db0c67">  148</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aebf0d547b67cde0bfab42089b7db0c67">setEventDate</a>(<span class="keywordtype">long</span> eventDate) {</div>
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>        this.eventDate = eventDate;</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>    }</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    </div>
+<div class="foldopen" id="foldopen00147" data-start="{" data-end="}">
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aebf0d547b67cde0bfab42089b7db0c67">  147</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aebf0d547b67cde0bfab42089b7db0c67">setEventDate</a>(<span class="keywordtype">long</span> eventDate) {</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        this.eventDate = eventDate;</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>    }</div>
 </div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
-<div class="foldopen" id="foldopen00152" data-start="{" data-end="}">
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a34229644f97ca880f67ca1279593de84">  152</a></span>    <span class="keyword">public</span> List&lt;String&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a34229644f97ca880f67ca1279593de84">getImagenes</a>() {</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        <span class="keywordflow">return</span> imagenes;</div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>    }</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
+<div class="foldopen" id="foldopen00151" data-start="{" data-end="}">
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a34229644f97ca880f67ca1279593de84">  151</a></span>    <span class="keyword">public</span> List&lt;String&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a34229644f97ca880f67ca1279593de84">getImagenes</a>() {</div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keywordflow">return</span> imagenes;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    }</div>
 </div>
-<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
-<div class="foldopen" id="foldopen00156" data-start="{" data-end="}">
-<div class="line"><a id="l00156" name="l00156"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac9b1b23809cbd8fd6ba57faa9d026a60">  156</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac9b1b23809cbd8fd6ba57faa9d026a60">addImagen</a>(String imagen) {</div>
-<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>        this.imagenes.add(imagen);</div>
-<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span>    }</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
+<div class="foldopen" id="foldopen00155" data-start="{" data-end="}">
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac9b1b23809cbd8fd6ba57faa9d026a60">  155</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac9b1b23809cbd8fd6ba57faa9d026a60">addImagen</a>(String imagen) {</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>        this.imagenes.add(imagen);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>    }</div>
 </div>
-<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span> </div>
-<div class="foldopen" id="foldopen00160" data-start="{" data-end="}">
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa9eaef0894b2ef36eb8a19cfa294f721">  160</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa9eaef0894b2ef36eb8a19cfa294f721">setImagenes</a>(List&lt;String&gt; imagenes) {</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        this.imagenes.clear();</div>
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>        this.imagenes.addAll(imagenes);</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>    }</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="foldopen" id="foldopen00159" data-start="{" data-end="}">
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa9eaef0894b2ef36eb8a19cfa294f721">  159</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa9eaef0894b2ef36eb8a19cfa294f721">setImagenes</a>(List&lt;String&gt; imagenes) {</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span>        this.imagenes.clear();</div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>        this.imagenes.addAll(imagenes);</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span>    }</div>
 </div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span> </div>
-<div class="foldopen" id="foldopen00165" data-start="{" data-end="}">
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aaf19e5fd384564a58d6f4895231b8975">  165</a></span>    <span class="keyword">public</span> Set&lt;String&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aaf19e5fd384564a58d6f4895231b8975">getParticipantes</a>() {</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>        <span class="keywordflow">return</span> participantes;</div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    }</div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span> </div>
+<div class="foldopen" id="foldopen00164" data-start="{" data-end="}">
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aaf19e5fd384564a58d6f4895231b8975">  164</a></span>    <span class="keyword">public</span> Set&lt;String&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aaf19e5fd384564a58d6f4895231b8975">getParticipantes</a>() {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        <span class="keywordflow">return</span> participantes;</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    }</div>
 </div>
-<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>    </div>
-<div class="foldopen" id="foldopen00169" data-start="{" data-end="}">
-<div class="line"><a id="l00169" name="l00169"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a44e8aedc127743a46d4c653ff70b517c">  169</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a44e8aedc127743a46d4c653ff70b517c">addParticipante</a>(String participante) {</div>
-<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>        this.participantes.add(participante);</div>
-<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    }</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>    </div>
+<div class="foldopen" id="foldopen00168" data-start="{" data-end="}">
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a44e8aedc127743a46d4c653ff70b517c">  168</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a44e8aedc127743a46d4c653ff70b517c">addParticipante</a>(String participante) {</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>        this.participantes.add(participante);</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>    }</div>
 </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>    </div>
-<div class="foldopen" id="foldopen00173" data-start="{" data-end="}">
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a485902edcd3e3db0944621bf39965b87">  173</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a485902edcd3e3db0944621bf39965b87">removeParticipante</a>(String participante) {</div>
-<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>        this.participantes.remove(participante);</div>
-<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>    }</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    </div>
+<div class="foldopen" id="foldopen00172" data-start="{" data-end="}">
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a485902edcd3e3db0944621bf39965b87">  172</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a485902edcd3e3db0944621bf39965b87">removeParticipante</a>(String participante) {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        this.participantes.remove(participante);</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>    }</div>
 </div>
-<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span> </div>
-<div class="foldopen" id="foldopen00177" data-start="{" data-end="}">
-<div class="line"><a id="l00177" name="l00177"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa31317338f5e0454a5cca4bfcd92b731">  177</a></span>    <span class="keyword">public</span> List&lt;Comment&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa31317338f5e0454a5cca4bfcd92b731">getComentarios</a>() {</div>
-<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>        <span class="keywordflow">return</span> comentarios;</div>
-<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>    }</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span> </div>
+<div class="foldopen" id="foldopen00176" data-start="{" data-end="}">
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa31317338f5e0454a5cca4bfcd92b731">  176</a></span>    <span class="keyword">public</span> List&lt;Comment&gt; <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa31317338f5e0454a5cca4bfcd92b731">getComentarios</a>() {</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>        <span class="keywordflow">return</span> comentarios;</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>    }</div>
 </div>
-<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span> </div>
-<div class="foldopen" id="foldopen00181" data-start="{" data-end="}">
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abbab56ab0e51f68baa1bf73e02740437">  181</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abbab56ab0e51f68baa1bf73e02740437">setComentarios</a>(List&lt;Comment&gt; comentarios) {</div>
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>        this.comentarios = comentarios;</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>    }</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span> </div>
+<div class="foldopen" id="foldopen00180" data-start="{" data-end="}">
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abbab56ab0e51f68baa1bf73e02740437">  180</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abbab56ab0e51f68baa1bf73e02740437">setComentarios</a>(List&lt;Comment&gt; comentarios) {</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>        this.comentarios = comentarios;</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>    }</div>
 </div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
-<div class="foldopen" id="foldopen00185" data-start="{" data-end="}">
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a14f709ad524551dbbb03e99cd14dde8d">  185</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a14f709ad524551dbbb03e99cd14dde8d">addComentario</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Comment.html">Comment</a> comentario) {</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        this.comentarios.add(comentario);</div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>    }</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span> </div>
+<div class="foldopen" id="foldopen00184" data-start="{" data-end="}">
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a14f709ad524551dbbb03e99cd14dde8d">  184</a></span>    <span class="keyword">public</span> <span class="keywordtype">void</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a14f709ad524551dbbb03e99cd14dde8d">addComentario</a>(<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Comment.html">Comment</a> comentario) {</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        this.comentarios.add(comentario);</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>    }</div>
 </div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    @Override</div>
-<div class="foldopen" id="foldopen00190" data-start="{" data-end="}">
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ab02942068ef53518430dc6c41467c394">  190</a></span>    <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ab02942068ef53518430dc6c41467c394">hashCode</a>() {</div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>        <span class="keywordflow">return</span> Objects.hash(<span class="keywordtype">id</span>, creador, titulo, descripcion, ubicacion, fechaInicio, fechaFin, </div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                           eventDate, imagenes, participantes, comentarios);</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>    }</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>    @Override</div>
+<div class="foldopen" id="foldopen00189" data-start="{" data-end="}">
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ab02942068ef53518430dc6c41467c394">  189</a></span>    <span class="keyword">public</span> <span class="keywordtype">int</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ab02942068ef53518430dc6c41467c394">hashCode</a>() {</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>        <span class="keywordflow">return</span> Objects.hash(<span class="keywordtype">id</span>, creador, titulo, descripcion, ubicacion, fechaInicio, fechaFin, </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>                           eventDate, imagenes, participantes, comentarios);</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>    }</div>
 </div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>    @Override</div>
-<div class="foldopen" id="foldopen00196" data-start="{" data-end="}">
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5deb9bf5201fef484e5ad52ab7ba664b">  196</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5deb9bf5201fef484e5ad52ab7ba664b">equals</a>(Object obj) {</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>        <span class="keywordflow">if</span> (<span class="keyword">this</span> == obj)</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>        <span class="keywordflow">if</span> (obj == <span class="keyword">null</span> || getClass() != obj.getClass())</div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html">Event</a> other = (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html">Event</a>) obj;</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>        <span class="keywordflow">return</span> Objects.<a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5deb9bf5201fef484e5ad52ab7ba664b">equals</a>(<span class="keywordtype">id</span>, other.id) &amp;&amp;</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>            Objects.equals(creador, other.creador) &amp;&amp;</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>            Objects.equals(titulo, other.titulo) &amp;&amp;</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>            Objects.equals(descripcion, other.descripcion) &amp;&amp;</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>            Objects.equals(ubicacion, other.ubicacion) &amp;&amp;</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>            Objects.equals(fechaInicio, other.fechaInicio) &amp;&amp;</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            Objects.equals(fechaFin, other.fechaFin) &amp;&amp;</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            Objects.equals(eventDate, other.eventDate) &amp;&amp;</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            Objects.equals(imagenes, other.imagenes) &amp;&amp;</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            Objects.equals(participantes, other.participantes) &amp;&amp;</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>            Objects.equals(comentarios, other.comentarios);</div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>    }</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>    @Override</div>
+<div class="foldopen" id="foldopen00195" data-start="{" data-end="}">
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5deb9bf5201fef484e5ad52ab7ba664b">  195</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5deb9bf5201fef484e5ad52ab7ba664b">equals</a>(Object obj) {</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>        <span class="keywordflow">if</span> (<span class="keyword">this</span> == obj)</div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>        <span class="keywordflow">if</span> (obj == <span class="keyword">null</span> || getClass() != obj.getClass())</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        <a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html">Event</a> other = (<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html">Event</a>) obj;</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>        <span class="keywordflow">return</span> Objects.<a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5deb9bf5201fef484e5ad52ab7ba664b">equals</a>(<span class="keywordtype">id</span>, other.id) &amp;&amp;</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            Objects.equals(creador, other.creador) &amp;&amp;</div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>            Objects.equals(titulo, other.titulo) &amp;&amp;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>            Objects.equals(descripcion, other.descripcion) &amp;&amp;</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>            Objects.equals(ubicacion, other.ubicacion) &amp;&amp;</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>            Objects.equals(fechaInicio, other.fechaInicio) &amp;&amp;</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>            Objects.equals(fechaFin, other.fechaFin) &amp;&amp;</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>            Objects.equals(eventDate, other.eventDate) &amp;&amp;</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            Objects.equals(imagenes, other.imagenes) &amp;&amp;</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            Objects.equals(participantes, other.participantes) &amp;&amp;</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            Objects.equals(comentarios, other.comentarios);</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>    }</div>
 </div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>    @Override</div>
-<div class="foldopen" id="foldopen00216" data-start="{" data-end="}">
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a635011b237e1c408355a8afc9fe6513b">  216</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a635011b237e1c408355a8afc9fe6513b">toString</a>() {</div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Event [id=&quot;</span> + <span class="keywordtype">id</span> + <span class="stringliteral">&quot;, creador=&quot;</span> + creador.<a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2e45aaa4f7ee2aff0c19312f1b4b49ca">getUsername</a>() + <span class="stringliteral">&quot;, titulo=&quot;</span> + titulo + </div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                <span class="stringliteral">&quot;, descripcion=&quot;</span> + descripcion + <span class="stringliteral">&quot;, ubicacion=&quot;</span> + ubicacion + </div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>                <span class="stringliteral">&quot;, fechaInicio=&quot;</span> + fechaInicio + <span class="stringliteral">&quot;, fechaFin=&quot;</span> + fechaFin + </div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>                <span class="stringliteral">&quot;, eventDate=&quot;</span> + eventDate +</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>                <span class="stringliteral">&quot;, imagenes=&quot;</span> + imagenes + <span class="stringliteral">&quot;, participantes=&quot;</span> + participantes + </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                <span class="stringliteral">&quot;, comentarios=&quot;</span> + comentarios + <span class="stringliteral">&quot;]&quot;</span>;</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>    }</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span> </div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>    @Override</div>
+<div class="foldopen" id="foldopen00215" data-start="{" data-end="}">
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a635011b237e1c408355a8afc9fe6513b">  215</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a635011b237e1c408355a8afc9fe6513b">toString</a>() {</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>        <span class="keywordflow">return</span> <span class="stringliteral">&quot;Event [id=&quot;</span> + <span class="keywordtype">id</span> + <span class="stringliteral">&quot;, creador=&quot;</span> + creador.<a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2e45aaa4f7ee2aff0c19312f1b4b49ca">getUsername</a>() + <span class="stringliteral">&quot;, titulo=&quot;</span> + titulo + </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>                <span class="stringliteral">&quot;, descripcion=&quot;</span> + descripcion + <span class="stringliteral">&quot;, ubicacion=&quot;</span> + ubicacion + </div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>                <span class="stringliteral">&quot;, fechaInicio=&quot;</span> + fechaInicio + <span class="stringliteral">&quot;, fechaFin=&quot;</span> + fechaFin + </div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>                <span class="stringliteral">&quot;, eventDate=&quot;</span> + eventDate +</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>                <span class="stringliteral">&quot;, imagenes=&quot;</span> + imagenes + <span class="stringliteral">&quot;, participantes=&quot;</span> + participantes + </div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>                <span class="stringliteral">&quot;, comentarios=&quot;</span> + comentarios + <span class="stringliteral">&quot;]&quot;</span>;</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>    }</div>
 </div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>}</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>}</div>
 </div>
 <div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Comment_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Comment.html">com.linkauto.restapi.model.Comment</a></div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Comment_8java_source.html#l00014">Comment.java:14</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html">com.linkauto.restapi.model.Event</a></div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00026">Event.java:26</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a08bc3b494f25fcfc45fbc90086a09ac0"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a08bc3b494f25fcfc45fbc90086a09ac0">com.linkauto.restapi.model.Event.setFechaInicio</a></div><div class="ttdeci">void setFechaInicio(long fechaInicio)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00129">Event.java:129</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a14f709ad524551dbbb03e99cd14dde8d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a14f709ad524551dbbb03e99cd14dde8d">com.linkauto.restapi.model.Event.addComentario</a></div><div class="ttdeci">void addComentario(Comment comentario)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00185">Event.java:185</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a1985a5e3e7c49386f5e60189515e6aea"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a1985a5e3e7c49386f5e60189515e6aea">com.linkauto.restapi.model.Event.setCreador</a></div><div class="ttdeci">void setCreador(User creador)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00097">Event.java:97</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a221cb16f1c71107c79046d3794841510"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a221cb16f1c71107c79046d3794841510">com.linkauto.restapi.model.Event.getDescripcion</a></div><div class="ttdeci">String getDescripcion()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00109">Event.java:109</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a24f2a01523297882e0b198a419d0ab37"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a24f2a01523297882e0b198a419d0ab37">com.linkauto.restapi.model.Event.getCreador</a></div><div class="ttdeci">User getCreador()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00093">Event.java:93</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a34229644f97ca880f67ca1279593de84"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a34229644f97ca880f67ca1279593de84">com.linkauto.restapi.model.Event.getImagenes</a></div><div class="ttdeci">List&lt; String &gt; getImagenes()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00152">Event.java:152</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a3e3d8d87cf7e274272697246c840f4a0"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a3e3d8d87cf7e274272697246c840f4a0">com.linkauto.restapi.model.Event.getUbicacion</a></div><div class="ttdeci">String getUbicacion()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00117">Event.java:117</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a44e8aedc127743a46d4c653ff70b517c"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a44e8aedc127743a46d4c653ff70b517c">com.linkauto.restapi.model.Event.addParticipante</a></div><div class="ttdeci">void addParticipante(String participante)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00169">Event.java:169</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a485902edcd3e3db0944621bf39965b87"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a485902edcd3e3db0944621bf39965b87">com.linkauto.restapi.model.Event.removeParticipante</a></div><div class="ttdeci">void removeParticipante(String participante)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00173">Event.java:173</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a4c507f65bfb42f2032c58005b197c92e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4c507f65bfb42f2032c58005b197c92e">com.linkauto.restapi.model.Event.getEventDate</a></div><div class="ttdeci">long getEventDate()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00144">Event.java:144</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a4d03f3410c2d9d0e300771db05a0fee1"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4d03f3410c2d9d0e300771db05a0fee1">com.linkauto.restapi.model.Event.Event</a></div><div class="ttdeci">Event(Long id, User creador, String titulo, String descripcion, String ubicacion, long fechaInicio, long fechaFin, List&lt; String &gt; imagenes, Set&lt; String &gt; participantes, List&lt; Comment &gt; comentarios)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00063">Event.java:63</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a5b2658c4607c1d7df9c85f7503308a0c"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b2658c4607c1d7df9c85f7503308a0c">com.linkauto.restapi.model.Event.getTitulo</a></div><div class="ttdeci">String getTitulo()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00101">Event.java:101</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a5b57b7b81b00b3b2ecae204d44a7a8aa"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b57b7b81b00b3b2ecae204d44a7a8aa">com.linkauto.restapi.model.Event.getId</a></div><div class="ttdeci">Long getId()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00086">Event.java:86</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a5deb9bf5201fef484e5ad52ab7ba664b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5deb9bf5201fef484e5ad52ab7ba664b">com.linkauto.restapi.model.Event.equals</a></div><div class="ttdeci">boolean equals(Object obj)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00196">Event.java:196</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a62512bb87b1d819539a1237407f5c6de"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a62512bb87b1d819539a1237407f5c6de">com.linkauto.restapi.model.Event.getFechaInicio</a></div><div class="ttdeci">long getFechaInicio()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00125">Event.java:125</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a635011b237e1c408355a8afc9fe6513b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a635011b237e1c408355a8afc9fe6513b">com.linkauto.restapi.model.Event.toString</a></div><div class="ttdeci">String toString()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00216">Event.java:216</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a78a12b213feac5843eb98cb52f8ddb20"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a78a12b213feac5843eb98cb52f8ddb20">com.linkauto.restapi.model.Event.setId</a></div><div class="ttdeci">void setId(Long id)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00089">Event.java:89</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a914223c7f2acdd19178394beb7163d26"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a914223c7f2acdd19178394beb7163d26">com.linkauto.restapi.model.Event.setDescripcion</a></div><div class="ttdeci">void setDescripcion(String descripcion)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00113">Event.java:113</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_aa31317338f5e0454a5cca4bfcd92b731"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa31317338f5e0454a5cca4bfcd92b731">com.linkauto.restapi.model.Event.getComentarios</a></div><div class="ttdeci">List&lt; Comment &gt; getComentarios()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00177">Event.java:177</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_aa9eaef0894b2ef36eb8a19cfa294f721"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa9eaef0894b2ef36eb8a19cfa294f721">com.linkauto.restapi.model.Event.setImagenes</a></div><div class="ttdeci">void setImagenes(List&lt; String &gt; imagenes)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00160">Event.java:160</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_aaf19e5fd384564a58d6f4895231b8975"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aaf19e5fd384564a58d6f4895231b8975">com.linkauto.restapi.model.Event.getParticipantes</a></div><div class="ttdeci">Set&lt; String &gt; getParticipantes()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00165">Event.java:165</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_ab02942068ef53518430dc6c41467c394"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ab02942068ef53518430dc6c41467c394">com.linkauto.restapi.model.Event.hashCode</a></div><div class="ttdeci">int hashCode()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00190">Event.java:190</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_abb9e10f39243ded4c52390f35ab344aa"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abb9e10f39243ded4c52390f35ab344aa">com.linkauto.restapi.model.Event.getFechaFin</a></div><div class="ttdeci">long getFechaFin()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00135">Event.java:135</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_abbab56ab0e51f68baa1bf73e02740437"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abbab56ab0e51f68baa1bf73e02740437">com.linkauto.restapi.model.Event.setComentarios</a></div><div class="ttdeci">void setComentarios(List&lt; Comment &gt; comentarios)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00181">Event.java:181</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_ac440be5552c7a3ebea99dcc6fb66834d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac440be5552c7a3ebea99dcc6fb66834d">com.linkauto.restapi.model.Event.setTitulo</a></div><div class="ttdeci">void setTitulo(String titulo)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00105">Event.java:105</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_ac9b1b23809cbd8fd6ba57faa9d026a60"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac9b1b23809cbd8fd6ba57faa9d026a60">com.linkauto.restapi.model.Event.addImagen</a></div><div class="ttdeci">void addImagen(String imagen)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00156">Event.java:156</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_ada006c5598cf91cadb79899aa527c29b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ada006c5598cf91cadb79899aa527c29b">com.linkauto.restapi.model.Event.setUbicacion</a></div><div class="ttdeci">void setUbicacion(String ubicacion)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00121">Event.java:121</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_add9926868f39f35a20990a0becf6765b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#add9926868f39f35a20990a0becf6765b">com.linkauto.restapi.model.Event.setFechaFin</a></div><div class="ttdeci">void setFechaFin(long fechaFin)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00139">Event.java:139</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_ae721dd626fa88c6a005b7cf252eebcb8"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ae721dd626fa88c6a005b7cf252eebcb8">com.linkauto.restapi.model.Event.Event</a></div><div class="ttdeci">Event()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00057">Event.java:57</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_aebf0d547b67cde0bfab42089b7db0c67"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aebf0d547b67cde0bfab42089b7db0c67">com.linkauto.restapi.model.Event.setEventDate</a></div><div class="ttdeci">void setEventDate(long eventDate)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00148">Event.java:148</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html">com.linkauto.restapi.model.Event</a></div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00025">Event.java:25</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a08bc3b494f25fcfc45fbc90086a09ac0"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a08bc3b494f25fcfc45fbc90086a09ac0">com.linkauto.restapi.model.Event.setFechaInicio</a></div><div class="ttdeci">void setFechaInicio(long fechaInicio)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00128">Event.java:128</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a14f709ad524551dbbb03e99cd14dde8d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a14f709ad524551dbbb03e99cd14dde8d">com.linkauto.restapi.model.Event.addComentario</a></div><div class="ttdeci">void addComentario(Comment comentario)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00184">Event.java:184</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a1985a5e3e7c49386f5e60189515e6aea"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a1985a5e3e7c49386f5e60189515e6aea">com.linkauto.restapi.model.Event.setCreador</a></div><div class="ttdeci">void setCreador(User creador)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00096">Event.java:96</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a221cb16f1c71107c79046d3794841510"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a221cb16f1c71107c79046d3794841510">com.linkauto.restapi.model.Event.getDescripcion</a></div><div class="ttdeci">String getDescripcion()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00108">Event.java:108</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a24f2a01523297882e0b198a419d0ab37"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a24f2a01523297882e0b198a419d0ab37">com.linkauto.restapi.model.Event.getCreador</a></div><div class="ttdeci">User getCreador()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00092">Event.java:92</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a34229644f97ca880f67ca1279593de84"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a34229644f97ca880f67ca1279593de84">com.linkauto.restapi.model.Event.getImagenes</a></div><div class="ttdeci">List&lt; String &gt; getImagenes()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00151">Event.java:151</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a3e3d8d87cf7e274272697246c840f4a0"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a3e3d8d87cf7e274272697246c840f4a0">com.linkauto.restapi.model.Event.getUbicacion</a></div><div class="ttdeci">String getUbicacion()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00116">Event.java:116</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a44e8aedc127743a46d4c653ff70b517c"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a44e8aedc127743a46d4c653ff70b517c">com.linkauto.restapi.model.Event.addParticipante</a></div><div class="ttdeci">void addParticipante(String participante)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00168">Event.java:168</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a485902edcd3e3db0944621bf39965b87"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a485902edcd3e3db0944621bf39965b87">com.linkauto.restapi.model.Event.removeParticipante</a></div><div class="ttdeci">void removeParticipante(String participante)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00172">Event.java:172</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a4c507f65bfb42f2032c58005b197c92e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4c507f65bfb42f2032c58005b197c92e">com.linkauto.restapi.model.Event.getEventDate</a></div><div class="ttdeci">long getEventDate()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00143">Event.java:143</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a4d03f3410c2d9d0e300771db05a0fee1"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a4d03f3410c2d9d0e300771db05a0fee1">com.linkauto.restapi.model.Event.Event</a></div><div class="ttdeci">Event(Long id, User creador, String titulo, String descripcion, String ubicacion, long fechaInicio, long fechaFin, List&lt; String &gt; imagenes, Set&lt; String &gt; participantes, List&lt; Comment &gt; comentarios)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00062">Event.java:62</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a5b2658c4607c1d7df9c85f7503308a0c"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b2658c4607c1d7df9c85f7503308a0c">com.linkauto.restapi.model.Event.getTitulo</a></div><div class="ttdeci">String getTitulo()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00100">Event.java:100</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a5b57b7b81b00b3b2ecae204d44a7a8aa"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5b57b7b81b00b3b2ecae204d44a7a8aa">com.linkauto.restapi.model.Event.getId</a></div><div class="ttdeci">Long getId()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00085">Event.java:85</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a5deb9bf5201fef484e5ad52ab7ba664b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a5deb9bf5201fef484e5ad52ab7ba664b">com.linkauto.restapi.model.Event.equals</a></div><div class="ttdeci">boolean equals(Object obj)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00195">Event.java:195</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a62512bb87b1d819539a1237407f5c6de"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a62512bb87b1d819539a1237407f5c6de">com.linkauto.restapi.model.Event.getFechaInicio</a></div><div class="ttdeci">long getFechaInicio()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00124">Event.java:124</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a635011b237e1c408355a8afc9fe6513b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a635011b237e1c408355a8afc9fe6513b">com.linkauto.restapi.model.Event.toString</a></div><div class="ttdeci">String toString()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00215">Event.java:215</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a78a12b213feac5843eb98cb52f8ddb20"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a78a12b213feac5843eb98cb52f8ddb20">com.linkauto.restapi.model.Event.setId</a></div><div class="ttdeci">void setId(Long id)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00088">Event.java:88</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_a914223c7f2acdd19178394beb7163d26"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#a914223c7f2acdd19178394beb7163d26">com.linkauto.restapi.model.Event.setDescripcion</a></div><div class="ttdeci">void setDescripcion(String descripcion)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00112">Event.java:112</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_aa31317338f5e0454a5cca4bfcd92b731"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa31317338f5e0454a5cca4bfcd92b731">com.linkauto.restapi.model.Event.getComentarios</a></div><div class="ttdeci">List&lt; Comment &gt; getComentarios()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00176">Event.java:176</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_aa9eaef0894b2ef36eb8a19cfa294f721"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aa9eaef0894b2ef36eb8a19cfa294f721">com.linkauto.restapi.model.Event.setImagenes</a></div><div class="ttdeci">void setImagenes(List&lt; String &gt; imagenes)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00159">Event.java:159</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_aaf19e5fd384564a58d6f4895231b8975"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aaf19e5fd384564a58d6f4895231b8975">com.linkauto.restapi.model.Event.getParticipantes</a></div><div class="ttdeci">Set&lt; String &gt; getParticipantes()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00164">Event.java:164</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_ab02942068ef53518430dc6c41467c394"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ab02942068ef53518430dc6c41467c394">com.linkauto.restapi.model.Event.hashCode</a></div><div class="ttdeci">int hashCode()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00189">Event.java:189</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_abb9e10f39243ded4c52390f35ab344aa"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abb9e10f39243ded4c52390f35ab344aa">com.linkauto.restapi.model.Event.getFechaFin</a></div><div class="ttdeci">long getFechaFin()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00134">Event.java:134</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_abbab56ab0e51f68baa1bf73e02740437"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#abbab56ab0e51f68baa1bf73e02740437">com.linkauto.restapi.model.Event.setComentarios</a></div><div class="ttdeci">void setComentarios(List&lt; Comment &gt; comentarios)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00180">Event.java:180</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_ac440be5552c7a3ebea99dcc6fb66834d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac440be5552c7a3ebea99dcc6fb66834d">com.linkauto.restapi.model.Event.setTitulo</a></div><div class="ttdeci">void setTitulo(String titulo)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00104">Event.java:104</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_ac9b1b23809cbd8fd6ba57faa9d026a60"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ac9b1b23809cbd8fd6ba57faa9d026a60">com.linkauto.restapi.model.Event.addImagen</a></div><div class="ttdeci">void addImagen(String imagen)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00155">Event.java:155</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_ada006c5598cf91cadb79899aa527c29b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ada006c5598cf91cadb79899aa527c29b">com.linkauto.restapi.model.Event.setUbicacion</a></div><div class="ttdeci">void setUbicacion(String ubicacion)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00120">Event.java:120</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_add9926868f39f35a20990a0becf6765b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#add9926868f39f35a20990a0becf6765b">com.linkauto.restapi.model.Event.setFechaFin</a></div><div class="ttdeci">void setFechaFin(long fechaFin)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00138">Event.java:138</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_ae721dd626fa88c6a005b7cf252eebcb8"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#ae721dd626fa88c6a005b7cf252eebcb8">com.linkauto.restapi.model.Event.Event</a></div><div class="ttdeci">Event()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00056">Event.java:56</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1Event_html_aebf0d547b67cde0bfab42089b7db0c67"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1Event.html#aebf0d547b67cde0bfab42089b7db0c67">com.linkauto.restapi.model.Event.setEventDate</a></div><div class="ttdeci">void setEventDate(long eventDate)</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2Event_8java_source.html#l00147">Event.java:147</a></div></div>
 <div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">com.linkauto.restapi.model.User</a></div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00023">User.java:23</a></div></div>
 <div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1model_1_1User_html_a2e45aaa4f7ee2aff0c19312f1b4b49ca"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a2e45aaa4f7ee2aff0c19312f1b4b49ca">com.linkauto.restapi.model.User.getUsername</a></div><div class="ttdeci">String getUsername()</div><div class="ttdef"><b>Definition</b> <a href="rest-api_2src_2main_2java_2com_2linkauto_2restapi_2model_2User_8java_source.html#l00111">User.java:111</a></div></div>
 </div><!-- fragment --></div><!-- contents -->

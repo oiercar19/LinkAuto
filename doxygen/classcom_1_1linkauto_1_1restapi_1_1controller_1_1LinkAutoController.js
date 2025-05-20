@@ -38,6 +38,6 @@ var classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController =
     [ "unlikePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#ae010509eac5f28e49448a042db25ef82", null ],
     [ "unsavePost", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a47711a0d35d244497dd6d080d0a8ef3f", null ],
     [ "updateEvent", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a4d755aec50e77f47bcdf05549ee656da", null ],
-    [ "updateUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a61bec226e2ccd0620c52c2cf0be2ae6d", null ],
+    [ "updateUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a3f0ec4c369b715cf29db04ad40948591", null ],
     [ "verifyUser", "classcom_1_1linkauto_1_1restapi_1_1controller_1_1LinkAutoController.html#a0d9936f6850d4422676dbbe7b7368ce7", null ]
 ];

@@ -101,203 +101,174 @@ $(document).ready(function(){initNavTree('AuthService_8java_source.html',''); in
 <a href="AuthService_8java.html">Go to the documentation of this file.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno"><a class="line" href="namespacecom_1_1linkauto_1_1restapi_1_1service.html">    1</a></span><span class="keyword">package </span>com.linkauto.restapi.service;</div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="keyword">import</span> java.util.HashMap;</div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> java.util.List;</div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">import</span> java.util.Map;</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">import</span> org.springframework.stereotype.Service;</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">import</span> com.linkauto.restapi.model.User;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">import</span> com.linkauto.restapi.repository.EventRepository;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="keyword">import</span> com.linkauto.restapi.repository.PostRepository;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">import</span> com.linkauto.restapi.repository.UserRepository;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">import</span> com.linkauto.restapi.model.Event;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">import</span> com.linkauto.restapi.model.Post;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">import</span> com.linkauto.restapi.model.Role; <span class="comment">// Ensure Role is imported from the correct package</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">import</span> jakarta.transaction.Transactional;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>@Service</div>
-<div class="foldopen" id="foldopen00020" data-start="{" data-end="};">
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html">   20</a></span><span class="keyword">public</span> <span class="keyword">class </span><a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html">AuthService</a> {</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keyword">private</span> <span class="keyword">final</span> UserRepository userRepository;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    <span class="keyword">private</span> <span class="keyword">final</span> EventRepository eventRepository;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    <span class="keyword">private</span> <span class="keyword">final</span> PostRepository postRepository;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
-<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a537fbf6553c6f258bc7870f64760c03d">   35</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a537fbf6553c6f258bc7870f64760c03d">AuthService</a>(UserRepository userRepository, PostRepository postRepository, EventRepository eventRepository) {</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>        this.userRepository = userRepository;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>        this.eventRepository = eventRepository; </div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>        this.postRepository = postRepository;</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>    }</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="keyword">import</span> java.util.Map;</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">import</span> org.springframework.stereotype.Service;</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">import</span> com.linkauto.restapi.model.User;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">import</span> com.linkauto.restapi.repository.UserRepository;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">import</span> com.linkauto.restapi.model.Role; <span class="comment">// Ensure Role is imported from the correct package</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">import</span> jakarta.transaction.Transactional;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>@Service</div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html">   15</a></span><span class="keyword">public</span> <span class="keyword">class </span><a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html">AuthService</a> {</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">private</span> <span class="keyword">final</span> UserRepository userRepository;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="foldopen" id="foldopen00027" data-start="{" data-end="}">
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#ae189e6824dec2abd59718af04c5c9dfd">   27</a></span>    <span class="keyword">public</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#ae189e6824dec2abd59718af04c5c9dfd">AuthService</a>(UserRepository userRepository) {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>        this.userRepository = userRepository;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    }</div>
 </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Map&lt;String, User&gt; tokenStore = <span class="keyword">new</span> HashMap&lt;&gt;();</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="foldopen" id="foldopen00057" data-start="{" data-end="}">
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#aa2597aeaac26630f4efe06adfca5e96b">   57</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#aa2597aeaac26630f4efe06adfca5e96b">register</a>(User user) {</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>        <span class="keywordflow">if</span> (userRepository.existsByUsername(user.getUsername())) {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>        userRepository.save(user);</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">static</span> Map&lt;String, User&gt; tokenStore = <span class="keyword">new</span> HashMap&lt;&gt;();</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
+<div class="foldopen" id="foldopen00047" data-start="{" data-end="}">
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#aa2597aeaac26630f4efe06adfca5e96b">   47</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#aa2597aeaac26630f4efe06adfca5e96b">register</a>(User user) {</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>        <span class="keywordflow">if</span> (userRepository.existsByUsername(user.getUsername())) {</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        }</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        userRepository.save(user);</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    }</div>
 </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
-<div class="foldopen" id="foldopen00073" data-start="{" data-end="}">
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a9f70382dfe80cf725b437440681d6242">   73</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a9f70382dfe80cf725b437440681d6242">login</a>(String username, String password) {</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>        User user = userRepository.findById(username).orElse(<span class="keyword">null</span>);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="keywordflow">if</span> (user == <span class="keyword">null</span> || !user.getPassword().equals(password)) {</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>            <span class="keywordflow">return</span> <span class="keyword">null</span>;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>        }</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        String token = generateToken();</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        tokenStore.put(token, user);</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keywordflow">return</span> token;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>    }</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="foldopen" id="foldopen00063" data-start="{" data-end="}">
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a9f70382dfe80cf725b437440681d6242">   63</a></span>    <span class="keyword">public</span> String <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a9f70382dfe80cf725b437440681d6242">login</a>(String username, String password) {</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>        User user = userRepository.findById(username).orElse(<span class="keyword">null</span>);</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>        <span class="keywordflow">if</span> (user == <span class="keyword">null</span> || !user.getPassword().equals(password)) {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>            <span class="keywordflow">return</span> <span class="keyword">null</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        }</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        String token = generateToken();</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        tokenStore.put(token, user);</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>        <span class="keywordflow">return</span> token;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>    }</div>
 </div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> </div>
-<div class="foldopen" id="foldopen00090" data-start="{" data-end="}">
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#acf5e2e3fcba839daeaa5ef702d856e6b">   90</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#acf5e2e3fcba839daeaa5ef702d856e6b">logout</a>(String token) {</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="keywordflow">if</span> (tokenStore.containsKey(token)) {</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            tokenStore.remove(token);</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>        } <span class="keywordflow">else</span> {</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        }</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span> </div>
+<div class="foldopen" id="foldopen00080" data-start="{" data-end="}">
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#acf5e2e3fcba839daeaa5ef702d856e6b">   80</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#acf5e2e3fcba839daeaa5ef702d856e6b">logout</a>(String token) {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="keywordflow">if</span> (tokenStore.containsKey(token)) {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>            tokenStore.remove(token);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        }</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>    }</div>
+</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
+<div class="foldopen" id="foldopen00095" data-start="{" data-end="}">
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a4bf92584839c32b8f8d596bf36573e1a">   95</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a4bf92584839c32b8f8d596bf36573e1a">isTokenValid</a>(String token) {</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="keywordflow">return</span> tokenStore.containsKey(token);</div>
 <div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>    }</div>
 </div>
 <div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
 <div class="foldopen" id="foldopen00105" data-start="{" data-end="}">
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a4bf92584839c32b8f8d596bf36573e1a">  105</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a4bf92584839c32b8f8d596bf36573e1a">isTokenValid</a>(String token) {</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keywordflow">return</span> tokenStore.containsKey(token);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a39db055ba5454480dedf6e0c57bcf6a6">  105</a></span>    <span class="keyword">public</span> User <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a39db055ba5454480dedf6e0c57bcf6a6">getUserByToken</a>(String token) {</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="keywordflow">return</span> tokenStore.get(token);</div>
 <div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    }</div>
 </div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span> </div>
 <div class="foldopen" id="foldopen00115" data-start="{" data-end="}">
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a39db055ba5454480dedf6e0c57bcf6a6">  115</a></span>    <span class="keyword">public</span> User <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a39db055ba5454480dedf6e0c57bcf6a6">getUserByToken</a>(String token) {</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordflow">return</span> tokenStore.get(token);</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a88b424b9139f2393253d8fd581619a63">  115</a></span>    <span class="keyword">public</span> User <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a88b424b9139f2393253d8fd581619a63">getUserByUsername</a>(String username) {</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordflow">return</span> userRepository.findById(username).orElse(<span class="keyword">null</span>);</div>
 <div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>    }</div>
 </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="foldopen" id="foldopen00125" data-start="{" data-end="}">
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a88b424b9139f2393253d8fd581619a63">  125</a></span>    <span class="keyword">public</span> User <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a88b424b9139f2393253d8fd581619a63">getUserByUsername</a>(String username) {</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordflow">return</span> userRepository.findById(username).orElse(<span class="keyword">null</span>);</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    }</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> String generateToken() {</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>        <span class="keywordflow">return</span> Long.toHexString(System.currentTimeMillis());</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    }</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
+<div class="foldopen" id="foldopen00139" data-start="{" data-end="}">
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a91476ad4ee70fa97eb5c73e960dab65e">  139</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a91476ad4ee70fa97eb5c73e960dab65e">updateUser</a>(User user, String token) {</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>        tokenStore.put(token, user);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span>        userRepository.save(user);</div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    }</div>
 </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    </div>
-<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">synchronized</span> String generateToken() {</div>
-<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>        <span class="keywordflow">return</span> Long.toHexString(System.currentTimeMillis());</div>
-<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    }</div>
-<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
-<div class="foldopen" id="foldopen00149" data-start="{" data-end="}">
-<div class="line"><a id="l00149" name="l00149"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a91476ad4ee70fa97eb5c73e960dab65e">  149</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a91476ad4ee70fa97eb5c73e960dab65e">updateUser</a>(User user, String token) {</div>
-<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>        tokenStore.put(token, user);</div>
-<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span>        userRepository.save(user);</div>
-<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>    }</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="foldopen" id="foldopen00152" data-start="{" data-end="}">
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#adf20994745462350ba7bf64f4efd2dd7">  152</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#adf20994745462350ba7bf64f4efd2dd7">changeRole</a>(User user, Role role) {</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>        user.setRole(role);</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>        userRepository.save(user);</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>    }</div>
 </div>
-<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span> </div>
-<div class="foldopen" id="foldopen00162" data-start="{" data-end="}">
-<div class="line"><a id="l00162" name="l00162"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#adf20994745462350ba7bf64f4efd2dd7">  162</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#adf20994745462350ba7bf64f4efd2dd7">changeRole</a>(User user, Role role) {</div>
-<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>        user.setRole(role);</div>
-<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>        userRepository.save(user);</div>
-<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>        <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>    }</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>    @Transactional</div>
+<div class="foldopen" id="foldopen00172" data-start="{" data-end="}">
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a8045ddb74274696edfce63e7f777a7f3">  172</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a8045ddb74274696edfce63e7f777a7f3">deleteUser</a>(User user, String token) {</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>        <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span>            <span class="keywordflow">if</span> (!tokenStore.containsKey(token)) {</div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>                </div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>            }</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span> </div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>            <span class="keywordflow">if</span> (!tokenStore.get(token).getUsername().equals(user.getUsername()) &amp;&amp; !tokenStore.get(token).getRole().equals(Role.ADMIN)) {</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>            }</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>            <span class="comment">// Eliminar los posts explícitamente</span></div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>            user.getPosts().forEach(post -&gt; {</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>                post.setUsuario(<span class="keyword">null</span>);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>            });</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>            user.getPosts().clear();</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span> </div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>            <span class="comment">// Eliminar followers y following si hace falta (para evitar foreign key conflicts)</span></div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>            user.getFollowers().forEach(follower -&gt; follower.getFollowing().remove(user));</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span>            user.getFollowers().clear();</div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>            user.getFollowing().forEach(following -&gt; following.getFollowers().remove(user));</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>            user.getFollowing().clear();</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            <span class="comment">// Eliminar el usuario del repositorio</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>            userRepository.delete(user);</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>            </div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>            <span class="comment">// Eliminar el token asociado al usuario del tokenStore</span></div>
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>            tokenStore.remove(token);</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>        } <span class="keywordflow">catch</span> (Exception e) {</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>            System.out.println(<span class="stringliteral">&quot;Error al eliminar el usuario o el token: &quot;</span> + e.getMessage());</div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>            e.printStackTrace();  <span class="comment">// Imprime el stack trace para depuración</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        }</div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>    }</div>
 </div>
-<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span> </div>
-<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>    @Transactional</div>
-<div class="foldopen" id="foldopen00182" data-start="{" data-end="}">
-<div class="line"><a id="l00182" name="l00182"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#aa173058b912b41902239042949967fb6">  182</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#aa173058b912b41902239042949967fb6">deleteUser</a>(User user1, String token) {</div>
-<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span>            <span class="keywordflow">if</span> (!tokenStore.containsKey(token)) {</div>
-<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                </div>
-<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>            }</div>
-<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span> </div>
-<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>            User user = userRepository.findById(user1.getUsername()).orElse(<span class="keyword">null</span>);</div>
-<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>            <span class="keywordflow">if</span> (!tokenStore.get(token).getUsername().equals(user.getUsername()) &amp;&amp; !tokenStore.get(token).getRole().equals(Role.ADMIN)) {</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>            }</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>            <span class="comment">// Eliminar los posts explícitamente</span></div>
-<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>            user.getPosts().forEach(post -&gt; {</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                post.setUsuario(<span class="keyword">null</span>);</div>
-<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>            });</div>
-<div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>            user.getPosts().clear();</div>
-<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span> </div>
-<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>            List&lt;Event&gt; eventos = eventRepository.findByCreador_Username(user.getUsername());</div>
-<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span>            <span class="keywordflow">for</span> (Event evento : eventos) {</div>
-<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>                evento.setCreador(<span class="keyword">null</span>);</div>
-<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>                eventRepository.delete(evento);</div>
-<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>            }</div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span> </div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>            <span class="keywordflow">for</span> (Post savedPost : user.getSavedPosts()) {</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>                savedPost.setUsuario(<span class="keyword">null</span>);</div>
-<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                postRepository.save(savedPost);  <span class="comment">// &lt;-- Aseguramos que el post quede persistido con el cambio</span></div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>            }</div>
-<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            user.getSavedPosts().clear();</div>
-<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            userRepository.deleteSavedPostsByUsername(user.getUsername());</div>
-<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
-<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>            user.getSavedPosts().forEach(savedPost -&gt; savedPost.setUsuario(<span class="keyword">null</span>));</div>
-<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>            user.getSavedPosts().clear();</div>
-<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span> </div>
-<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>            <span class="comment">// Eliminar followers y following si hace falta (para evitar foreign key conflicts)</span></div>
-<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>            user.getFollowers().forEach(follower -&gt; follower.getFollowing().remove(user));</div>
-<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>            user.getFollowers().clear();</div>
-<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>            user.getFollowing().forEach(following -&gt; following.getFollowers().remove(user));</div>
-<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>            user.getFollowing().clear();</div>
-<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span> </div>
-<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>            </div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span> </div>
-<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
-<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>            <span class="comment">// Eliminar el usuario del repositorio</span></div>
-<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>            userRepository.delete(user);</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>            </div>
-<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>        } <span class="keywordflow">catch</span> (Exception e) {</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>            System.out.println(<span class="stringliteral">&quot;Error al eliminar el usuario o el token: &quot;</span> + e.getMessage());</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>            e.printStackTrace();  <span class="comment">// Imprime el stack trace para depuración</span></div>
-<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span>        }</div>
-<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>    }</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span> </div>
+<div class="foldopen" id="foldopen00207" data-start="{" data-end="}">
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a176a479fd2e072ee153b6f76cef86ede">  207</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a176a479fd2e072ee153b6f76cef86ede">banUser</a>(String username, <span class="keywordtype">boolean</span> banStatus) {</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>        <span class="keywordflow">try</span> {</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span> </div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>            System.out.println(<span class="stringliteral">&quot;\n\n\n\nBan request received for username: &quot;</span> + username + <span class="stringliteral">&quot;, banStatus: &quot;</span> + banStatus + <span class="stringliteral">&quot;\\n&quot;</span> + <span class="comment">//</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                        <span class="stringliteral">&quot;\n&quot;</span> + <span class="comment">//</span></div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>                        <span class="stringliteral">&quot;\n&quot;</span> + <span class="comment">//</span></div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>                        <span class="stringliteral">&quot;\n&quot;</span>);</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span>            User user = userRepository.findById(username).orElse(<span class="keyword">null</span>);</div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>            <span class="keywordflow">if</span> (user == <span class="keyword">null</span>) {</div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// Usuario no encontrado</span></div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>            }</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>            user.setBanned(banStatus);</div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span>            userRepository.save(user);</div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// Usuario actualizado correctamente</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        } <span class="keywordflow">catch</span> (Exception e) {</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>            System.out.println(<span class="stringliteral">&quot;Error al actualizar el estado de baneo del usuario: &quot;</span> + e.getMessage());</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>            e.printStackTrace();</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// Error al actualizar el usuario</span></div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>        }</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>    }</div>
 </div>
-<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span> </div>
-<div class="foldopen" id="foldopen00236" data-start="{" data-end="}">
-<div class="line"><a id="l00236" name="l00236"></a><span class="lineno"><a class="line" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a176a479fd2e072ee153b6f76cef86ede">  236</a></span>    <span class="keyword">public</span> <span class="keywordtype">boolean</span> <a class="code hl_function" href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a176a479fd2e072ee153b6f76cef86ede">banUser</a>(String username, <span class="keywordtype">boolean</span> banStatus) {</div>
-<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>        <span class="keywordflow">try</span> {</div>
-<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span> </div>
-<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span>            System.out.println(<span class="stringliteral">&quot;\n\n\n\nBan request received for username: &quot;</span> + username + <span class="stringliteral">&quot;, banStatus: &quot;</span> + banStatus + <span class="stringliteral">&quot;\\n&quot;</span> + <span class="comment">//</span></div>
-<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>                        <span class="stringliteral">&quot;\n&quot;</span> + <span class="comment">//</span></div>
-<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>                        <span class="stringliteral">&quot;\n&quot;</span> + <span class="comment">//</span></div>
-<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>                        <span class="stringliteral">&quot;\n&quot;</span>);</div>
-<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>            User user = userRepository.findById(username).orElse(<span class="keyword">null</span>);</div>
-<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>            <span class="keywordflow">if</span> (user == <span class="keyword">null</span>) {</div>
-<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>                <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// Usuario no encontrado</span></div>
-<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>            }</div>
-<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>            user.setBanned(banStatus);</div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>            userRepository.save(user);</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>            <span class="keywordflow">return</span> <span class="keyword">true</span>; <span class="comment">// Usuario actualizado correctamente</span></div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>        } <span class="keywordflow">catch</span> (Exception e) {</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>            System.out.println(<span class="stringliteral">&quot;Error al actualizar el estado de baneo del usuario: &quot;</span> + e.getMessage());</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span>            e.printStackTrace();</div>
-<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span>            <span class="keywordflow">return</span> <span class="keyword">false</span>; <span class="comment">// Error al actualizar el usuario</span></div>
-<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span>        }</div>
-<div class="line"><a id="l00255" name="l00255"></a><span class="lineno">  255</span>    }</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>}</div>
 </div>
-<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>}</div>
-</div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html">com.linkauto.restapi.service.AuthService</a></div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00020">AuthService.java:20</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a176a479fd2e072ee153b6f76cef86ede"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a176a479fd2e072ee153b6f76cef86ede">com.linkauto.restapi.service.AuthService.banUser</a></div><div class="ttdeci">boolean banUser(String username, boolean banStatus)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00236">AuthService.java:236</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a39db055ba5454480dedf6e0c57bcf6a6"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a39db055ba5454480dedf6e0c57bcf6a6">com.linkauto.restapi.service.AuthService.getUserByToken</a></div><div class="ttdeci">User getUserByToken(String token)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00115">AuthService.java:115</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a4bf92584839c32b8f8d596bf36573e1a"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a4bf92584839c32b8f8d596bf36573e1a">com.linkauto.restapi.service.AuthService.isTokenValid</a></div><div class="ttdeci">boolean isTokenValid(String token)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00105">AuthService.java:105</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a537fbf6553c6f258bc7870f64760c03d"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a537fbf6553c6f258bc7870f64760c03d">com.linkauto.restapi.service.AuthService.AuthService</a></div><div class="ttdeci">AuthService(UserRepository userRepository, PostRepository postRepository, EventRepository eventRepository)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00035">AuthService.java:35</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a88b424b9139f2393253d8fd581619a63"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a88b424b9139f2393253d8fd581619a63">com.linkauto.restapi.service.AuthService.getUserByUsername</a></div><div class="ttdeci">User getUserByUsername(String username)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00125">AuthService.java:125</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a91476ad4ee70fa97eb5c73e960dab65e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a91476ad4ee70fa97eb5c73e960dab65e">com.linkauto.restapi.service.AuthService.updateUser</a></div><div class="ttdeci">boolean updateUser(User user, String token)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00149">AuthService.java:149</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a9f70382dfe80cf725b437440681d6242"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a9f70382dfe80cf725b437440681d6242">com.linkauto.restapi.service.AuthService.login</a></div><div class="ttdeci">String login(String username, String password)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00073">AuthService.java:73</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_aa173058b912b41902239042949967fb6"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#aa173058b912b41902239042949967fb6">com.linkauto.restapi.service.AuthService.deleteUser</a></div><div class="ttdeci">boolean deleteUser(User user1, String token)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00182">AuthService.java:182</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_aa2597aeaac26630f4efe06adfca5e96b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#aa2597aeaac26630f4efe06adfca5e96b">com.linkauto.restapi.service.AuthService.register</a></div><div class="ttdeci">boolean register(User user)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00057">AuthService.java:57</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_acf5e2e3fcba839daeaa5ef702d856e6b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#acf5e2e3fcba839daeaa5ef702d856e6b">com.linkauto.restapi.service.AuthService.logout</a></div><div class="ttdeci">boolean logout(String token)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00090">AuthService.java:90</a></div></div>
-<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_adf20994745462350ba7bf64f4efd2dd7"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#adf20994745462350ba7bf64f4efd2dd7">com.linkauto.restapi.service.AuthService.changeRole</a></div><div class="ttdeci">boolean changeRole(User user, Role role)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00162">AuthService.java:162</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html">com.linkauto.restapi.service.AuthService</a></div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00015">AuthService.java:15</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a176a479fd2e072ee153b6f76cef86ede"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a176a479fd2e072ee153b6f76cef86ede">com.linkauto.restapi.service.AuthService.banUser</a></div><div class="ttdeci">boolean banUser(String username, boolean banStatus)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00207">AuthService.java:207</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a39db055ba5454480dedf6e0c57bcf6a6"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a39db055ba5454480dedf6e0c57bcf6a6">com.linkauto.restapi.service.AuthService.getUserByToken</a></div><div class="ttdeci">User getUserByToken(String token)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00105">AuthService.java:105</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a4bf92584839c32b8f8d596bf36573e1a"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a4bf92584839c32b8f8d596bf36573e1a">com.linkauto.restapi.service.AuthService.isTokenValid</a></div><div class="ttdeci">boolean isTokenValid(String token)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00095">AuthService.java:95</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a8045ddb74274696edfce63e7f777a7f3"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a8045ddb74274696edfce63e7f777a7f3">com.linkauto.restapi.service.AuthService.deleteUser</a></div><div class="ttdeci">boolean deleteUser(User user, String token)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00172">AuthService.java:172</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a88b424b9139f2393253d8fd581619a63"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a88b424b9139f2393253d8fd581619a63">com.linkauto.restapi.service.AuthService.getUserByUsername</a></div><div class="ttdeci">User getUserByUsername(String username)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00115">AuthService.java:115</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a91476ad4ee70fa97eb5c73e960dab65e"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a91476ad4ee70fa97eb5c73e960dab65e">com.linkauto.restapi.service.AuthService.updateUser</a></div><div class="ttdeci">boolean updateUser(User user, String token)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00139">AuthService.java:139</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_a9f70382dfe80cf725b437440681d6242"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a9f70382dfe80cf725b437440681d6242">com.linkauto.restapi.service.AuthService.login</a></div><div class="ttdeci">String login(String username, String password)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00063">AuthService.java:63</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_aa2597aeaac26630f4efe06adfca5e96b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#aa2597aeaac26630f4efe06adfca5e96b">com.linkauto.restapi.service.AuthService.register</a></div><div class="ttdeci">boolean register(User user)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00047">AuthService.java:47</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_acf5e2e3fcba839daeaa5ef702d856e6b"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#acf5e2e3fcba839daeaa5ef702d856e6b">com.linkauto.restapi.service.AuthService.logout</a></div><div class="ttdeci">boolean logout(String token)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00080">AuthService.java:80</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_adf20994745462350ba7bf64f4efd2dd7"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#adf20994745462350ba7bf64f4efd2dd7">com.linkauto.restapi.service.AuthService.changeRole</a></div><div class="ttdeci">boolean changeRole(User user, Role role)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00152">AuthService.java:152</a></div></div>
+<div class="ttc" id="aclasscom_1_1linkauto_1_1restapi_1_1service_1_1AuthService_html_ae189e6824dec2abd59718af04c5c9dfd"><div class="ttname"><a href="classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#ae189e6824dec2abd59718af04c5c9dfd">com.linkauto.restapi.service.AuthService.AuthService</a></div><div class="ttdeci">AuthService(UserRepository userRepository)</div><div class="ttdef"><b>Definition</b> <a href="AuthService_8java_source.html#l00027">AuthService.java:27</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
