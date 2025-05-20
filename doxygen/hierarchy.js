@@ -48,6 +48,7 @@ var hierarchy =
     [ "com.linkauto.restapi.model.Role", "enumcom_1_1linkauto_1_1restapi_1_1model_1_1Role.html", null ],
     [ "com.linkauto.restapi.dto.ShareReturnerDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1ShareReturnerDTO.html", null ],
     [ "com.linkauto.restapi.dto.ShareReturnerDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1ShareReturnerDTOTest.html", null ],
+    [ "com.linkauto.restapi.dto.UpdateUserDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UpdateUserDTO.html", null ],
     [ "com.linkauto.restapi.model.User", "classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html", null ],
     [ "com.linkauto.restapi.dto.UserDTO", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTO.html", null ],
     [ "com.linkauto.restapi.dto.UserDTOTest", "classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserDTOTest.html", null ],
