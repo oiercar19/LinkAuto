@@ -1624,4 +1624,141 @@ void testCancelParticipation_NotFound() {
         RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.getUserSavedPosts("testuser"));
         assertEquals("Failed to get user saved posts: Server Error", exception.getMessage());
     }
+
+    @Test
+    void testDeleteReport_Success() {
+        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+
+        doNothing().when(restTemplate).delete(url);
+
+        assertDoesNotThrow(() -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
+    }
+
+    @Test
+    void testDeleteReport_Unauthorized() {
+        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
+            .when(restTemplate).delete(url);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testDeleteReport_NotFound() {
+        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
+            .when(restTemplate).delete(url);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testDeleteReport_OtherError() {
+        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
+            .when(restTemplate).delete(url);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
+        assertEquals("Failed to delete report: Server Error", exception.getMessage());
+    }
+
+    @Test
+    void testReportUser_Success() {
+        String url = String.format("%s/api/user/%s/report?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class))).thenReturn(null);
+
+        assertDoesNotThrow(() -> clientServiceProxy.reportUser(TOKEN, "testuser"));
+    }
+
+    @Test
+    void testReportUser_Unauthorized() {
+        String url = String.format("%s/api/user/%s/report?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.reportUser(TOKEN, "testuser"));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testReportUser_NotFound() {
+        String url = String.format("%s/api/user/%s/report?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.reportUser(TOKEN, "testuser"));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testReportUser_OtherError() {
+        String url = String.format("%s/api/user/%s/report?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+
+        when(restTemplate.postForObject(eq(url), isNull(), eq(Void.class)))
+            .thenThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"));
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.reportUser(TOKEN, "testuser"));
+        assertEquals("Failed to report user: Server Error", exception.getMessage());
+    }
+
+    @Test
+    void testBanUser_Success() {
+        String url = String.format("%s/api/user/%s/ban?banStatus=%s&userToken=%s", API_BASE_URL, "testuser", true, TOKEN);
+
+        doNothing().when(restTemplate).put(url, null);
+
+        assertDoesNotThrow(() -> clientServiceProxy.banUser(TOKEN, "testuser", true));
+    }
+
+    @Test
+    void testBanUser_Unauthorized() {
+        String url = String.format("%s/api/user/%s/ban?banStatus=%s&userToken=%s", API_BASE_URL, "testuser", true, TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
+            .when(restTemplate).put(url, null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.banUser(TOKEN, "testuser", true));
+        assertEquals("Unauthorized: Invalid token", exception.getMessage());
+    }
+
+    @Test
+    void testBanUser_Forbidden() {
+        String url = String.format("%s/api/user/%s/ban?banStatus=%s&userToken=%s", API_BASE_URL, "testuser", true, TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.FORBIDDEN))
+            .when(restTemplate).put(url, null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.banUser(TOKEN, "testuser", true));
+        assertEquals("Forbidden: You do not have permission to ban this user", exception.getMessage());
+    }
+
+    @Test
+    void testBanUser_NotFound() {
+        String url = String.format("%s/api/user/%s/ban?banStatus=%s&userToken=%s", API_BASE_URL, "testuser", true, TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
+            .when(restTemplate).put(url, null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.banUser(TOKEN, "testuser", true));
+        assertEquals("User not found", exception.getMessage());
+    }
+
+    @Test
+    void testBanUser_OtherError() {
+        String url = String.format("%s/api/user/%s/ban?banStatus=%s&userToken=%s", API_BASE_URL, "testuser", true, TOKEN);
+
+        doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
+            .when(restTemplate).put(url, null);
+
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.banUser(TOKEN, "testuser", true));
+        assertEquals("Failed to update ban status: Server Error", exception.getMessage());
+    }
 }
