@@ -74,9 +74,9 @@ var NAVTREEINDEX =
 [
 "AuthControllerTest_8java.html",
 "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientControllerTest.html#af36b6eebf5ce8c3ac2e6f1ee6ab7be19",
-"classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostReturnerDTO.html#a6883b955adfbae754289e423238c7ab1",
-"classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#a3a3d24075af05b445bffde32cde24e2e",
-"dir_f88537e3c70e6d0046863d84132e8b74.html"
+"classcom_1_1linkauto_1_1restapi_1_1dto_1_1PostDTOTest.html#a84e96726294008fee93b06b642b0acd9",
+"classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html",
+"dir_868aae5bba2c32df6af31c93f42120b8.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

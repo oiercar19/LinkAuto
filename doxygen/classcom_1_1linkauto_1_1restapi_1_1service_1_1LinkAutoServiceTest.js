@@ -40,6 +40,9 @@ var classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest =
     [ "testGetPostById", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ab5234265bb8edb45918b189d9c7b72bb", null ],
     [ "testGetPostsByUsername", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a58f7afe7e24077c79e9c4638d0f44594", null ],
     [ "testGetSavedPostsByUsername", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ad03c845ad224aa8b67bdb41c07052a2e", null ],
+    [ "testGetSavedPostsByUsername_UserDoesNotExist", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a928e3172c458de429aa87d7b34334eb1", null ],
+    [ "testGetSavedPostsByUsername_UserExistsWithNoSavedPosts", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a1d81f7af5a191b98f04e686956670160", null ],
+    [ "testGetSavedPostsByUsername_UserExistsWithSavedPosts", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a6433594d6cac6a428f1e6e785b0d0fb2", null ],
     [ "testGetUserByUsername_Found", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a75bf65594fbeeb4144001a02e9a197b1", null ],
     [ "testGetUserByUsername_NotFound", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ab14d066248c500105b6a5912e7dd6d0d", null ],
     [ "testGetUserParticipatingEvents_Found", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#aab5a4252e894fd407ce8f04832bcb751", null ],
@@ -57,5 +60,8 @@ var classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest =
     [ "testUpdateEvent_EventNotFound", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#abd53df3b83eb81074aa065f11c54a4fe", null ],
     [ "testUpdateEvent_Success", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a1e7439273c14bec4760e4de3306f71b5", null ],
     [ "testUpdateEvent_UserNotCreator", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a503392fef1c9a197ccd8ae2c0f75acf3", null ],
-    [ "testVerifyUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a62184590f9d5a487557d8c81211e61f4", null ]
+    [ "testVerifyUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a62184590f9d5a487557d8c81211e61f4", null ],
+    [ "testVerifyUser_ExactlyThreePostsAndFollowers", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#ab9651b22e2c455b130d88982596dd7d3", null ],
+    [ "testVerifyUser_LessThanThreeFollowers", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#a6c9316d79c5815342646a0c08b9ced03", null ],
+    [ "testVerifyUser_LessThanThreePosts", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoServiceTest.html#af81d5ef82d8af6c382081aa0f88207ca", null ]
 ];

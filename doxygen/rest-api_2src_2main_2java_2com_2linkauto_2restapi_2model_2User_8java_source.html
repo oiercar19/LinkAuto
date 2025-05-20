@@ -162,7 +162,7 @@ $(document).ready(function(){initNavTree('rest-api_2src_2main_2java_2com_2linkau
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    @ManyToMany(mappedBy = &quot;followers&quot;, fetch = FetchType.EAGER, cascade = CascadeType.ALL)</div>
 <div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    private List&lt;<a class="code hl_class" href="classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html">User</a>&gt; following;</div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    @ManyToMany(fetch = FetchType.EAGER)</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)</div>
 <div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>    @JoinTable(</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    name = &quot;user_saved_posts&quot;,</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    joinColumns = @JoinColumn(name = &quot;user_username&quot;),</div>
