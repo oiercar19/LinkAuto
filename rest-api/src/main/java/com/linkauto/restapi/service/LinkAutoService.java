@@ -209,16 +209,12 @@ public class LinkAutoService {
     }
 
     @Transactional
-    public Boolean deleteReport (User user, String username) {
-        User userReported = userRepository.findByUsername(user.getUsername()).orElse(null);
-        User userReporter = userRepository.findByUsername(username).orElse(null);
-
-        if (userReported == null || username == null) {
-            return false;
-        }
+    public Boolean deleteReport (String usernameToDeleteReport, String usernameOwningTheReport) {
+        User userToDeleteReport = userRepository.findByUsername(usernameToDeleteReport).orElse(null);
+        User userOwningTheReport = userRepository.findByUsername(usernameOwningTheReport).orElse(null);
         
-        userReported.removeReporters(userReporter);
-        userRepository.save(userReported);
+        userOwningTheReport.removeReporters(userToDeleteReport);
+        userRepository.save(userOwningTheReport);
 
         return true;
     }

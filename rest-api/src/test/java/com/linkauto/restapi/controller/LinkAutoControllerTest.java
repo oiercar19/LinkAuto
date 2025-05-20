@@ -1074,36 +1074,43 @@ public void testParseEventToEventReturnerDTO() {
     @Test
     public void testDeleteReport() {
         String userToken = "validToken";
-        String username = "reportedUser";
+        String usernameOwningTheReport = "usernameOwningTheReport";
+        String usernameToDelete = "usernameToDelete";
 
         // Case 1: Invalid token
         when(authService.isTokenValid("invalidToken")).thenReturn(false);
-        ResponseEntity<Void> invalidTokenResponse = linkAutoController.deleteReport(username, "invalidToken");
+        ResponseEntity<Void> invalidTokenResponse = linkAutoController.deleteReport(usernameToDelete, usernameOwningTheReport, "invalidToken");
         assertEquals(HttpStatus.UNAUTHORIZED, invalidTokenResponse.getStatusCode());
 
         // Case 2: Reported user not found (null)
-        when(authService.isTokenValid(userToken)).thenReturn(true);
-        when(authService.getUserByToken(userToken)).thenReturn(null);
-        ResponseEntity<Void> notFoundResponse = linkAutoController.deleteReport(username, userToken);
+        when(authService.isTokenValid(userToken)).thenReturn(true); 
+        User adminUser = new User("admin", "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        adminUser.setRole(Role.ADMIN);
+        when(authService.getUserByToken(userToken)).thenReturn(adminUser);
+        when(authService.getUserByUsername(usernameOwningTheReport)).thenReturn(null);
+        when(authService.getUserByUsername(usernameToDelete)).thenReturn(null);
+        ResponseEntity<Void> notFoundResponse = linkAutoController.deleteReport(usernameToDelete, usernameOwningTheReport, userToken);
         assertEquals(HttpStatus.NOT_FOUND, notFoundResponse.getStatusCode());
 
         // Case 3: Delete report successful
-        User reporterUser = new User("reporterUser", "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
-        User reportedUser = new User("reportedUser", "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
-        reportedUser.setReporters(reporterUser);
         when(authService.isTokenValid(userToken)).thenReturn(true);
-        when(authService.getUserByToken(userToken)).thenReturn(reporterUser);
-        when(authService.getUserByUsername(reportedUser.getUsername())).thenReturn(reportedUser);
-        when(linkAutoService.deleteReport(reportedUser, reporterUser.getUsername())).thenReturn(true);
-        ResponseEntity<Void> successResponse = linkAutoController.deleteReport(reportedUser.getUsername(), userToken);
+        when(authService.getUserByToken(userToken)).thenReturn(adminUser);
+        User userToDelete = new User("usernameToDelete", "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User userOwningTheReport = new User("usernameOwningTheReport", "name", "pic", "email", new ArrayList<>(), 123L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        userOwningTheReport.setReporters(userToDelete);
+        when(authService.getUserByUsername(userToDelete.getUsername())).thenReturn(userToDelete);
+        when(authService.getUserByUsername(userOwningTheReport.getUsername())).thenReturn(userOwningTheReport);
+        when(linkAutoService.deleteReport(userToDelete.getUsername(), userOwningTheReport.getUsername())).thenReturn(true);
+        ResponseEntity<Void> successResponse = linkAutoController.deleteReport(userToDelete.getUsername(), userOwningTheReport.getUsername(), userToken);
         assertEquals(HttpStatus.OK, successResponse.getStatusCode());
 
         // Case 4: Delete report failed (internal error)
         when(authService.isTokenValid(userToken)).thenReturn(true);
-        when(authService.getUserByToken(userToken)).thenReturn(reporterUser);
-        when(authService.getUserByUsername(reportedUser.getUsername())).thenReturn(reportedUser);
-        when(linkAutoService.deleteReport(reportedUser, reporterUser.getUsername())).thenReturn(false);
-        ResponseEntity<Void> errorResponse = linkAutoController.deleteReport(reportedUser.getUsername(), userToken);
+        when(authService.getUserByToken(userToken)).thenReturn(adminUser);
+        when(authService.getUserByUsername(userToDelete.getUsername())).thenReturn(userToDelete);
+        when(authService.getUserByUsername(userOwningTheReport.getUsername())).thenReturn(userOwningTheReport);
+        when(linkAutoService.deleteReport(userToDelete.getUsername(), userOwningTheReport.getUsername())).thenReturn(false);
+        ResponseEntity<Void> errorResponse = linkAutoController.deleteReport(userToDelete.getUsername(), userOwningTheReport.getUsername(), userToken);
         assertEquals(HttpStatus.INTERNAL_SERVER_ERROR, errorResponse.getStatusCode());
     }
 

@@ -66,7 +66,7 @@ public interface ILinkAutoServiceProxy {
     void participateInEvent(String token, Long eventId);
     void cancelParticipation(String token, Long eventId);
     void reportUser(String token, String username);
-    void deleteReport(String token, String username);
+    void deleteReport(String token, String usernameToBeDeleted, String usernameOwningTheReport);
     void verifyUser(String token, String username);
     Boolean isUserVerified(String username);
     List<Post> getUserSavedPosts(String username);

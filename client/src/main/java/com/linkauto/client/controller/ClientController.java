@@ -681,10 +681,10 @@ public String getAllEvents(Model model, RedirectAttributes redirectAttributes) {
         }
     }
 
-    @PostMapping("/admin/{username}/deleteReport") 
-    public String deleteReport(@PathVariable String username, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
+    @PostMapping("/admin/{usernameOwningTheReport}/deleteReport/{usernameToBeDeleted}") 
+    public String deleteReport(@PathVariable String usernameToBeDeleted, @PathVariable String usernameOwningTheReport, @RequestParam(value = "redirectUrl", required = false) String redirectUrl, RedirectAttributes redirectAttributes) {
         try {
-            linkAutoServiceProxy.deleteReport(token, username);
+            linkAutoServiceProxy.deleteReport(token, usernameToBeDeleted, usernameOwningTheReport);
             redirectAttributes.addFlashAttribute("success", "Reporte de usuario " + username + " eliminado con éxito.");
             return "redirect:" + (redirectUrl != null ? redirectUrl : "/");   
         } catch (Exception e) {

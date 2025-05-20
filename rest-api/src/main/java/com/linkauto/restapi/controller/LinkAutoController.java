@@ -523,10 +523,12 @@ public class LinkAutoController {
         return isSaved ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 
-    @DeleteMapping ("/admin/{username}/deleteReport")
+    @DeleteMapping ("/admin/{usernameOwningTheReports}/deleteReport/{usernameToDeleteReport}")
     public ResponseEntity<Void> deleteReport(
-        @Parameter(name = "username", description = "Username of the user to delete report", required = true, example = "johndoe")
-        @PathVariable String username,
+        @Parameter(name = "usernameToDeleteReport", description = "Username of the user to delete report", required = true, example = "johndoe")
+        @PathVariable String usernameToDeleteReport,
+        @Parameter(name = "usernameOwningTheReports", description = "Username of the user owning the reports", required = true, example = "marc21")
+        @PathVariable String usernameOwningTheReports,
         @Parameter(name = "userToken", description = "Token of the user making the report", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken
     ) {
@@ -534,14 +536,19 @@ public class LinkAutoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        User reporterUser = authService.getUserByToken(userToken);
-        User reportedUser = authService.getUserByUsername(username);
+        // Verificar si es admin
+        Boolean isAdmin = authService.getUserByToken(userToken).getRole().equals(Role.ADMIN);
+        if (!isAdmin) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        User userToDeleteReport = authService.getUserByUsername(usernameToDeleteReport);
+        User userOwningTheReports = authService.getUserByUsername(usernameOwningTheReports);
 
-        if (reporterUser == null) {
+        if (userOwningTheReports == null || userToDeleteReport == null) {
             return ResponseEntity.notFound().build();
         }
 
-        boolean isReported = linkAutoService.deleteReport(reportedUser, reporterUser.getUsername());
+        boolean isReported = linkAutoService.deleteReport(userToDeleteReport.getUsername(), userOwningTheReports.getUsername());
 
         return isReported ? ResponseEntity.ok().build() : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
     }

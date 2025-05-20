@@ -1628,43 +1628,43 @@ void testCancelParticipation_NotFound() {
 
     @Test
     void testDeleteReport_Success() {
-        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        String url = String.format("%s/api/admin/%s/deleteReport/%s?userToken=%s", API_BASE_URL, "testuser", "testUser2", TOKEN);
 
         doNothing().when(restTemplate).delete(url);
 
-        assertDoesNotThrow(() -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
+        assertDoesNotThrow(() -> clientServiceProxy.deleteReport(TOKEN, "testuser", "testUser2"));
     }
 
     @Test
     void testDeleteReport_Unauthorized() {
-        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        String url = String.format("%s/api/admin/%s/deleteReport/%s?userToken=%s", API_BASE_URL, "testUser", "testUser2", TOKEN);
 
         doThrow(new HttpClientErrorException(HttpStatus.UNAUTHORIZED))
             .when(restTemplate).delete(url);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteReport(TOKEN, "testUser2", "testUser"));
         assertEquals("Unauthorized: Invalid token", exception.getMessage());
     }
 
     @Test
     void testDeleteReport_NotFound() {
-        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        String url = String.format("%s/api/admin/%s/deleteReport/%s?userToken=%s", API_BASE_URL, "testUser", "testUser2", TOKEN);
 
         doThrow(new HttpClientErrorException(HttpStatus.NOT_FOUND))
             .when(restTemplate).delete(url);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteReport(TOKEN, "testUser2", "testUser"));
         assertEquals("User not found", exception.getMessage());
     }
 
     @Test
     void testDeleteReport_OtherError() {
-        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", API_BASE_URL, "testuser", TOKEN);
+        String url = String.format("%s/api/admin/%s/deleteReport/%s?userToken=%s", API_BASE_URL, "testUser", "testUser2", TOKEN);
 
         doThrow(new HttpClientErrorException(HttpStatus.INTERNAL_SERVER_ERROR, "Server Error"))
             .when(restTemplate).delete(url);
 
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteReport(TOKEN, "testuser"));
+        RuntimeException exception = assertThrows(RuntimeException.class, () -> clientServiceProxy.deleteReport(TOKEN, "testUser2", "testUser"));
         assertEquals("Failed to delete report: Server Error", exception.getMessage());
     }
 

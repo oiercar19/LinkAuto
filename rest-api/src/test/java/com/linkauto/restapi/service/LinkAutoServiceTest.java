@@ -526,31 +526,20 @@ public class LinkAutoServiceTest {
 
     @Test
     public void testDeleteReport_Success() {
-        User userReported = new User();
-        userReported.setUsername("reported");
-        User userReporter = new User();
-        userReporter.setUsername("reporter");
-        userReported.getReporters().add(userReporter);
+        User userOwningTheReport = new User();
+        userOwningTheReport.setUsername("reported");
+        User userToBeDeleted = new User();
+        userToBeDeleted.setUsername("reporter");
+        userOwningTheReport.getReporters().add(userToBeDeleted);
 
-        when(userRepository.findByUsername("reported")).thenReturn(Optional.of(userReported));
-        when(userRepository.findByUsername("reporter")).thenReturn(Optional.of(userReporter));
-        when(userRepository.save(userReported)).thenReturn(userReported);
+        when(userRepository.findByUsername(userOwningTheReport.getUsername())).thenReturn(Optional.of(userOwningTheReport));
+        when(userRepository.findByUsername(userToBeDeleted.getUsername())).thenReturn(Optional.of(userToBeDeleted));
+        when(userRepository.save(userOwningTheReport)).thenReturn(userOwningTheReport);
 
-        boolean result = linkAutoService.deleteReport(userReported, "reporter");
+        boolean result = linkAutoService.deleteReport(userToBeDeleted.getUsername(), userOwningTheReport.getUsername());
         assertTrue(result);
-        assertFalse(userReported.getReporters().contains(userReporter));
-        verify(userRepository).save(userReported);
-    }
-
-    @Test
-    public void testDeleteReport_UserReportedNotFound() {
-        User userReported = new User();
-        userReported.setUsername("reported");
-
-        when(userRepository.findByUsername("reported")).thenReturn(Optional.empty());
-
-        boolean result = linkAutoService.deleteReport(userReported, "reporter");
-        assertFalse(result);
+        assertFalse(userOwningTheReport.getReporters().contains(userToBeDeleted));
+        verify(userRepository).save(userOwningTheReport);
     }
 
     @Test
@@ -877,30 +866,6 @@ public class LinkAutoServiceTest {
         Optional<com.linkauto.restapi.model.Event> result = linkAutoService.updateEvent(3L, eventDTO, otherUser);
 
         assertFalse(result.isPresent());
-    }
-
-    @Test
-    public void testDeleteReport_UserReporterNotFound() {
-        User userReported = new User();
-        userReported.setUsername("reported");
-
-        when(userRepository.findByUsername("reported")).thenReturn(Optional.of(userReported));
-        when(userRepository.findByUsername("reporter")).thenReturn(Optional.empty());
-
-        boolean result = linkAutoService.deleteReport(userReported, "reporter");
-        assertTrue(result); // removeReporters(null) is called, but method still returns true
-        verify(userRepository).save(userReported);
-    }
-
-    @Test
-    public void testDeleteReport_UsernameIsNull() {
-        User userReported = new User();
-        userReported.setUsername("reported");
-
-        when(userRepository.findByUsername("reported")).thenReturn(Optional.of(userReported));
-
-        boolean result = linkAutoService.deleteReport(userReported, null);
-        assertFalse(result);
     }
 
     public void testVerifyUser() {

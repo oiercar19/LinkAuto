@@ -502,8 +502,8 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void deleteReport(String token, String username) {
-        String url = String.format("%s/api/admin/%s/deleteReport?userToken=%s", apiBaseUrl, username, token);
+    public void deleteReport(String token, String usernameToBeDeleted, String usernameOwningTheReport) {
+        String url = String.format("%s/api/admin/%s/deleteReport/%s?userToken=%s", apiBaseUrl, usernameOwningTheReport, usernameToBeDeleted, token);
 
         try {
             restTemplate.delete(url);

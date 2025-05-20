@@ -182,27 +182,25 @@
                             Espera un Map<User, List<User>> ó List<UserReportDTO>
                             llamado  reportedUsers  pasado desde el controlador.
                         -->
-                        <tr th:each="user : ${users}", th:unless="${#lists.isEmpty(user.reporters)}">
+                        <span th:each="user : ${users}", th:unless="${#lists.isEmpty(user.reporters)}">
+                            <tr th:each="reporter : ${user.reporters}">
                             
-                            <!-- Usuario denunciado -->
-                            <td th:text="${user.username}">username</td>
-
-                            <!-- Listado de denunciantes separado por comas -->
-                            <td>
-                                <span th:each="reporter : ${user.reporters}">
+                                <!-- Usuario denunciado -->
+                                <td th:text="${user.username}">username</td>
+                                
+                                <!-- Listado de denunciantes separado por comas -->
+                                <td>
                                     <span th:text="${reporter.username}">reporter</span>
-                                </span>
-                            </td>
-                            <td>
-                                <span th:each="reporter : ${user.reporters}" class="d-inline-block me-2">
-                                    <form th:action="@{'/admin/' + ${user.username} + '/deleteReport?redirectUrl=/adminPanel'}" method="POST" style="display:inline;">
+                                </td>
+                                <td>
+                                    <form th:action="@{'/admin/' + ${user.username} + '/deleteReport/' + ${reporter.username}+'?redirectUrl=/adminPanel'}" method="POST" style="display:inline;">
                                         <button type="submit" class="btn btn-sm btn-danger">
                                             <i class="fas fa-times"></i>
                                         </button>
                                     </form>
-                                </span>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        </span>
                     </tbody>
                 </table>
             </div>
