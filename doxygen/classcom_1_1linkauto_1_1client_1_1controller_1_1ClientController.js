@@ -10,7 +10,7 @@ var classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController =
     [ "createPost", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a10ac38d30bdbdde446b3f371e6c348e8", null ],
     [ "deleteEvent", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a89c69ab4803769f6446aa338fadcec25", null ],
     [ "deletePost", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a2e7439e657f8456ecaec1237a1b17cae", null ],
-    [ "deleteReport", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a6838ffe1602cfa6619dc4a77597205f2", null ],
+    [ "deleteReport", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a382af93cd7e3ef8328f82470be5c530e", null ],
     [ "deleteUser", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a073d6a33dd57ca271ab409f2e2b8086b", null ],
     [ "demoteToUser", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#ad2456e0292371737c5ad83bf5fe88512", null ],
     [ "feed", "classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a1b0bb9106be53377944c86999d4a0dda", null ],

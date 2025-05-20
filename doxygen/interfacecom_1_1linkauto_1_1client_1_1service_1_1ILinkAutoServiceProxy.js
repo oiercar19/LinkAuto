@@ -7,7 +7,7 @@ var interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy =
     [ "createPost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a9ee4724361e3b80782335e3dc4583cce", null ],
     [ "deleteEvent", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a423cbe0e2aa166ff5a1c1e0c9789c736", null ],
     [ "deletePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a6a0b74fe7de9a3490a56ae5dc0e7bf36", null ],
-    [ "deleteReport", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ab8382f1aaeb99c28a725797b3e148a83", null ],
+    [ "deleteReport", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a4bf9271e92934d6a2b802ef910d5451c", null ],
     [ "deleteUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#aa15f293d8ed41df250a93e97b0ab62d6", null ],
     [ "demoteToUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a231906fa920ebbf08995ddf2044d14a4", null ],
     [ "followUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#aa89ea31d8f45cb43e5eb0e4ad30bf5bf", null ],
