@@ -1116,4 +1116,89 @@ public class LinkAutoServiceTest {
         
         assertFalse(resultNotSaved);
     }
+
+    @Test
+    public void testVerifyUser_ExactlyThreePostsAndFollowers() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        user.addPost(new Post());
+        user.addPost(new Post());
+        user.addPost(new Post());
+        user.addFollower(new User());
+        user.addFollower(new User());
+        user.addFollower(new User());
+
+        when(userRepository.save(user)).thenReturn(user);
+
+        Boolean result = linkAutoService.verifyUser(user);
+
+        assertTrue(result);
+        assertTrue(user.getIsVerified());
+        verify(userRepository).save(user);
+    }
+
+    @Test
+    public void testVerifyUser_LessThanThreePosts() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        user.addPost(new Post());
+        user.addPost(new Post());
+        user.addFollower(new User());
+        user.addFollower(new User());
+        user.addFollower(new User());
+
+        Boolean result = linkAutoService.verifyUser(user);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testVerifyUser_LessThanThreeFollowers() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        user.addPost(new Post());
+        user.addPost(new Post());
+        user.addPost(new Post());
+        user.addFollower(new User());
+        user.addFollower(new User());
+
+        Boolean result = linkAutoService.verifyUser(user);
+
+        assertFalse(result);
+    }
+
+    @Test
+    public void testGetSavedPostsByUsername_UserExistsWithSavedPosts() {
+        Post post1 = new Post(1L, new User(), "Post 1", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        Post post2 = new Post(2L, new User(), "Post 2", 1234567, new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        HashSet<Post> savedPosts = new HashSet<>(Arrays.asList(post1, post2));
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), savedPosts);
+
+        when(userRepository.findByUsername("user")).thenReturn(Optional.of(user));
+
+        List<Post> result = linkAutoService.getSavedPostsByUsername("user");
+
+        assertNotNull(result);
+        assertEquals(2, result.size());
+        assertTrue(result.contains(post1));
+        assertTrue(result.contains(post2));
+    }
+
+    @Test
+    public void testGetSavedPostsByUsername_UserExistsWithNoSavedPosts() {
+        User user = new User("user", "User", "", "", new ArrayList<>(), 0L, Gender.MALE, "", "password", "", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+
+        when(userRepository.findByUsername("user")).thenReturn(Optional.of(user));
+
+        List<Post> result = linkAutoService.getSavedPostsByUsername("user");
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+    }
+
+    @Test
+    public void testGetSavedPostsByUsername_UserDoesNotExist() {
+        when(userRepository.findByUsername("unknown")).thenReturn(Optional.empty());
+
+        List<Post> result = linkAutoService.getSavedPostsByUsername("unknown");
+
+        assertNull(result);
+    }
 }

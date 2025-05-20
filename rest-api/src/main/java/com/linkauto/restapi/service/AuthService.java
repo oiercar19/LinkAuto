@@ -1,12 +1,17 @@
 package com.linkauto.restapi.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
 import com.linkauto.restapi.model.User;
+import com.linkauto.restapi.repository.EventRepository;
+import com.linkauto.restapi.repository.PostRepository;
 import com.linkauto.restapi.repository.UserRepository;
+import com.linkauto.restapi.model.Event;
+import com.linkauto.restapi.model.Post;
 import com.linkauto.restapi.model.Role; // Ensure Role is imported from the correct package
 
 import jakarta.transaction.Transactional;
@@ -18,14 +23,19 @@ public class AuthService {
      * This is used to interact with the database layer for user-related data.
      */
     private final UserRepository userRepository;
+    private final EventRepository eventRepository;
+    private final PostRepository postRepository;
+
 
     /**
      * Constructs an instance of AuthService with the specified UserRepository.
      *
      * @param userRepository the repository used to manage user data
      */
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, PostRepository postRepository, EventRepository eventRepository) {
         this.userRepository = userRepository;
+        this.eventRepository = eventRepository; 
+        this.postRepository = postRepository;
     }
 
     /**
@@ -169,12 +179,14 @@ public class AuthService {
      * @throws Exception If an unexpected error occurs during the deletion process.
      */
     @Transactional
-    public boolean deleteUser(User user, String token) {
+    public boolean deleteUser(User user1, String token) {
         try {
             if (!tokenStore.containsKey(token)) {
                 return false;
                 
             }
+
+            User user = userRepository.findById(user1.getUsername()).orElse(null);
 
             if (!tokenStore.get(token).getUsername().equals(user.getUsername()) && !tokenStore.get(token).getRole().equals(Role.ADMIN)) {
                 return false;
@@ -185,17 +197,34 @@ public class AuthService {
             });
             user.getPosts().clear();
 
+            List<Event> eventos = eventRepository.findByCreador_Username(user.getUsername());
+            for (Event evento : eventos) {
+                evento.setCreador(null);
+                eventRepository.delete(evento);
+            }
+
+            for (Post savedPost : user.getSavedPosts()) {
+                savedPost.setUsuario(null);
+                postRepository.save(savedPost);  // <-- Aseguramos que el post quede persistido con el cambio
+            }
+            user.getSavedPosts().clear();
+            userRepository.deleteSavedPostsByUsername(user.getUsername());
+
+            user.getSavedPosts().forEach(savedPost -> savedPost.setUsuario(null));
+            user.getSavedPosts().clear();
+
             // Eliminar followers y following si hace falta (para evitar foreign key conflicts)
             user.getFollowers().forEach(follower -> follower.getFollowing().remove(user));
             user.getFollowers().clear();
             user.getFollowing().forEach(following -> following.getFollowers().remove(user));
             user.getFollowing().clear();
 
+            
+
+
             // Eliminar el usuario del repositorio
             userRepository.delete(user);
             
-            // Eliminar el token asociado al usuario del tokenStore
-            tokenStore.remove(token);
             return true;
         } catch (Exception e) {
             System.out.println("Error al eliminar el usuario o el token: " + e.getMessage());

@@ -1240,4 +1240,138 @@ public void testParseEventToEventReturnerDTO() {
         assertNotNull(response.getBody());
         assertEquals(2, response.getBody().size());
     }
+
+    @Test
+    public void testVerifyUser_UnauthorizedToken() {
+        String username = "johndoe";
+        String userToken = "invalidToken";
+        when(authService.isTokenValid(userToken)).thenReturn(false);
+
+        ResponseEntity<Void> response = linkAutoController.verifyUser(username, userToken);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService, never()).getUserByToken(anyString());
+        verify(authService, never()).getUserByUsername(anyString());
+        verify(linkAutoService, never()).verifyUser(any(User.class));
+    }
+
+    @Test
+    public void testVerifyUser_UnauthorizedNotAdminOrSelf() {
+        String username = "johndoe";
+        String userToken = "validToken";
+        User notAdmin = new User("otheruser", "name", "pic", "email", new ArrayList<>(), 1L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        notAdmin.setRole(Role.USER);
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(notAdmin);
+
+        ResponseEntity<Void> response = linkAutoController.verifyUser(username, userToken);
+
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
+        verify(authService).isTokenValid(userToken);
+        verify(authService).getUserByToken(userToken);
+        verify(authService, never()).getUserByUsername(anyString());
+        verify(linkAutoService, never()).verifyUser(any(User.class));
+    }
+
+    @Test
+    public void testVerifyUser_TargetUserNotFound() {
+        String username = "johndoe";
+        String userToken = "validToken";
+        User admin = new User("admin", "name", "pic", "email", new ArrayList<>(), 1L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        admin.setRole(Role.ADMIN);
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(admin);
+        when(authService.getUserByUsername(username)).thenReturn(null);
+
+        ResponseEntity<Void> response = linkAutoController.verifyUser(username, userToken);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        verify(authService).getUserByUsername(username);
+        verify(linkAutoService, never()).verifyUser(any(User.class));
+    }
+
+
+    @Test
+    public void testVerifyUser_Success_Admin() {
+        String username = "johndoe";
+        String userToken = "validToken";
+        User admin = new User("admin", "name", "pic", "email", new ArrayList<>(), 1L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        admin.setRole(Role.ADMIN);
+        User targetUser = new User(username, "name", "pic", "email", new ArrayList<>(), 2L, Gender.FEMALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(admin);
+        when(authService.getUserByUsername(username)).thenReturn(targetUser);
+        when(linkAutoService.verifyUser(targetUser)).thenReturn(true);
+
+        ResponseEntity<Void> response = linkAutoController.verifyUser(username, userToken);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(linkAutoService).verifyUser(targetUser);
+    }
+
+    @Test
+    public void testVerifyUser_Forbidden() {
+        String username = "johndoe";
+        String userToken = "validToken";
+        User admin = new User("admin", "name", "pic", "email", new ArrayList<>(), 1L, Gender.MALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        admin.setRole(Role.ADMIN);
+        User targetUser = new User(username, "name", "pic", "email", new ArrayList<>(), 2L, Gender.FEMALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(admin);
+        when(authService.getUserByUsername(username)).thenReturn(targetUser);
+        when(linkAutoService.verifyUser(targetUser)).thenReturn(false);
+
+        ResponseEntity<Void> response = linkAutoController.verifyUser(username, userToken);
+
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        verify(linkAutoService).verifyUser(targetUser);
+    }
+
+    @Test
+    public void testVerifyUser_Success_Self() {
+        String username = "johndoe";
+        String userToken = "validToken";
+        User self = new User(username, "name", "pic", "email", new ArrayList<>(), 2L, Gender.FEMALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        self.setRole(Role.USER);
+
+        when(authService.isTokenValid(userToken)).thenReturn(true);
+        when(authService.getUserByToken(userToken)).thenReturn(self);
+        when(authService.getUserByUsername(username)).thenReturn(self);
+        when(linkAutoService.verifyUser(self)).thenReturn(true);
+
+        ResponseEntity<Void> response = linkAutoController.verifyUser(username, userToken);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        verify(linkAutoService).verifyUser(self);
+    }
+
+    @Test
+    public void testIsUserVerified_UserFound() {
+        String username = "johndoe";
+        User user = new User(username, "name", "pic", "email", new ArrayList<>(), 2L, Gender.FEMALE, "loc", "pass", "desc", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        user.setIsVerified(true);
+
+        when(authService.getUserByUsername(username)).thenReturn(user);
+
+        ResponseEntity<Boolean> response = linkAutoController.isUserVerified(username);
+
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        assertEquals(Boolean.TRUE, response.getBody());
+    }
+
+    @Test
+    public void testIsUserVerified_UserNotFound() {
+        String username = "nonexistent";
+        when(authService.getUserByUsername(username)).thenReturn(null);
+
+        ResponseEntity<Boolean> response = linkAutoController.isUserVerified(username);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertNull(response.getBody());
+    }
 }
