@@ -350,7 +350,7 @@ public class LinkAutoController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
         User user = authService.getUserByToken(userToken);
-        boolean isFollowed = linkAutoService.followUser(user, username);
+        boolean isFollowed = linkAutoService.followUser(user.getUsername(), username);
         return isFollowed ? ResponseEntity.ok().build() : ResponseEntity.notFound().build();
     }
 

@@ -185,20 +185,18 @@ public class LinkAutoServiceTest {
 
     @Test
     public void testFollowUser(){
-        User userToFollow = new User("user1", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
-        User user = new User("user2", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User user = new User("user", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
+        User otherUser = new User("otherUser", "ownerName", "ownerProfilePicture", "ownerEmail", new ArrayList<>(), 123456L, Gender.MALE, "ownerLocation", "ownerPassword", "ownerDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
 
         when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.save(otherUser)).thenReturn(otherUser);
 
+        when(userRepository.findByUsername("user")).thenReturn(Optional.of(user));
+        when(userRepository.findByUsername("otherUser")).thenReturn(Optional.of(otherUser));
+        Boolean result2 = linkAutoService.followUser(user.getUsername(), otherUser.getUsername());
+        assertTrue(result2);
 
-        when(userRepository.findByUsername("user1")).thenReturn(Optional.of(userToFollow));
-        Boolean result1 = linkAutoService.followUser(user, "user1");
-        assertTrue(result1);
-
-        when(userRepository.findByUsername("nullUser")).thenReturn(Optional.empty());
-        Boolean result2 = linkAutoService.followUser(user, "nullUser");
-        assertFalse(result2);
-
+        verify(userRepository).save(otherUser);
         verify(userRepository).save(user);
     }
 

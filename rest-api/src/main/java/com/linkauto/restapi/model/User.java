@@ -53,7 +53,7 @@ public class User {
     private List<Post> posts;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "user_followers", joinColumns = @JoinColumn(name = "key_user_username"), inverseJoinColumns = @JoinColumn(name = "follower_username"))
+    @JoinTable(name = "user_followers", joinColumns = @JoinColumn(name = "user_username"), inverseJoinColumns = @JoinColumn(name = "follower_username"))
     private List<User> followers;
 
     @ManyToMany(mappedBy = "followers", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
