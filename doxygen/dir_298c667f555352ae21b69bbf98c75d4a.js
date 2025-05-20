@@ -7,6 +7,5 @@ var dir_298c667f555352ae21b69bbf98c75d4a =
     [ "EventCreator.java", "EventCreator_8java.html", "EventCreator_8java" ],
     [ "Post.java", "client_2src_2main_2java_2com_2linkauto_2client_2data_2Post_8java.html", "client_2src_2main_2java_2com_2linkauto_2client_2data_2Post_8java" ],
     [ "PostCreator.java", "PostCreator_8java.html", "PostCreator_8java" ],
-    [ "UpdateUser.java", "UpdateUser_8java.html", "UpdateUser_8java" ],
     [ "User.java", "client_2src_2main_2java_2com_2linkauto_2client_2data_2User_8java.html", "client_2src_2main_2java_2com_2linkauto_2client_2data_2User_8java" ]
 ];

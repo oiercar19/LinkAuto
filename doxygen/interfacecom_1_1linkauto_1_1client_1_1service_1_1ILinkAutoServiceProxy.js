@@ -36,6 +36,6 @@ var interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy =
     [ "unfollowUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ad5ac0fb5f530db06cc00e5c3c903d2e8", null ],
     [ "unlikePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ad38413e4cec0ab17abef553f47076535", null ],
     [ "unsavePost", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a526a7c5b2211b52a331e681f6b86dcac", null ],
-    [ "updateProfile", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a5af1ec8752073e62c6b5bec2b7e37802", null ],
+    [ "updateProfile", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#a1e7ead83e6afd0040cb13dacfc21dbfa", null ],
     [ "verifyUser", "interfacecom_1_1linkauto_1_1client_1_1service_1_1ILinkAutoServiceProxy.html#ab1c18fbfb490a5aeb37e082fbbc0883c", null ]
 ];

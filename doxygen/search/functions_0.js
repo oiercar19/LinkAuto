@@ -10,5 +10,5 @@ var searchData=
   ['addsavedpost_7',['addsavedpost',['../classcom_1_1linkauto_1_1restapi_1_1dto_1_1UserReturnerDTO.html#a35d0aa8b91565c17ab53e00daf364bd6',1,'com.linkauto.restapi.dto.UserReturnerDTO.addSavedPost()'],['../classcom_1_1linkauto_1_1restapi_1_1model_1_1User.html#aef66ced80715f75f9daa73757a5d6de8',1,'com.linkauto.restapi.model.User.addSavedPost()']]],
   ['adminpanel_8',['adminPanel',['../classcom_1_1linkauto_1_1client_1_1controller_1_1ClientController.html#a90385a58c6131cb3c34c1e455ef9578c',1,'com::linkauto::client::controller::ClientController']]],
   ['authcontroller_9',['AuthController',['../classcom_1_1linkauto_1_1restapi_1_1controller_1_1AuthController.html#ac7fda52b0791c340d6ebca42bf2d7671',1,'com::linkauto::restapi::controller::AuthController']]],
-  ['authservice_10',['AuthService',['../classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#ae189e6824dec2abd59718af04c5c9dfd',1,'com::linkauto::restapi::service::AuthService']]]
+  ['authservice_10',['AuthService',['../classcom_1_1linkauto_1_1restapi_1_1service_1_1AuthService.html#a537fbf6553c6f258bc7870f64760c03d',1,'com::linkauto::restapi::service::AuthService']]]
 ];

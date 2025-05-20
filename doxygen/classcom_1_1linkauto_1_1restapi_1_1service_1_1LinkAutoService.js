@@ -9,7 +9,7 @@ var classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService =
     [ "deleteEvent", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a67c3f3aeaa6c55a43dae25f424229044", null ],
     [ "deletePost", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#aa5179afd91d8cdb96bc95a52c277ac31", null ],
     [ "deleteReport", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#ad89813d9cfc83d5326e123d1819e2ece", null ],
-    [ "followUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#aa3514af3d2d1b4ea17d50f659e065f07", null ],
+    [ "followUser", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a197ff8c27e17c42c5734a0843ab09396", null ],
     [ "getAllComments", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a2585668938e5a06fd99cb488e998839d", null ],
     [ "getAllEvents", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#af502ac282a69bcb52c18fdd0d420e1fe", null ],
     [ "getAllPosts", "classcom_1_1linkauto_1_1restapi_1_1service_1_1LinkAutoService.html#a2400ecec37aab1628b24c8a5bd4cb167", null ],
