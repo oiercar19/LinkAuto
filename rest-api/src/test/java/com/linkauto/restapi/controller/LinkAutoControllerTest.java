@@ -26,6 +26,7 @@ import com.linkauto.restapi.dto.CommentDTO;
 import com.linkauto.restapi.dto.CommentReturnerDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
+import com.linkauto.restapi.dto.UpdateUserDTO;
 import com.linkauto.restapi.dto.EventDTO;
 import com.linkauto.restapi.dto.EventReturnerDTO;
 import com.linkauto.restapi.dto.UserDTO;
@@ -399,13 +400,13 @@ public class LinkAutoControllerTest {
     @Test
     public void testUpdateUser() {
         String userToken = "validToken";
-        UserDTO userDto = new UserDTO("updatedName", "USER", false , "avatar.jpg" ,"updatedEmail", 
+        UpdateUserDTO userDto = new UpdateUserDTO("updatedUsername", "updatedName", "avatar.jpg" ,"updatedEmail", 
                                     new ArrayList<>(), 123456L, "male", "updatedLocation",
                                     "updatedPassword", "updatedDescription");
         
         // Case 1: Invalid token
         when(authService.isTokenValid("invalidToken")).thenReturn(false);
-        ResponseEntity<UserReturnerDTO> invalidResponse = linkAutoController.updateUser("invalidToken", userDto);
+        ResponseEntity<UpdateUserDTO> invalidResponse = linkAutoController.updateUser("invalidToken", userDto);
         assertEquals(HttpStatus.UNAUTHORIZED, invalidResponse.getStatusCode());
         
         // Case 2: Valid update by same user
@@ -413,41 +414,15 @@ public class LinkAutoControllerTest {
         when(authService.getUserByToken(userToken)).thenReturn(usuario).thenReturn(usuario);
         when(authService.updateUser(any(User.class), eq(userToken))).thenReturn(true);
         
-        ResponseEntity<UserReturnerDTO> validResponse = linkAutoController.updateUser(userToken, userDto);
+        ResponseEntity<UpdateUserDTO> validResponse = linkAutoController.updateUser(userToken, userDto);
         assertEquals(HttpStatus.OK, validResponse.getStatusCode());
         assertNotNull(validResponse.getBody());
         assertEquals("updatedName", validResponse.getBody().getName());
-        
-        // Case 3: Regular user trying to update role
-        UserDTO roleSwitchDto = new UserDTO("name", "ADMIN", false , "pic", "email", 
-                                        new ArrayList<>(), 123456L, "male", "location",
-                                        "password", "description");
-        
-        ResponseEntity<UserReturnerDTO> forbiddenResponse = linkAutoController.updateUser(userToken, roleSwitchDto);
-        assertEquals(HttpStatus.FORBIDDEN, forbiddenResponse.getStatusCode());
-        
-        // Case 4: Admin updating another user
-        User adminUser = new User("adminUsername", "adminName", "adminPic", "adminEmail", 
-                                new ArrayList<>(), 123456L, Gender.MALE, "adminLocation", 
-                                "adminPassword", "adminDescription", new ArrayList<>(), 
-                                new ArrayList<>(), new ArrayList<>(), new HashSet<>());
-        adminUser.setRole(Role.ADMIN);
-        
-        when(authService.getUserByToken(userToken)).thenReturn(adminUser).thenReturn(usuario);
-        ResponseEntity<UserReturnerDTO> adminUpdateResponse = linkAutoController.updateUser(userToken, userDto);
-        assertEquals(HttpStatus.OK, adminUpdateResponse.getStatusCode());
-        
-        // Case 5: Update failed
-        when(authService.updateUser(any(User.class), eq(userToken))).thenReturn(false);
-        ResponseEntity<UserReturnerDTO> failedResponse = linkAutoController.updateUser(userToken, userDto);
-        assertEquals(HttpStatus.NOT_FOUND, failedResponse.getStatusCode());
 
-        // Case 6: Random user trying to update another user
-        when(authService.isTokenValid("randomUser1Token")).thenReturn(true);
-        User randomUser1 = new User("randomUser1", "randomUser1", "adminPic", "adminEmail", new ArrayList<>(), 123456L, Gender.MALE, "adminLocation", "adminPassword", "adminDescription", new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), new HashSet<>());
-        when(authService.getUserByToken("randomUser1Token")).thenReturn(randomUser1).thenReturn(usuario);
-        ResponseEntity<UserReturnerDTO> randomUserResponse = linkAutoController.updateUser("randomUser1Token", userDto);
-        assertEquals(HttpStatus.FORBIDDEN, randomUserResponse.getStatusCode());
+        // Case 3: Update failed
+        when(authService.updateUser(any(User.class), eq(userToken))).thenReturn(false);
+        ResponseEntity<UpdateUserDTO> failedResponse = linkAutoController.updateUser(userToken, userDto);
+        assertEquals(HttpStatus.NOT_FOUND, failedResponse.getStatusCode());
     }
 
     @Test

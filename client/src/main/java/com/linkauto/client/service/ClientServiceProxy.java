@@ -12,6 +12,7 @@ import org.springframework.web.client.RestTemplate;
 
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
+import com.linkauto.client.data.UpdateUser;
 import com.linkauto.client.data.User;
 import com.linkauto.client.data.Comment;
 import com.linkauto.client.data.CommentCreator;
@@ -90,7 +91,7 @@ public class ClientServiceProxy implements ILinkAutoServiceProxy {
     }
 
     @Override
-    public void updateProfile(String token, User user) {
+    public void updateProfile(String token, UpdateUser user) {
         String url = String.format("%s/api/user?userToken=%s", apiBaseUrl, token);
         
         try {

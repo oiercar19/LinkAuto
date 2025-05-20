@@ -25,6 +25,7 @@ import com.linkauto.restapi.dto.EventDTO;
 import com.linkauto.restapi.dto.EventReturnerDTO;
 import com.linkauto.restapi.dto.PostDTO;
 import com.linkauto.restapi.dto.PostReturnerDTO;
+import com.linkauto.restapi.dto.UpdateUserDTO;
 import com.linkauto.restapi.dto.UserDTO;
 import com.linkauto.restapi.dto.UserReturnerDTO;
 import com.linkauto.restapi.model.Comment;
@@ -115,10 +116,10 @@ public class LinkAutoController {
     }
 
     @PutMapping("/user")
-    public ResponseEntity<UserReturnerDTO> updateUser(
+    public ResponseEntity<UpdateUserDTO> updateUser(
         @Parameter(name = "userToken", description = "Token of the user", required = true, example = "1234567890")
         @RequestParam("userToken") String userToken, 
-        @RequestBody UserDTO userDetails) {
+        @RequestBody UpdateUserDTO userDetails) {
         if (!authService.isTokenValid(userToken)) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -131,13 +132,8 @@ public class LinkAutoController {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
     
-        // Si el usuario no es administrador, no puede cambiar el rol
-        if (!requestingUser.getRole().equals(Role.ADMIN) && !oldUser.getRole().toString().equals(userDetails.getRole().toUpperCase())) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
-        }
-    
-        User updatedUser = parseUserDTOToUser(userDetails, oldUser);        
-        return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(parseUserToUserReturnerDTO(updatedUser)) : ResponseEntity.notFound().build();
+        User updatedUser = parseUpdateUserDTOToUser(userDetails, oldUser);        
+        return authService.updateUser(updatedUser, userToken) ? ResponseEntity.ok(parseUserToUpdateUserDTO(updatedUser)) : ResponseEntity.notFound().build();
     }
 
     @GetMapping("/users")
@@ -601,9 +597,15 @@ public class LinkAutoController {
         return postReturnerDTO;
     }
 
-    private User parseUserDTOToUser(UserDTO userDTO, User oldUser) {
+    private User parseUpdateUserDTOToUser(UpdateUserDTO userDTO, User oldUser) {
         User u = new User(oldUser.getUsername(), userDTO.getName(), userDTO.getProfilePicture(), userDTO.getEmail(), userDTO.getCars(), userDTO.getBirthDate(), User.Gender.valueOf(userDTO.getGender().toUpperCase()), userDTO.getLocation(), userDTO.getPassword(), userDTO.getDescription(),  oldUser.getPosts(), oldUser.getFollowers(), oldUser.getFollowing(), oldUser.getSavedPosts());
         u.setRole(oldUser.getRole());
+        u.setIsVerified(oldUser.getIsVerified());
+        for (User reporter : oldUser.getReporters()) {
+            u.getReporters().add(reporter);
+            
+        };
+        u.setBanned(oldUser.isBanned());
         return u;
     }
 
@@ -617,6 +619,10 @@ public class LinkAutoController {
         List<Post> savedPosts = new ArrayList<>(u.getSavedPosts());
         List<PostReturnerDTO> savedPost = parsePostsToPostReturnerDTO(savedPosts);
         return new UserReturnerDTO(u.getUsername(), u.getRole().toString() , u.isBanned() , u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription(), postReturner, savedPost, u.getIsVerified(), reporters);
+    }
+
+    private UpdateUserDTO parseUserToUpdateUserDTO(User u){
+        return new UpdateUserDTO(u.getUsername(), u.getName(), u.getProfilePicture(), u.getEmail(), u.getCars(), u.getBirthDate(), u.getGender().toString(), u.getLocation(), u.getPassword(), u.getDescription());
     }
 
     private CommentReturnerDTO parseCommentToCommentReturnerDTO(Comment comment) {

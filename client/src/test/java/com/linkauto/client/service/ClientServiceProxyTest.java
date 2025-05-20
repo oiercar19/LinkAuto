@@ -29,6 +29,7 @@ import com.linkauto.client.data.CommentCreator;
 import com.linkauto.client.data.Credentials;
 import com.linkauto.client.data.Post;
 import com.linkauto.client.data.PostCreator;
+import com.linkauto.client.data.UpdateUser;
 import com.linkauto.client.data.User;
 import com.linkauto.client.data.Event;
 import com.linkauto.client.data.EventCreator;
@@ -154,7 +155,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_Success() {
-        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+        UpdateUser user = new UpdateUser("testuser","test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
 
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
@@ -165,7 +166,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_Unauthorized() {
-        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+        UpdateUser user = new UpdateUser("testuser","test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
 
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
@@ -587,7 +588,7 @@ class ClientServiceProxyTest {
     // Update Profile - Additional error case
     @Test
     void testUpdateProfile_NotFound() {
-        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+        UpdateUser user = new UpdateUser("testuser","test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
 
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
@@ -600,7 +601,7 @@ class ClientServiceProxyTest {
 
     @Test
     void testUpdateProfile_OtherError() {
-        User user = new User("testuser", "USER", false,"test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description", new HashSet<>(), false);
+        UpdateUser user = new UpdateUser("testuser","test", "profilePicture", "test@example.com", new ArrayList<>(), 1325413L, "MALE", "Bilbao", "1234", "description");
 
         String url = String.format("%s/api/user?userToken=%s", API_BASE_URL, TOKEN);
         
